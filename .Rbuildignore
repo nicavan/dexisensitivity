@@ -1,2 +1,4 @@
+^renv$
+^renv\.lock$
 ^dexiranalysis\.Rproj$
 ^\.Rproj\.user$
