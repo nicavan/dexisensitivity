@@ -2,3 +2,4 @@
 ^renv\.lock$
 ^dexiranalysis\.Rproj$
 ^\.Rproj\.user$
+^LICENSE\.md$
