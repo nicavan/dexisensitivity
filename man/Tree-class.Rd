@@ -24,7 +24,8 @@ Tree class definition
 
 \item{\code{isMultiple}}{(logical) Tag to know if multiple leaves}
 
-\item{\code{Multiple}}{(data.frame) List of the multiple leaves and number of occurrence}
+\item{\code{Multiple}}{(data.frame) List of the multiple leaves and number of
+occurrence}
 
 \item{\code{isLeafAggregated}}{(logical) Tag to know if leaf-aggregated nodes}
 
