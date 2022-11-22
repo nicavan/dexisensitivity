@@ -60,6 +60,12 @@ test_that("Empty Tree print correctly", {
     expect_equal(capture.output(print(empty_tree)), empty_print)
 })
 
+#### - show method test - #### ####
+test_that("Empty Tree show correct message", {
+    expect_equal(capture.output(new(Class = "Tree")),
+                 "*** Tree without attributes ***")
+})
+
 
 #### - - #### ####
 # Pour voir ce que fait un test qui fail ou avec error
