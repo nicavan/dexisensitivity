@@ -55,7 +55,7 @@ methods::setClass("Tree",
 #'
 #'
 #' @return
-#'
+#' @export
 #' @examples
 setMethod("print", "Tree",
           function(x,...) {
@@ -78,5 +78,49 @@ setMethod("print", "Tree",
                   cat("\nLeaf-Aggregated attributes: \n")
                   print(x@LeafAggregated)
                   } else {cat("\nNo Leaf-Aggregated Leaf")}
+          }
+)
+
+
+
+#' show.tree
+#'
+#' show method for Tree
+#'
+#' @param object The Tree to be shown
+#'
+#' @return
+#' @export
+#'
+#' @examples
+setMethod("show","Tree",
+          function(object) {
+              if(identical(object@nbAttributes, numeric(0))) {
+                  cat("*** Tree without attributes ***")
+              } else {
+
+                  if(object@nbAttributes != 0) {
+                      digit <- floor(log10(object@nbAttributes)) + 1
+                  } else {
+                      digit <- 1
+                  }
+
+                  for(i in 1:object@nbAttributes)
+                  {
+                      if(i == 1) {
+                          prefix <- "Z : "
+                      } else if(object@Nodes[[i]]@isLeaf) {
+                          prefix <- "X : "
+                      } else {
+                          prefix <- "Y : "
+                      }
+                      cat("< ", formatC(i, width = digit), " > ",
+                          rep("- ", (object@Nodes[[i]]@Depth-1)),
+                          prefix, object@Nodes[[i]]@name,
+                          if(length(object@Nodes[[i]]@Twin)) {
+                              paste0(" [", c(object@Nodes[[i]]@Twin), "]")
+                          }, "\n", sep = "")
+                  }
+              }
           }
 )
