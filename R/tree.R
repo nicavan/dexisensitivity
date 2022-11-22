@@ -67,7 +67,7 @@ setMethod("print", "Tree",
               cat("\nMaximum depth:", x@Depth)
               cat("\nList of repeated aggregated nodes:",
                   if(length(which(table(x@Aggregated) > 1))) {
-                      names(which(table(x@Aggregated)>1))
+                      names(which(table(x@Aggregated) > 1))
                   } else {"Non"}
                   )
               if(length(x@isMultiple) > 0 && x@isMultiple) {
