@@ -24,3 +24,25 @@ test_that("Empty Node return structured Node with 0 length S4 attributes", {
     expect_equal(empty_Node@scaleLabel, new(Class = "character"))
     expect_equal(empty_Node@nodePath, new(Class = "character"))
 })
+
+
+#### - print method test - #### ####
+test_that("Empty Node print correctly", {
+    empty_node <- new(Class = "Node")
+
+    empty_print <- capture.output({
+        cat("Node name: ")
+        cat("\nID: ")
+        cat("\nNode depth: ")
+        cat("\nFrom root to node: ->")
+        cat("\nIs it a leaf: ")
+        cat("\nIs is a leaf-aggregated: FALSE")
+        cat("\nMother: ")
+        cat("\nSisters: None")
+        cat("\nChildren: None")
+        cat("\nEstimated weights: ")
+    })
+
+    expect_equal(capture.output(print(empty_node)), empty_print)
+
+})

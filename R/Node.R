@@ -41,3 +41,46 @@ setClass("Node",
                         nodePath = "character"
          )
 )
+
+
+
+#' print.node
+#'
+#' Print method for Node class object
+#'
+#' @param x The printed Node
+#'
+#' @param ... see '...' print prameters
+#'
+#' @return
+#' @export
+#'
+#' @examples
+setMethod("print","Node",
+          function(x,...){
+              cat("Node name:", x@name)
+              cat("\nID:", x@id)
+              cat("\nNode depth:", x@Depth)
+              cat("\nFrom root to node:", paste0(x@nodePath, col = "->"))
+              cat("\nIs it a leaf:", x@isLeaf)
+              cat("\nIs is a leaf-aggregated:",
+                  if (length(x@isLeafAndAggregated) && x@isLeafAndAggregated) {
+                      "TRUE"
+                      } else {"FALSE"})
+              cat("\nMother:",
+                  if (length(x@mother) == 0) {
+                      ""
+                  } else if (is.na(x@mother)) {
+                      "Root"
+                  } else {x@mother})
+              cat("\nSisters:",
+                  if (length(x@sisters) && length(x@sisters)) {
+                      x@sisters
+                      } else {"None"})
+              cat("\nChildren:",
+                  if (length(x@children) && length(x@children)) {
+                      x@children
+                      } else {"None"})
+              cat("\nEstimated weights:", x@Proba)
+              }
+          )
