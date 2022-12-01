@@ -39,20 +39,9 @@ test_that("Empty Tree print correctly", {
         cat("\nNumber of aggregated attributes: 0")
         cat("\nNumber of true leaves (no multiple, no aggregated): ")
         cat("\nMaximum depth: ")
-        cat("\nList of repeated aggregated nodes:",
-            if(length(which(table(empty_tree@Aggregated) > 1))) {
-                names(which(table(empty_tree@Aggregated)>1))
-            } else {"Non"}
-        )
-        if(length(empty_tree@isMultiple) > 0 && empty_tree@isMultiple) {
-            cat("\nMultiple leaves: \n")
-            print(empty_tree@Multiple)
-        } else {cat("\nNo multiple leaves")}
-        if(length(empty_tree@isLeafAggregated) > 0 &&
-           empty_tree@isLeafAggregated) {
-            cat("\nLeaf-Aggregated attributes: \n")
-            print(empty_tree@LeafAggregated)
-        } else {cat("\nNo Leaf-Aggregated Leaf")}
+        cat("\nList of repeated aggregated nodes: Non")
+        cat("\nNo multiple leaves")
+        cat("\nNo Leaf-Aggregated Leaf")
     })
 
     print(empty_print)
