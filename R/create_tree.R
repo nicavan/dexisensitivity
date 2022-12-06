@@ -123,7 +123,8 @@ createTree <- function(MT) {
         # Get the true leaves
         l.Leaves <- unique(l.Leaves) #Remove duplicates
         if(isLeafAggregated) {
-            l.Leaves <- l.Leaves[-c(which(is.element(l.Leaves, l.LeafAggregated)))]
+            l.Leaves <- l.Leaves[-c(which(is.element(l.Leaves,
+                                                     l.LeafAggregated)))]
         }
         nbLeaves <- length(l.Leaves)
 
@@ -162,15 +163,16 @@ createTree <- function(MT) {
 #' @export
 #'
 #' @examples
-getChaine <- function(listeNoeuds)
-{
-    for(k in 1:length(listeNoeuds))
-    {
-        if(k==1)
-            chaine <- paste("//ATTRIBUTE[NAME='",listeNoeuds[k],"']",sep="")
-        else
-            chaine <- paste(chaine,"/ATTRIBUTE[NAME='",listeNoeuds[k],"']",sep="")
+getChaine <- function(listeNoeuds) {
+
+    for(k in 1:length(listeNoeuds)) {
+        if (k==1) {
+            chaine <- paste0("//ATTRIBUTE[NAME='", listeNoeuds[k], "']")
+        } else {
+            chaine <- paste0(chaine, "/ATTRIBUTE[NAME='", listeNoeuds[k], "']")
+        }
     }
+
     return(chaine)
 }
 
