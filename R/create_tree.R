@@ -52,7 +52,7 @@ createTree <- function(MT) {
                     if (listPath %>%
                         sapply(function(x) {
                             identical(c(listPath[[nbNoeuds]], l.Attrib[i]), x)
-                            }) %>%
+                        }) %>%
                         unlist() %>%
                         sum() %>%
                         `!`) {
@@ -187,85 +187,126 @@ getChaine <- function(listeNoeuds) {
 #' @export
 #'
 #' @examples
-createNode <- function(listeNoeuds, MT)
-{
-    #Is it a leaf?
-    # On check chaque embranchements potentiels. Si c'est un noeux alors FALSE, si c'est une fin alors TRUE (leaf)
-    isLeaf <- ifelse(length(sapply(XML::getNodeSet(MT,paste(getChaine(listeNoeuds),"/FUNCTION",sep="")),XML::xmlSize)),F,T)
-    #Children
-    # Si Leaf alors ça n'a pas de filles. Sinon, on cherche le nom des attributs en dessous (ceux des filles)
-    l.Children <- if(isLeaf) vector(mode="character",length=0) else sapply(XML::getNodeSet(MT,paste(getChaine(listeNoeuds),"/ATTRIBUTE/NAME",sep="")),XML::xmlValue)
-    #Mother if any
-    # Si listeNoeuds (paths) = 1 alors c'est le noeud originel
-    # Sinon, on prend le nom de l'vant dernier attribut (celui du noeud père)
-    mother<-ifelse(length(listeNoeuds)>1,listeNoeuds[length(listeNoeuds)-1],character(0))
-    #Sisters: they do have the same mother
-    # Si noeud originel (length = 1) alors ya pas de soeurs
-    # Sinon, on récère les attributs des filles de la mère et on retire celui de l'individu (on veut que ses soeurs)
-    l.Sisters <- if(length(listeNoeuds)>1) sapply(XML::getNodeSet(MT,paste(getChaine(listeNoeuds[1:length(listeNoeuds)-1]),"/ATTRIBUTE/NAME",sep="")),XML::xmlValue) else vector(mode="character",length=0)
-    l.Sisters<-l.Sisters[l.Sisters[]!=listeNoeuds[length(listeNoeuds)]]
-    #Scale and labels
-    # On récupère des valeurs dans l'arbre
-    scaleNode<-length(sapply(XML::getNodeSet(MT,paste(getChaine(listeNoeuds),"/SCALE/SCALEVALUE",sep="")),XML::xmlSize))
-    scaleLabel<-sapply(XML::getNodeSet(MT,paste(getChaine(listeNoeuds),"/SCALE/SCALEVALUE/NAME",sep="")),XML::xmlValue)
-    #Aggregation function
-    # Création de la table d'aggrégation
-    if(!isLeaf)
-    {
-        c.Function<-sapply(XML::getNodeSet(MT,paste(getChaine(listeNoeuds),"/FUNCTION/LOW",sep="")),XML::xmlValue)
-        #Transform as a vector
-        nbChar<-nchar(c.Function)
-        v.Function<-numeric(nbChar)
-        for(i in 1:nbChar)
-        {
-            #Modify attribute 0...n to 1...n+1
-            v.Function[i]<-as.numeric(substr(c.Function,i,i))+1
+createNode <- function(listeNoeuds, MT) {
+
+    # Is it a leaf?
+    isLeaf <- ifelse(XML::getNodeSet(MT, paste0(getChaine(listeNoeuds),
+                                                "/FUNCTION")) %>%
+                         sapply(XML::xmlSize) %>%
+                         length(),
+                     F, T)
+    # Children
+    l.Children <- if (isLeaf) {
+        vector(mode="character",length=0)
+    } else {
+        sapply(XML::getNodeSet(MT, paste0(getChaine(listeNoeuds),
+                                          "/ATTRIBUTE/NAME")),
+               XML::xmlValue)
+    }
+
+    # Mother if any
+    mother<-ifelse(length(listeNoeuds) > 1,
+                   listeNoeuds[length(listeNoeuds) - 1],
+                   character(0))
+
+    # Sisters: they do have the same mother
+    l.Sisters <- if (length(listeNoeuds)>1) {
+        MT %>%
+            XML::getNodeSet(paste0(getChaine(listeNoeuds[1:length(listeNoeuds)-1]),
+                                   "/ATTRIBUTE/NAME")) %>%
+            sapply(XML::xmlValue)
+    } else {vector(mode = "character", length = 0)}
+    l.Sisters <- l.Sisters[l.Sisters[] != listeNoeuds[length(listeNoeuds)]]
+
+    # Scale and labels
+    scaleNode <- MT %>%
+        XML::getNodeSet(paste0(getChaine(listeNoeuds), "/SCALE/SCALEVALUE")) %>%
+        sapply(XML::xmlSize) %>%
+        length()
+
+    scaleLabel <- MT %>%
+        XML::getNodeSet(paste0(getChaine(listeNoeuds),
+                               "/SCALE/SCALEVALUE/NAME")) %>%
+        sapply(XML::xmlValue)
+
+    # Aggregation function
+    if (!isLeaf) {
+        c.Function <- MT %>%
+            XML::getNodeSet(paste0(getChaine(listeNoeuds), "/FUNCTION/LOW")) %>%
+            sapply(XML::xmlValue)
+
+        # Transform as a vector
+        nbChar <- nchar(c.Function)
+        v.Function <- numeric(nbChar)
+        for(i in 1:nbChar) {
+            # Modify attribute 0...n to 1...n+1
+            v.Function[i] <- as.numeric(substr(c.Function, i, i)) + 1
         }
-        #Scales from nodes n-1
+
+        # Scales from nodes n-1
         nbChildren <- length(l.Children)
         scaleChildren <- numeric(nbChildren)
-        for(i in 1:nbChildren)
-        {
-            scaleChildren[i]<-length(sapply(XML::getNodeSet(MT,paste(getChaine(c(listeNoeuds,l.Children[i])),"/SCALE/SCALEVALUE",sep="")),XML::xmlSize))
+        for(i in 1:nbChildren) {
+            scaleChildren[i] <- MT %>%
+                XML::getNodeSet(paste0(getChaine(c(listeNoeuds,l.Children[i])),
+                                       "/SCALE/SCALEVALUE")) %>%
+                sapply(XML::xmlSize) %>%
+                length()
         }
-        #Create the factorial plan
-        if(nbChildren==1)
-        {
+
+        # Create the factorial plan
+        if(nbChildren == 1) {
             aggregation <- (1:scaleChildren)
+        } else {
+            factorialPlan <- scaleChildren %>%
+                as.numeric() %>%
+                rev() %>%
+                AlgDesign::gen.factorial(center = FALSE) %>%
+                rev()
+
+            nbFactorialPlan <- dim(factorialPlan)[1]
+            aggregation <- as.matrix(factorialPlan[, seq(ncol(factorialPlan))])
         }
-        else
-        {
-            factorialPlan<-rev(AlgDesign::gen.factorial(rev(as.numeric(scaleChildren)),center=FALSE))
-            nbFactorialPlan<-dim(factorialPlan)[1]
-            aggregation <- as.matrix(factorialPlan[,seq(ncol(factorialPlan))])
-        }
-        aggregation <- cbind(aggregation,v.Function)
+        aggregation <- cbind(aggregation, v.Function)
         colnames(aggregation) <- c(l.Children, listeNoeuds[length(listeNoeuds)])
-    }
-    else
-        aggregation<-as.matrix(0)
-    #Create the weights (equal weights if not defined)##############################
-    # Gestion du poids des attributs
-    WeightList<-numeric(scaleNode)
-    if(isLeaf)
+    } else {aggregation <- as.matrix(0)}
+
+    # Create the weights (equal weights if not defined)
+    WeightList <- numeric(scaleNode)
+
+    if (isLeaf) {
         WeightList <- rep(1/scaleNode,scaleNode)
-    else
-    {
-        if(nbChildren==1)
-            WeightList <- 100
-        else
-        {
-            if(length(sapply(XML::getNodeSet(MT,paste(getChaine(listeNoeuds),"/FUNCTION/WEIGHTS",sep="")),XML::xmlValue)))
-                WeightList <- as.numeric(unlist(strsplit(sapply(XML::getNodeSet(MT,paste(getChaine(listeNoeuds),"/FUNCTION/WEIGHTS",sep="")),XML::xmlValue),";")))
-            else
-                WeightList <- -1
-        }
-    }
-    # Création sortie (le noeud)
-    out <- new("Node",name= listeNoeuds[length(listeNoeuds)], Depth=length(listeNoeuds),isLeaf=isLeaf,
-               mother=mother, sisters=l.Sisters, children=l.Children,
-               aggregation=aggregation, rangeScale=scaleNode, scaleLabel=scaleLabel,
-               Proba=WeightList,nodePath=listeNoeuds)
+    } else if (nbChildren==1) {
+        WeightList <- 100
+    } else if (MT %>%
+               XML::getNodeSet(paste0(getChaine(listeNoeuds),
+                                      "/FUNCTION/WEIGHTS")) %>%
+               sapply(XML::xmlValue) %>%
+               length()) {
+
+        WeightList <- MT %>%
+            XML::getNodeSet(paste0(getChaine(listeNoeuds),
+                                   "/FUNCTION/WEIGHTS")) %>%
+            sapply(XML::xmlValue) %>%
+            strsplit(";") %>%
+            unlist() %>%
+            as.numeric()
+
+    } else { WeightList <- -1 }
+
+    # Output
+    out <- new("Node",
+               name = listeNoeuds[length(listeNoeuds)],
+               Depth = length(listeNoeuds),
+               isLeaf = isLeaf,
+               mother = mother,
+               sisters = l.Sisters,
+               children = l.Children,
+               aggregation = aggregation,
+               rangeScale = scaleNode,
+               scaleLabel = scaleLabel,
+               Proba = WeightList,
+               nodePath = listeNoeuds)
 }
 
 
@@ -278,13 +319,11 @@ createNode <- function(listeNoeuds, MT)
 #' @export
 #'
 #' @examples
-getID <- function(listNodes,nodeName)
-{
+getID <- function(listNodes,nodeName) {
     out <- numeric(0)
-    for(i in 1:length(listNodes))
-    {
-        if(rev(listNodes[[i]]@nodePath)[1]==nodeName)
-            out <- c(out,listNodes[[i]]@id)
+    for(i in 1:length(listNodes)) {
+        if(rev(listNodes[[i]]@nodePath)[1] == nodeName)
+            out <- c(out, listNodes[[i]]@id)
     }
     return(out)
 }
