@@ -9,6 +9,7 @@
 #'
 #' @import XML
 #' @import AlgDesign
+#' @importFrom magrittr %>%
 #' @examples
 createTree <- function(MT) {
 
@@ -24,119 +25,130 @@ createTree <- function(MT) {
         # Get root name
         rootName <- listRootName[iRootName]
 
+        # List of the attributes names
+        to.search <- paste0("//ATTRIBUTE[NAME='",rootName,"']//ATTRIBUTE/NAME")
+        l.Attrib <- c(rootName, XML::xmlValue(XML::getNodeSet(MT, to.search)))
+        nbAttrib <- length(l.Attrib)
 
-        #list of the attributes names
-        # Récupère tous noms des attributs (aggrégés ou non) inclus dans la racine.
-        # On met tout dans un vecteur character auquel on ajoute la racine
-        # pour avoir vraiment tous les attributs.
-        # to.search <- paste0("//ATTRIBUTE[NAME='",rootName,"']//ATTRIBUTE/NAME")
-        # c(rootName, XML::xmlValue(XML::getNodeSet(MT, to.search)))
-        l.Attrib<-c(rootName,sapply(XML::getNodeSet(MT,paste("//ATTRIBUTE[NAME='",rootName,"']//ATTRIBUTE/NAME",sep="")),XML::xmlValue))
-        nbAttrib<-length(l.Attrib)
-        # On crée la structure des branchements: une liste de nom de noeuds
-        listPath<-list()
-        listPath[[1]]<-rootName
-        for(i in 2:nbAttrib)
-        {
+        # List of Paths
+        listPath <- list()
+        listPath[[1]] <- rootName
+        for(i in 2:nbAttrib) {
             nbNoeuds <- (i-1)
             isOK <- F
-            while(!isOK)
-            {
-                # On récupère le chemin xml du noeud précédent
+            while (!isOK) {
+                # Get previous node chain
                 chaine <- getChaine(listPath[[nbNoeuds]])
 
-                # Si c'est un noeud, on continue (1). Sinon (donc feuille), on passe à la suite (0)
-                # (Si on est pas arrivé au bout)
-                if((length(sapply(XML::getNodeSet(MT,paste(chaine,"/ATTRIBUTE[NAME='",l.Attrib[i],"']",sep="")),XML::xmlSize))))
-                {
-                    #Need to check if not already in the list. This may happen in some structure !!!
-                    # Si jamais le chemin testé n'existe pas !
-                    if(!sum(unlist(sapply(listPath,function(x) {identical(c(listPath[[nbNoeuds]],l.Attrib[i]), x)}))))
-                    {
-                        # On attribut le chemin (Noeud précédent + attribut en court)
-                        # Et on valide la condition pour sortir du while
+                #
+                if (XML::getNodeSet(MT, paste0(chaine, "/ATTRIBUTE[NAME='",
+                                               l.Attrib[i], "']")) %>%
+                    sapply(XML::xmlSize) %>%
+                    length()) {
+
+                    # Need to check if not already in the list.
+                    # This may happen in some structure !!!
+                    # ex : duplicates in the same node.
+                    if (listPath %>%
+                        sapply(function(x) {
+                            identical(c(listPath[[nbNoeuds]], l.Attrib[i]), x)
+                            }) %>%
+                        unlist() %>%
+                        sum() %>%
+                        `!`) {
+
                         isOK <- T
                         listPath[[i]] <- c(listPath[[nbNoeuds]],l.Attrib[i])
-                    }
-                    # Sinon, on remonte au noeud précédent jusqu'à ce que a marche
-                    else
-                        nbNoeuds <- nbNoeuds-1
-                }
-                else
-                    nbNoeuds <- nbNoeuds-1
+
+                    } else {nbNoeuds <- nbNoeuds-1}
+
+                } else {nbNoeuds <- nbNoeuds-1}
             }
         }
 
-        #Creates the nodes
-        # Création d'une liste avec nmAttrib éléments NULL
-        TreeNodes<-vector(mode="list",nbAttrib)
-        # Création des noeuds via la fonction createNode
-        TreeNodes <- lapply(listPath,createNode, MT = MT)
-        for(i in 1:nbAttrib)
-        {
+        # Creates the nodes
+        TreeNodes <- vector(nbAttrib, mode = "list")
+        TreeNodes <- lapply(listPath, createNode, MT = MT)
+        for(i in 1:nbAttrib) {
             TreeNodes[[i]]@id <- i
             TreeNodes[[i]]@isLeafAndAggregated <- F
             TreeNodes[[i]]@Twin <- numeric(0)
         }
+
         # Maximum tree depth
-        nbLevels <- max(sapply(listPath,length))
+        nbLevels <- max(sapply(listPath, length))
+
         # List of leaves
-        l.Leaves <- unlist(sapply(TreeNodes,function(x) if(x@isLeaf) x@name))
+        l.Leaves <- unlist(sapply(TreeNodes,
+                                  function(x) {if(x@isLeaf) x@name}))
         nbLeaves<-length(l.Leaves)
+
         # List of Aggregated
-        l.Aggregated <- unlist(sapply(TreeNodes,function(x) if(!x@isLeaf) x@name))
+        l.Aggregated <- unlist(sapply(TreeNodes,
+                                      function(x) {if(!x@isLeaf) x@name}))
         nbAggregated <- length(l.Aggregated)
-        #Leaf-Aggregated attribute
-        l.LeafAggregated <- intersect(l.Leaves,l.Aggregated)
-        if(length(l.LeafAggregated))
-        {
+
+        # Leaf-Aggregated attribute
+        l.LeafAggregated <- intersect(l.Leaves, l.Aggregated)
+        if(length(l.LeafAggregated)) {
             isLeafAggregated <- T
-            for(i in 1:length(l.LeafAggregated))
-            {
-                dup <- getID(TreeNodes,l.LeafAggregated[i])
-                for(j in 1:length(dup))
-                {
-                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup,TreeNodes[[j]]@id)))]
+            for(i in 1:length(l.LeafAggregated)) {
+                dup <- getID(TreeNodes, l.LeafAggregated[i])
+                for(j in 1:length(dup)) {
+                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup, TreeNodes[[j]]@id)))]
                     TreeNodes[[dup[j]]]@isLeafAndAggregated <- T
                 }
             }
-        }
-        else
-            isLeafAggregated <- F
+        } else {isLeafAggregated <- F}
 
 
-        #Check for duplicated leaves
+
+        # Check for duplicated leaves
         Multiple <- table(l.Leaves)
-        if(max(Multiple)>1)
-        {
-            Multiple <- as.matrix(Multiple[Multiple>1])
+        if(max(Multiple)>1) {
+            Multiple <- as.matrix(Multiple[Multiple > 1])
             colnames(Multiple)<-"Occ"
-            for(i in 1:dim(Multiple)[1])
-            {
-                dup <- getID(TreeNodes,rownames(Multiple)[i])
-                for(j in 1:length(dup))
-                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup,TreeNodes[[dup[j]]]@id)))]
+            for(i in 1:dim(Multiple)[1]) {
+                dup <- getID(TreeNodes, rownames(Multiple)[i])
+                for(j in 1:length(dup)) {
+                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup, TreeNodes[[dup[j]]]@id)))]
+                }
             }
             isMultiple <- T
-        }
-        else
-        {
-            Multiple <- data.frame(Occ=NA)
+        } else {
+            Multiple <- data.frame(Occ = NA)
             isMultiple <- F
         }
+
         # Get the true leaves
         l.Leaves <- unique(l.Leaves) #Remove duplicates
-        if(isLeafAggregated)
-            l.Leaves <- l.Leaves[-c(which(is.element(l.Leaves,l.LeafAggregated)))]
-        nbLeaves<-length(l.Leaves)
+        if(isLeafAggregated) {
+            l.Leaves <- l.Leaves[-c(which(is.element(l.Leaves, l.LeafAggregated)))]
+        }
+        nbLeaves <- length(l.Leaves)
+
         # Define the order to evaluate a tree if LeafAggregated node
-        aTree <- new("Tree", rootName=rootName, nbAttributes=nbAttrib, nbLeaves=nbLeaves,Depth=nbLevels,
-                     Nodes=TreeNodes,Multiple=as.data.frame(Multiple),isMultiple=isMultiple,
-                     isLeafAggregated=isLeafAggregated,LeafAggregated=l.LeafAggregated,
-                     Attributes=l.Attrib, Leaves=l.Leaves, Aggregated=l.Aggregated,EvalOrder=numeric(0),Paths=listPath)
+        aTree <- new("Tree",
+                     rootName = rootName,
+                     nbAttributes = nbAttrib,
+                     nbLeaves = nbLeaves,
+                     Depth = nbLevels,
+                     Nodes = TreeNodes,
+                     Multiple = as.data.frame(Multiple),
+                     isMultiple = isMultiple,
+                     isLeafAggregated = isLeafAggregated,
+                     LeafAggregated = l.LeafAggregated,
+                     Attributes = l.Attrib,
+                     Leaves = l.Leaves,
+                     Aggregated = l.Aggregated,
+                     EvalOrder = numeric(0),
+                     Paths = listPath)
+
         # aTree@EvalOrder <- EvaluateOrder(aTree)
+
         listTree[[iRootName]] <- aTree
     }
+
     return(listTree)
 }
 

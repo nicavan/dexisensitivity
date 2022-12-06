@@ -13,7 +13,8 @@ Depends:
     methods,
     R (>= 3.5.0),
     XML,
-    AlgDesign
+    AlgDesign,
+    magrittr
 Suggests: 
     testthat (>= 3.0.0),
     sloop
