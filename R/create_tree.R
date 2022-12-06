@@ -145,7 +145,7 @@ createTree <- function(MT) {
                      EvalOrder = numeric(0),
                      Paths = listPath)
 
-        # aTree@EvalOrder <- EvaluateOrder(aTree)
+        aTree@EvalOrder <- EvaluateOrder(aTree)
 
         listTree[[iRootName]] <- aTree
     }
@@ -326,4 +326,88 @@ getID <- function(listNodes,nodeName) {
             out <- c(out, listNodes[[i]]@id)
     }
     return(out)
+}
+
+
+#' Title
+#'
+#' @param aTree A tree
+#'
+#' @return
+#' @export
+#'
+#' @examples
+EvaluateOrder <- function(aTree) {
+    evalOrder <- numeric(0)
+    if (aTree@isLeafAggregated) {
+
+        results <- numeric(aTree@nbAttributes)
+        names(results) <- aTree@Attributes
+        results[] <- -1
+        results[aTree@Leaves] <- 1
+        l.Nodes <- aTree@LeafAggregated
+        isDone <- F
+
+        while (!isDone) {
+            skip <- numeric(0)
+
+            for(i in 1:length(l.Nodes)) {
+                # In case of interelated subTrees ..
+                # .. need to find the first one without LeafAggregated Leaves
+                l.Leaves <- getLeaves(aTree, l.Nodes[i])
+                if(l.Leaves %>%
+                   sapply(function(x) {
+                       ifelse(results[aTree@Nodes[[x]]@name] == -1, 1, 0)
+                   }) %>%
+                   unlist() %>%
+                   sum()) {
+                    skip <- c(skip,l.Nodes[i])
+                } else {
+                    results[l.Nodes[i]] <- 1
+                    id <- getID(aTree@Nodes, l.Nodes[i])
+                    if(length(id) > 1)
+                        id <- unlist(sapply(id, function(x) {
+                            if(!aTree@Nodes[[x]]@isLeaf) {x}
+                        }))
+                    evalOrder <- c(evalOrder, id)
+                }
+            }
+
+            if(!length(skip)) {
+                isDone <- T
+            } else {
+                l.Nodes <- skip
+            }
+
+        }
+    }
+    return(evalOrder)
+}
+
+
+#' Title
+#'
+#' @param aTree A Tree
+#' @param nodeID The Node ID
+#'
+#' @return
+#' @export
+#'
+#' @examples
+getLeaves <- function(aTree,nodeID) {
+    if (is.character(nodeID)) {
+        l.id <- getID(aTree@Nodes, nodeID)
+        nodeID <- unlist(sapply(l.id, function(x) {
+            if(!aTree@Nodes[[x]]@isLeaf)aTree@Nodes[[x]]@id
+        }))
+    }
+
+    l.Nodes <- unlist(sapply(aTree@Nodes, function(x) {
+        if(length(grep(paste(aTree@Nodes[[nodeID]]@nodePath, collapse = ""),
+                       paste(x@nodePath, collapse = ""))))x@id
+    }))
+
+    return(unlist(sapply(l.Nodes, function(x) {
+        if (aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
+    })))
 }
