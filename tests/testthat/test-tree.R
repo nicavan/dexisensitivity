@@ -56,6 +56,26 @@ test_that("Empty Tree show correct message", {
 })
 
 
+#### - describe method test - #### ####
+test_that("describe return correct error if no Nodes", {
+    empty_tree <- new(Class = "Tree")
+
+    expect_error(describe(empty_tree),
+                 "Tree without any node!")
+})
+
+test_that("Empty Tree describe correct message", {
+
+    PMtest <- readRDS(system.file("testdata", "TestMTDEXiPM.rds", package="dexiranalysis"))
+    out1 <- createTree(XML::xmlDeserializeHook(PMtest))
+
+    out <- readRDS(system.file("testdata", "describeDEXiPM.rds", package="dexiranalysis"))
+
+
+    expect_equal(capture.output(describe(out1[[1]])),
+                 out)
+})
+
 #### - - #### ####
 # Pour voir ce que fait un test qui fail ou avec error
 # test_that("Tree is S4", {
