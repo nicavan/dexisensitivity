@@ -66,10 +66,12 @@ test_that("describe return correct error if no Nodes", {
 
 test_that("Empty Tree describe correct message", {
 
-    PMtest <- readRDS(system.file("testdata", "TestMTDEXiPM.rds", package="dexiranalysis"))
+    PMtest <- readRDS(system.file("testdata", "TestMTDEXiPM.rds",
+                                  package="dexiranalysis"))
     out1 <- createTree(XML::xmlDeserializeHook(PMtest))
 
-    out <- readRDS(system.file("testdata", "describeDEXiPM.rds", package="dexiranalysis"))
+    out <- readRDS(system.file("testdata", "describeDEXiPM.rds",
+                               package="dexiranalysis"))
 
 
     expect_equal(capture.output(describe(out1[[1]])),
