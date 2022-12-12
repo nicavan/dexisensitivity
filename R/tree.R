@@ -124,3 +124,37 @@ setMethod("show","Tree",
               }
           }
 )
+
+#' Title
+#'
+#' @param object the Tree
+#'
+#' @return
+#' @export
+#'
+#' @examples
+setGeneric("describe", function(object) standardGeneric("describe"))
+
+#' Title
+#'
+#' @param Tree a Tree
+#'
+#' @param object Object
+#'
+#' @return
+#' @export
+#'
+#' @examples
+setMethod("describe", "Tree", function(object) {
+    stopifnot("Tree without any node!" = length(object@Nodes)>0)
+
+    object@Nodes %>%
+        lapply(function(y) {
+            selectMethod("print", class(y))(y)
+            cat("\n\n")}
+        ) %>%
+        invisible()
+
+}
+)
+
