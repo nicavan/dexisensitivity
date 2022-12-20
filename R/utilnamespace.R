@@ -1,4 +1,5 @@
 #test pour namespace#
 #####################
 
-#' @import Methods
+#' @import methods
+NULL

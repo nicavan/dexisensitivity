@@ -23,7 +23,6 @@
 #'
 #' @return
 #' @export
-#' @import methods
 #' @examples
 methods::setClass("Tree",
          representation(nbAttributes     = "numeric",

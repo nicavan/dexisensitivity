@@ -9,7 +9,6 @@
 #'
 #' @import XML
 #' @import AlgDesign
-#' @importFrom magrittr %>%
 #' @examples
 createTree <- function(MT) {
 
