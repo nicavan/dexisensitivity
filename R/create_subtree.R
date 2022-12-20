@@ -1,0 +1,145 @@
+createSubTree <- function(aTree, nodeName) {
+
+    # On récupère l'ID du noeud
+    id <- getID(aTree@Nodes, nodeName)
+
+    # Si on est dans le cas d'une Leaf-Aggregated !
+    # on récupère le noeud aggrégé et non le noeud feuille
+    if (aTree@isLeafAggregated) {
+        id <- id %>%
+            sapply(function(x) {
+                if (!aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
+            }) %>%
+            unlist()
+    }
+
+    # On récupère les noeuds qui possèdent le nodePath du noeud ou l'on coupe
+    l.Attributes <- aTree@Nodes %>%
+        sapply(function(x) {
+            if (grep(paste(aTree@Nodes[[id]]@nodePath, collapse = " "),
+                     paste(x@nodePath, collapse = " "),
+                     fixed=TRUE) %>%
+                length()) {x@id}
+        }) %>%
+        unlist()
+
+    nbAttributes <- length(l.Attributes)
+
+    # On récupère les informations pour créer l'arbre et modifier les noeuds.
+    l.Leaves <- l.Attributes %>%
+        sapply(function(x) {
+            if (aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
+        }) %>%
+        unlist()
+
+    l.Aggregated <- l.Attributes %>%
+        sapply(function(x) {
+            if (!aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
+        }) %>%
+        unlist()
+
+    # On crée le nouvel arbre
+    Paths <- l.Attributes %>%
+        lapply(function(x) {
+            aTree@Nodes[[x]]@nodePath[aTree@Nodes[[id]]@Depth:length(aTree@Nodes[[x]]@nodePath)]
+        })
+
+    TreeNodes <- aTree@Nodes[l.Attributes]
+    for(i in 1:nbAttributes) {
+        TreeNodes[[i]]@id <- i
+        TreeNodes[[i]]@nodePath <- Paths[[i]]
+        TreeNodes[[i]]@Depth <- length(TreeNodes[[i]]@nodePath)
+        TreeNodes[[i]]@isLeafAndAggregated <- FALSE
+        TreeNodes[[i]]@Twin <- integer(0)
+        if (i == 1) {TreeNodes[[i]]@mother <- ""}
+    }
+
+    l.Leaves <- TreeNodes %>%
+        sapply(function(x) {
+            if (x@isLeaf) {x@name}
+        }) %>%
+        unlist()
+
+    l.Aggregated <- TreeNodes %>%
+        sapply(function(x) {
+            if (!x@isLeaf) {x@name}
+        }) %>%
+        unlist()
+
+    # Deal with Twins and LeafAggregated
+    if (aTree@isMultiple) {
+        Multiple <- table(l.Leaves)
+        if (max(Multiple) > 1) {
+            Multiple <- as.matrix(Multiple[Multiple > 1])
+            colnames(Multiple) <- "Occ"
+
+            for(i in 1:dim(Multiple)[1]) {
+                dup <- getID(TreeNodes, rownames(Multiple)[i])
+                for(j in 1:length(dup)) {
+                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup,TreeNodes[[dup[j]]]@id)))]
+                }
+            }
+
+            isMultiple <- T
+        } else {
+            Multiple <- data.frame(Occ = NA)
+            isMultiple <- F
+        }
+    } else {
+        Multiple <- data.frame(Leaf = NA, Occ = NA)
+        isMultiple <- F
+    }
+
+    if (aTree@isLeafAggregated) {
+        l.LeafAggregated <- intersect(l.Leaves, l.Aggregated)
+        if (length(l.LeafAggregated)) {
+            isLeafAggregated <- T
+
+            for(i in 1:length(l.LeafAggregated)) {
+                dup <- getID(TreeNodes, l.LeafAggregated[i])
+                for(j in 1:length(dup)) {
+                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup,TreeNodes[[dup[j]]]@id)))]
+                    TreeNodes[[dup[j]]]@isLeafAndAggregated <- T
+                }
+            }
+        } else {
+            isLeafAggregated <- F
+        }
+    } else {
+        isLeafAggregated <- F
+        l.LeafAggregated <- ""
+    }
+
+    l.Leaves <- unique(l.Leaves)
+
+    if (isLeafAggregated) {
+        l.Leaves <- l.Leaves[-c(which(is.element(l.Leaves, l.LeafAggregated)))]
+    }
+
+    nbLeaves <- length(l.Leaves)
+    nbLevels <- Paths %>%
+        sapply(function(x) {length(x)}) %>%
+        max()
+    l.Attributes <- l.Attributes %>%
+        sapply(function(x) {aTree@Nodes[[x]]@name})
+
+    out <- new("Tree",
+               rootName = nodeName,
+               nbAttributes = length(TreeNodes),
+               nbLeaves = nbLeaves,
+               Depth = nbLevels,
+               Nodes = TreeNodes,
+               Multiple = as.data.frame(Multiple),
+               isMultiple = isMultiple,
+               isLeafAggregated = isLeafAggregated,
+               LeafAggregated = l.LeafAggregated,
+               Attributes = l.Attributes,
+               Leaves = l.Leaves,
+               Aggregated = l.Aggregated,
+               EvalOrder = numeric(0),
+               Paths = Paths)
+
+    out@EvalOrder <- EvaluateOrder(out)
+
+    return(out)
+}
