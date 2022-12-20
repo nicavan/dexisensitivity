@@ -2,6 +2,7 @@
 
 export(EvaluateOrder)
 export(createNode)
+export(createOptions)
 export(createTree)
 export(describe)
 export(getChaine)
