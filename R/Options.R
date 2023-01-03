@@ -139,3 +139,40 @@ EvaluateScenarios <- function(aTree, options) {
             EvaluateScenario(aTree, as.matrix(options[, x]))
         })
 }
+
+
+#' Title
+#'
+#' @param anOptionsTable anOptionsTable
+#' @param aFileName aFileName
+#'
+#' @return
+#' @export
+#'
+#' @examples
+saveOptions <- function(anOptionsTable,
+                        aFileName) {
+    write.table(anOptionsTable,
+                file = aFileName,
+                sep = "\t",
+                row.names = T,
+                col.names = NA,
+                quote = FALSE)
+}
+
+
+
+#' Title
+#'
+#' @param filename filename
+#'
+#' @return
+#' @export
+#'
+#' @examples
+loadOptions <- function(filename) {
+    return(as.matrix(read.table(file = filename,
+                                header = T,
+                                sep = "\t",
+                                row.names = 1)))
+}

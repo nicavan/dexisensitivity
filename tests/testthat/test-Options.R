@@ -47,3 +47,21 @@ test_that("eval all option : same output as JEB's scripts", {
     expect_equal(out1, out2)
     expect_equal(out1, out3)
 })
+
+
+test_that("Saved and loaded option are the same when option have rownames", {
+
+    options <- readRDS(system.file("testdata", "TestcreateOptionsDEXiPM.rds",
+                                   package="dexiranalysis"))
+
+    colnames(options) <- c("A", "B", "C")
+
+    saveOptions(options,
+                "C:/Users/rallart/E-DISC/option.csv")
+
+    out1 <- loadOptions("C:/Users/rallart/E-DISC/option.csv")
+
+    expect_equal(out1, options)
+})
+
+
