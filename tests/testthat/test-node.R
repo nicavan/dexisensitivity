@@ -62,3 +62,25 @@ test_that("compareScenario : same output as JEB's scripts and par is reset", {
                    "xSOCIAL" = 1/3,
                    "xENVIRONMENTAL" = 1/3))
 })
+
+
+
+test_that("createAggregationMatrix : same output as JEB's scripts and par is reset", {
+
+    lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
+                                 package="dexiranalysis"))
+
+    DEXi <- lDEXi[[1]]
+
+    getEstimatedWeights(DEXi@Nodes[[1]])
+
+    myWeights <- c(0.2,0.2,0.6)
+
+    set.seed(42)
+    newAggregation <- createAggregationMatrix(DEXi@Nodes[[1]], myWeights, 5)
+
+    out <- readRDS(system.file("testdata", "newAggregation42DEXiPM.rds",
+                               package="dexiranalysis"))
+
+    expect_equal(newAggregation, out)
+})
