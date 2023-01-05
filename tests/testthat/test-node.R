@@ -65,7 +65,7 @@ test_that("compareScenario : same output as JEB's scripts and par is reset", {
 
 
 
-test_that("compareScenario : same output as JEB's scripts and par is reset", {
+test_that("createAggregationMatrix : same output as JEB's scripts and par is reset", {
 
     lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
                                  package="dexiranalysis"))
