@@ -66,7 +66,7 @@ setMethod("print","Node",
               cat("\nIs is a leaf-aggregated:",
                   if (length(x@isLeafAndAggregated) && x@isLeafAndAggregated) {
                       "TRUE"
-                      } else {"FALSE"})
+                  } else {"FALSE"})
               cat("\nMother:",
                   if (length(x@mother) == 0) {
                       ""
@@ -76,11 +76,31 @@ setMethod("print","Node",
               cat("\nSisters:",
                   if (length(x@sisters) && length(x@sisters)) {
                       x@sisters
-                      } else {"None"})
+                  } else {"None"})
               cat("\nChildren:",
                   if (length(x@children) && length(x@children)) {
                       x@children
-                      } else {"None"})
+                  } else {"None"})
               cat("\nEstimated weights:", x@Proba)
-              }
-          )
+          }
+)
+
+
+
+#' Title
+#'
+#' Calculate the estimated weights from the aggregation table
+#'
+#' @param aNode aNode
+#'
+#' @return
+#' @export
+#'
+#' @examples
+getEstimatedWeights <- function(aNode) {
+    aggregationTable <- aNode@aggregation
+    y <- aggregationTable[ ,dim(aggregationTable)[2]]
+    x <- aggregationTable[ ,-c(dim(aggregationTable)[2])]
+    res <- (lm(y~x)$coefficients[-1]) / (sum(lm(y~x)$coefficients[-1]))
+    return(res)
+}

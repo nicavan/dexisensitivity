@@ -46,3 +46,19 @@ test_that("Empty Node print correctly", {
     expect_equal(capture.output(print(empty_node)), empty_print)
 
 })
+
+
+test_that("compareScenario : same output as JEB's scripts and par is reset", {
+
+    lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
+                                 package="dexiranalysis"))
+
+    DEXi <- lDEXi[[1]]
+
+    getEstimatedWeights(DEXi@Nodes[[1]])
+
+    expect_equal(getEstimatedWeights(DEXi@Nodes[[1]]),
+                 c("xECONOMIC" = 1/3,
+                   "xSOCIAL" = 1/3,
+                   "xENVIRONMENTAL" = 1/3))
+})
