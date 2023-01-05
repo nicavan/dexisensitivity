@@ -19,7 +19,8 @@ Imports:
     grDevices,
     graphics,
     withr,
-    plotrix
+    plotrix,
+    genalg
 Suggests: 
     testthat (>= 3.0.0),
     sloop,

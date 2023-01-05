@@ -104,3 +104,56 @@ getEstimatedWeights <- function(aNode) {
     res <- (lm(y~x)$coefficients[-1]) / (sum(lm(y~x)$coefficients[-1]))
     return(res)
 }
+
+
+#' Title
+#'
+#' @param aNode aNode
+#' @param expectedWeight expectedWeight
+#' @param nbTables nbTables
+#' @param popSize popSize
+#' @param iters iters
+#'
+#' @return
+#' @export
+#'
+#' @importFrom genalg rbga
+#'
+#' @examples
+createAggregationMatrix <- function(aNode,
+                                    expectedWeight,
+                                    nbTables = 1,
+                                    popSize = 50,
+                                    iters = 50) {
+
+    # we use an algogen to find the matrix
+    # The gene is the value of the aggregated node; the optimisation function is the difference between the expected weight
+    # and the actual weight at the power 2
+    minValue <- rep(1, dim(aNode@aggregation)[1])
+    maxValue <- rep(aNode@rangeScale, dim(aNode@aggregation)[1])
+    nbChildren <- dim(aNode@aggregation)[2] - 1
+    evaluate <- function(string = c()) {
+        # Modify the option with the new gene
+        y <- as.integer(round(string))
+        x <- aNode@aggregation[ ,1:nbChildren]
+        res <- lm(y~x)$coefficients[-1] / sum(lm(y~x)$coefficients[-1])
+        return(sum((expectedWeight - res)^2))
+    }
+
+    #Do the job
+    rbga.results <- genalg::rbga(minValue,
+                         maxValue,
+                         evalFunc = evaluate,
+                         popSize = popSize,
+                         iters = iters,
+                         verbose = F)
+    res1 <- unique(t(round(rbga.results$population)),
+                   MARGIN = 2)
+    out <- list()
+    for(i in 1:nbTables) {
+        out[[i]] <- cbind(aNode@aggregation[ ,1:nbChildren],
+                          res1[ ,i])
+    }
+
+    return(out)
+}
