@@ -152,12 +152,12 @@ EvaluateScenarios <- function(aTree, options) {
 #' @examples
 saveOptions <- function(anOptionsTable,
                         aFileName) {
-    write.table(anOptionsTable,
-                file = aFileName,
-                sep = "\t",
-                row.names = T,
-                col.names = NA,
-                quote = FALSE)
+    utils::write.table(anOptionsTable,
+                       file = aFileName,
+                       sep = "\t",
+                       row.names = T,
+                       col.names = NA,
+                       quote = FALSE)
 }
 
 
@@ -171,10 +171,10 @@ saveOptions <- function(anOptionsTable,
 #'
 #' @examples
 loadOptions <- function(filename) {
-    return(as.matrix(read.table(file = filename,
-                                header = T,
-                                sep = "\t",
-                                row.names = 1)))
+    return(as.matrix(utils::read.table(file = filename,
+                                       header = T,
+                                       sep = "\t",
+                                       row.names = 1)))
 }
 
 
@@ -189,11 +189,11 @@ loadOptions <- function(filename) {
 #' @examples
 saveScenarios <- function(theScenarios,
                           file) {
-    write.table(theScenarios,
-                file = file,
-                sep = "\t",
-                row.names = T,
-                col.names = NA)
+    utils::write.table(theScenarios,
+                       file = file,
+                       sep = "\t",
+                       row.names = T,
+                       col.names = NA)
 }
 
 
@@ -224,7 +224,7 @@ showScenario <- function(aScenario,
     }
 
     # Determine the gray scale, we use grey.scale
-    myGreyValue <- lapply(1:7, function(x) {gray.colors(x, 0, 1) })
+    myGreyValue <- lapply(1:7, function(x) {grDevices::gray.colors(x, 0, 1) })
     myCol <- aTree@Leaves %>%
         sapply(function(x) {
             myGreyValue[[aTree@Nodes[[getID(aTree@Nodes, x)[1]]]@rangeScale]][aScenario[x, ]]
@@ -238,25 +238,25 @@ showScenario <- function(aScenario,
         unlist() %>%
         matrix(ncol = 1)
 
-    mc <- barplot(as.vector(rev(aScenario)),
-                  xlim = c(0, max(theMax[]) + 0.5),
-                  ylab = "Indicators",
-                  xlab = "Mark",
-                  horiz = T,
-                  col = rev(myCol))
+    mc <- graphics::barplot(as.vector(rev(aScenario)),
+                            xlim = c(0, max(theMax[]) + 0.5),
+                            ylab = "Indicators",
+                            xlab = "Mark",
+                            horiz = T,
+                            col = rev(myCol))
 
     if (isLabelY) {
-        axis(side = 2,
-             at = mc,
-             labels = rev(rownames(aScenario)),
-             las = 2,
-             cex = 0.5)
+        graphics::axis(side = 2,
+                       at = mc,
+                       labels = rev(rownames(aScenario)),
+                       las = 2,
+                       cex = 0.5)
     }
 
-    points(as.vector(rev(theMax)),
-           mc,
-           col = "black",
-           pch = "<")
+    graphics::points(as.vector(rev(theMax)),
+                     mc,
+                     col = "black",
+                     pch = "<")
 
-    abline(v = c(1:max(theMax)), untf = FALSE, lty = 3)
+    graphics::abline(v = c(1:max(theMax)), untf = FALSE, lty = 3)
 }

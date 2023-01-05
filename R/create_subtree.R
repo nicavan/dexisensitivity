@@ -1,3 +1,12 @@
+#' Title
+#'
+#' @param aTree aTree
+#' @param nodeName nodeName
+#'
+#' @return
+#' @export
+#'
+#' @examples
 createSubTree <- function(aTree, nodeName) {
 
     # On récupère l'ID du noeud
