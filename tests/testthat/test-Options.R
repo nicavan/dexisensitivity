@@ -75,3 +75,27 @@ test_that("saveScenarios well save a file", {
 
     expect_equal(file.exists("C:/Users/rallart/E-DISC/Scenario.csv"), T)
 })
+
+
+
+test_that("showScenario : same output as JEB's scripts and par is reset", {
+
+    Scenario <- readRDS(system.file("testdata", "TestscenariosAll.rds",
+                                    package="dexiranalysis"))
+
+    lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
+                                 package="dexiranalysis"))
+
+    DEXi <- lDEXi[[1]]
+
+    vdiffr::expect_doppelganger("showScenario-plot", showScenario(as.matrix(Scenario[,1]),
+                                                                  aTree = DEXi,
+                                                                  isLabelY = T))
+
+
+    expect_equal(file.exists("C:/Users/rallart/E-DISC/Scenario.csv"), T)
+    expect_equal(par()$cex,1)
+    expect_equal(par()$mgp, c(3, 1, 0))
+    expect_equal(par()$oma, c(0, 0, 0, 0))
+})
+

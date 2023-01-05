@@ -16,8 +16,12 @@ Imports:
     XML,
     AlgDesign,
     magrittr,
+    grDevices,
+    graphics,
+    withr
 Suggests: 
     testthat (>= 3.0.0),
-    sloop
+    sloop,
+    vdiffr
 Config/testthat/edition: 3
 LazyData: true

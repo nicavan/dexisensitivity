@@ -195,3 +195,68 @@ saveScenarios <- function(theScenarios,
                 row.names = T,
                 col.names = NA)
 }
+
+
+
+#' Title
+#'
+#' A function to create a graph of a scenario as horizontal bar
+#'
+#' @param aScenario the scenario to graph
+#' @param aTree the tree
+#' @param isLabelY do we want the label of the option
+#' @param isPar do we want the function to modify the par
+#'
+#' @return
+#'
+#' @importFrom withr defer
+#'
+#' @export
+#'
+#' @examples
+showScenario <- function(aScenario,
+                         aTree,
+                         isLabelY = TRUE,
+                         isPar = T) {
+    if (isPar) {
+        oldpar <- par(mgp = c(7,1,0), oma = c(0,20,0,0), cex = 0.5)
+        withr::defer(par(oldpar))
+    }
+
+    # Determine the gray scale, we use grey.scale
+    myGreyValue <- lapply(1:7, function(x) {gray.colors(x, 0, 1) })
+    myCol <- aTree@Leaves %>%
+        sapply(function(x) {
+            myGreyValue[[aTree@Nodes[[getID(aTree@Nodes, x)[1]]]@rangeScale]][aScenario[x, ]]
+        }) %>%
+        unlist()
+
+    theMax <- aTree@Attributes %>%
+        lapply(function(x) {
+            aTree@Nodes[[getID(aTree@Nodes, x)[1]]]@rangeScale
+        }) %>%
+        unlist() %>%
+        matrix(ncol = 1)
+
+    mc <- barplot(as.vector(rev(aScenario)),
+                  xlim = c(0, max(theMax[]) + 0.5),
+                  ylab = "Indicators",
+                  xlab = "Mark",
+                  horiz = T,
+                  col = rev(myCol))
+
+    if (isLabelY) {
+        axis(side = 2,
+             at = mc,
+             labels = rev(rownames(aScenario)),
+             las = 2,
+             cex = 0.5)
+    }
+
+    points(as.vector(rev(theMax)),
+           mc,
+           col = "black",
+           pch = "<")
+
+    abline(v = c(1:max(theMax)), untf = FALSE, lty = 3)
+}

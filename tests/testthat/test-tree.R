@@ -44,8 +44,6 @@ test_that("Empty Tree print correctly", {
         cat("\nNo Leaf-Aggregated Leaf")
     })
 
-    print(empty_print)
-
     expect_equal(capture.output(print(empty_tree)), empty_print)
 })
 
