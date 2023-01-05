@@ -65,3 +65,13 @@ test_that("Saved and loaded option are the same when option have rownames", {
 })
 
 
+test_that("saveScenarios well save a file", {
+
+    Scenario <- readRDS(system.file("testdata", "TestscenariosAll.rds",
+                                   package="dexiranalysis"))
+
+    saveScenarios(Scenario,
+                 "C:/Users/rallart/E-DISC/Scenario.csv")
+
+    expect_equal(file.exists("C:/Users/rallart/E-DISC/Scenario.csv"), T)
+})

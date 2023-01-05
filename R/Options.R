@@ -176,3 +176,22 @@ loadOptions <- function(filename) {
                                 sep = "\t",
                                 row.names = 1)))
 }
+
+
+#' Title
+#'
+#' @param theScenarios theScenarios
+#' @param file file name
+#'
+#' @return
+#' @export
+#'
+#' @examples
+saveScenarios <- function(theScenarios,
+                          file) {
+    write.table(theScenarios,
+                file = file,
+                sep = "\t",
+                row.names = T,
+                col.names = NA)
+}
