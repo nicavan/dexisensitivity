@@ -92,10 +92,29 @@ test_that("showScenario : same output as JEB's scripts and par is reset", {
                                                                   aTree = DEXi,
                                                                   isLabelY = T))
 
-
-    expect_equal(file.exists("C:/Users/rallart/E-DISC/Scenario.csv"), T)
     expect_equal(par()$cex,1)
     expect_equal(par()$mgp, c(3, 1, 0))
     expect_equal(par()$oma, c(0, 0, 0, 0))
 })
 
+
+test_that("compareScenario : same output as JEB's scripts and par is reset", {
+
+    Scenario <- readRDS(system.file("testdata", "TestscenariosAll.rds",
+                                    package="dexiranalysis"))
+
+    lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
+                                 package="dexiranalysis"))
+
+    DEXi <- lDEXi[[1]]
+
+    plot_compareScenario <- compareScenario(DEXi, Scenario,
+                                            c("OVERALL SUSTAINABILITY",
+                                              "ECONOMIC",
+                                              "SOCIAL",
+                                              "ENVIRONMENTAL"))
+
+    vdiffr::expect_doppelganger("compareScenario-plot", plot_compareScenario)
+
+    expect_equal(par()$ps, 12)
+})

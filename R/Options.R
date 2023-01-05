@@ -260,3 +260,32 @@ showScenario <- function(aScenario,
 
     graphics::abline(v = c(1:max(theMax)), untf = FALSE, lty = 3)
 }
+
+
+#' Title
+#'
+#' @param aTree aTree
+#' @param theScenarios theScenarios
+#' @param listNodes listNodes
+#'
+#' @return
+#' @export
+#'
+#' @importFrom plotrix radial.plot
+#'
+#' @examples
+compareScenario <- function(aTree,
+                            theScenarios,
+                            listNodes) {
+    oldpar <- par(ps = 6)
+    withr::defer(par(oldpar))
+
+    plotrix::radial.plot(t(theScenarios[listNodes, ]),
+                labels = abbreviate(names.arg = listNodes,
+                                    minlength = 6),
+                rp.type = "p",
+                start = pi/2,
+                main = "Comparison of scenarios",
+                line.col = "blue",
+                lwd = 3)
+}
