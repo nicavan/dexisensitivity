@@ -1,0 +1,92 @@
+#' Title
+#'
+#' @param aTree aTree
+#' @param option option
+#'
+#' @return
+#' @export
+#'
+#' @examples
+OAT <- function(aTree,
+                option) {
+
+    # Define the matrix that will be returned:
+    # nominal evaluation and for each leaves +1 and -1 and if touching border "-1"
+    results <- matrix(nrow = aTree@nbAttributes,
+                      ncol = aTree@nbLeaves*2 + 1)
+    rownames(results) <- aTree@Attributes
+    results[, 1] <- EvaluateScenario(aTree, as.matrix(option))
+    j <- 2
+    for(i in aTree@Leaves) {
+        #Option +
+        newOption <- option
+        newOption[i, ] <- option[i, ] + 1
+        if (newOption[i, ] > aTree@Nodes[[getID(aTree@Nodes, i)[1]]]@rangeScale) {
+            results[, j]<- -1
+        } else {
+            results[, j] <- EvaluateScenario(aTree, as.matrix(newOption))
+        }
+
+        #Option -
+        newOption <- option
+        newOption[i, ] <- newOption[i, ] - 1
+        if(newOption[i, ] == 0) {
+            results[, j + 1] <- -1
+        } else {
+            results[, j + 1] <- EvaluateScenario(aTree, as.matrix(newOption))
+        }
+
+        j <- j + 2
+    }
+
+    return(results)
+}
+
+
+
+#' Title
+#'
+#' @param nodeName nodeName
+#' @param aResults aResults
+#' @param aTree aTree
+#'
+#' @return
+#' @export
+#'
+#' @examples
+showOAT <- function(nodeName, aResults, aTree) {
+    #On récupère l'ID du noeud
+    id <- getID(aTree@Nodes, nodeName)
+    # Si on est dans le cas d'une Leaf-Aggregated !
+    #   on récupère le noeud aggrégé et non le noeud feuille
+    if (aTree@isLeafAggregated) {
+        id <- id %>%
+            sapply(function(x) {
+                if (!aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
+            }) %>%
+            unlist()
+    }
+
+    myChildren <- getLeaves(aTree, id)
+    list1 <- aResults[nodeName, ]
+    nominal <- rep(list1[1], length(myChildren))
+    plus <- numeric(length(myChildren))
+    minus <- numeric(length(myChildren))
+
+    for(i in 1:length(myChildren)) {
+        plus[i] <- list1[2*myChildren[i]]
+        minus[i] <- list1[2*myChildren[i] + 1]
+    }
+
+    plot(1:length(myChildren), nominal,
+         pch = "o", xlab = "", ylab = "Score", main = nodeName, axes = FALSE,
+         ylim = c(1, aTree@Nodes[[id]]@rangeScale))
+    points(1:length(myChildren), minus, pch = "-")
+    points(1:length(myChildren), plus, pch = "+")
+    axis(side = 1, at = 1:length(myChildren),
+         labels = abbreviate(sapply(1:length(myChildren),
+                                    function(x) {aTree@Nodes[[myChildren[x]]]@name})),
+         las = 2)
+    axis(side = 2, at = c(1:aTree@Nodes[[id]]@rangeScale),
+         labels = 1:aTree@Nodes[[id]]@rangeScale)
+}
