@@ -4,7 +4,7 @@
 
 #### - Tree class test - #### ####
 test_that("Tree is S4", {
-    expect_equal(sloop::otype(new(Class = "Tree")),"S4")
+    expect_equal(sloop::otype(new(Class = "Tree")), "S4")
 })
 
 
@@ -58,22 +58,21 @@ test_that("Empty Tree show correct message", {
 test_that("describe return correct error if no Nodes", {
     empty_tree <- new(Class = "Tree")
 
-    expect_error(describe(empty_tree),
-                 "Tree without any node!")
+    expect_error(describe(empty_tree), "Tree without any node!")
 })
 
 test_that("Empty Tree describe correct message", {
-
+    # Load the complex DEXi tree needed for the test
     PMtest <- readRDS(system.file("testdata", "TestMTDEXiPM.rds",
-                                  package="dexiranalysis"))
+                                  package = "dexiranalysis"))
+
+    # Unit test
     out1 <- createTree(XML::xmlDeserializeHook(PMtest))
 
     out <- readRDS(system.file("testdata", "describeDEXiPM.rds",
-                               package="dexiranalysis"))
+                               package = "dexiranalysis"))
 
-
-    expect_equal(capture.output(describe(out1[[1]])),
-                 out)
+    expect_equal(capture.output(describe(out1[[1]])), out)
 })
 
 #### - - #### ####

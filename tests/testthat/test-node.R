@@ -1,8 +1,9 @@
 # Tests scripts for Node class #
 ################################
 
+#### - General tests - #### ####
 test_that("Node is S4", {
-    expect_equal(sloop::otype(new(Class = "Node")),"S4")
+    expect_equal(sloop::otype(new(Class = "Node")), "S4")
 })
 
 
@@ -49,14 +50,12 @@ test_that("Empty Node print correctly", {
 
 
 test_that("compareScenario : same output as JEB's scripts and par is reset", {
-
+    # Load the complex DEXi tree needed for the test
     lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-                                 package="dexiranalysis"))
-
+                                 package = "dexiranalysis"))
     DEXi <- lDEXi[[1]]
 
-    getEstimatedWeights(DEXi@Nodes[[1]])
-
+    # Unit test
     expect_equal(getEstimatedWeights(DEXi@Nodes[[1]]),
                  c("xECONOMIC" = 1/3,
                    "xSOCIAL" = 1/3,
@@ -66,21 +65,26 @@ test_that("compareScenario : same output as JEB's scripts and par is reset", {
 
 
 test_that("createAggregationMatrix : same output as JEB's scripts and par is reset", {
-
+    # Load the complex DEXi tree needed for the test
     lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-                                 package="dexiranalysis"))
-
+                                 package = "dexiranalysis"))
     DEXi <- lDEXi[[1]]
 
-    getEstimatedWeights(DEXi@Nodes[[1]])
 
-    myWeights <- c(0.2,0.2,0.6)
+    myWeights <- c(0.2, 0.2, 0.6)
 
+    # Setup a random seed for the test
     set.seed(42)
+
+    ### - Unit test - ###
     newAggregation <- createAggregationMatrix(DEXi@Nodes[[1]], myWeights, 5)
 
     out <- readRDS(system.file("testdata", "newAggregation42DEXiPM.rds",
-                               package="dexiranalysis"))
+                               package = "dexiranalysis"))
 
     expect_equal(newAggregation, out)
+    ### - End - ###
+
+    # restore random seed
+    set.seed(NULL)
 })
