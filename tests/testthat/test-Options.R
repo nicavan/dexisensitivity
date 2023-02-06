@@ -1,55 +1,57 @@
 test_that("createOption : same output as JEB's scripts", {
     # Load the complex DEXi tree needed for the test
-    PMTree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
+    tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
                                 package = "dexiranalysis"))
 
     # Unit test
-    out1 <- createOptions(PMTree[[1]], nbOptions = 3, aSeed = 42)
+    test_output <- createOptions(tree[[1]], nbOptions = 3, aSeed = 42)
 
-    out2 <- readRDS(system.file("testdata", "TestcreateOptionsDEXiPM.rds",
-                                package = "dexiranalysis"))
+    expected_output <- readRDS(system.file("testdata",
+                                           "TestcreateOptionsDEXiPM.rds",
+                                           package = "dexiranalysis"))
 
-    expect_equal(out1, out2)
+    expect_equal(test_output, expected_output)
 })
 
 
 test_that("eval 1 option : same output as JEB's scripts", {
     # Load the complex DEXi tree and option needed for the test
-    PMTree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-                                  package = "dexiranalysis"))
+    tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
+                                package = "dexiranalysis"))
     options <- readRDS(system.file("testdata", "TestcreateOptionsDEXiPM.rds",
                                    package = "dexiranalysis"))
 
     # Unit test
-    out1 <- EvaluateScenario(PMTree[[1]], as.matrix(options[, 1]))
+    test_output <- EvaluateScenario(tree[[1]], as.matrix(options[, 1]))
 
-    out2 <- readRDS(system.file("testdata", "DEXiPMeval1option.rds",
-                                package = "dexiranalysis"))
+    expected_output <- readRDS(system.file("testdata", "DEXiPMeval1option.rds",
+                                           package = "dexiranalysis"))
 
-    expect_equal(out1, out2)
+    expect_equal(test_output, expected_output)
 })
 
 
 test_that("eval all option : same output as JEB's scripts", {
     # Load the complex DEXi tree and option needed for the test
-    PMTree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-                                  package = "dexiranalysis"))
+    tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
+                                package = "dexiranalysis"))
     options <- readRDS(system.file("testdata", "TestcreateOptionsDEXiPM.rds",
                                    package = "dexiranalysis"))
 
     # Unit test
-    out1 <- EvaluateScenarios(PMTree[[1]], options)
+    test_output <- EvaluateScenarios(tree[[1]], options)
 
-    out2 <- readRDS(system.file("testdata", "DEXiPMevalalloptions.rds",
-                                package = "dexiranalysis"))
+    expected_output_a <- readRDS(system.file("testdata",
+                                             "DEXiPMevalalloptions.rds",
+                                             package = "dexiranalysis"))
 
-    out3 <- 1:dim(options)[2] %>%
+    expected_output_b <- 1:dim(options)[2] %>%
         sapply(function(x) {
-            EvaluateScenario(PMTree[[1]], as.matrix(options[, x]))
+            EvaluateScenario(tree[[1]], as.matrix(options[, x]))
         })
 
-    expect_equal(out1, out2)
-    expect_equal(out1, out3)
+    expect_equal(test_output, expected_output_a)
+    expect_equal(test_output, expected_output_b)
 })
 
 
@@ -62,9 +64,10 @@ test_that("Saved and loaded option are the same when option have rownames", {
     colnames(options) <- c("A", "B", "C")
     saveOptions(options, "C:/Users/rallart/E-DISC/option.csv")
 
-    out1 <- loadOptions("C:/Users/rallart/E-DISC/option.csv")
+    test_output <- loadOptions("C:/Users/rallart/E-DISC/option.csv")
+    expected_output <- options
 
-    expect_equal(out1, options)
+    expect_equal(test_output, expected_output)
 })
 
 

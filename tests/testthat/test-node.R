@@ -77,12 +77,13 @@ test_that("createAggregationMatrix : same output as JEB's scripts and par is res
     set.seed(42)
 
     ### - Unit test - ###
-    newAggregation <- createAggregationMatrix(DEXi@Nodes[[1]], myWeights, 5)
+    test_output <- createAggregationMatrix(DEXi@Nodes[[1]], myWeights, 5)
 
-    out <- readRDS(system.file("testdata", "newAggregation42DEXiPM.rds",
-                               package = "dexiranalysis"))
+    expected_output <- readRDS(system.file("testdata",
+                                           "newAggregation42DEXiPM.rds",
+                                           package = "dexiranalysis"))
 
-    expect_equal(newAggregation, out)
+    expect_equal(test_output, expected_output)
     ### - End - ###
 
     # restore random seed

@@ -1,19 +1,19 @@
 test_that("SI : same output as JEB's scripts", {
     # Load the simple DEXi tree needed for the test
-    Trees <- readRDS(system.file("testdata", "testtrees.rds",
+    trees <- readRDS(system.file("testdata", "testtrees.rds",
                                  package = "dexiranalysis"))
-    Tree <- Trees[[1]]
+    tree <- trees[[1]]
 
     # Setup a random seed for the test
     set.seed(42)
 
     # Unit test
-    out1 <- SI_DEXi(Tree, isFile = FALSE)
+    test_output <- SI_DEXi(tree, isFile = FALSE)
 
-    out2 <- readRDS(system.file("testdata", "TestSIsmall.rds",
-                                package = "dexiranalysis"))
+    expected_output <- readRDS(system.file("testdata", "TestSIsmall.rds",
+                                           package = "dexiranalysis"))
 
-    expect_equal(out1, out2)
+    expect_equal(test_output, expected_output)
 
     # restore random seed
     set.seed(NULL)

@@ -1,19 +1,19 @@
 test_that("MC : same output as JEB's scripts", {
     # Load the simple DEXi tree needed for the test
-    Trees <- readRDS(system.file("testdata", "testtrees.rds",
-                                    package = "dexiranalysis"))
-    Tree <- Trees[[1]]
+    trees <- readRDS(system.file("testdata", "testtrees.rds",
+                                 package = "dexiranalysis"))
+    tree <- trees[[1]]
 
     # Setup a random seed for the test
     set.seed(42)
 
     ### - Unit test - ###
-    out1 <- MonteCarlo(Tree, 1000,
-                       verbose = F)
-    out2 <- readRDS(system.file("testdata", "TestMCsmall.rds",
-                                package = "dexiranalysis"))
+    test_output <- MonteCarlo(tree, 1000,
+                              verbose = F)
+    expected_output <- readRDS(system.file("testdata", "TestMCsmall.rds",
+                                           package = "dexiranalysis"))
 
-    expect_equal(out1, out2)
+    expect_equal(test_output, expected_output)
     ### - End - ###
 
     # restore random seed
