@@ -25,21 +25,22 @@
 #' @export
 #' @examples
 methods::setClass("Tree",
-         representation(nbAttributes     = "numeric",
-                        nbLeaves         = "numeric",
-                        Depth            = "numeric",
-                        Attributes       = "character",
-                        Leaves           = "character",
-                        Aggregated       = "character",
-                        isMultiple       = "logical",
-                        Multiple         = "data.frame",
-                        isLeafAggregated = "logical",
-                        LeafAggregated   = "character",
-                        Paths            = "list",
-                        Nodes            = "list",
-                        EvalOrder        = "numeric",
-                        rootName         = "character"
-         ))
+                  representation(nbAttributes     = "numeric",
+                                 nbLeaves         = "numeric",
+                                 Depth            = "numeric",
+                                 Attributes       = "character",
+                                 Leaves           = "character",
+                                 Aggregated       = "character",
+                                 isMultiple       = "logical",
+                                 Multiple         = "data.frame",
+                                 isLeafAggregated = "logical",
+                                 LeafAggregated   = "character",
+                                 Paths            = "list",
+                                 Nodes            = "list",
+                                 EvalOrder        = "numeric",
+                                 rootName         = "character"
+                  )
+)
 
 
 
@@ -57,7 +58,8 @@ methods::setClass("Tree",
 #' @export
 #' @examples
 setMethod("print", "Tree",
-          function(x,...) {
+          function(x,
+                   ...) {
               cat("Root name:", x@rootName)
               cat("\nNumber of attributes:", length(x@Attributes))
               cat("\nNumber of aggregated attributes:", length(x@Aggregated))
@@ -68,15 +70,17 @@ setMethod("print", "Tree",
                   if(length(which(table(x@Aggregated) > 1))) {
                       names(which(table(x@Aggregated) > 1))
                   } else {"Non"}
-                  )
+              )
+
               if(length(x@isMultiple) > 0 && x@isMultiple) {
                   cat("\nMultiple leaves: \n")
                   print(x@Multiple)
-                  } else {cat("\nNo multiple leaves")}
+              } else {cat("\nNo multiple leaves")}
+
               if(length(x@isLeafAggregated) > 0 && x@isLeafAggregated) {
                   cat("\nLeaf-Aggregated attributes: \n")
                   print(x@LeafAggregated)
-                  } else {cat("\nNo Leaf-Aggregated Leaf")}
+              } else {cat("\nNo Leaf-Aggregated Leaf")}
           }
 )
 
@@ -92,8 +96,9 @@ setMethod("print", "Tree",
 #' @export
 #'
 #' @examples
-setMethod("show","Tree",
+setMethod("show", "Tree",
           function(object) {
+
               if(identical(object@nbAttributes, numeric(0))) {
                   cat("*** Tree without attributes ***")
               } else {
@@ -104,17 +109,18 @@ setMethod("show","Tree",
                       digit <- 1
                   }
 
-                  for(i in 1:object@nbAttributes)
-                  {
-                      if(i == 1) {
+                  for(i in 1:object@nbAttributes) {
+
+                      if (i == 1) {
                           prefix <- "Z : "
-                      } else if(object@Nodes[[i]]@isLeaf) {
+                      } else if (object@Nodes[[i]]@isLeaf) {
                           prefix <- "X : "
                       } else {
                           prefix <- "Y : "
                       }
+
                       cat("< ", formatC(i, width = digit), " > ",
-                          rep("- ", (object@Nodes[[i]]@Depth-1)),
+                          rep("- ", (object@Nodes[[i]]@Depth - 1)),
                           prefix, object@Nodes[[i]]@name,
                           if(length(object@Nodes[[i]]@Twin)) {
                               paste0(" [", c(object@Nodes[[i]]@Twin), "]")
@@ -132,7 +138,7 @@ setMethod("show","Tree",
 #' @export
 #'
 #' @examples
-setGeneric("describe", function(object) standardGeneric("describe"))
+setGeneric("describe", function(object) {standardGeneric("describe")})
 
 #' Title
 #'
@@ -153,7 +159,6 @@ setMethod("describe", "Tree", function(object) {
             cat("\n\n")}
         ) %>%
         invisible()
-
 }
 )
 
