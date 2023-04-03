@@ -130,7 +130,8 @@ clcSI_DEXi <- function(aTree) {
                 id <- id %>%
                     sapply(function(x) {
                         if (aTree@Nodes[[x]]@mother==Node@name) {x}
-                    })
+                    }) %>%
+                    unlist()
             }
 
             child.node <- aTree@Nodes[[id]]
