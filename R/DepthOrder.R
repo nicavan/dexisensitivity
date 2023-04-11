@@ -19,7 +19,9 @@ depth_order <- function(aTree) {
         if(length(tmpID) > 1) {
             vecdepth <- NULL
             for(j in tmpID) {
-                vecdepth <- c(vecdepth, aTree@Nodes[[j]]@Depth)
+                if(!aTree@Nodes[[j]]@isLeaf) {
+                    vecdepth <- c(vecdepth, aTree@Nodes[[j]]@Depth)
+                }
             }
             tmpdepth <- max(vecdepth)
         } else {
