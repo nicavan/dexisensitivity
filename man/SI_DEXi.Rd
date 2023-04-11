@@ -4,7 +4,7 @@
 \alias{SI_DEXi}
 \title{Title}
 \usage{
-SI_DEXi(aTree, fileName = "SI_out.csv", isFile = T)
+SI_DEXi(aTree, fileName = "SI_out.csv", isFile = T, avoidrep = F)
 }
 \arguments{
 \item{aTree}{aTree}
@@ -12,6 +12,8 @@ SI_DEXi(aTree, fileName = "SI_out.csv", isFile = T)
 \item{fileName}{fileName}
 
 \item{isFile}{isFile}
+
+\item{avoidrep}{T if you want to avoid repeted nodes}
 }
 \description{
 Calculation of the Sensitivity Index (SI)

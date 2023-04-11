@@ -4,10 +4,12 @@
 \alias{clcSI_DEXi}
 \title{Title}
 \usage{
-clcSI_DEXi(aTree)
+clcSI_DEXi(aTree, avoidrep = F)
 }
 \arguments{
 \item{aTree}{aTree}
+
+\item{avoidrep}{T if you want to avoid repeted nodes}
 }
 \description{
 Title

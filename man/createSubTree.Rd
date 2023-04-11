@@ -4,12 +4,14 @@
 \alias{createSubTree}
 \title{Title}
 \usage{
-createSubTree(aTree, nodeName)
+createSubTree(aTree, nodeName, avoidrep = F)
 }
 \arguments{
 \item{aTree}{aTree}
 
 \item{nodeName}{nodeName}
+
+\item{avoidrep}{T if you want to avoid repeted nodes}
 }
 \description{
 Title

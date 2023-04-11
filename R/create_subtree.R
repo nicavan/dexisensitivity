@@ -2,12 +2,13 @@
 #'
 #' @param aTree aTree
 #' @param nodeName nodeName
+#' @param avoidrep T if you want to avoid repeted nodes
 #'
 #' @return
 #' @export
 #'
 #' @examples
-createSubTree <- function(aTree, nodeName) {
+createSubTree <- function(aTree, nodeName, avoidrep = F) {
 
     # On récupère l'ID du noeud
     id <- getID(aTree@Nodes, nodeName)
@@ -20,6 +21,11 @@ createSubTree <- function(aTree, nodeName) {
                 if (!aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
             }) %>%
             unlist()
+    }
+
+    # to avoid repeted branch
+    if (length(id)>1 & avoidrep) {
+        id <- id[1]
     }
 
     # On récupère les noeuds qui possèdent le nodePath du noeud ou l'on coupe

@@ -5,6 +5,7 @@
 #' @param aTree aTree
 #' @param fileName fileName
 #' @param isFile isFile
+#' @param avoidrep T if you want to avoid repeted nodes
 #'
 #' @return
 #' @export
@@ -12,13 +13,14 @@
 #' @examples
 SI_DEXi <- function(aTree,
                     fileName = "SI_out.csv",
-                    isFile = T) {
+                    isFile = T,
+                    avoidrep = F) {
     SI <- vector(mode = "list",
                  length(aTree@Aggregated))
     names(SI) <- aTree@Aggregated
 
     for(node.name in aTree@Aggregated) {
-        sousArbre <- createSubTree(aTree, node.name)
+        sousArbre <- createSubTree(aTree, node.name, avoidrep = avoidrep)
         l <- matrix(nrow = sousArbre@nbAttributes - 1,
                     ncol = 2)
 
@@ -27,7 +29,7 @@ SI_DEXi <- function(aTree,
             l[j-1,2] <- sousArbre@Nodes[[j]]@Depth - sousArbre@Nodes[[1]]@Depth + 1
         }
 
-        zSI <- clcSI_DEXi(sousArbre)
+        zSI <- clcSI_DEXi(sousArbre, avoidrep = avoidrep)
         SI[[node.name]] <- matrix(c(zSI[c(sousArbre@Attributes[-1])], l),
                                   byrow = F,
                                   ncol = 3,
@@ -60,12 +62,13 @@ SI_DEXi <- function(aTree,
 #' Title
 #'
 #' @param aTree aTree
+#' @param avoidrep T if you want to avoid repeted nodes
 #'
 #' @return
 #' @export
 #'
 #' @examples
-clcSI_DEXi <- function(aTree) {
+clcSI_DEXi <- function(aTree, avoidrep = F) {
     nodeName <- aTree@rootName
     WeightList <- vector(mode = "list",
                          length = aTree@nbAttributes)
@@ -79,8 +82,10 @@ clcSI_DEXi <- function(aTree) {
                              length = aTree@nbAttributes)
     names(CondiProbaList) <-aTree@Attributes
 
+    depthorder <- depth_order(aTree)
+
     # Loop on the Aggregate attributes in reverse order
-    for(node.name in rev(aTree@Aggregated)) {
+    for(node.name in depthorder) {
         id <- getID(aTree@Nodes, node.name)
         if (length(id) > 1) {
             id <- id %>%
@@ -88,6 +93,11 @@ clcSI_DEXi <- function(aTree) {
                     if (!aTree@Nodes[[x]]@isLeaf) {x}
                 }) %>%
                 unlist()
+        }
+
+        # to avoid repeted branch
+        if (length(id)>1 & avoidrep) {
+            id <- id[1]
         }
 
         Node <- aTree@Nodes[[id]]
@@ -132,6 +142,11 @@ clcSI_DEXi <- function(aTree) {
                         if (aTree@Nodes[[x]]@mother==Node@name) {x}
                     }) %>%
                     unlist()
+            }
+
+            # to avoid repeted branch
+            if (length(id)>1 & avoidrep) {
+                id <- id[1]
             }
 
             child.node <- aTree@Nodes[[id]]
