@@ -318,11 +318,20 @@ createNode <- function(listeNoeuds, MT) {
 #' @export
 #'
 #' @examples
+# getID <- function(listNodes,nodeName) {
+#     out <- numeric(0)
+#     for(i in 1:length(listNodes)) {
+#         if(rev(listNodes[[i]]@nodePath)[1] == nodeName)
+#             out <- c(out, listNodes[[i]]@id)
+#     }
+#     return(out)
+# }
 getID <- function(listNodes,nodeName) {
     out <- numeric(0)
     for(i in 1:length(listNodes)) {
-        if(rev(listNodes[[i]]@nodePath)[1] == nodeName)
-            out <- c(out, listNodes[[i]]@id)
+        nodePathLength <- length(listNodes[[i]]@nodePath)
+        if(listNodes[[i]]@nodePath[nodePathLength] == nodeName)
+            out <- c(out,listNodes[[i]]@id)
     }
     return(out)
 }
