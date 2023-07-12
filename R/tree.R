@@ -3,27 +3,50 @@
 
 #' Tree
 #'
-#' Tree class definition
+#' S4 class to represent a Tree.
 #'
-#' @slot nbAttributes (numeric) Number of attributes
-#' @slot nbLeaves (numeric) Number of leaves
-#' @slot Depth (numeric) Maximum depth of the tree
-#' @slot Attributes (character) List of names of attributes
-#' @slot Leaves (character) List of names of leaves
-#' @slot Aggregated (character) List of names of aggregated nodes
-#' @slot isMultiple (logical) Tag to know if multiple leaves
-#' @slot Multiple (data.frame) List of the multiple leaves and number of
-#'   occurrence
-#' @slot isLeafAggregated (logical) Tag to know if leaf-aggregated nodes
-#' @slot LeafAggregated (character) List of names of leaf-aggregated nodes
-#' @slot Paths (list) Path from root to leafs
-#' @slot Nodes (list) List of nodes
-#' @slot EvalOrder (numeric) Evaluation order in case of LeafAggregated nodes
-#' @slot rootName (character) Name of the root node
+#' @slot nbAttributes
+#'   Object of class "numeric", the number of attributes in the tree.
+#' @slot nbLeaves
+#'   Object of class "numeric", the number of leaves in the tree.
+#' @slot Depth
+#'   Object of class "numeric", the maximum depth of the tree.
+#' @slot Attributes
+#'   Object of class "character", list of names of attributes in the tree.
+#' @slot Leaves
+#'   Object of class "character", list of names of leaves in the tree.
+#' @slot Aggregated
+#'   Object of class "character", list of names of aggregated nodes in the tree.
+#' @slot isMultiple
+#'   Object of class "logical", flag indicating if there are multiple leaves in
+#'   the tree.
+#' @slot Multiple
+#'   Object of class "data.frame", list of multiple leaves and their count.
+#' @slot isLeafAggregated
+#'   Object of class "logical", flag indicating if there are leaf-aggregated nodes in the tree.
+#' @slot LeafAggregated
+#'   Object of class "character", list of names of leaf-aggregated nodes in the tree.
+#' @slot Paths
+#'   Object of class "list", list of paths from the root to the leaves.
+#' @slot Nodes
+#'   Object of class "list", list of nodes in the tree.
+#' @slot EvalOrder
+#'   Object of class "numeric", evaluation order in case of LeafAggregated nodes.
+#' @slot rootName
+#'   Object of class "character", name of the root node.
 #'
-#' @return
+#' @method
+#'   Tree class objects are used in the creation and display of tree structures.
+#'   Information from the object is used to create and print the tree structure
+#'   in a human-readable format.
+#'
+#' @return An object of class Tree.
+#'
+#' @seealso \code{\link{print.Tree}}, \code{\link{show.Tree}}, \code{\link{describe.Tree}}
+#'
+#' @aliases Tree
+#'
 #' @export
-#' @examples
 methods::setClass("Tree",
                   representation(nbAttributes     = "numeric",
                                  nbLeaves         = "numeric",
@@ -55,8 +78,10 @@ methods::setClass("Tree",
 #'
 #'
 #' @return
+#'
+#' @aliases print.Tree
+#'
 #' @export
-#' @examples
 setMethod("print", "Tree",
           function(x,
                    ...) {
@@ -93,9 +118,8 @@ setMethod("print", "Tree",
 #' @param object The Tree to be shown
 #'
 #' @return
-#' @export
 #'
-#' @examples
+#' @export
 setMethod("show", "Tree",
           function(object) {
 
@@ -135,9 +159,8 @@ setMethod("show", "Tree",
 #' @param object the Tree
 #'
 #' @return
-#' @export
 #'
-#' @examples
+#' @export
 setGeneric("describe", function(object) {standardGeneric("describe")})
 
 #' Title
@@ -147,9 +170,8 @@ setGeneric("describe", function(object) {standardGeneric("describe")})
 #' @param object Object
 #'
 #' @return
-#' @export
 #'
-#' @examples
+#' @export
 setMethod("describe", "Tree", function(object) {
     stopifnot("Tree without any node!" = length(object@Nodes)>0)
 
