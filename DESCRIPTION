@@ -1,10 +1,15 @@
 Package: dexiranalysis
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: DEXi model analysis
+Version: 0.0.1.000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Roland", "Allart", , "roland.allart@inrae.fr", role = c("aut", "cre"))
+    person("Jacques-Eric", "Bergez", , "jacques-eric.bergez@inrae.fr", role = c("aut"),
+           comment = c(ORCID = "0000-0003-3467-2617"))
+Description: Provides class and function to analyse DEXi models from DEXi
+    software (Bohanec Marko, 1999). Tree in .dxi files can be read to create
+    a Tree class object. This object can be vizualise and used for scenario 
+    creation, scenario evaluation and a model sensitivity analysis can be 
+    perform.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
