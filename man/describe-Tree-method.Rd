@@ -2,7 +2,8 @@
 % Please edit documentation in R/tree.R
 \name{describe,Tree-method}
 \alias{describe,Tree-method}
-\title{describeTree}
+\alias{describe.Tree}
+\title{describe method for Tree class object}
 \usage{
 \S4method{describe}{Tree}(object)
 }

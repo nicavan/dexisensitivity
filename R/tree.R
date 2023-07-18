@@ -1,56 +1,44 @@
 # S4 Tree Class #
 #################
 
-#' Tree
+#' An S4 class to represent a Tree
 #'
-#' S4 class to represent a Tree.
+#' It includes several slots to store attributes, leaves, nodes, path, and
+#' additional information related to the tree structure.
 #'
-#' It includes several slots to store attributes,
-#' leaves, nodes, path, and additional information related to the tree structure.
-#'
-#' @slot nbAttributes
-#'   Object of class "numeric", the number of attributes in the tree.
-#' @slot nbLeaves
-#'   Object of class "numeric", the number of leaves in the tree.
-#' @slot Depth
-#'   Object of class "numeric", the maximum depth of the tree.
-#' @slot Attributes
-#'   Object of class "character", list of names of attributes in the tree.
-#' @slot Leaves
-#'   Object of class "character", list of names of leaves in the tree.
-#' @slot Aggregated
-#'   Object of class "character", list of names of aggregated nodes in the tree.
-#' @slot isMultiple
-#'   Object of class "logical", flag indicating if there are multiple leaves in
+#' @slot nbAttributes Object of class "numeric", the number of attributes in the
+#'   tree.
+#' @slot nbLeaves Object of class "numeric", the number of leaves in the tree.
+#' @slot Depth Object of class "numeric", the maximum depth of the tree.
+#' @slot Attributes Object of class "character", list of names of attributes in
 #'   the tree.
-#' @slot Multiple
-#'   Object of class "data.frame", list of multiple leaves and their count.
-#' @slot isLeafAggregated
-#'   Object of class "logical", flag indicating if there are leaf-aggregated
+#' @slot Leaves Object of class "character", list of names of leaves in the
+#'   tree.
+#' @slot Aggregated Object of class "character", list of names of aggregated
 #'   nodes in the tree.
-#' @slot LeafAggregated
-#'   Object of class "character", list of names of leaf-aggregated nodes
-#'   in the tree.
-#' @slot Paths
-#'   Object of class "list", list of paths from the root to the leaves.
-#' @slot Nodes
-#'   Object of class "list", list of nodes in the tree.
-#' @slot EvalOrder
-#'   Object of class "numeric", evaluation order in case of LeafAggregated nodes.
-#' @slot rootName
-#'   Object of class "character", name of the root node.
+#' @slot isMultiple Object of class "logical", flag indicating if there are
+#'   multiple leaves in the tree.
+#' @slot Multiple Object of class "data.frame", list of multiple leaves and
+#'   their count.
+#' @slot isLeafAggregated Object of class "logical", flag indicating if there
+#'   are leaf-aggregated nodes in the tree.
+#' @slot LeafAggregated Object of class "character", list of names of
+#'   leaf-aggregated nodes in the tree.
+#' @slot Paths Object of class "list", list of paths from the root to the
+#'   leaves.
+#' @slot Nodes Object of class "list", list of nodes in the tree.
+#' @slot EvalOrder Object of class "numeric", evaluation order in case of
+#'   LeafAggregated nodes.
+#' @slot rootName Object of class "character", name of the root node.
 #'
-#' @method
-#'   Tree class objects are used in the creation and display of tree structures.
-#'   Information from the object is used to create and print the tree structure
-#'   in a human-readable format.
+#' @method Tree class objects are used in the creation and display of tree
+#' structures. Information from the object is used to create and print the tree
+#' structure in a human-readable format.
 #'
 #' @return An object of class Tree.
 #'
-#' @seealso
-#'   \code{\link{print.Tree}},
-#'   \code{\link{show.Tree}},
-#'   \code{\link{describe.Tree}}
+#' @seealso \code{\link{print.Tree}}, \code{\link{show.Tree}},
+#' \code{\link{describe.Tree}}
 #'
 #' @export
 methods::setClass("Tree",
@@ -72,7 +60,7 @@ methods::setClass("Tree",
 )
 
 
-#' print.tree
+#' print method for Tree class object
 #'
 #' Custom print method for Tree class object. Prints basic information about the
 #' tree including root name, number of attributes, leaves, depth and specific
@@ -81,6 +69,7 @@ methods::setClass("Tree",
 #' @param x Tree object to be printed.
 #' @param ... additional parameters to be passed to the print function.
 #'
+#' @aliases print.Tree
 #'
 #' @return
 #'
@@ -113,7 +102,7 @@ setMethod("print", "Tree",
 
 
 
-#' show.tree
+#' show method for Tree class object
 #'
 #' Custom show method for Tree class object. Prints a formatted structure of the
 #' tree using a set of rules based on node properties.
@@ -121,6 +110,8 @@ setMethod("print", "Tree",
 #' @param object The Tree object to be shown.
 #'
 #' @return
+#'
+#' @aliases show.Tree
 #'
 #' @export
 setMethod("show", "Tree",
@@ -166,7 +157,7 @@ setMethod("show", "Tree",
 #' @export
 setGeneric("describe", function(object) {standardGeneric("describe")})
 
-#' describeTree
+#' describe method for Tree class object
 #'
 #' A method to describe the structure of a Tree object in a comprehensive way.
 #' It prints each node and its properties separately.
@@ -174,6 +165,8 @@ setGeneric("describe", function(object) {standardGeneric("describe")})
 #' @param Tree The Tree object to be described.
 #'
 #' @param object Object
+#'
+#' @aliases describe.Tree
 #'
 #' @return
 #'

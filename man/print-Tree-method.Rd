@@ -2,7 +2,8 @@
 % Please edit documentation in R/tree.R
 \name{print,Tree-method}
 \alias{print,Tree-method}
-\title{print.tree}
+\alias{print.Tree}
+\title{print method for Tree class object}
 \usage{
 \S4method{print}{Tree}(x, ...)
 }

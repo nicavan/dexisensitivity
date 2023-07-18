@@ -2,7 +2,8 @@
 % Please edit documentation in R/tree.R
 \name{show,Tree-method}
 \alias{show,Tree-method}
-\title{show.tree}
+\alias{show.Tree}
+\title{show method for Tree class object}
 \usage{
 \S4method{show}{Tree}(object)
 }

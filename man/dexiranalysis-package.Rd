@@ -4,12 +4,17 @@
 \name{dexiranalysis-package}
 \alias{dexiranalysis}
 \alias{dexiranalysis-package}
-\title{dexiranalysis: What the Package Does (One Line, Title Case)}
+\title{dexiranalysis: DEXi model analysis}
 \description{
-What the package does (one paragraph).
+Provides class and function to analyse DEXi models from DEXi software (Bohanec Marko, 1999). Tree in .dxi files can be read to create a Tree class object. This object can be vizualise and used for scenario creation, scenario evaluation and a model sensitivity analysis can be perform.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Roland Allart \email{roland.allart@inrae.fr}
+
+Authors:
+\itemize{
+  \item Jacques-Eric Bergez \email{jacques-eric.bergez@inrae.fr} (\href{https://orcid.org/0000-0003-3467-2617}{ORCID})
+}
 
 }
 \keyword{internal}
