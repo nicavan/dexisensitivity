@@ -2,16 +2,17 @@
 % Please edit documentation in R/tree.R
 \name{print,Tree-method}
 \alias{print,Tree-method}
-\alias{print.Tree}
 \title{print.tree}
 \usage{
 \S4method{print}{Tree}(x, ...)
 }
 \arguments{
-\item{x}{The printed Tree}
+\item{x}{Tree object to be printed.}
 
-\item{...}{see '...' print parameters}
+\item{...}{additional parameters to be passed to the print function.}
 }
 \description{
-Print method for Tree class object
+Custom print method for Tree class object. Prints basic information about the
+tree including root name, number of attributes, leaves, depth and specific
+nodes.
 }

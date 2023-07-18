@@ -5,6 +5,9 @@
 #'
 #' S4 class to represent a Tree.
 #'
+#' It includes several slots to store attributes,
+#' leaves, nodes, path, and additional information related to the tree structure.
+#'
 #' @slot nbAttributes
 #'   Object of class "numeric", the number of attributes in the tree.
 #' @slot nbLeaves
@@ -23,9 +26,11 @@
 #' @slot Multiple
 #'   Object of class "data.frame", list of multiple leaves and their count.
 #' @slot isLeafAggregated
-#'   Object of class "logical", flag indicating if there are leaf-aggregated nodes in the tree.
+#'   Object of class "logical", flag indicating if there are leaf-aggregated
+#'   nodes in the tree.
 #' @slot LeafAggregated
-#'   Object of class "character", list of names of leaf-aggregated nodes in the tree.
+#'   Object of class "character", list of names of leaf-aggregated nodes
+#'   in the tree.
 #' @slot Paths
 #'   Object of class "list", list of paths from the root to the leaves.
 #' @slot Nodes
@@ -42,9 +47,10 @@
 #'
 #' @return An object of class Tree.
 #'
-#' @seealso \code{\link{print.Tree}}, \code{\link{show.Tree}}, \code{\link{describe.Tree}}
-#'
-#' @aliases Tree
+#' @seealso
+#'   \code{\link{print.Tree}},
+#'   \code{\link{show.Tree}},
+#'   \code{\link{describe.Tree}}
 #'
 #' @export
 methods::setClass("Tree",
@@ -66,25 +72,21 @@ methods::setClass("Tree",
 )
 
 
-
-
 #' print.tree
 #'
-#' Print method for Tree class object
+#' Custom print method for Tree class object. Prints basic information about the
+#' tree including root name, number of attributes, leaves, depth and specific
+#' nodes.
 #'
-#' @param x The printed Tree
-#'
-#' @param ... see '...' print parameters
+#' @param x Tree object to be printed.
+#' @param ... additional parameters to be passed to the print function.
 #'
 #'
 #' @return
 #'
-#' @aliases print.Tree
-#'
 #' @export
 setMethod("print", "Tree",
-          function(x,
-                   ...) {
+          function(x, ...) {
               cat("Root name:", x@rootName)
               cat("\nNumber of attributes:", length(x@Attributes))
               cat("\nNumber of aggregated attributes:", length(x@Aggregated))
@@ -113,9 +115,10 @@ setMethod("print", "Tree",
 
 #' show.tree
 #'
-#' show method for Tree
+#' Custom show method for Tree class object. Prints a formatted structure of the
+#' tree using a set of rules based on node properties.
 #'
-#' @param object The Tree to be shown
+#' @param object The Tree object to be shown.
 #'
 #' @return
 #'
@@ -163,9 +166,12 @@ setMethod("show", "Tree",
 #' @export
 setGeneric("describe", function(object) {standardGeneric("describe")})
 
-#' Title
+#' describeTree
 #'
-#' @param Tree a Tree
+#' A method to describe the structure of a Tree object in a comprehensive way.
+#' It prints each node and its properties separately.
+#'
+#' @param Tree The Tree object to be described.
 #'
 #' @param object Object
 #'

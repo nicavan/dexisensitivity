@@ -2,15 +2,16 @@
 % Please edit documentation in R/tree.R
 \name{describe,Tree-method}
 \alias{describe,Tree-method}
-\title{Title}
+\title{describeTree}
 \usage{
 \S4method{describe}{Tree}(object)
 }
 \arguments{
 \item{object}{Object}
 
-\item{Tree}{a Tree}
+\item{Tree}{The Tree object to be described.}
 }
 \description{
-Title
+A method to describe the structure of a Tree object in a comprehensive way.
+It prints each node and its properties separately.
 }

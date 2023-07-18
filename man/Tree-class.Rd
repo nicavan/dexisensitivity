@@ -3,13 +3,16 @@
 \docType{class}
 \name{Tree-class}
 \alias{Tree-class}
-\alias{Tree}
 \title{Tree}
 \value{
 An object of class Tree.
 }
 \description{
 S4 class to represent a Tree.
+}
+\details{
+It includes several slots to store attributes,
+leaves, nodes, path, and additional information related to the tree structure.
 }
 \section{Slots}{
 
@@ -31,9 +34,11 @@ the tree.}
 
 \item{\code{Multiple}}{Object of class "data.frame", list of multiple leaves and their count.}
 
-\item{\code{isLeafAggregated}}{Object of class "logical", flag indicating if there are leaf-aggregated nodes in the tree.}
+\item{\code{isLeafAggregated}}{Object of class "logical", flag indicating if there are leaf-aggregated
+nodes in the tree.}
 
-\item{\code{LeafAggregated}}{Object of class "character", list of names of leaf-aggregated nodes in the tree.}
+\item{\code{LeafAggregated}}{Object of class "character", list of names of leaf-aggregated nodes
+in the tree.}
 
 \item{\code{Paths}}{Object of class "list", list of paths from the root to the leaves.}
 
@@ -45,5 +50,7 @@ the tree.}
 }}
 
 \seealso{
-\code{\link{print.Tree}}, \code{\link{show.Tree}}, \code{\link{describe.Tree}}
+\code{\link{print.Tree}},
+\code{\link{show.Tree}},
+\code{\link{describe.Tree}}
 }

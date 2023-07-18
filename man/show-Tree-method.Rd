@@ -7,8 +7,9 @@
 \S4method{show}{Tree}(object)
 }
 \arguments{
-\item{object}{The Tree to be shown}
+\item{object}{The Tree object to be shown.}
 }
 \description{
-show method for Tree
+Custom show method for Tree class object. Prints a formatted structure of the
+tree using a set of rules based on node properties.
 }
