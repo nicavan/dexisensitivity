@@ -2,19 +2,25 @@
 % Please edit documentation in R/MonteCarlo.R
 \name{MonteCarlo}
 \alias{MonteCarlo}
-\title{Title}
+\title{Performs a Monte Carlo simulation}
 \usage{
 MonteCarlo(aTree, nbRuns, isFile = F, verbose = T)
 }
 \arguments{
-\item{aTree}{aTree}
+\item{aTree}{Decision tree to run the simulation on}
 
-\item{nbRuns}{nbRuns}
+\item{nbRuns}{Number of Monte Carlo simulations to perform}
 
-\item{isFile}{isFile}
+\item{isFile}{Logical value to decide whether to write a file or not}
 
-\item{verbose}{verbose}
+\item{verbose}{Logical value for printing additional information}
+}
+\value{
+Returns a matrix representing the Monte Carlo simulations
 }
 \description{
-MonteCarlo approach
+Conducts a Monte Carlo simulation on a given decision tree with a specified
+number of runs. If \code{isFile} is set to TRUE, a .csv file named "MC
+options.csv" is saved, which contains all the random options selected for the
+Monte Carlo analysis.
 }

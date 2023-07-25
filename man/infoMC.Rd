@@ -2,17 +2,23 @@
 % Please edit documentation in R/MonteCarlo.R
 \name{infoMC}
 \alias{infoMC}
-\title{Title}
+\title{Estimates the time required to perform a Monte Carlo simulation}
 \usage{
 infoMC(aTree, nbRuns, iTest = 50)
 }
 \arguments{
-\item{aTree}{aTree}
+\item{aTree}{Decision tree to run simulations on}
 
-\item{nbRuns}{nbRuns}
+\item{nbRuns}{Total number of Monte Carlo simulations to perform}
 
-\item{iTest}{iTest}
+\item{iTest}{Number of simulations to be used for time estimation}
+}
+\value{
+No explicit return. The function prints out the estimated execution
+time.
 }
 \description{
-A simple function to give information on time requested to perform the MC
+Performs a time estimation for a specified number of Monte Carlo simulations.
+This estimation is based on the time taken to execute a smaller number of
+simulations specified by \code{iTest}.
 }
