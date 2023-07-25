@@ -40,6 +40,8 @@
 #' @seealso \code{\link{print.Tree}}, \code{\link{show.Tree}},
 #' \code{\link{describe.Tree}}
 #'
+#' @aliases Tree
+#'
 #' @export
 methods::setClass("Tree",
                   representation(nbAttributes     = "numeric",
