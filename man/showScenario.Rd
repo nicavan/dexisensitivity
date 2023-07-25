@@ -2,19 +2,23 @@
 % Please edit documentation in R/Options.R
 \name{showScenario}
 \alias{showScenario}
-\title{Title}
+\title{Plot a bar chart of a single scenario}
 \usage{
 showScenario(aScenario, aTree, isLabelY = TRUE, isPar = T)
 }
 \arguments{
 \item{aScenario}{the scenario to graph}
 
-\item{aTree}{the tree}
+\item{aTree}{The associated "Tree" object}
 
-\item{isLabelY}{do we want the label of the option}
+\item{isLabelY}{A logical value indicating whether to include labels on the Y axis (Default: TRUE)}
 
-\item{isPar}{do we want the function to modify the par}
+\item{isPar}{A logical value indicating whether to modify the graph's parameters (Default: TRUE)}
 }
 \description{
-A function to create a graph of a scenario as horizontal bar
+Visualizes the values assigned to each attribute in a given scenario
+and marks the maximum possible value for each attribute using a bar chart.
+}
+\seealso{
+\code{\link{EvaluateScenario}}
 }

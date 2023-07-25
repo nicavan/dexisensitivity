@@ -1,13 +1,15 @@
-#' Title
+#' Generate a matrix of random options for a given tree
 #'
-#' @param aTree A Tree
-#' @param nbOptions Number option to create
-#' @param aSeed seed for random number generation
+#' The options are generated based on the `rangeScale` and `Proba` properties of the tree nodes.
+#' This is useful for creating random scenarios for simulation or analysis.
 #'
-#' @return
+#' @param aTree A "Tree" object
+#' @param nbOptions The number of random options to create (Default: 1)
+#' @param aSeed The seed for random number generation (Default: -1)
+#'
+#' @return A matrix of random options
+#'
 #' @export
-#'
-#' @examples
 createOptions <- function(aTree, nbOptions = 1, aSeed = -1) {
     if (aSeed>0) {
         set.seed(aSeed)
@@ -27,15 +29,17 @@ createOptions <- function(aTree, nbOptions = 1, aSeed = -1) {
 }
 
 
-#' Title
+#' Evaluates a single scenario for a given tree
 #'
-#' @param aTree a Tree
-#' @param option 1 Option
+#' Evaluates a single scenario by assigning values to the leaves of the tree
+#' according to the given option and calculates the values of the aggregated nodes.
 #'
-#' @return
+#' @param aTree A "Tree" object
+#' @param option A matrix representing a single option to evaluate
+#'
+#' @return A numeric vector representing the evaluation results of the scenario
+#'
 #' @export
-#'
-#' @examples
 EvaluateScenario <- function(aTree, option) {
 
     # Create the return array
@@ -124,15 +128,17 @@ EvaluateScenario <- function(aTree, option) {
     return(results)
 }
 
-#' Title
+#' Evaluate multiple scenarios for a given tree
 #'
-#' @param aTree a tree
-#' @param options Several options
+#' Works as a wrapper for the `EvaluateScenario` function that allows evaluation of
+#' multiple scenarios at once. The scenarios are given as columns in the `options` matrix.
 #'
-#' @return
+#' @param aTree A "Tree" object
+#' @param options A matrix representing multiple options to evaluate
+#'
+#' @return A list of numeric vectors representing the evaluation results of the scenarios
+#'
 #' @export
-#'
-#' @examples
 EvaluateScenarios <- function(aTree, options) {
     1:dim(options)[2] %>%
         sapply(function(x) {
@@ -141,15 +147,16 @@ EvaluateScenarios <- function(aTree, options) {
 }
 
 
-#' Title
+#' Save a table of options to a file
 #'
-#' @param anOptionsTable anOptionsTable
-#' @param aFileName aFileName
+#' Stores a table of options into a file for later use or analysis.
 #'
-#' @return
+#' @param anOptionsTable A matrix representing options
+#' @param aFileName The name of the file to save the options table
+#'
+#' @return NULL
+#'
 #' @export
-#'
-#' @examples
 saveOptions <- function(anOptionsTable,
                         aFileName) {
     utils::write.table(anOptionsTable,
@@ -162,14 +169,15 @@ saveOptions <- function(anOptionsTable,
 
 
 
-#' Title
+#' Load a table of options from a file
 #'
-#' @param filename filename
+#' Retrieves previously saved options from a file for further analysis or processing.
 #'
-#' @return
+#' @param filename The name of the file to load the options table from
+#'
+#' @return A matrix representing the loaded options table
+#'
 #' @export
-#'
-#' @examples
 loadOptions <- function(filename) {
     return(as.matrix(utils::read.table(file = filename,
                                        header = T,
@@ -178,15 +186,16 @@ loadOptions <- function(filename) {
 }
 
 
-#' Title
+#' Save evaluation results of scenarios to a file
 #'
-#' @param theScenarios theScenarios
-#' @param file file name
+#' Stores the results of scenario evaluations into a file for later analysis.
 #'
-#' @return
+#' @param theScenarios A list of numeric vectors representing the evaluation results of the scenarios
+#' @param file The name of the file to save the scenarios
+#'
+#' @return NULL
+#'
 #' @export
-#'
-#' @examples
 saveScenarios <- function(theScenarios,
                           file) {
     utils::write.table(theScenarios,
@@ -198,22 +207,24 @@ saveScenarios <- function(theScenarios,
 
 
 
-#' Title
+#' Plot a bar chart of a single scenario
 #'
-#' A function to create a graph of a scenario as horizontal bar
+#' Visualizes the values assigned to each attribute in a given scenario
+#' and marks the maximum possible value for each attribute using a bar chart.
 #'
 #' @param aScenario the scenario to graph
-#' @param aTree the tree
-#' @param isLabelY do we want the label of the option
-#' @param isPar do we want the function to modify the par
+#' @param aTree The associated "Tree" object
+#' @param isLabelY A logical value indicating whether to include labels on the Y axis (Default: TRUE)
+#' @param isPar A logical value indicating whether to modify the graph's parameters (Default: TRUE)
 #'
-#' @return
+#' @return NULL
+#'
+#' @seealso
+#'   \code{\link{EvaluateScenario}}
 #'
 #' @importFrom withr defer
 #'
 #' @export
-#'
-#' @examples
 showScenario <- function(aScenario,
                          aTree,
                          isLabelY = TRUE,
@@ -262,18 +273,22 @@ showScenario <- function(aScenario,
 }
 
 
-#' Title
+#' Compare scenarios using a radial plot
 #'
-#' @param aTree aTree
-#' @param theScenarios theScenarios
-#' @param listNodes listNodes
+#' Visualizes the comparison of values assigned to a list of nodes across
+#' multiple scenarios using a radial plot.
 #'
-#' @return
+#' @param aTree A "Tree" object
+#' @param theScenarios A list of numeric vectors representing the evaluation results of the scenarios
+#' @param listNodes A list of node names to include in the comparison
+#'
+#' @seealso
+#'   \code{\link{EvaluateScenarios}}
+#'
+#' @return NULL
 #' @export
 #'
 #' @importFrom plotrix radial.plot
-#'
-#' @examples
 compareScenario <- function(aTree,
                             theScenarios,
                             listNodes) {

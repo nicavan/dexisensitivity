@@ -2,17 +2,21 @@
 % Please edit documentation in R/Options.R
 \name{compareScenario}
 \alias{compareScenario}
-\title{Title}
+\title{Compare scenarios using a radial plot}
 \usage{
 compareScenario(aTree, theScenarios, listNodes)
 }
 \arguments{
-\item{aTree}{aTree}
+\item{aTree}{A "Tree" object}
 
-\item{theScenarios}{theScenarios}
+\item{theScenarios}{A list of numeric vectors representing the evaluation results of the scenarios}
 
-\item{listNodes}{listNodes}
+\item{listNodes}{A list of node names to include in the comparison}
 }
 \description{
-Title
+Visualizes the comparison of values assigned to a list of nodes across
+multiple scenarios using a radial plot.
+}
+\seealso{
+\code{\link{EvaluateScenarios}}
 }

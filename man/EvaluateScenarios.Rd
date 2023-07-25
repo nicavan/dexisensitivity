@@ -2,15 +2,19 @@
 % Please edit documentation in R/Options.R
 \name{EvaluateScenarios}
 \alias{EvaluateScenarios}
-\title{Title}
+\title{Evaluate multiple scenarios for a given tree}
 \usage{
 EvaluateScenarios(aTree, options)
 }
 \arguments{
-\item{aTree}{a tree}
+\item{aTree}{A "Tree" object}
 
-\item{options}{Several options}
+\item{options}{A matrix representing multiple options to evaluate}
+}
+\value{
+A list of numeric vectors representing the evaluation results of the scenarios
 }
 \description{
-Title
+Works as a wrapper for the \code{EvaluateScenario} function that allows evaluation of
+multiple scenarios at once. The scenarios are given as columns in the \code{options} matrix.
 }

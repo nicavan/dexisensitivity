@@ -2,17 +2,21 @@
 % Please edit documentation in R/Options.R
 \name{createOptions}
 \alias{createOptions}
-\title{Title}
+\title{Generate a matrix of random options for a given tree}
 \usage{
 createOptions(aTree, nbOptions = 1, aSeed = -1)
 }
 \arguments{
-\item{aTree}{A Tree}
+\item{aTree}{A "Tree" object}
 
-\item{nbOptions}{Number option to create}
+\item{nbOptions}{The number of random options to create (Default: 1)}
 
-\item{aSeed}{seed for random number generation}
+\item{aSeed}{The seed for random number generation (Default: -1)}
+}
+\value{
+A matrix of random options
 }
 \description{
-Title
+The options are generated based on the \code{rangeScale} and \code{Proba} properties of the tree nodes.
+This is useful for creating random scenarios for simulation or analysis.
 }

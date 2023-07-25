@@ -2,13 +2,16 @@
 % Please edit documentation in R/Options.R
 \name{loadOptions}
 \alias{loadOptions}
-\title{Title}
+\title{Load a table of options from a file}
 \usage{
 loadOptions(filename)
 }
 \arguments{
-\item{filename}{filename}
+\item{filename}{The name of the file to load the options table from}
+}
+\value{
+A matrix representing the loaded options table
 }
 \description{
-Title
+Retrieves previously saved options from a file for further analysis or processing.
 }

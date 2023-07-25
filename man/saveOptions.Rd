@@ -2,15 +2,15 @@
 % Please edit documentation in R/Options.R
 \name{saveOptions}
 \alias{saveOptions}
-\title{Title}
+\title{Save a table of options to a file}
 \usage{
 saveOptions(anOptionsTable, aFileName)
 }
 \arguments{
-\item{anOptionsTable}{anOptionsTable}
+\item{anOptionsTable}{A matrix representing options}
 
-\item{aFileName}{aFileName}
+\item{aFileName}{The name of the file to save the options table}
 }
 \description{
-Title
+Stores a table of options into a file for later use or analysis.
 }

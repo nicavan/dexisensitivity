@@ -2,15 +2,19 @@
 % Please edit documentation in R/Options.R
 \name{EvaluateScenario}
 \alias{EvaluateScenario}
-\title{Title}
+\title{Evaluates a single scenario for a given tree}
 \usage{
 EvaluateScenario(aTree, option)
 }
 \arguments{
-\item{aTree}{a Tree}
+\item{aTree}{A "Tree" object}
 
-\item{option}{1 Option}
+\item{option}{A matrix representing a single option to evaluate}
+}
+\value{
+A numeric vector representing the evaluation results of the scenario
 }
 \description{
-Title
+Evaluates a single scenario by assigning values to the leaves of the tree
+according to the given option and calculates the values of the aggregated nodes.
 }
