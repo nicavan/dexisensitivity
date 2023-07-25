@@ -2,13 +2,16 @@
 % Please edit documentation in R/create_tree.R
 \name{getChaine}
 \alias{getChaine}
-\title{Title}
+\title{Get the chain of nodes}
 \usage{
 getChaine(listeNoeuds)
 }
 \arguments{
-\item{listeNoeuds}{node list}
+\item{listeNoeuds}{A list of nodes}
+}
+\value{
+A string representing the chain of nodes
 }
 \description{
-Title
+Retrieves the chain of nodes from a given list of nodes.
 }

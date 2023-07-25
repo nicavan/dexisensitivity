@@ -2,13 +2,17 @@
 % Please edit documentation in R/node.R
 \name{getEstimatedWeights}
 \alias{getEstimatedWeights}
-\title{Title}
+\alias{getEstimatedWeights.Node}
+\title{Get Estimated Weights for Node}
 \usage{
 getEstimatedWeights(aNode)
 }
 \arguments{
-\item{aNode}{aNode}
+\item{aNode}{A Node object.}
+}
+\value{
+A numeric vector of estimated weights.
 }
 \description{
-Calculate the estimated weights from the aggregation table
+Calculates the estimated weights from the aggregation table of a Node object.
 }

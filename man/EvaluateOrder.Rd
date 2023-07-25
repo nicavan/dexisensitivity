@@ -2,13 +2,16 @@
 % Please edit documentation in R/create_tree.R
 \name{EvaluateOrder}
 \alias{EvaluateOrder}
-\title{Title}
+\title{Evaluate the order of nodes in a tree}
 \usage{
 EvaluateOrder(aTree)
 }
 \arguments{
 \item{aTree}{A tree}
 }
+\value{
+The evaluated order of nodes
+}
 \description{
-Title
+Evaluate the order of nodes in a tree
 }

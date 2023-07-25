@@ -2,7 +2,8 @@
 % Please edit documentation in R/node.R
 \name{createAggregationMatrix}
 \alias{createAggregationMatrix}
-\title{Title}
+\alias{createAggregationMatrix.Node}
+\title{Create Aggregation Matrix for Node}
 \usage{
 createAggregationMatrix(
   aNode,
@@ -13,16 +14,19 @@ createAggregationMatrix(
 )
 }
 \arguments{
-\item{aNode}{aNode}
+\item{aNode}{A Node object.}
 
-\item{expectedWeight}{expectedWeight}
+\item{expectedWeight}{Numeric vector of expected weights.}
 
-\item{nbTables}{nbTables}
+\item{nbTables}{Numeric, number of tables (default is 1).}
 
-\item{popSize}{popSize}
+\item{popSize}{Numeric, population size for genetic algorithm (default is 50).}
 
-\item{iters}{iters}
+\item{iters}{Numeric, number of iterations for genetic algorithm (default is 50).}
+}
+\value{
+A list of aggregation matrices.
 }
 \description{
-Title
+Creates an aggregation matrix for a node using genetic algorithm optimization.
 }

@@ -26,7 +26,7 @@
 #' @return An object of class Node.
 #'
 #' @seealso
-#'   \code{\link{printNode}},
+#'   \code{\link{print.Node}},
 #'   \code{\link{getEstimatedWeights}},
 #'   \code{\link{createAggregationMatrix}}
 #'

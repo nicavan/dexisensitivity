@@ -2,15 +2,16 @@
 % Please edit documentation in R/node.R
 \name{print,Node-method}
 \alias{print,Node-method}
-\title{print.node}
+\alias{print.Node}
+\title{print method for Node class object}
 \usage{
 \S4method{print}{Node}(x, ...)
 }
 \arguments{
-\item{x}{The printed Node}
+\item{x}{The Node object to be printed.}
 
-\item{...}{see '...' print prameters}
+\item{...}{additional parameters to be passed to the print function.}
 }
 \description{
-Print method for Node class object
+Prints basic information about the node including its name, id, depth, path, and other properties.
 }

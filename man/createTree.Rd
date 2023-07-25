@@ -2,12 +2,15 @@
 % Please edit documentation in R/create_tree.R
 \name{createTree}
 \alias{createTree}
-\title{Create a Tree}
+\title{Create a Tree from DEXi's XML output}
 \usage{
 createTree(MT)
 }
 \arguments{
 \item{MT}{Tree model}
+}
+\value{
+A list of trees
 }
 \description{
 Use the DEXi's XML output to create the Tree.

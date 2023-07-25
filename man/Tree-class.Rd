@@ -3,6 +3,7 @@
 \docType{class}
 \name{Tree-class}
 \alias{Tree-class}
+\alias{Tree}
 \title{An S4 class to represent a Tree}
 \value{
 An object of class Tree.

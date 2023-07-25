@@ -2,15 +2,18 @@
 % Please edit documentation in R/create_tree.R
 \name{createNode}
 \alias{createNode}
-\title{Title}
+\title{Create a node for the decision tree}
 \usage{
 createNode(listeNoeuds, MT)
 }
 \arguments{
-\item{listeNoeuds}{Node list}
+\item{listeNoeuds}{A list of nodes}
 
-\item{MT}{Main Tree}
+\item{MT}{The main tree (an XML object)}
+}
+\value{
+A new Node object
 }
 \description{
-Title
+Create a node for the decision tree
 }

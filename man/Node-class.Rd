@@ -3,41 +3,51 @@
 \docType{class}
 \name{Node-class}
 \alias{Node-class}
-\title{Title}
+\alias{Node}
+\title{An S4 class to represent a Node}
+\value{
+An object of class Node.
+}
 \description{
-Title
+It includes several slots to store information related to the node, such as its name,
+its depth, and its relationships with other nodes in the tree structure.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{id}}{(numeric) Unique sequential id of the node.}
+\item{\code{id}}{Object of class "numeric", unique sequential id of the node.}
 
-\item{\code{name}}{(character) Name of the node.}
+\item{\code{name}}{Object of class "character", name of the node.}
 
-\item{\code{isLeaf}}{(logical) Is it a leaf?}
+\item{\code{isLeaf}}{Object of class "logical", indicating if it is a leaf.}
 
-\item{\code{isLeafAndAggregated}}{(logical) Is this leaf also an aggregated node!}
+\item{\code{isLeafAndAggregated}}{Object of class "logical", indicating if this leaf is also an aggregated node.}
 
-\item{\code{children}}{(character) List of the names of the node's children.}
+\item{\code{children}}{Object of class "character", list of the names of the node's children.}
 
-\item{\code{sisters}}{(character) List of the names of the node's sisters.}
+\item{\code{sisters}}{Object of class "character", list of the names of the node's sisters.}
 
-\item{\code{mother}}{(character) Name of the node's mother.}
+\item{\code{mother}}{Object of class "character", name of the node's mother.}
 
-\item{\code{aggregation}}{(matrix) If aggregated node, table of aggregation.}
+\item{\code{aggregation}}{Object of class "matrix", aggregation table if the node is aggregated.}
 
-\item{\code{Proba}}{(numeric) Estimated weight of aggregation. If Leaf set basically to uniform.}
+\item{\code{Proba}}{Object of class "numeric", estimated weight of aggregation.}
 
-\item{\code{Depth}}{(numeric) Depth of the node.}
+\item{\code{Depth}}{Object of class "numeric", depth of the node.}
 
-\item{\code{Twin}}{(numeric) In case of multiple leaves, give the id of the other leaves.}
+\item{\code{Twin}}{Object of class "numeric", id of the other leaves in case of multiple leaves.}
 
-\item{\code{CondiProbaList}}{(list) ???????????}
+\item{\code{CondiProbaList}}{Object of class "list", list to store conditional probabilities.}
 
-\item{\code{rangeScale}}{(numeric) Range scale.}
+\item{\code{rangeScale}}{Object of class "numeric", range scale.}
 
-\item{\code{scaleLabel}}{(character) Labels of the different scales.}
+\item{\code{scaleLabel}}{Object of class "character", labels of the different scales.}
 
-\item{\code{nodePath}}{(character) Node path from root to leaf.}
+\item{\code{nodePath}}{Object of class "character", node path from root to leaf.}
 }}
 
+\seealso{
+\code{\link{print.Node}},
+\code{\link{getEstimatedWeights}},
+\code{\link{createAggregationMatrix}}
+}

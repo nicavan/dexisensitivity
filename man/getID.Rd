@@ -2,15 +2,18 @@
 % Please edit documentation in R/create_tree.R
 \name{getID}
 \alias{getID}
-\title{Title}
+\title{Get the ID of a given node}
 \usage{
 getID(listNodes, nodeName)
 }
 \arguments{
-\item{listNodes}{Node list}
+\item{listNodes}{A list of nodes}
 
-\item{nodeName}{Node names}
+\item{nodeName}{The name of the node}
+}
+\value{
+The ID of the node
 }
 \description{
-Title
+Retrieves the ID of a given node from a list of nodes.
 }

@@ -2,15 +2,18 @@
 % Please edit documentation in R/create_tree.R
 \name{getLeaves}
 \alias{getLeaves}
-\title{Title}
+\title{Get the leaves of a given node}
 \usage{
 getLeaves(aTree, nodeID)
 }
 \arguments{
 \item{aTree}{A Tree}
 
-\item{nodeID}{The Node ID}
+\item{nodeID}{The ID of the node}
+}
+\value{
+The leaves of the node
 }
 \description{
-Title
+Retrieves the leaves of a given node
 }

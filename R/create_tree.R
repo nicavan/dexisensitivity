@@ -1,15 +1,15 @@
-#' Create a Tree
+#' Create a Tree from DEXi's XML output
 #'
 #' Use the DEXi's XML output to create the Tree.
 #'
 #' @param MT Tree model
 #'
-#' @return
-#' @export
+#' @return A list of trees
 #'
 #' @import XML
 #' @import AlgDesign
-#' @examples
+#'
+#' @export
 createTree <- function(MT) {
 
     # Get root(s) name(s) of the DEXi Tree
@@ -153,39 +153,14 @@ createTree <- function(MT) {
 }
 
 
-
-#' Title
+#' Create a node for the decision tree
 #'
-#' @param listeNoeuds node list
+#' @param listeNoeuds A list of nodes
+#' @param MT The main tree (an XML object)
 #'
-#' @return
+#' @return A new Node object
+#'
 #' @export
-#'
-#' @examples
-getChaine <- function(listeNoeuds) {
-
-    for(k in 1:length(listeNoeuds)) {
-        if (k==1) {
-            chaine <- paste0("//ATTRIBUTE[NAME='", listeNoeuds[k], "']")
-        } else {
-            chaine <- paste0(chaine, "/ATTRIBUTE[NAME='", listeNoeuds[k], "']")
-        }
-    }
-
-    return(chaine)
-}
-
-
-#' Title
-#'
-#' @param listeNoeuds Node list
-#'
-#' @param MT Main Tree
-#'
-#' @return
-#' @export
-#'
-#' @examples
 createNode <- function(listeNoeuds, MT) {
 
     # Is it a leaf?
@@ -309,15 +284,39 @@ createNode <- function(listeNoeuds, MT) {
 }
 
 
-#' Title
+#' Get the chain of nodes
 #'
-#' @param listNodes Node list
-#' @param nodeName Node names
+#' Retrieves the chain of nodes from a given list of nodes.
 #'
-#' @return
+#' @param listeNoeuds A list of nodes
+#'
+#' @return A string representing the chain of nodes
+#'
 #' @export
+getChaine <- function(listeNoeuds) {
+
+    for(k in 1:length(listeNoeuds)) {
+        if (k==1) {
+            chaine <- paste0("//ATTRIBUTE[NAME='", listeNoeuds[k], "']")
+        } else {
+            chaine <- paste0(chaine, "/ATTRIBUTE[NAME='", listeNoeuds[k], "']")
+        }
+    }
+
+    return(chaine)
+}
+
+
+#' Get the ID of a given node
 #'
-#' @examples
+#' Retrieves the ID of a given node from a list of nodes.
+#'
+#' @param listNodes A list of nodes
+#' @param nodeName The name of the node
+#'
+#' @return The ID of the node
+#'
+#' @export
 # getID <- function(listNodes,nodeName) {
 #     out <- numeric(0)
 #     for(i in 1:length(listNodes)) {
@@ -337,14 +336,13 @@ getID <- function(listNodes,nodeName) {
 }
 
 
-#' Title
+#' Evaluate the order of nodes in a tree
 #'
 #' @param aTree A tree
 #'
-#' @return
-#' @export
+#' @return The evaluated order of nodes
 #'
-#' @examples
+#' @export
 EvaluateOrder <- function(aTree) {
     evalOrder <- numeric(0)
     if (aTree@isLeafAggregated) {
@@ -393,15 +391,16 @@ EvaluateOrder <- function(aTree) {
 }
 
 
-#' Title
+#' Get the leaves of a given node
+#'
+#' Retrieves the leaves of a given node
 #'
 #' @param aTree A Tree
-#' @param nodeID The Node ID
+#' @param nodeID The ID of the node
 #'
-#' @return
+#' @return The leaves of the node
+#'
 #' @export
-#'
-#' @examples
 getLeaves <- function(aTree,nodeID) {
     if (is.character(nodeID)) {
         l.id <- getID(aTree@Nodes, nodeID)
