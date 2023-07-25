@@ -2,17 +2,20 @@
 % Please edit documentation in R/create_subtree.R
 \name{createSubTree}
 \alias{createSubTree}
-\title{Title}
+\title{Constructs a subtree from a given node in a tree}
 \usage{
 createSubTree(aTree, nodeName, avoidrep = F)
 }
 \arguments{
-\item{aTree}{aTree}
+\item{aTree}{A "Tree" object}
 
-\item{nodeName}{nodeName}
+\item{nodeName}{The name of the node from which to start constructing the subtree}
 
-\item{avoidrep}{T if you want to avoid repeted nodes}
+\item{avoidrep}{A logical value indicating whether to avoid repeated nodes (Default: FALSE)}
+}
+\value{
+A "Tree" object representing the subtree
 }
 \description{
-Title
+Constructs a subtree starting from a specific node in a provided tree
 }
