@@ -12,9 +12,11 @@ EvaluateScenarios(aTree, options)
 \item{options}{A matrix representing multiple options to evaluate}
 }
 \value{
-A list of numeric vectors representing the evaluation results of the scenarios
+A list of numeric vectors representing the evaluation results of the
+scenarios
 }
 \description{
-Works as a wrapper for the \code{EvaluateScenario} function that allows evaluation of
-multiple scenarios at once. The scenarios are given as columns in the \code{options} matrix.
+Works as a wrapper for the \code{EvaluateScenario} function that allows evaluation
+of multiple scenarios at once. The scenarios are given as columns in the
+\code{options} matrix.
 }

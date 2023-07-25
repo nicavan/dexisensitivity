@@ -9,7 +9,8 @@ compareScenario(aTree, theScenarios, listNodes)
 \arguments{
 \item{aTree}{A "Tree" object}
 
-\item{theScenarios}{A list of numeric vectors representing the evaluation results of the scenarios}
+\item{theScenarios}{A list of numeric vectors representing the evaluation
+results of the scenarios}
 
 \item{listNodes}{A list of node names to include in the comparison}
 }

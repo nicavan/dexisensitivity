@@ -16,5 +16,6 @@ A numeric vector representing the evaluation results of the scenario
 }
 \description{
 Evaluates a single scenario by assigning values to the leaves of the tree
-according to the given option and calculates the values of the aggregated nodes.
+according to the given option and calculates the values of the aggregated
+nodes.
 }

@@ -9,9 +9,11 @@ createSubTree(aTree, nodeName, avoidrep = F)
 \arguments{
 \item{aTree}{A "Tree" object}
 
-\item{nodeName}{The name of the node from which to start constructing the subtree}
+\item{nodeName}{The name of the node from which to start constructing the
+subtree}
 
-\item{avoidrep}{A logical value indicating whether to avoid repeated nodes (Default: FALSE)}
+\item{avoidrep}{A logical value indicating whether to avoid repeated nodes
+(Default: FALSE)}
 }
 \value{
 A "Tree" object representing the subtree

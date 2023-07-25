@@ -7,7 +7,8 @@
 saveScenarios(theScenarios, file)
 }
 \arguments{
-\item{theScenarios}{A list of numeric vectors representing the evaluation results of the scenarios}
+\item{theScenarios}{A list of numeric vectors representing the evaluation
+results of the scenarios}
 
 \item{file}{The name of the file to save the scenarios}
 }

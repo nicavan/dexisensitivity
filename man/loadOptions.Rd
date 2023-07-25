@@ -13,5 +13,6 @@ loadOptions(filename)
 A matrix representing the loaded options table
 }
 \description{
-Retrieves previously saved options from a file for further analysis or processing.
+Retrieves previously saved options from a file for further analysis or
+processing.
 }

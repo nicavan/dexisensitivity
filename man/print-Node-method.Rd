@@ -13,5 +13,6 @@
 \item{...}{additional parameters to be passed to the print function.}
 }
 \description{
-Prints basic information about the node including its name, id, depth, path, and other properties.
+Prints basic information about the node including its name, id, depth, path,
+and other properties.
 }

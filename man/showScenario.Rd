@@ -11,13 +11,15 @@ showScenario(aScenario, aTree, isLabelY = TRUE, isPar = T)
 
 \item{aTree}{The associated "Tree" object}
 
-\item{isLabelY}{A logical value indicating whether to include labels on the Y axis (Default: TRUE)}
+\item{isLabelY}{A logical value indicating whether to include labels on the Y
+axis (Default: TRUE)}
 
-\item{isPar}{A logical value indicating whether to modify the graph's parameters (Default: TRUE)}
+\item{isPar}{A logical value indicating whether to modify the graph's
+parameters (Default: TRUE)}
 }
 \description{
-Visualizes the values assigned to each attribute in a given scenario
-and marks the maximum possible value for each attribute using a bar chart.
+Visualizes the values assigned to each attribute in a given scenario and
+marks the maximum possible value for each attribute using a bar chart.
 }
 \seealso{
 \code{\link{EvaluateScenario}}

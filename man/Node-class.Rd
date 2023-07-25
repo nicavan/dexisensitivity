@@ -9,8 +9,9 @@
 An object of class Node.
 }
 \description{
-It includes several slots to store information related to the node, such as its name,
-its depth, and its relationships with other nodes in the tree structure.
+It includes several slots to store information related to the node, such as
+its name, its depth, and its relationships with other nodes in the tree
+structure.
 }
 \section{Slots}{
 
@@ -21,23 +22,29 @@ its depth, and its relationships with other nodes in the tree structure.
 
 \item{\code{isLeaf}}{Object of class "logical", indicating if it is a leaf.}
 
-\item{\code{isLeafAndAggregated}}{Object of class "logical", indicating if this leaf is also an aggregated node.}
+\item{\code{isLeafAndAggregated}}{Object of class "logical", indicating if this leaf
+is also an aggregated node.}
 
-\item{\code{children}}{Object of class "character", list of the names of the node's children.}
+\item{\code{children}}{Object of class "character", list of the names of the node's
+children.}
 
-\item{\code{sisters}}{Object of class "character", list of the names of the node's sisters.}
+\item{\code{sisters}}{Object of class "character", list of the names of the node's
+sisters.}
 
 \item{\code{mother}}{Object of class "character", name of the node's mother.}
 
-\item{\code{aggregation}}{Object of class "matrix", aggregation table if the node is aggregated.}
+\item{\code{aggregation}}{Object of class "matrix", aggregation table if the node is
+aggregated.}
 
 \item{\code{Proba}}{Object of class "numeric", estimated weight of aggregation.}
 
 \item{\code{Depth}}{Object of class "numeric", depth of the node.}
 
-\item{\code{Twin}}{Object of class "numeric", id of the other leaves in case of multiple leaves.}
+\item{\code{Twin}}{Object of class "numeric", id of the other leaves in case of
+multiple leaves.}
 
-\item{\code{CondiProbaList}}{Object of class "list", list to store conditional probabilities.}
+\item{\code{CondiProbaList}}{Object of class "list", list to store conditional
+probabilities.}
 
 \item{\code{rangeScale}}{Object of class "numeric", range scale.}
 
@@ -47,7 +54,6 @@ its depth, and its relationships with other nodes in the tree structure.
 }}
 
 \seealso{
-\code{\link{print.Node}},
-\code{\link{getEstimatedWeights}},
+\code{\link{print.Node}}, \code{\link{getEstimatedWeights}},
 \code{\link{createAggregationMatrix}}
 }

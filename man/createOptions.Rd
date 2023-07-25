@@ -17,6 +17,7 @@ createOptions(aTree, nbOptions = 1, aSeed = -1)
 A matrix of random options
 }
 \description{
-The options are generated based on the \code{rangeScale} and \code{Proba} properties of the tree nodes.
-This is useful for creating random scenarios for simulation or analysis.
+The options are generated based on the \code{rangeScale} and \code{Proba} properties of
+the tree nodes. This is useful for creating random scenarios for simulation
+or analysis.
 }

@@ -1,7 +1,8 @@
 #' Generate a matrix of random options for a given tree
 #'
-#' The options are generated based on the `rangeScale` and `Proba` properties of the tree nodes.
-#' This is useful for creating random scenarios for simulation or analysis.
+#' The options are generated based on the `rangeScale` and `Proba` properties of
+#' the tree nodes. This is useful for creating random scenarios for simulation
+#' or analysis.
 #'
 #' @param aTree A "Tree" object
 #' @param nbOptions The number of random options to create (Default: 1)
@@ -32,7 +33,8 @@ createOptions <- function(aTree, nbOptions = 1, aSeed = -1) {
 #' Evaluates a single scenario for a given tree
 #'
 #' Evaluates a single scenario by assigning values to the leaves of the tree
-#' according to the given option and calculates the values of the aggregated nodes.
+#' according to the given option and calculates the values of the aggregated
+#' nodes.
 #'
 #' @param aTree A "Tree" object
 #' @param option A matrix representing a single option to evaluate
@@ -130,13 +132,15 @@ EvaluateScenario <- function(aTree, option) {
 
 #' Evaluate multiple scenarios for a given tree
 #'
-#' Works as a wrapper for the `EvaluateScenario` function that allows evaluation of
-#' multiple scenarios at once. The scenarios are given as columns in the `options` matrix.
+#' Works as a wrapper for the `EvaluateScenario` function that allows evaluation
+#' of multiple scenarios at once. The scenarios are given as columns in the
+#' `options` matrix.
 #'
 #' @param aTree A "Tree" object
 #' @param options A matrix representing multiple options to evaluate
 #'
-#' @return A list of numeric vectors representing the evaluation results of the scenarios
+#' @return A list of numeric vectors representing the evaluation results of the
+#'   scenarios
 #'
 #' @export
 EvaluateScenarios <- function(aTree, options) {
@@ -171,7 +175,8 @@ saveOptions <- function(anOptionsTable,
 
 #' Load a table of options from a file
 #'
-#' Retrieves previously saved options from a file for further analysis or processing.
+#' Retrieves previously saved options from a file for further analysis or
+#' processing.
 #'
 #' @param filename The name of the file to load the options table from
 #'
@@ -190,7 +195,8 @@ loadOptions <- function(filename) {
 #'
 #' Stores the results of scenario evaluations into a file for later analysis.
 #'
-#' @param theScenarios A list of numeric vectors representing the evaluation results of the scenarios
+#' @param theScenarios A list of numeric vectors representing the evaluation
+#'   results of the scenarios
 #' @param file The name of the file to save the scenarios
 #'
 #' @return NULL
@@ -209,18 +215,19 @@ saveScenarios <- function(theScenarios,
 
 #' Plot a bar chart of a single scenario
 #'
-#' Visualizes the values assigned to each attribute in a given scenario
-#' and marks the maximum possible value for each attribute using a bar chart.
+#' Visualizes the values assigned to each attribute in a given scenario and
+#' marks the maximum possible value for each attribute using a bar chart.
 #'
 #' @param aScenario the scenario to graph
 #' @param aTree The associated "Tree" object
-#' @param isLabelY A logical value indicating whether to include labels on the Y axis (Default: TRUE)
-#' @param isPar A logical value indicating whether to modify the graph's parameters (Default: TRUE)
+#' @param isLabelY A logical value indicating whether to include labels on the Y
+#'   axis (Default: TRUE)
+#' @param isPar A logical value indicating whether to modify the graph's
+#'   parameters (Default: TRUE)
 #'
 #' @return NULL
 #'
-#' @seealso
-#'   \code{\link{EvaluateScenario}}
+#' @seealso \code{\link{EvaluateScenario}}
 #'
 #' @importFrom withr defer
 #'
@@ -279,11 +286,11 @@ showScenario <- function(aScenario,
 #' multiple scenarios using a radial plot.
 #'
 #' @param aTree A "Tree" object
-#' @param theScenarios A list of numeric vectors representing the evaluation results of the scenarios
+#' @param theScenarios A list of numeric vectors representing the evaluation
+#'   results of the scenarios
 #' @param listNodes A list of node names to include in the comparison
 #'
-#' @seealso
-#'   \code{\link{EvaluateScenarios}}
+#' @seealso \code{\link{EvaluateScenarios}}
 #'
 #' @return NULL
 #' @export

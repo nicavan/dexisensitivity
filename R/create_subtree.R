@@ -3,8 +3,10 @@
 #' Constructs a subtree starting from a specific node in a provided tree
 #'
 #' @param aTree A "Tree" object
-#' @param nodeName The name of the node from which to start constructing the subtree
-#' @param avoidrep A logical value indicating whether to avoid repeated nodes (Default: FALSE)
+#' @param nodeName The name of the node from which to start constructing the
+#'   subtree
+#' @param avoidrep A logical value indicating whether to avoid repeated nodes
+#'   (Default: FALSE)
 #'
 #' @return A "Tree" object representing the subtree
 #'

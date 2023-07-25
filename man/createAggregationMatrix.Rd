@@ -20,13 +20,16 @@ createAggregationMatrix(
 
 \item{nbTables}{Numeric, number of tables (default is 1).}
 
-\item{popSize}{Numeric, population size for genetic algorithm (default is 50).}
+\item{popSize}{Numeric, population size for genetic algorithm (default is
+50).}
 
-\item{iters}{Numeric, number of iterations for genetic algorithm (default is 50).}
+\item{iters}{Numeric, number of iterations for genetic algorithm (default is
+50).}
 }
 \value{
 A list of aggregation matrices.
 }
 \description{
-Creates an aggregation matrix for a node using genetic algorithm optimization.
+Creates an aggregation matrix for a node using genetic algorithm
+optimization.
 }

@@ -32,13 +32,13 @@
 #' @slot rootName Object of class "character", name of the root node.
 #'
 #' @method Tree class objects are used in the creation and display of tree
-#' structures. Information from the object is used to create and print the tree
-#' structure in a human-readable format.
+#'   structures. Information from the object is used to create and print the
+#'   tree structure in a human-readable format.
 #'
 #' @return An object of class Tree.
 #'
 #' @seealso \code{\link{print.Tree}}, \code{\link{show.Tree}},
-#' \code{\link{describe.Tree}}
+#'   \code{\link{describe.Tree}}
 #'
 #' @aliases Tree
 #'

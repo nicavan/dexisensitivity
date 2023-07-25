@@ -3,32 +3,37 @@
 
 #' An S4 class to represent a Node
 #'
-#' It includes several slots to store information related to the node, such as its name,
-#' its depth, and its relationships with other nodes in the tree structure.
+#' It includes several slots to store information related to the node, such as
+#' its name, its depth, and its relationships with other nodes in the tree
+#' structure.
 #'
 #'
 #' @slot id Object of class "numeric", unique sequential id of the node.
 #' @slot name Object of class "character", name of the node.
 #' @slot isLeaf Object of class "logical", indicating if it is a leaf.
-#' @slot isLeafAndAggregated Object of class "logical", indicating if this leaf is also an aggregated node.
-#' @slot children Object of class "character", list of the names of the node's children.
-#' @slot sisters Object of class "character", list of the names of the node's sisters.
+#' @slot isLeafAndAggregated Object of class "logical", indicating if this leaf
+#'   is also an aggregated node.
+#' @slot children Object of class "character", list of the names of the node's
+#'   children.
+#' @slot sisters Object of class "character", list of the names of the node's
+#'   sisters.
 #' @slot mother Object of class "character", name of the node's mother.
-#' @slot aggregation Object of class "matrix", aggregation table if the node is aggregated.
+#' @slot aggregation Object of class "matrix", aggregation table if the node is
+#'   aggregated.
 #' @slot Proba Object of class "numeric", estimated weight of aggregation.
 #' @slot Depth Object of class "numeric", depth of the node.
-#' @slot Twin Object of class "numeric", id of the other leaves in case of multiple leaves.
-#' @slot CondiProbaList Object of class "list", list to store conditional probabilities.
+#' @slot Twin Object of class "numeric", id of the other leaves in case of
+#'   multiple leaves.
+#' @slot CondiProbaList Object of class "list", list to store conditional
+#'   probabilities.
 #' @slot rangeScale Object of class "numeric", range scale.
 #' @slot scaleLabel Object of class "character", labels of the different scales.
 #' @slot nodePath Object of class "character", node path from root to leaf.
 #'
 #' @return An object of class Node.
 #'
-#' @seealso
-#'   \code{\link{print.Node}},
-#'   \code{\link{getEstimatedWeights}},
-#'   \code{\link{createAggregationMatrix}}
+#' @seealso \code{\link{print.Node}}, \code{\link{getEstimatedWeights}},
+#' \code{\link{createAggregationMatrix}}
 #'
 #' @aliases Node
 #'
@@ -56,7 +61,8 @@ setClass("Node",
 
 #' print method for Node class object
 #'
-#' Prints basic information about the node including its name, id, depth, path, and other properties.
+#' Prints basic information about the node including its name, id, depth, path,
+#' and other properties.
 #'
 #' @param x The Node object to be printed.
 #'
@@ -120,13 +126,16 @@ getEstimatedWeights <- function(aNode) {
 
 #' Create Aggregation Matrix for Node
 #'
-#' Creates an aggregation matrix for a node using genetic algorithm optimization.
+#' Creates an aggregation matrix for a node using genetic algorithm
+#' optimization.
 #'
 #' @param aNode A Node object.
 #' @param expectedWeight Numeric vector of expected weights.
 #' @param nbTables Numeric, number of tables (default is 1).
-#' @param popSize Numeric, population size for genetic algorithm (default is 50).
-#' @param iters Numeric, number of iterations for genetic algorithm (default is 50).
+#' @param popSize Numeric, population size for genetic algorithm (default is
+#'   50).
+#' @param iters Numeric, number of iterations for genetic algorithm (default is
+#'   50).
 #'
 #' @return A list of aggregation matrices.
 #'
