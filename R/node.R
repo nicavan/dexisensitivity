@@ -1,28 +1,38 @@
 # S4 Node Class #
 #################
 
-#' Title
+#' An S4 class to represent a Node
 #'
-#' @slot id (numeric) Unique sequential id of the node.
-#' @slot name (character) Name of the node.
-#' @slot isLeaf (logical) Is it a leaf?
-#' @slot isLeafAndAggregated (logical) Is this leaf also an aggregated node!
-#' @slot children (character) List of the names of the node's children.
-#' @slot sisters (character) List of the names of the node's sisters.
-#' @slot mother (character) Name of the node's mother.
-#' @slot aggregation (matrix) If aggregated node, table of aggregation.
-#' @slot Proba (numeric) Estimated weight of aggregation. If Leaf set basically to uniform.
-#' @slot Depth (numeric) Depth of the node.
-#' @slot Twin (numeric) In case of multiple leaves, give the id of the other leaves.
-#' @slot CondiProbaList (list) ???????????
-#' @slot rangeScale (numeric) Range scale.
-#' @slot scaleLabel (character) Labels of the different scales.
-#' @slot nodePath (character) Node path from root to leaf.
+#' It includes several slots to store information related to the node, such as its name,
+#' its depth, and its relationships with other nodes in the tree structure.
 #'
-#' @return
+#'
+#' @slot id Object of class "numeric", unique sequential id of the node.
+#' @slot name Object of class "character", name of the node.
+#' @slot isLeaf Object of class "logical", indicating if it is a leaf.
+#' @slot isLeafAndAggregated Object of class "logical", indicating if this leaf is also an aggregated node.
+#' @slot children Object of class "character", list of the names of the node's children.
+#' @slot sisters Object of class "character", list of the names of the node's sisters.
+#' @slot mother Object of class "character", name of the node's mother.
+#' @slot aggregation Object of class "matrix", aggregation table if the node is aggregated.
+#' @slot Proba Object of class "numeric", estimated weight of aggregation.
+#' @slot Depth Object of class "numeric", depth of the node.
+#' @slot Twin Object of class "numeric", id of the other leaves in case of multiple leaves.
+#' @slot CondiProbaList Object of class "list", list to store conditional probabilities.
+#' @slot rangeScale Object of class "numeric", range scale.
+#' @slot scaleLabel Object of class "character", labels of the different scales.
+#' @slot nodePath Object of class "character", node path from root to leaf.
+#'
+#' @return An object of class Node.
+#'
+#' @seealso
+#'   \code{\link{printNode}},
+#'   \code{\link{getEstimatedWeights}},
+#'   \code{\link{createAggregationMatrix}}
+#'
+#' @aliases Node
+#'
 #' @export
-#'
-#' @examples
 setClass("Node",
          representation(id = "numeric",
                         name = "character",
@@ -44,18 +54,19 @@ setClass("Node",
 
 
 
-#' print.node
+#' print method for Node class object
 #'
-#' Print method for Node class object
+#' Prints basic information about the node including its name, id, depth, path, and other properties.
 #'
-#' @param x The printed Node
+#' @param x The Node object to be printed.
 #'
-#' @param ... see '...' print prameters
+#' @param ... additional parameters to be passed to the print function.
 #'
 #' @return
-#' @export
 #'
-#' @examples
+#' @aliases print.Node
+#'
+#' @export
 setMethod("print","Node",
           function(x,...){
               cat("Node name:", x@name)
@@ -87,16 +98,17 @@ setMethod("print","Node",
 
 
 
-#' Title
+#' Get Estimated Weights for Node
 #'
-#' Calculate the estimated weights from the aggregation table
+#' Calculates the estimated weights from the aggregation table of a Node object.
 #'
-#' @param aNode aNode
+#' @param aNode A Node object.
 #'
-#' @return
+#' @return A numeric vector of estimated weights.
+#'
+#' @aliases getEstimatedWeights.Node
+#'
 #' @export
-#'
-#' @examples
 getEstimatedWeights <- function(aNode) {
     aggregationTable <- aNode@aggregation
     y <- aggregationTable[ ,dim(aggregationTable)[2]]
@@ -106,20 +118,23 @@ getEstimatedWeights <- function(aNode) {
 }
 
 
-#' Title
+#' Create Aggregation Matrix for Node
 #'
-#' @param aNode aNode
-#' @param expectedWeight expectedWeight
-#' @param nbTables nbTables
-#' @param popSize popSize
-#' @param iters iters
+#' Creates an aggregation matrix for a node using genetic algorithm optimization.
 #'
-#' @return
+#' @param aNode A Node object.
+#' @param expectedWeight Numeric vector of expected weights.
+#' @param nbTables Numeric, number of tables (default is 1).
+#' @param popSize Numeric, population size for genetic algorithm (default is 50).
+#' @param iters Numeric, number of iterations for genetic algorithm (default is 50).
+#'
+#' @return A list of aggregation matrices.
+#'
+#' @aliases createAggregationMatrix.Node
+#'
 #' @export
 #'
 #' @importFrom genalg rbga
-#'
-#' @examples
 createAggregationMatrix <- function(aNode,
                                     expectedWeight,
                                     nbTables = 1,
