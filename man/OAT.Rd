@@ -12,8 +12,11 @@ OAT(aTree, option)
 \item{option}{The initial configuration for the decision tree parameters.}
 }
 \value{
-A matrix with evaluation results for each attribute in the decision tree, under different variations of the parameters.
+A matrix with evaluation results for each attribute in the decision
+tree, under different variations of the parameters.
 }
 \description{
-Conducts One-Factor-At-A-Time (OFAT) sensitivity analysis by performing simulations with varying factors, keeping all but one factor constant for each simulation.
+Conducts One-Factor-At-A-Time (OFAT) sensitivity analysis by performing
+simulations with varying factors, keeping all but one factor constant for
+each simulation.
 }

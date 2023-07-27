@@ -1,13 +1,14 @@
 #' Estimates the execution time for factorial simulations
 #'
 #' Performs a time estimation for a specified number of factorial simulations.
-#' The estimation is based on the time taken to execute a smaller number of simulations specified by `iTest`.
+#' The estimation is based on the time taken to execute a smaller number of
+#' simulations specified by `iTest`.
 #'
 #' @param aTree Decision tree to run simulations on.
-#' @param iTest Number of simulations to be used for time estimation, defaults to 50.
+#' @param iTest Number of simulations to be used for time estimation, defaults
+#'   to 50.
 #'
-#' @return No explicit return. Prints out the estimated execution
-#'   time.
+#' @return No explicit return. Prints out the estimated execution time.
 #'
 #' @export
 infoAOV <- function(aTree, iTest = 50) {
@@ -42,12 +43,16 @@ infoAOV <- function(aTree, iTest = 50) {
 
 #' Calculate sensitivity criteria for model terms
 #'
-#' Calculates sensitivity criteria for each term in a fitted model,
-#' including degree of freedom, sum of squares, ratio of sum of squares to total sum of squares, mean squares, and the F value.
+#' Calculates sensitivity criteria for each term in a fitted model, including
+#' degree of freedom, sum of squares, ratio of sum of squares to total sum of
+#' squares, mean squares, and the F value.
 #'
 #' @param aov.obj An object of class `aov` resulting from a call to `aov()`.
 #'
-#' @return A data frame with the degree of freedom, sum of squares, ratio of sum of squares to total sum of squares, mean squares, and the F value for each term in the model. The rows of the data frame are ordered in decreasing order of the ratio of sum of squares to total sum of squares.
+#' @return A data frame with the degree of freedom, sum of squares, ratio of sum
+#'   of squares to total sum of squares, mean squares, and the F value for each
+#'   term in the model. The rows of the data frame are ordered in decreasing
+#'   order of the ratio of sum of squares to total sum of squares.
 #'
 #' @export
 sensib.effet <- function(aov.obj) {
@@ -127,7 +132,9 @@ sensib.effet <- function(aov.obj) {
 
 #' Calculate sensitivity factors for model terms
 #'
-#' Calculates sensitivity factors for each term in a fitted model based on specific factors of interest. The function uses the parameters `las` and `...` to control the appearance of the generated bar plot.
+#' Calculates sensitivity factors for each term in a fitted model based on
+#' specific factors of interest. The function uses the parameters `las` and
+#' `...` to control the appearance of the generated bar plot.
 #'
 #'
 #' @param aov.obj An object of class `aov` resulting from a call to `aov()`.
@@ -299,9 +306,11 @@ sensib.total <- function(aov.obj) {
 #' Visualizes the results of an Analysis of Variance (AOV).
 #'
 #' @param aAOV_DEXi A list containing the AOV results.
-#' @param main.show Logical, if TRUE, main effects and total sums of squares are displayed in the plot. Defaults to TRUE.
+#' @param main.show Logical, if TRUE, main effects and total sums of squares are
+#'   displayed in the plot. Defaults to TRUE.
 #' @param nb.plot The number of plots to display.
-#' @param beside Logical, if TRUE, the bar plot is displayed horizontally. Defaults to TRUE.
+#' @param beside Logical, if TRUE, the bar plot is displayed horizontally.
+#'   Defaults to TRUE.
 #' @param las The style of axis labels on the bar plots. Default is 1.
 #' @param ... Additional arguments to control the appearance of the bar plots.
 #'

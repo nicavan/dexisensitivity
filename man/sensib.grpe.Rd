@@ -19,5 +19,7 @@ sensib.grpe(aov.obj, fact.interet, las = 1, ...)
 A data frame with sensitivity factors for each term in the model.
 }
 \description{
-Calculates sensitivity factors for each term in a fitted model based on specific factors of interest. The function uses the parameters \code{las} and \code{...} to control the appearance of the generated bar plot.
+Calculates sensitivity factors for each term in a fitted model based on
+specific factors of interest. The function uses the parameters \code{las} and
+\code{...} to control the appearance of the generated bar plot.
 }

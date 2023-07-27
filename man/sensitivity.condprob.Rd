@@ -7,7 +7,8 @@
 sensitivity.condprob(condproblist, weightlist)
 }
 \arguments{
-\item{condproblist}{A list of matrices of conditional probabilities (Y conditional to each A_i) plus the vector of Y probabilities.}
+\item{condproblist}{A list of matrices of conditional probabilities (Y
+conditional to each A_i) plus the vector of Y probabilities.}
 
 \item{weightlist}{The list of weights of the A_i factor levels.}
 }
@@ -15,5 +16,6 @@ sensitivity.condprob(condproblist, weightlist)
 A vector of Sensitivity Indices (SI).
 }
 \description{
-Calculates the first order sensitivity indices of Y with respect to A_i descendants, when given the conditional probabilities and A_i weights.
+Calculates the first order sensitivity indices of Y with respect to A_i
+descendants, when given the conditional probabilities and A_i weights.
 }

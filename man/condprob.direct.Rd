@@ -7,17 +7,23 @@
 condprob.direct(table, weightlist, sy, Ylevels)
 }
 \arguments{
-\item{table}{A matrix giving all the level combinations of the A_i factors and, in the last column, the associated Y values.}
+\item{table}{A matrix giving all the level combinations of the A_i factors
+and, in the last column, the associated Y values.}
 
-\item{weightlist}{A list whose elements are the weight vectors of each A_i variable. If missing, A_i levels are assumed to have equal weights.}
+\item{weightlist}{A list whose elements are the weight vectors of each A_i
+variable. If missing, A_i levels are assumed to have equal weights.}
 
 \item{sy}{The number of unique Y values.}
 
-\item{Ylevels}{Optional argument giving the Y levels. If missing, the Ylevels are extracted from the table.}
+\item{Ylevels}{Optional argument giving the Y levels. If missing, the Ylevels
+are extracted from the table.}
 }
 \value{
-A list containing the matrices of Y probabilities conditional to each A_i factor and, in the last position, the vector of marginal Y probabilities.
+A list containing the matrices of Y probabilities conditional to each
+A_i factor and, in the last position, the vector of marginal Y
+probabilities.
 }
 \description{
-Calculates the probabilities of Y=y and the probabilities of Y conditional to its direct descendants A_i.
+Calculates the probabilities of Y=y and the probabilities of Y conditional to
+its direct descendants A_i.
 }

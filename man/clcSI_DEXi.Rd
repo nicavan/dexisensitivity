@@ -9,11 +9,14 @@ clcSI_DEXi(aTree, avoidrep = F)
 \arguments{
 \item{aTree}{A decision tree object to perform the analysis on.}
 
-\item{avoidrep}{A boolean to decide whether to avoid repeated nodes. Default is FALSE.}
+\item{avoidrep}{A boolean to decide whether to avoid repeated nodes. Default
+is FALSE.}
 }
 \value{
-A vector of Sensitivity Indices for each attribute in the decision tree.
+A vector of Sensitivity Indices for each attribute in the decision
+tree.
 }
 \description{
-A helper function for \code{SI_DEXi} to calculate Sensitivity Index (SI) of a decision tree.
+A helper function for \code{SI_DEXi} to calculate Sensitivity Index (SI) of a
+decision tree.
 }

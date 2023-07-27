@@ -1,6 +1,7 @@
 #' Get Aggregated Attributes Ordered by Depth
 #'
-#' Return aggregated attributes ordered by depth. This function is typically used for analysis strategy (AS).
+#' Return aggregated attributes ordered by depth. This function is typically
+#' used for analysis strategy (AS).
 #'
 #' @param aTree A decision tree object.
 #'

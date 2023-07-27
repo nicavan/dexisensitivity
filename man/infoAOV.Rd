@@ -9,13 +9,14 @@ infoAOV(aTree, iTest = 50)
 \arguments{
 \item{aTree}{Decision tree to run simulations on.}
 
-\item{iTest}{Number of simulations to be used for time estimation, defaults to 50.}
+\item{iTest}{Number of simulations to be used for time estimation, defaults
+to 50.}
 }
 \value{
-No explicit return. Prints out the estimated execution
-time.
+No explicit return. Prints out the estimated execution time.
 }
 \description{
 Performs a time estimation for a specified number of factorial simulations.
-The estimation is based on the time taken to execute a smaller number of simulations specified by \code{iTest}.
+The estimation is based on the time taken to execute a smaller number of
+simulations specified by \code{iTest}.
 }

@@ -4,8 +4,10 @@
 #'
 #' @param aTree A decision tree object to perform the analysis on.
 #' @param fileName The file name to write the SI to. Default is "SI_out.csv".
-#' @param isFile A boolean to decide whether to write the SI to a file. Default is TRUE.
-#' @param avoidrep A boolean to decide whether to avoid repeated nodes. Default is FALSE.
+#' @param isFile A boolean to decide whether to write the SI to a file. Default
+#'   is TRUE.
+#' @param avoidrep A boolean to decide whether to avoid repeated nodes. Default
+#'   is FALSE.
 #'
 #' @return A list of Sensitivity Indices for each node in the tree.
 #'
@@ -60,12 +62,15 @@ SI_DEXi <- function(aTree,
 
 #' Calculate Sensitivity Index (SI) Helper Function
 #'
-#' A helper function for `SI_DEXi` to calculate Sensitivity Index (SI) of a decision tree.
+#' A helper function for `SI_DEXi` to calculate Sensitivity Index (SI) of a
+#' decision tree.
 #'
 #' @param aTree A decision tree object to perform the analysis on.
-#' @param avoidrep A boolean to decide whether to avoid repeated nodes. Default is FALSE.
+#' @param avoidrep A boolean to decide whether to avoid repeated nodes. Default
+#'   is FALSE.
 #'
-#' @return A vector of Sensitivity Indices for each attribute in the decision tree.
+#' @return A vector of Sensitivity Indices for each attribute in the decision
+#'   tree.
 #'
 #' @export
 clcSI_DEXi <- function(aTree, avoidrep = F) {
@@ -178,14 +183,20 @@ clcSI_DEXi <- function(aTree, avoidrep = F) {
 
 #' Calculate Conditional Probabilities
 #'
-#' Calculates the probabilities of Y=y and the probabilities of Y conditional to its direct descendants A_i.
+#' Calculates the probabilities of Y=y and the probabilities of Y conditional to
+#' its direct descendants A_i.
 #'
-#' @param table A matrix giving all the level combinations of the A_i factors and, in the last column, the associated Y values.
-#' @param weightlist A list whose elements are the weight vectors of each A_i variable. If missing, A_i levels are assumed to have equal weights.
+#' @param table A matrix giving all the level combinations of the A_i factors
+#'   and, in the last column, the associated Y values.
+#' @param weightlist A list whose elements are the weight vectors of each A_i
+#'   variable. If missing, A_i levels are assumed to have equal weights.
 #' @param sy The number of unique Y values.
-#' @param Ylevels Optional argument giving the Y levels. If missing, the Ylevels are extracted from the table.
+#' @param Ylevels Optional argument giving the Y levels. If missing, the Ylevels
+#'   are extracted from the table.
 #'
-#' @return A list containing the matrices of Y probabilities conditional to each A_i factor and, in the last position, the vector of marginal Y probabilities.
+#' @return A list containing the matrices of Y probabilities conditional to each
+#'   A_i factor and, in the last position, the vector of marginal Y
+#'   probabilities.
 #'
 #' @export
 condprob.direct <- function(table,
@@ -284,9 +295,11 @@ condprob.direct <- function(table,
 
 #' Calculate Sensitivity Index (SI) From Conditional Probabilities
 #'
-#' Calculates the first order sensitivity indices of Y with respect to A_i descendants, when given the conditional probabilities and A_i weights.
+#' Calculates the first order sensitivity indices of Y with respect to A_i
+#' descendants, when given the conditional probabilities and A_i weights.
 #'
-#' @param condproblist A list of matrices of conditional probabilities (Y conditional to each A_i) plus the vector of Y probabilities.
+#' @param condproblist A list of matrices of conditional probabilities (Y
+#'   conditional to each A_i) plus the vector of Y probabilities.
 #' @param weightlist The list of weights of the A_i factor levels.
 #'
 #' @return A vector of Sensitivity Indices (SI).
@@ -329,10 +342,12 @@ sensitivity.condprob <- function(condproblist,
 
 #' Show Sensitivity Index (SI)
 #'
-#' Generates a bar plot to visualize the Sensitivity Index (SI) of the leaves of a given decision tree.
+#' Generates a bar plot to visualize the Sensitivity Index (SI) of the leaves of
+#' a given decision tree.
 #'
 #' @param aTree A decision tree object to perform the analysis on.
-#' @param aSI A vector of Sensitivity Indices for each leaf in the decision tree.
+#' @param aSI A vector of Sensitivity Indices for each leaf in the decision
+#'   tree.
 #'
 #' @return No return value, but generates a bar plot.
 #'

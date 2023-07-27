@@ -11,9 +11,11 @@ SI_DEXi(aTree, fileName = "SI_out.csv", isFile = T, avoidrep = F)
 
 \item{fileName}{The file name to write the SI to. Default is "SI_out.csv".}
 
-\item{isFile}{A boolean to decide whether to write the SI to a file. Default is TRUE.}
+\item{isFile}{A boolean to decide whether to write the SI to a file. Default
+is TRUE.}
 
-\item{avoidrep}{A boolean to decide whether to avoid repeated nodes. Default is FALSE.}
+\item{avoidrep}{A boolean to decide whether to avoid repeated nodes. Default
+is FALSE.}
 }
 \value{
 A list of Sensitivity Indices for each node in the tree.

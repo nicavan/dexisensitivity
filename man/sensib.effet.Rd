@@ -10,9 +10,13 @@ sensib.effet(aov.obj)
 \item{aov.obj}{An object of class \code{aov} resulting from a call to \code{aov()}.}
 }
 \value{
-A data frame with the degree of freedom, sum of squares, ratio of sum of squares to total sum of squares, mean squares, and the F value for each term in the model. The rows of the data frame are ordered in decreasing order of the ratio of sum of squares to total sum of squares.
+A data frame with the degree of freedom, sum of squares, ratio of sum
+of squares to total sum of squares, mean squares, and the F value for each
+term in the model. The rows of the data frame are ordered in decreasing
+order of the ratio of sum of squares to total sum of squares.
 }
 \description{
-Calculates sensitivity criteria for each term in a fitted model,
-including degree of freedom, sum of squares, ratio of sum of squares to total sum of squares, mean squares, and the F value.
+Calculates sensitivity criteria for each term in a fitted model, including
+degree of freedom, sum of squares, ratio of sum of squares to total sum of
+squares, mean squares, and the F value.
 }

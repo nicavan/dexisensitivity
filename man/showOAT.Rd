@@ -17,5 +17,6 @@ showOAT(nodeName, aResults, aTree)
 No return value, but generates a plot.
 }
 \description{
-Generates a plot to visualize the results of One-Factor-At-A-Time (OFAT) sensitivity analysis.
+Generates a plot to visualize the results of One-Factor-At-A-Time (OFAT)
+sensitivity analysis.
 }

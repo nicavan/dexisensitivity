@@ -9,11 +9,13 @@ showSI(aTree, aSI)
 \arguments{
 \item{aTree}{A decision tree object to perform the analysis on.}
 
-\item{aSI}{A vector of Sensitivity Indices for each leaf in the decision tree.}
+\item{aSI}{A vector of Sensitivity Indices for each leaf in the decision
+tree.}
 }
 \value{
 No return value, but generates a bar plot.
 }
 \description{
-Generates a bar plot to visualize the Sensitivity Index (SI) of the leaves of a given decision tree.
+Generates a bar plot to visualize the Sensitivity Index (SI) of the leaves of
+a given decision tree.
 }

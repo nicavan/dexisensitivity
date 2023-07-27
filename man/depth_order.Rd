@@ -13,5 +13,6 @@ depth_order(aTree)
 A vector of aggregated attribute names, ordered by depth.
 }
 \description{
-Return aggregated attributes ordered by depth. This function is typically used for analysis strategy (AS).
+Return aggregated attributes ordered by depth. This function is typically
+used for analysis strategy (AS).
 }
