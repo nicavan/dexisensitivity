@@ -1,13 +1,12 @@
-#' Title
+#' Get Aggregated Attributes Ordered by Depth
 #'
-#' return aggregated attributes ordered by depth. Used for AS
+#' Return aggregated attributes ordered by depth. This function is typically used for analysis strategy (AS).
 #'
-#' @param aTree a subTree
+#' @param aTree A decision tree object.
 #'
-#' @return
+#' @return A vector of aggregated attribute names, ordered by depth.
+#'
 #' @export
-#'
-#' @examples
 depth_order <- function(aTree) {
     dtest <- data.frame(name = aTree@Aggregated,
                         Depth = NA)

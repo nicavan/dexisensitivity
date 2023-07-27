@@ -2,13 +2,16 @@
 % Please edit documentation in R/DepthOrder.R
 \name{depth_order}
 \alias{depth_order}
-\title{Title}
+\title{Get Aggregated Attributes Ordered by Depth}
 \usage{
 depth_order(aTree)
 }
 \arguments{
-\item{aTree}{a subTree}
+\item{aTree}{A decision tree object.}
+}
+\value{
+A vector of aggregated attribute names, ordered by depth.
 }
 \description{
-return aggregated attributes ordered by depth. Used for AS
+Return aggregated attributes ordered by depth. This function is typically used for analysis strategy (AS).
 }
