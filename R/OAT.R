@@ -1,12 +1,13 @@
-#' Title
+#' Perform One-Factor-At-A-Time (OFAT) Sensitivity Analysis
 #'
-#' @param aTree aTree
-#' @param option option
+#' Conducts One-Factor-At-A-Time (OFAT) sensitivity analysis by performing simulations with varying factors, keeping all but one factor constant for each simulation.
 #'
-#' @return
+#' @param aTree A decision tree object to perform the analysis on.
+#' @param option The initial configuration for the decision tree parameters.
+#'
+#' @return A matrix with evaluation results for each attribute in the decision tree, under different variations of the parameters.
+#'
 #' @export
-#'
-#' @examples
 OAT <- function(aTree,
                 option) {
 
@@ -44,16 +45,17 @@ OAT <- function(aTree,
 
 
 
-#' Title
+#' Visualize One-Factor-At-A-Time (OFAT) Sensitivity Analysis Results
 #'
-#' @param nodeName nodeName
-#' @param aResults aResults
-#' @param aTree aTree
+#' Generates a plot to visualize the results of One-Factor-At-A-Time (OFAT) sensitivity analysis.
 #'
-#' @return
+#' @param nodeName Name of the node for which to generate the plot.
+#' @param aResults Matrix of evaluation results returned by the OAT function.
+#' @param aTree A decision tree object that was used in the OAT function.
+#'
+#' @return No return value, but generates a plot.
+#'
 #' @export
-#'
-#' @examples
 showOAT <- function(nodeName, aResults, aTree) {
     #On récupère l'ID du noeud
     id <- getID(aTree@Nodes, nodeName)

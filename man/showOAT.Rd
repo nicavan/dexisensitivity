@@ -2,17 +2,20 @@
 % Please edit documentation in R/OAT.R
 \name{showOAT}
 \alias{showOAT}
-\title{Title}
+\title{Visualize One-Factor-At-A-Time (OFAT) Sensitivity Analysis Results}
 \usage{
 showOAT(nodeName, aResults, aTree)
 }
 \arguments{
-\item{nodeName}{nodeName}
+\item{nodeName}{Name of the node for which to generate the plot.}
 
-\item{aResults}{aResults}
+\item{aResults}{Matrix of evaluation results returned by the OAT function.}
 
-\item{aTree}{aTree}
+\item{aTree}{A decision tree object that was used in the OAT function.}
+}
+\value{
+No return value, but generates a plot.
 }
 \description{
-Title
+Generates a plot to visualize the results of One-Factor-At-A-Time (OFAT) sensitivity analysis.
 }

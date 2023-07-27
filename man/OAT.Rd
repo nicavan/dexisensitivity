@@ -2,15 +2,18 @@
 % Please edit documentation in R/OAT.R
 \name{OAT}
 \alias{OAT}
-\title{Title}
+\title{Perform One-Factor-At-A-Time (OFAT) Sensitivity Analysis}
 \usage{
 OAT(aTree, option)
 }
 \arguments{
-\item{aTree}{aTree}
+\item{aTree}{A decision tree object to perform the analysis on.}
 
-\item{option}{option}
+\item{option}{The initial configuration for the decision tree parameters.}
+}
+\value{
+A matrix with evaluation results for each attribute in the decision tree, under different variations of the parameters.
 }
 \description{
-Title
+Conducts One-Factor-At-A-Time (OFAT) sensitivity analysis by performing simulations with varying factors, keeping all but one factor constant for each simulation.
 }
