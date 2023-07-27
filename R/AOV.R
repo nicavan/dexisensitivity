@@ -1,13 +1,15 @@
-#' Title
+#' Estimates the execution time for factorial simulations
 #'
-#' @param aTree aTree
-#' @param iTest iTest
+#' Performs a time estimation for a specified number of factorial simulations.
+#' The estimation is based on the time taken to execute a smaller number of simulations specified by `iTest`.
 #'
+#' @param aTree Decision tree to run simulations on.
+#' @param iTest Number of simulations to be used for time estimation, defaults to 50.
 #'
-#' @return
+#' @return No explicit return. Prints out the estimated execution
+#'   time.
+#'
 #' @export
-#'
-#' @examples
 infoAOV <- function(aTree, iTest = 50) {
     # Compute the size of the factorial plan and the time requested to run it
     preprod <- aTree@Nodes %>%
@@ -38,40 +40,21 @@ infoAOV <- function(aTree, iTest = 50) {
 }
 
 
-#' Title
+#' Calculate sensitivity criteria for model terms
 #'
-#' Fonction de calcul des indices de sensibilite factoriels
+#' Calculates sensitivity criteria for each term in a fitted model,
+#' including degree of freedom, sum of squares, ratio of sum of squares to total sum of squares, mean squares, and the F value.
 #'
-#' @param aov.obj objet "aov" issu de l'analyse de variance des donnees de simulation
-#' @param nb.plot nombre d'effets repr?sent?s sur le graphique
-#' @param beside voir la doc de barplot
-#' @param las las
-#' @param ... ...
+#' @param aov.obj An object of class `aov` resulting from a call to `aov()`.
 #'
-#' @return
+#' @return A data frame with the degree of freedom, sum of squares, ratio of sum of squares to total sum of squares, mean squares, and the F value for each term in the model. The rows of the data frame are ordered in decreasing order of the ratio of sum of squares to total sum of squares.
+#'
 #' @export
-#'
-#' @examples
-sensib.effet <- function(aov.obj,
-                         nb.plot = 8,
-                         beside = T,
-                         las = 1,
-                         ...) {
-
-    #### PRELIMINAIRES: récupération des résultats d'anova
-    # indic.fact: matrice 0-1 de correspondance facteurs*termes-du-modèle
+sensib.effet <- function(aov.obj) {
+    # PRELIMINARIES: ANOVA results retrieval
     indic.fact <- attr(aov.obj$terms, "factors")[-1, ]
-    # aov.df: vecteur des Degrés de Liberté, résiduelle comprise
-    # aov.ss: vecteur des Sommes de Carrés, résiduelle comprise
-    # aov.cm: vecteur des Carrés Moyens, résiduelle comprise
-    ### ATTENTION ###
-    # sous S:
-    #aov.summ <- summary(aov.obj)
-    #aov.ss <- aov.summ[,"Sum of Sq"]
-    # sous R:
     aov.summ <- summary(aov.obj)[[1]]
     aov.ss <- aov.summ[, "Sum Sq"]
-    ### FIN DE "ATTENTION" ###
     aov.df <- aov.summ[, "Df"]
     aov.cm <- aov.ss/aov.df
 
@@ -79,9 +62,10 @@ sensib.effet <- function(aov.obj,
     tss <- sum(aov.ss)
     tdf <- sum(aov.df)
     tms <- tss/tdf
+
     # Residual SS, df, MS
     rdf <- aov.obj$df.residual
-    if (rdf>0) {
+    if (rdf > 0) {
         rss <- aov.ss[length(aov.ss)]
         rms <- rss/rdf
     } else {
@@ -89,34 +73,70 @@ sensib.effet <- function(aov.obj,
         rms <- NA
     }
 
-    #---------------------------------------------------------------------------
-    #### Critères de sensibilité terme par terme
-    #---------------------------------------------------------------------------
-    # sorties
+    # Sensitivity criteria term by term
     out <- data.frame(df = aov.df, ss = aov.ss, ss.ratio = aov.ss/tss,
                       cm = aov.cm, F = aov.cm/rms)
     rownames(out) <- rownames(aov.summ)
     out <- out[rev(order(out$ss.ratio)), ]
+
+    return(out)
 }
+# sensib.effet <- function(aov.obj) {
+#
+#     #### PRELIMINAIRES: récupération des résultats d'anova
+#     # indic.fact: matrice 0-1 de correspondance facteurs*termes-du-modèle
+#     indic.fact <- attr(aov.obj$terms, "factors")[-1, ]
+#     # aov.df: vecteur des Degrés de Liberté, résiduelle comprise
+#     # aov.ss: vecteur des Sommes de Carrés, résiduelle comprise
+#     # aov.cm: vecteur des Carrés Moyens, résiduelle comprise
+#     ### ATTENTION ###
+#     # sous S:
+#     #aov.summ <- summary(aov.obj)
+#     #aov.ss <- aov.summ[,"Sum of Sq"]
+#     # sous R:
+#     aov.summ <- summary(aov.obj)[[1]]
+#     aov.ss <- aov.summ[, "Sum Sq"]
+#     ### FIN DE "ATTENTION" ###
+#     aov.df <- aov.summ[, "Df"]
+#     aov.cm <- aov.ss/aov.df
+#
+#     # Total SS, df and MS
+#     tss <- sum(aov.ss)
+#     tdf <- sum(aov.df)
+#     tms <- tss/tdf
+#     # Residual SS, df, MS
+#     rdf <- aov.obj$df.residual
+#     if (rdf>0) {
+#         rss <- aov.ss[length(aov.ss)]
+#         rms <- rss/rdf
+#     } else {
+#         rss <- NA
+#         rms <- NA
+#     }
+#
+#     #---------------------------------------------------------------------------
+#     #### Critères de sensibilité terme par terme
+#     #---------------------------------------------------------------------------
+#     # sorties
+#     out <- data.frame(df = aov.df, ss = aov.ss, ss.ratio = aov.ss/tss,
+#                       cm = aov.cm, F = aov.cm/rms)
+#     rownames(out) <- rownames(aov.summ)
+#     out <- out[rev(order(out$ss.ratio)), ]
+# }
 
 
-#' Title
+#' Calculate sensitivity factors for model terms
 #'
-#' Fonction de calcul des indices de sensibilite factoriels
+#' Calculates sensitivity factors for each term in a fitted model.
 #'
-#' @param aov.obj objet "aov" issu de l'analyse de variance des donnees de simulation
-#' @param fact.interet fact.interet
-#' @param las las
-#' @param ... ...
+#' @param aov.obj An object of class `aov` resulting from a call to `aov()`.
+#' @param fact.interet Factors of interest.
 #'
-#' @return
+#' @return A data frame with sensitivity factors for each term in the model.
+#'
 #' @export
-#'
-#' @examples
 sensib.grpe <- function(aov.obj,
-                        fact.interet,
-                        las = 1,
-                        ...) {
+                        fact.interet) {
 
     #### PRELIMINAIRES: récupération des résultats d'anova
     # indic.fact: matrice 0-1 de correspondance facteurs*termes-du-modèle
@@ -204,23 +224,16 @@ sensib.grpe <- function(aov.obj,
 }
 
 
-#' Title
+#' Calculate sensitivity factors for model terms
 #'
-#' Fonction de calcul des indices de sensibilite factoriels
+#' Calculates sensitivity factors for each term in a fitted model.
 #'
-#' @param aov.obj objet "aov" issu de l'analyse de variance des donnees de simulation
-#' @param main.show main.show
-#' @param las las
-#' @param ... ...
+#' @param aov.obj An object of class `aov` resulting from a call to `aov()`.
 #'
-#' @return
+#' @return A data frame with sensitivity factors for each term in the model.
+#'
 #' @export
-#'
-#' @examples
-sensib.total <- function(aov.obj,
-                         main.show = T,
-                         las = 1,
-                         ...) {
+sensib.total <- function(aov.obj) {
 
     #### PRELIMINAIRES: récupération des résultats d'anova
 
@@ -276,21 +289,20 @@ sensib.total <- function(aov.obj,
 }
 
 
-#' Title
+#' Visualize AOV results
 #'
-#' @param aAOV_DEXi aAOV_DEXi
-#' @param main.show main.show
-#' @param nb.plot nb.plot
-#' @param beside beside
-#' @param las las
-#' @param ... ...
+#' Visualizes the results of an Analysis of Variance (AOV).
+#'
+#' @param aAOV_DEXi A list containing the AOV results.
+#' @param main.show Logical, if TRUE, main effects and total sums of squares are displayed in the plot. Defaults to TRUE.
+#' @param nb.plot The number of plots to display.
+#' @param beside Logical, if TRUE, the bar plot is displayed horizontally. Defaults to TRUE.
 #'
 #' @importFrom grDevices heat.colors
 #'
-#' @return
-#' @export
+#' @return A data frame with the summed square proportions.
 #'
-#' @examples
+#' @export
 showAOV <- function(aAOV_DEXi,
                     main.show = T,
                     nb.plot = 8,
@@ -400,16 +412,17 @@ showAOV <- function(aAOV_DEXi,
 }
 
 
-#' Title
+#' Calculate AOV results
 #'
-#' @param aTree aTree
+#' Calculates the results of an Analysis of Variance (AOV).
+#'
+#' @param aTree A decision tree object to perform the analysis on.
 #'
 #' @importFrom stats aov as.formula
 #'
-#' @return
-#' @export
+#' @return A list with the results of the AOV.
 #'
-#' @examples
+#' @export
 AOV_DEXi <- function(aTree) {
     # Create the simulation plan
     leavesOptionIndices <- aTree@Nodes %>%
