@@ -2,25 +2,22 @@
 % Please edit documentation in R/SensitivityIndex.R
 \name{condprob.direct}
 \alias{condprob.direct}
-\title{Title}
+\title{Calculate Conditional Probabilities}
 \usage{
 condprob.direct(table, weightlist, sy, Ylevels)
 }
 \arguments{
-\item{table}{a matrix giving all the level combinations of the A_i factors
-and, in the last column, the associated Y values}
+\item{table}{A matrix giving all the level combinations of the A_i factors and, in the last column, the associated Y values.}
 
-\item{weightlist}{a list whose elements are the weight vectors of each A_i
-variable. If missing, A_i levels are assumed to have equal weights}
+\item{weightlist}{A list whose elements are the weight vectors of each A_i variable. If missing, A_i levels are assumed to have equal weights.}
 
-\item{sy}{sy}
+\item{sy}{The number of unique Y values.}
 
-\item{Ylevels}{optional argument giving the Y levels. If missing, the Ylevels
-are extracted from the table}
+\item{Ylevels}{Optional argument giving the Y levels. If missing, the Ylevels are extracted from the table.}
+}
+\value{
+A list containing the matrices of Y probabilities conditional to each A_i factor and, in the last position, the vector of marginal Y probabilities.
 }
 \description{
-Calculates the probabilities of Y=y and the probabilities of Y conditional
-to its direct descendants A_i, when given the complete table of the
-Y modalities with respect to the A_i factors, and when given the A_i
-probabilities
+Calculates the probabilities of Y=y and the probabilities of Y conditional to its direct descendants A_i.
 }

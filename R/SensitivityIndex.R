@@ -1,16 +1,15 @@
-#' Title
+#' Calculate Sensitivity Index (SI)
 #'
-#' Calculation of the Sensitivity Index (SI)
+#' Calculates the Sensitivity Index (SI) for a given decision tree.
 #'
-#' @param aTree aTree
-#' @param fileName fileName
-#' @param isFile isFile
-#' @param avoidrep T if you want to avoid repeted nodes
+#' @param aTree A decision tree object to perform the analysis on.
+#' @param fileName The file name to write the SI to. Default is "SI_out.csv".
+#' @param isFile A boolean to decide whether to write the SI to a file. Default is TRUE.
+#' @param avoidrep A boolean to decide whether to avoid repeated nodes. Default is FALSE.
 #'
-#' @return
+#' @return A list of Sensitivity Indices for each node in the tree.
+#'
 #' @export
-#'
-#' @examples
 SI_DEXi <- function(aTree,
                     fileName = "SI_out.csv",
                     isFile = T,
@@ -59,15 +58,16 @@ SI_DEXi <- function(aTree,
 }
 
 
-#' Title
+#' Calculate Sensitivity Index (SI) Helper Function
 #'
-#' @param aTree aTree
-#' @param avoidrep T if you want to avoid repeted nodes
+#' A helper function for `SI_DEXi` to calculate Sensitivity Index (SI) of a decision tree.
 #'
-#' @return
+#' @param aTree A decision tree object to perform the analysis on.
+#' @param avoidrep A boolean to decide whether to avoid repeated nodes. Default is FALSE.
+#'
+#' @return A vector of Sensitivity Indices for each attribute in the decision tree.
+#'
 #' @export
-#'
-#' @examples
 clcSI_DEXi <- function(aTree, avoidrep = F) {
     nodeName <- aTree@rootName
     WeightList <- vector(mode = "list",
@@ -176,28 +176,18 @@ clcSI_DEXi <- function(aTree, avoidrep = F) {
 
 
 
-#' Title
+#' Calculate Conditional Probabilities
 #'
-#' Calculates the probabilities of Y=y and the probabilities of Y conditional
-#' to its direct descendants A_i, when given the complete table of the
-#' Y modalities with respect to the A_i factors, and when given the A_i
-#' probabilities
+#' Calculates the probabilities of Y=y and the probabilities of Y conditional to its direct descendants A_i.
 #'
-#' @param table a matrix giving all the level combinations of the A_i factors
-#' and, in the last column, the associated Y values
+#' @param table A matrix giving all the level combinations of the A_i factors and, in the last column, the associated Y values.
+#' @param weightlist A list whose elements are the weight vectors of each A_i variable. If missing, A_i levels are assumed to have equal weights.
+#' @param sy The number of unique Y values.
+#' @param Ylevels Optional argument giving the Y levels. If missing, the Ylevels are extracted from the table.
 #'
-#' @param weightlist a list whose elements are the weight vectors of each A_i
-#' variable. If missing, A_i levels are assumed to have equal weights
+#' @return A list containing the matrices of Y probabilities conditional to each A_i factor and, in the last position, the vector of marginal Y probabilities.
 #'
-#' @param sy sy
-#'
-#' @param Ylevels optional argument giving the Y levels. If missing, the Ylevels
-#'  are extracted from the table
-#'
-#' @return
 #' @export
-#'
-#' @examples
 condprob.direct <- function(table,
                             weightlist,
                             sy,
@@ -292,15 +282,16 @@ condprob.direct <- function(table,
     return(out)
 }
 
-#' Title
+#' Calculate Sensitivity Index (SI) From Conditional Probabilities
 #'
-#' @param condproblist condproblist
-#' @param weightlist weightlist
+#' Calculates the first order sensitivity indices of Y with respect to A_i descendants, when given the conditional probabilities and A_i weights.
 #'
-#' @return
+#' @param condproblist A list of matrices of conditional probabilities (Y conditional to each A_i) plus the vector of Y probabilities.
+#' @param weightlist The list of weights of the A_i factor levels.
+#'
+#' @return A vector of Sensitivity Indices (SI).
+#'
 #' @export
-#'
-#' @examples
 sensitivity.condprob <- function(condproblist,
                                  weightlist) {
     # Calculates the first order sensitivity indices of Y with respect
@@ -336,17 +327,18 @@ sensitivity.condprob <- function(condproblist,
 }
 
 
-#' Title
+#' Show Sensitivity Index (SI)
 #'
-#' @param aTree aTree
-#' @param aSI aSI
+#' Generates a bar plot to visualize the Sensitivity Index (SI) of the leaves of a given decision tree.
 #'
-#' @return
-#' @export
+#' @param aTree A decision tree object to perform the analysis on.
+#' @param aSI A vector of Sensitivity Indices for each leaf in the decision tree.
+#'
+#' @return No return value, but generates a bar plot.
 #'
 #' @importFrom graphics mtext
 #'
-#' @examples
+#' @export
 showSI <- function(aTree,
                    aSI) {
     #   par(mgp=c(7,1,0),oma=c(0,20,0,0))

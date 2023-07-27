@@ -2,19 +2,22 @@
 % Please edit documentation in R/SensitivityIndex.R
 \name{SI_DEXi}
 \alias{SI_DEXi}
-\title{Title}
+\title{Calculate Sensitivity Index (SI)}
 \usage{
 SI_DEXi(aTree, fileName = "SI_out.csv", isFile = T, avoidrep = F)
 }
 \arguments{
-\item{aTree}{aTree}
+\item{aTree}{A decision tree object to perform the analysis on.}
 
-\item{fileName}{fileName}
+\item{fileName}{The file name to write the SI to. Default is "SI_out.csv".}
 
-\item{isFile}{isFile}
+\item{isFile}{A boolean to decide whether to write the SI to a file. Default is TRUE.}
 
-\item{avoidrep}{T if you want to avoid repeted nodes}
+\item{avoidrep}{A boolean to decide whether to avoid repeated nodes. Default is FALSE.}
+}
+\value{
+A list of Sensitivity Indices for each node in the tree.
 }
 \description{
-Calculation of the Sensitivity Index (SI)
+Calculates the Sensitivity Index (SI) for a given decision tree.
 }

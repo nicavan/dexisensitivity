@@ -2,15 +2,18 @@
 % Please edit documentation in R/SensitivityIndex.R
 \name{sensitivity.condprob}
 \alias{sensitivity.condprob}
-\title{Title}
+\title{Calculate Sensitivity Index (SI) From Conditional Probabilities}
 \usage{
 sensitivity.condprob(condproblist, weightlist)
 }
 \arguments{
-\item{condproblist}{condproblist}
+\item{condproblist}{A list of matrices of conditional probabilities (Y conditional to each A_i) plus the vector of Y probabilities.}
 
-\item{weightlist}{weightlist}
+\item{weightlist}{The list of weights of the A_i factor levels.}
+}
+\value{
+A vector of Sensitivity Indices (SI).
 }
 \description{
-Title
+Calculates the first order sensitivity indices of Y with respect to A_i descendants, when given the conditional probabilities and A_i weights.
 }

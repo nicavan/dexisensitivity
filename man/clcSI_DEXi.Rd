@@ -2,15 +2,18 @@
 % Please edit documentation in R/SensitivityIndex.R
 \name{clcSI_DEXi}
 \alias{clcSI_DEXi}
-\title{Title}
+\title{Calculate Sensitivity Index (SI) Helper Function}
 \usage{
 clcSI_DEXi(aTree, avoidrep = F)
 }
 \arguments{
-\item{aTree}{aTree}
+\item{aTree}{A decision tree object to perform the analysis on.}
 
-\item{avoidrep}{T if you want to avoid repeted nodes}
+\item{avoidrep}{A boolean to decide whether to avoid repeated nodes. Default is FALSE.}
+}
+\value{
+A vector of Sensitivity Indices for each attribute in the decision tree.
 }
 \description{
-Title
+A helper function for \code{SI_DEXi} to calculate Sensitivity Index (SI) of a decision tree.
 }

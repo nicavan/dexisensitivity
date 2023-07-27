@@ -2,15 +2,18 @@
 % Please edit documentation in R/SensitivityIndex.R
 \name{showSI}
 \alias{showSI}
-\title{Title}
+\title{Show Sensitivity Index (SI)}
 \usage{
 showSI(aTree, aSI)
 }
 \arguments{
-\item{aTree}{aTree}
+\item{aTree}{A decision tree object to perform the analysis on.}
 
-\item{aSI}{aSI}
+\item{aSI}{A vector of Sensitivity Indices for each leaf in the decision tree.}
+}
+\value{
+No return value, but generates a bar plot.
 }
 \description{
-Title
+Generates a bar plot to visualize the Sensitivity Index (SI) of the leaves of a given decision tree.
 }
