@@ -127,16 +127,21 @@ sensib.effet <- function(aov.obj) {
 
 #' Calculate sensitivity factors for model terms
 #'
-#' Calculates sensitivity factors for each term in a fitted model.
+#' Calculates sensitivity factors for each term in a fitted model based on specific factors of interest. The function uses the parameters `las` and `...` to control the appearance of the generated bar plot.
+#'
 #'
 #' @param aov.obj An object of class `aov` resulting from a call to `aov()`.
 #' @param fact.interet Factors of interest.
+#' @param las The style of axis labels on the bar plot. Default is 1.
+#' @param ... Additional arguments to control the appearance of the bar plot.
 #'
 #' @return A data frame with sensitivity factors for each term in the model.
 #'
 #' @export
 sensib.grpe <- function(aov.obj,
-                        fact.interet) {
+                        fact.interet,
+                        las = 1,
+                        ...) {
 
     #### PRELIMINAIRES: récupération des résultats d'anova
     # indic.fact: matrice 0-1 de correspondance facteurs*termes-du-modèle
@@ -297,6 +302,8 @@ sensib.total <- function(aov.obj) {
 #' @param main.show Logical, if TRUE, main effects and total sums of squares are displayed in the plot. Defaults to TRUE.
 #' @param nb.plot The number of plots to display.
 #' @param beside Logical, if TRUE, the bar plot is displayed horizontally. Defaults to TRUE.
+#' @param las The style of axis labels on the bar plots. Default is 1.
+#' @param ... Additional arguments to control the appearance of the bar plots.
 #'
 #' @importFrom grDevices heat.colors
 #'

@@ -2,19 +2,22 @@
 % Please edit documentation in R/AOV.R
 \name{sensib.grpe}
 \alias{sensib.grpe}
-\title{Title}
+\title{Calculate sensitivity factors for model terms}
 \usage{
 sensib.grpe(aov.obj, fact.interet, las = 1, ...)
 }
 \arguments{
-\item{aov.obj}{objet "aov" issu de l'analyse de variance des donnees de simulation}
+\item{aov.obj}{An object of class \code{aov} resulting from a call to \code{aov()}.}
 
-\item{fact.interet}{fact.interet}
+\item{fact.interet}{Factors of interest.}
 
-\item{las}{las}
+\item{las}{The style of axis labels on the bar plot. Default is 1.}
 
-\item{...}{...}
+\item{...}{Additional arguments to control the appearance of the bar plot.}
+}
+\value{
+A data frame with sensitivity factors for each term in the model.
 }
 \description{
-Fonction de calcul des indices de sensibilite factoriels
+Calculates sensitivity factors for each term in a fitted model based on specific factors of interest. The function uses the parameters \code{las} and \code{...} to control the appearance of the generated bar plot.
 }

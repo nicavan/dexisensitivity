@@ -2,21 +2,17 @@
 % Please edit documentation in R/AOV.R
 \name{sensib.effet}
 \alias{sensib.effet}
-\title{Title}
+\title{Calculate sensitivity criteria for model terms}
 \usage{
-sensib.effet(aov.obj, nb.plot = 8, beside = T, las = 1, ...)
+sensib.effet(aov.obj)
 }
 \arguments{
-\item{aov.obj}{objet "aov" issu de l'analyse de variance des donnees de simulation}
-
-\item{nb.plot}{nombre d'effets repr?sent?s sur le graphique}
-
-\item{beside}{voir la doc de barplot}
-
-\item{las}{las}
-
-\item{...}{...}
+\item{aov.obj}{An object of class \code{aov} resulting from a call to \code{aov()}.}
+}
+\value{
+A data frame with the degree of freedom, sum of squares, ratio of sum of squares to total sum of squares, mean squares, and the F value for each term in the model. The rows of the data frame are ordered in decreasing order of the ratio of sum of squares to total sum of squares.
 }
 \description{
-Fonction de calcul des indices de sensibilite factoriels
+Calculates sensitivity criteria for each term in a fitted model,
+including degree of freedom, sum of squares, ratio of sum of squares to total sum of squares, mean squares, and the F value.
 }

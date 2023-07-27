@@ -2,19 +2,16 @@
 % Please edit documentation in R/AOV.R
 \name{sensib.total}
 \alias{sensib.total}
-\title{Title}
+\title{Calculate sensitivity factors for model terms}
 \usage{
-sensib.total(aov.obj, main.show = T, las = 1, ...)
+sensib.total(aov.obj)
 }
 \arguments{
-\item{aov.obj}{objet "aov" issu de l'analyse de variance des donnees de simulation}
-
-\item{main.show}{main.show}
-
-\item{las}{las}
-
-\item{...}{...}
+\item{aov.obj}{An object of class \code{aov} resulting from a call to \code{aov()}.}
+}
+\value{
+A data frame with sensitivity factors for each term in the model.
 }
 \description{
-Fonction de calcul des indices de sensibilite factoriels
+Calculates sensitivity factors for each term in a fitted model.
 }

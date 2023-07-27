@@ -2,23 +2,26 @@
 % Please edit documentation in R/AOV.R
 \name{showAOV}
 \alias{showAOV}
-\title{Title}
+\title{Visualize AOV results}
 \usage{
 showAOV(aAOV_DEXi, main.show = T, nb.plot = 8, beside = T, las = 1, ...)
 }
 \arguments{
-\item{aAOV_DEXi}{aAOV_DEXi}
+\item{aAOV_DEXi}{A list containing the AOV results.}
 
-\item{main.show}{main.show}
+\item{main.show}{Logical, if TRUE, main effects and total sums of squares are displayed in the plot. Defaults to TRUE.}
 
-\item{nb.plot}{nb.plot}
+\item{nb.plot}{The number of plots to display.}
 
-\item{beside}{beside}
+\item{beside}{Logical, if TRUE, the bar plot is displayed horizontally. Defaults to TRUE.}
 
-\item{las}{las}
+\item{las}{The style of axis labels on the bar plots. Default is 1.}
 
-\item{...}{...}
+\item{...}{Additional arguments to control the appearance of the bar plots.}
+}
+\value{
+A data frame with the summed square proportions.
 }
 \description{
-Title
+Visualizes the results of an Analysis of Variance (AOV).
 }

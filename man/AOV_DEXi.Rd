@@ -2,13 +2,16 @@
 % Please edit documentation in R/AOV.R
 \name{AOV_DEXi}
 \alias{AOV_DEXi}
-\title{Title}
+\title{Calculate AOV results}
 \usage{
 AOV_DEXi(aTree)
 }
 \arguments{
-\item{aTree}{aTree}
+\item{aTree}{A decision tree object to perform the analysis on.}
+}
+\value{
+A list with the results of the AOV.
 }
 \description{
-Title
+Calculates the results of an Analysis of Variance (AOV).
 }
