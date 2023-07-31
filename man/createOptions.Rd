@@ -4,17 +4,20 @@
 \alias{createOptions}
 \title{Generate a matrix of random options for a given tree}
 \usage{
-createOptions(aTree, nbOptions = 1, aSeed = -1)
+createOptions(aTree, nbOptions = 1, aSeed = NULL)
 }
 \arguments{
-\item{aTree}{A "Tree" object}
+\item{aTree}{An object of class Tree.}
 
-\item{nbOptions}{The number of random options to create (Default: 1)}
+\item{nbOptions}{n integer representing the number of options to generate.
+Default is 1.}
 
-\item{aSeed}{The seed for random number generation (Default: -1)}
+\item{aSeed}{An integer seed to be used for random number generation. Default
+is NULL, which means no seed is set.}
 }
 \value{
-A matrix of random options
+A matrix of size \code{aTree@nbLeaves} x \code{nbOptions}, where each row
+represents a leaf of the tree and each column represents a sampled option.
 }
 \description{
 The options are generated based on the \code{rangeScale} and \code{Proba} properties of

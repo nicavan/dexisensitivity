@@ -4,15 +4,18 @@
 #' the tree nodes. This is useful for creating random scenarios for simulation
 #' or analysis.
 #'
-#' @param aTree A "Tree" object
-#' @param nbOptions The number of random options to create (Default: 1)
-#' @param aSeed The seed for random number generation (Default: -1)
+#' @param aTree An object of class Tree.
+#' @param nbOptions n integer representing the number of options to generate.
+#'   Default is 1.
+#' @param aSeed An integer seed to be used for random number generation. Default
+#'   is NULL, which means no seed is set.
 #'
-#' @return A matrix of random options
+#' @return A matrix of size `aTree@nbLeaves` x `nbOptions`, where each row
+#'   represents a leaf of the tree and each column represents a sampled option.
 #'
 #' @export
-createOptions <- function(aTree, nbOptions = 1, aSeed = -1) {
-    if (aSeed>0) {
+createOptions <- function(aTree, nbOptions = 1, aSeed = NULL) {
+    if (!is.null(aSeed)) {
         set.seed(aSeed)
     }
 
