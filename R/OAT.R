@@ -16,8 +16,8 @@ OAT <- function(aTree,
 
     # Define the matrix that will be returned:
     # nominal evaluation and for each leaves +1 and -1 and if touching border "-1"
-    results <- matrix(nrow = aTree@nbAttributes,
-                      ncol = aTree@nbLeaves*2 + 1)
+    results <- matrix(nrow = aTree@NumberOfAttributes,
+                      ncol = aTree@NumberOfLeaves*2 + 1)
     rownames(results) <- aTree@Attributes
     results[, 1] <- EvaluateScenario(aTree, as.matrix(option))
     j <- 2
@@ -65,7 +65,7 @@ showOAT <- function(nodeName, aResults, aTree) {
     id <- getID(aTree@Nodes, nodeName)
     # Si on est dans le cas d'une Leaf-Aggregated !
     #   on récupère le noeud aggrégé et non le noeud feuille
-    if (aTree@isLeafAggregated) {
+    if (aTree@IsLeafAggregated) {
         id <- id %>%
             sapply(function(x) {
                 if (!aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}

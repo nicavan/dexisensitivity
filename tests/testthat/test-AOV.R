@@ -1,8 +1,8 @@
 test_that("AOV : same output as JEB's scripts", {
     # Load the simple DEXi tree needed for the test
-    trees <- readRDS(system.file("testdata", "testtrees.rds",
-                                 package = "dexiranalysis"))
-    tree <- trees[[1]]
+    list_tree <- readRDS(system.file("testdata", "testtrees.rds",
+                                     package = "dexiranalysis"))
+    tree <- list_tree[[1]] %>% convertTreeClass()
 
     # Setup a random seed for the test
     set.seed(42)

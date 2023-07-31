@@ -11,20 +11,20 @@ test_that("Tree is S4", {
 
 test_that("Empty tree return structured tree with 0 length S4 attributes", {
     empty_tree <- new(Class = "Tree")
-    expect_equal(empty_tree@nbAttributes, new(Class = "numeric"))
-    expect_equal(empty_tree@nbLeaves, new(Class = "numeric"))
+    expect_equal(empty_tree@NumberOfAttributes, new(Class = "numeric"))
+    expect_equal(empty_tree@NumberOfLeaves, new(Class = "numeric"))
     expect_equal(empty_tree@Depth, new(Class = "numeric"))
     expect_equal(empty_tree@Attributes, new(Class = "character"))
     expect_equal(empty_tree@Leaves, new(Class = "character"))
     expect_equal(empty_tree@Aggregated, new(Class = "character"))
-    expect_equal(empty_tree@isMultiple, new(Class = "logical"))
+    expect_equal(empty_tree@IsMultiple, new(Class = "logical"))
     expect_equal(empty_tree@Multiple, new(Class = "data.frame"))
-    expect_equal(empty_tree@isLeafAggregated, new(Class = "logical"))
+    expect_equal(empty_tree@IsLeafAggregated, new(Class = "logical"))
     expect_equal(empty_tree@LeafAggregated, new(Class = "character"))
     expect_equal(empty_tree@Paths, new(Class = "list"))
     expect_equal(empty_tree@Nodes, new(Class = "list"))
-    expect_equal(empty_tree@EvalOrder, new(Class = "numeric"))
-    expect_equal(empty_tree@rootName, new(Class = "character"))
+    expect_equal(empty_tree@EvaluationOrder, new(Class = "numeric"))
+    expect_equal(empty_tree@RootName, new(Class = "character"))
 })
 
 

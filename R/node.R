@@ -151,8 +151,9 @@ createAggregationMatrix <- function(aNode,
                                     iters = 50) {
 
     # we use an algogen to find the matrix
-    # The gene is the value of the aggregated node; the optimisation function is the difference between the expected weight
-    # and the actual weight at the power 2
+    # The gene is the value of the aggregated node; the optimisation function is
+    # the difference between the expected weight and the actual weight at the
+    # power 2
     minValue <- rep(1, dim(aNode@aggregation)[1])
     maxValue <- rep(aNode@rangeScale, dim(aNode@aggregation)[1])
     nbChildren <- dim(aNode@aggregation)[2] - 1
@@ -166,11 +167,11 @@ createAggregationMatrix <- function(aNode,
 
     #Do the job
     rbga.results <- genalg::rbga(minValue,
-                         maxValue,
-                         evalFunc = evaluate,
-                         popSize = popSize,
-                         iters = iters,
-                         verbose = F)
+                                 maxValue,
+                                 evalFunc = evaluate,
+                                 popSize = popSize,
+                                 iters = iters,
+                                 verbose = F)
     res1 <- unique(t(round(rbga.results$population)),
                    MARGIN = 2)
     out <- list()

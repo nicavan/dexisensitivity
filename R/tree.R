@@ -6,9 +6,9 @@
 #' It includes several slots to store attributes, leaves, nodes, path, and
 #' additional information related to the tree structure.
 #'
-#' @slot nbAttributes Object of class "numeric", the number of attributes in the
+#' @slot NumberOfAttributes Object of class "numeric", the number of attributes in the
 #'   tree.
-#' @slot nbLeaves Object of class "numeric", the number of leaves in the tree.
+#' @slot NumberOfLeaves Object of class "numeric", the number of leaves in the tree.
 #' @slot Depth Object of class "numeric", the maximum depth of the tree.
 #' @slot Attributes Object of class "character", list of names of attributes in
 #'   the tree.
@@ -16,20 +16,20 @@
 #'   tree.
 #' @slot Aggregated Object of class "character", list of names of aggregated
 #'   nodes in the tree.
-#' @slot isMultiple Object of class "logical", flag indicating if there are
+#' @slot IsMultiple Object of class "logical", flag indicating if there are
 #'   multiple leaves in the tree.
 #' @slot Multiple Object of class "data.frame", list of multiple leaves and
 #'   their count.
-#' @slot isLeafAggregated Object of class "logical", flag indicating if there
+#' @slot IsLeafAggregated Object of class "logical", flag indicating if there
 #'   are leaf-aggregated nodes in the tree.
 #' @slot LeafAggregated Object of class "character", list of names of
 #'   leaf-aggregated nodes in the tree.
 #' @slot Paths Object of class "list", list of paths from the root to the
 #'   leaves.
 #' @slot Nodes Object of class "list", list of nodes in the tree.
-#' @slot EvalOrder Object of class "numeric", evaluation order in case of
+#' @slot EvaluationOrder Object of class "numeric", evaluation order in case of
 #'   LeafAggregated nodes.
-#' @slot rootName Object of class "character", name of the root node.
+#' @slot RootName Object of class "character", name of the root node.
 #'
 #' @method Tree class objects are used in the creation and display of tree
 #'   structures. Information from the object is used to create and print the
@@ -43,22 +43,24 @@
 #' @aliases Tree
 #'
 #' @export
-methods::setClass("Tree",
-                  representation(nbAttributes     = "numeric",
-                                 nbLeaves         = "numeric",
-                                 Depth            = "numeric",
-                                 Attributes       = "character",
-                                 Leaves           = "character",
-                                 Aggregated       = "character",
-                                 isMultiple       = "logical",
-                                 Multiple         = "data.frame",
-                                 isLeafAggregated = "logical",
-                                 LeafAggregated   = "character",
-                                 Paths            = "list",
-                                 Nodes            = "list",
-                                 EvalOrder        = "numeric",
-                                 rootName         = "character"
-                  )
+methods::setClass(
+    "Tree",
+    representation(
+        NumberOfAttributes = "numeric",
+        NumberOfLeaves     = "numeric",
+        Depth              = "numeric",
+        Attributes         = "character",
+        Leaves             = "character",
+        Aggregated         = "character",
+        IsMultiple         = "logical",
+        Multiple           = "data.frame",
+        IsLeafAggregated   = "logical",
+        LeafAggregated     = "character",
+        Paths              = "list",
+        Nodes              = "list",
+        EvaluationOrder    = "numeric",
+        RootName           = "character"
+    )
 )
 
 
@@ -78,11 +80,11 @@ methods::setClass("Tree",
 #' @export
 setMethod("print", "Tree",
           function(x, ...) {
-              cat("Root name:", x@rootName)
+              cat("Root name:", x@RootName)
               cat("\nNumber of attributes:", length(x@Attributes))
               cat("\nNumber of aggregated attributes:", length(x@Aggregated))
               cat("\nNumber of true leaves (no multiple, no aggregated):",
-                  x@nbLeaves)
+                  x@NumberOfLeaves)
               cat("\nMaximum depth:", x@Depth)
               cat("\nList of repeated aggregated nodes:",
                   if(length(which(table(x@Aggregated) > 1))) {
@@ -90,12 +92,12 @@ setMethod("print", "Tree",
                   } else {"Non"}
               )
 
-              if(length(x@isMultiple) > 0 && x@isMultiple) {
+              if(length(x@IsMultiple) > 0 && x@IsMultiple) {
                   cat("\nMultiple leaves: \n")
                   print(x@Multiple)
               } else {cat("\nNo multiple leaves")}
 
-              if(length(x@isLeafAggregated) > 0 && x@isLeafAggregated) {
+              if(length(x@IsLeafAggregated) > 0 && x@IsLeafAggregated) {
                   cat("\nLeaf-Aggregated attributes: \n")
                   print(x@LeafAggregated)
               } else {cat("\nNo Leaf-Aggregated Leaf")}
@@ -119,17 +121,17 @@ setMethod("print", "Tree",
 setMethod("show", "Tree",
           function(object) {
 
-              if(identical(object@nbAttributes, numeric(0))) {
+              if(identical(object@NumberOfAttributes, numeric(0))) {
                   cat("*** Tree without attributes ***")
               } else {
 
-                  if(object@nbAttributes != 0) {
-                      digit <- floor(log10(object@nbAttributes)) + 1
+                  if(object@NumberOfAttributes != 0) {
+                      digit <- floor(log10(object@NumberOfAttributes)) + 1
                   } else {
                       digit <- 1
                   }
 
-                  for(i in 1:object@nbAttributes) {
+                  for(i in 1:object@NumberOfAttributes) {
 
                       if (i == 1) {
                           prefix <- "Z : "

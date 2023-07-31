@@ -129,22 +129,22 @@ createTree <- function(MT) {
 
         # Define the order to evaluate a tree if LeafAggregated node
         aTree <- new("Tree",
-                     rootName = rootName,
-                     nbAttributes = nbAttrib,
-                     nbLeaves = nbLeaves,
+                     RootName = rootName,
+                     NumberOfAttributes = nbAttrib,
+                     NumberOfLeaves = nbLeaves,
                      Depth = nbLevels,
                      Nodes = TreeNodes,
                      Multiple = as.data.frame(Multiple),
-                     isMultiple = isMultiple,
-                     isLeafAggregated = isLeafAggregated,
+                     IsMultiple = isMultiple,
+                     IsLeafAggregated = isLeafAggregated,
                      LeafAggregated = l.LeafAggregated,
                      Attributes = l.Attrib,
                      Leaves = l.Leaves,
                      Aggregated = l.Aggregated,
-                     EvalOrder = numeric(0),
+                     EvaluationOrder = numeric(0),
                      Paths = listPath)
 
-        aTree@EvalOrder <- EvaluateOrder(aTree)
+        aTree@EvaluationOrder <- EvaluateOrder(aTree)
 
         listTree[[iRootName]] <- aTree
     }
@@ -345,9 +345,9 @@ getID <- function(listNodes,nodeName) {
 #' @export
 EvaluateOrder <- function(aTree) {
     evalOrder <- numeric(0)
-    if (aTree@isLeafAggregated) {
+    if (aTree@IsLeafAggregated) {
 
-        results <- numeric(aTree@nbAttributes)
+        results <- numeric(aTree@NumberOfAttributes)
         names(results) <- aTree@Attributes
         results[] <- -1
         results[aTree@Leaves] <- 1
@@ -417,4 +417,43 @@ getLeaves <- function(aTree,nodeID) {
     return(unlist(sapply(l.Nodes, function(x) {
         if (aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
     })))
+}
+
+
+#' Convert old Tree class objects to new Tree class objects
+#'
+#' This function takes an object of the old "Tree" class (from JEB's scripts)
+#' and returns a new object of the new "Tree" class (package's one), with the
+#' attribute names changed according to the new class definition.
+#'
+#' @param oldTree An object of the old "Tree" class. This should be a valid
+#'   "Tree" object.
+#'
+#' @return A new object of the new "Tree" class, with the attribute names
+#'   changed.
+#'
+#' @export
+convertTreeClass <- function(oldTree) {
+    if(!is(oldTree, "Tree")) {
+        stop("The input object is not of class 'Tree'")
+    }
+
+    # Create a new Tree object with the renamed slots
+    newTree <- new("Tree",
+                   NumberOfAttributes = oldTree@nbAttributes,
+                   NumberOfLeaves     = oldTree@nbLeaves,
+                   Depth              = oldTree@Depth,
+                   Attributes         = oldTree@Attributes,
+                   Leaves             = oldTree@Leaves,
+                   Aggregated         = oldTree@Aggregated,
+                   IsMultiple         = oldTree@isMultiple,
+                   Multiple           = oldTree@Multiple,
+                   IsLeafAggregated   = oldTree@isLeafAggregated,
+                   LeafAggregated     = oldTree@LeafAggregated,
+                   Paths              = oldTree@Paths,
+                   Nodes              = oldTree@Nodes,
+                   EvaluationOrder    = oldTree@EvalOrder,
+                   RootName           = oldTree@rootName)
+
+    return(newTree)
 }

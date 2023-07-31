@@ -17,10 +17,10 @@ infoAOV <- function(aTree, iTest = 50) {
         sapply(function(x) {if (x@isLeaf) {x@rangeScale}}) %>%
         unlist() %>%
         cumprod()
-    nbRuns <- preprod[aTree@nbLeaves]
+    nbRuns <- preprod[aTree@NumberOfLeaves]
 
     start_time <- Sys.time()
-    option <- matrix(nrow = aTree@nbLeaves,
+    option <- matrix(nrow = aTree@NumberOfLeaves,
                      ncol = iTest)
     rownames(option) <- aTree@Leaves
     for(k in aTree@Leaves) {
@@ -35,7 +35,7 @@ infoAOV <- function(aTree, iTest = 50) {
                         EvaluateScenario(aTree, as.matrix(option[, x]))
                     })
     end_time <- Sys.time()
-    cat("\n", aTree@nbLeaves, " factors",
+    cat("\n", aTree@NumberOfLeaves, " factors",
         "\n Approximative required time to run the ", nbRuns, " modalities",
         (end_time-start_time)*nbRuns/iTest/60, " minutes")
 }
@@ -119,9 +119,9 @@ sensib.effet <- function(aov.obj) {
 #         rms <- NA
 #     }
 #
-#     #---------------------------------------------------------------------------
+#     #-------------------------------------------------------------------------
 #     #### Critères de sensibilité terme par terme
-#     #---------------------------------------------------------------------------
+#     #-------------------------------------------------------------------------
 #     # sorties
 #     out <- data.frame(df = aov.df, ss = aov.ss, ss.ratio = aov.ss/tss,
 #                       cm = aov.cm, F = aov.cm/rms)
@@ -454,10 +454,10 @@ AOV_DEXi <- function(aTree) {
                             EvaluateScenario(aTree,
                                              as.matrix(factorialPlan[, x]))
                         })
-    myResults <- myResults[c(aTree@rootName, aTree@Leaves), ]
+    myResults <- myResults[c(aTree@RootName, aTree@Leaves), ]
     #Transform the matrix for AOV
     myResults <- as.data.frame(t(myResults))
-    for(i in 1:aTree@nbLeaves) {
+    for(i in 1:aTree@NumberOfLeaves) {
         myResults[[i+1]] <- factor(myResults[[i+1]])
     }
 
@@ -466,7 +466,8 @@ AOV_DEXi <- function(aTree) {
                                       minlength = 4,
                                       dot = FALSE)
     #Create the formula
-    xNames <- paste(colnames(myResults)[2:(aTree@nbLeaves+1)], collapse = "+")
+    xNames <- paste(colnames(myResults)[2:(aTree@NumberOfLeaves+1)],
+                    collapse = "+")
     myFormula <- as.formula(paste(colnames(myResults)[1],
                                   " ~ ",
                                   paste(xNames, collapse = "+")))

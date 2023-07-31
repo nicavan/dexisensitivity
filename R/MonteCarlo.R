@@ -16,7 +16,7 @@ infoMC <- function(aTree,
                   nbRuns,
                   iTest = 50) {
     start_time <- Sys.time()
-    option <- matrix(nrow = aTree@nbLeaves,
+    option <- matrix(nrow = aTree@NumberOfLeaves,
                      ncol = iTest)
     rownames(option) <- aTree@Leaves
     for(k in aTree@Leaves) {
@@ -61,9 +61,9 @@ MonteCarlo <- function(aTree,
     }
 
     MC <- matrix(ncol = nbRuns,
-                 nrow = aTree@nbAttributes,
+                 nrow = aTree@NumberOfAttributes,
                  dimnames = list(c(aTree@Attributes), c(seq(1:nbRuns))))
-    option <- matrix(nrow = aTree@nbLeaves,
+    option <- matrix(nrow = aTree@NumberOfLeaves,
                      ncol = nbRuns)
     rownames(option) <- aTree@Leaves
 

@@ -1,8 +1,10 @@
 test_that("Depth order return correct order for DEXiPM", {
     # Load the complex DEXi tree needed for the test
-    tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-                                package = "dexiranalysis"))
-    sousArbre <- createSubTree(tree[[1]], "Flora")
+    list_tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
+                                     package = "dexiranalysis"))
+    tree <- list_tree[[1]] %>% convertTreeClass()
+
+    sousArbre <- createSubTree(tree, "Flora")
 
     # Test depth order on a subTree
     test_output <- depth_order(sousArbre)

@@ -22,10 +22,10 @@ SI_DEXi <- function(aTree,
 
     for(node.name in aTree@Aggregated) {
         sousArbre <- createSubTree(aTree, node.name, avoidrep = avoidrep)
-        l <- matrix(nrow = sousArbre@nbAttributes - 1,
+        l <- matrix(nrow = sousArbre@NumberOfAttributes - 1,
                     ncol = 2)
 
-        for(j in 2:sousArbre@nbAttributes) {
+        for(j in 2:sousArbre@NumberOfAttributes) {
             l[j-1,1] <- sousArbre@Nodes[[j]]@isLeaf
             l[j-1,2] <- sousArbre@Nodes[[j]]@Depth - sousArbre@Nodes[[1]]@Depth + 1
         }
@@ -74,17 +74,17 @@ SI_DEXi <- function(aTree,
 #'
 #' @export
 clcSI_DEXi <- function(aTree, avoidrep = F) {
-    nodeName <- aTree@rootName
+    nodeName <- aTree@RootName
     WeightList <- vector(mode = "list",
-                         length = aTree@nbAttributes)
+                         length = aTree@NumberOfAttributes)
     names(WeightList) <- aTree@Attributes
 
-    for(i in 1:aTree@nbAttributes) {
+    for(i in 1:aTree@NumberOfAttributes) {
         WeightList[[i]] <- aTree@Nodes[[i]]@Proba
     }
 
     CondiProbaList <- vector(mode = "list",
-                             length = aTree@nbAttributes)
+                             length = aTree@NumberOfAttributes)
     names(CondiProbaList) <-aTree@Attributes
 
     depthorder <- depth_order(aTree)

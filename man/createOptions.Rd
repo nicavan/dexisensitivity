@@ -16,7 +16,7 @@ Default is 1.}
 is NULL, which means no seed is set.}
 }
 \value{
-A matrix of size \code{aTree@nbLeaves} x \code{nbOptions}, where each row
+A matrix of size \code{aTree@NumberOfLeaves} x \code{nbOptions}, where each row
 represents a leaf of the tree and each column represents a sampled option.
 }
 \description{

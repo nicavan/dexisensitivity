@@ -1,10 +1,11 @@
 test_that("createOption : same output as JEB's scripts", {
     # Load the complex DEXi tree needed for the test
-    tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-                                package = "dexiranalysis"))
+    list_tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
+                                     package = "dexiranalysis"))
+    tree <- list_tree[[1]] %>% convertTreeClass()
 
     # Unit test
-    test_output <- createOptions(tree[[1]], nbOptions = 3, aSeed = 42)
+    test_output <- createOptions(tree, nbOptions = 3, aSeed = 42)
 
     expected_output <- readRDS(system.file("testdata",
                                            "TestcreateOptionsDEXiPM.rds",
@@ -16,13 +17,14 @@ test_that("createOption : same output as JEB's scripts", {
 
 test_that("eval 1 option : same output as JEB's scripts", {
     # Load the complex DEXi tree and option needed for the test
-    tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-                                package = "dexiranalysis"))
+    list_tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
+                                     package = "dexiranalysis"))
+    tree <- list_tree[[1]] %>% convertTreeClass()
     options <- readRDS(system.file("testdata", "TestcreateOptionsDEXiPM.rds",
                                    package = "dexiranalysis"))
 
     # Unit test
-    test_output <- EvaluateScenario(tree[[1]], as.matrix(options[, 1]))
+    test_output <- EvaluateScenario(tree, as.matrix(options[, 1]))
 
     expected_output <- readRDS(system.file("testdata", "DEXiPMeval1option.rds",
                                            package = "dexiranalysis"))
@@ -33,13 +35,14 @@ test_that("eval 1 option : same output as JEB's scripts", {
 
 test_that("eval all option : same output as JEB's scripts", {
     # Load the complex DEXi tree and option needed for the test
-    tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-                                package = "dexiranalysis"))
+    list_tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
+                                     package = "dexiranalysis"))
+    tree <- list_tree[[1]] %>% convertTreeClass()
     options <- readRDS(system.file("testdata", "TestcreateOptionsDEXiPM.rds",
                                    package = "dexiranalysis"))
 
     # Unit test
-    test_output <- EvaluateScenarios(tree[[1]], options)
+    test_output <- EvaluateScenarios(tree, options)
 
     expected_output_a <- readRDS(system.file("testdata",
                                              "DEXiPMevalalloptions.rds",
@@ -47,7 +50,7 @@ test_that("eval all option : same output as JEB's scripts", {
 
     expected_output_b <- 1:dim(options)[2] %>%
         sapply(function(x) {
-            EvaluateScenario(tree[[1]], as.matrix(options[, x]))
+            EvaluateScenario(tree, as.matrix(options[, x]))
         })
 
     expect_equal(test_output, expected_output_a)
@@ -74,7 +77,7 @@ test_that("Saved and loaded option are the same when option have rownames", {
 test_that("saveScenarios well save a file", {
     # Load scenarios needed for the test
     Scenario <- readRDS(system.file("testdata", "TestscenariosAll.rds",
-                                   package = "dexiranalysis"))
+                                    package = "dexiranalysis"))
 
     # Unit test
     saveScenarios(Scenario, "C:/Users/rallart/E-DISC/Scenario.csv")
@@ -90,7 +93,7 @@ test_that("showScenario : same output as JEB's scripts and par is reset", {
                                     package = "dexiranalysis"))
     lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
                                  package = "dexiranalysis"))
-    DEXi <- lDEXi[[1]]
+    DEXi <- lDEXi[[1]] %>% convertTreeClass()
 
     # Unit test
     vdiffr::expect_doppelganger("showScenario-plot",
@@ -110,7 +113,8 @@ test_that("compareScenario : same output as JEB's scripts and par is reset", {
                                     package = "dexiranalysis"))
     lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
                                  package = "dexiranalysis"))
-    DEXi <- lDEXi[[1]]
+    DEXi <- lDEXi[[1]] %>% convertTreeClass()
+
 
     # Unit test
     plot_compareScenario <- compareScenario(DEXi, Scenario,

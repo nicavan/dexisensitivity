@@ -8,10 +8,12 @@ test_that("same output as JEB's scripts", {
     # to transform it in an external pointer (usual object for this function)
     # since we can't save an external pointer directly.
     tree <- createTree(XML::xmlDeserializeHook(TestTree))
+
     test_output <- createSubTree(tree[[1]], tree[[1]]@Nodes[[2]]@name)
 
     expected_output <- readRDS(system.file("testdata", "Testsubtreemini.rds",
-                                           package = "dexiranalysis"))
+                                           package = "dexiranalysis")) %>%
+        convertTreeClass()
 
     expect_equal(test_output, expected_output)
 })
@@ -31,7 +33,8 @@ test_that("same output as JEB's scripts 2", {
     test_output <- createSubTree(tree[[1]], tree[[1]]@Nodes[[2]]@name)
 
     expected_output <- readRDS(system.file("testdata", "TestsubtreeDEXiPM.rds",
-                                           package = "dexiranalysis"))
+                                           package = "dexiranalysis")) %>%
+        convertTreeClass()
 
     expect_equal(test_output, expected_output)
 })

@@ -15,10 +15,10 @@ additional information related to the tree structure.
 \section{Slots}{
 
 \describe{
-\item{\code{nbAttributes}}{Object of class "numeric", the number of attributes in the
+\item{\code{NumberOfAttributes}}{Object of class "numeric", the number of attributes in the
 tree.}
 
-\item{\code{nbLeaves}}{Object of class "numeric", the number of leaves in the tree.}
+\item{\code{NumberOfLeaves}}{Object of class "numeric", the number of leaves in the tree.}
 
 \item{\code{Depth}}{Object of class "numeric", the maximum depth of the tree.}
 
@@ -31,13 +31,13 @@ tree.}
 \item{\code{Aggregated}}{Object of class "character", list of names of aggregated
 nodes in the tree.}
 
-\item{\code{isMultiple}}{Object of class "logical", flag indicating if there are
+\item{\code{IsMultiple}}{Object of class "logical", flag indicating if there are
 multiple leaves in the tree.}
 
 \item{\code{Multiple}}{Object of class "data.frame", list of multiple leaves and
 their count.}
 
-\item{\code{isLeafAggregated}}{Object of class "logical", flag indicating if there
+\item{\code{IsLeafAggregated}}{Object of class "logical", flag indicating if there
 are leaf-aggregated nodes in the tree.}
 
 \item{\code{LeafAggregated}}{Object of class "character", list of names of
@@ -48,10 +48,10 @@ leaves.}
 
 \item{\code{Nodes}}{Object of class "list", list of nodes in the tree.}
 
-\item{\code{EvalOrder}}{Object of class "numeric", evaluation order in case of
+\item{\code{EvaluationOrder}}{Object of class "numeric", evaluation order in case of
 LeafAggregated nodes.}
 
-\item{\code{rootName}}{Object of class "character", name of the root node.}
+\item{\code{RootName}}{Object of class "character", name of the root node.}
 }}
 
 \seealso{

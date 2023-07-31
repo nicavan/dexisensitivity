@@ -10,7 +10,7 @@
 #' @param aSeed An integer seed to be used for random number generation. Default
 #'   is NULL, which means no seed is set.
 #'
-#' @return A matrix of size `aTree@nbLeaves` x `nbOptions`, where each row
+#' @return A matrix of size `aTree@NumberOfLeaves` x `nbOptions`, where each row
 #'   represents a leaf of the tree and each column represents a sampled option.
 #'
 #' @export
@@ -19,7 +19,7 @@ createOptions <- function(aTree, nbOptions = 1, aSeed = NULL) {
         set.seed(aSeed)
     }
 
-    option <- matrix(nrow = aTree@nbLeaves, ncol = nbOptions)
+    option <- matrix(nrow = aTree@NumberOfLeaves, ncol = nbOptions)
     rownames(option) <- aTree@Leaves
 
     for(k in aTree@Leaves) {
@@ -52,7 +52,7 @@ EvaluateScenario <- function(aTree, option) {
         stop(cat("\nl'option n'est pas une matrice"), call)
     }
 
-    results <- numeric(aTree@nbAttributes)
+    results <- numeric(aTree@NumberOfAttributes)
     names(results) <- aTree@Attributes
     results[] <- -1
 
@@ -63,10 +63,10 @@ EvaluateScenario <- function(aTree, option) {
     }
 
     # If leaf aggregated leaves, deal first with the subtree
-    if (aTree@isLeafAggregated) {
-        for(i in 1:length(aTree@EvalOrder)) {
+    if (aTree@IsLeafAggregated) {
+        for(i in 1:length(aTree@EvaluationOrder)) {
             subTree <- createSubTree(aTree,
-                                     aTree@Attributes[aTree@EvalOrder[i]])
+                                     aTree@Attributes[aTree@EvaluationOrder[i]])
 
             #Get the proper option
             subOption <- as.matrix(results[c(subTree@Leaves)])
@@ -80,7 +80,7 @@ EvaluateScenario <- function(aTree, option) {
                         id <- id %>%
                             sapply(function(x) {
                                 if (!subTree@Nodes[[x]]@isLeaf) {x}
-                                }) %>%
+                            }) %>%
                             unlist()
                     }
 
@@ -306,11 +306,11 @@ compareScenario <- function(aTree,
     withr::defer(par(oldpar))
 
     plotrix::radial.plot(t(theScenarios[listNodes, ]),
-                labels = abbreviate(names.arg = listNodes,
-                                    minlength = 6),
-                rp.type = "p",
-                start = pi/2,
-                main = "Comparison of scenarios",
-                line.col = "blue",
-                lwd = 3)
+                         labels = abbreviate(names.arg = listNodes,
+                                             minlength = 6),
+                         rp.type = "p",
+                         start = pi/2,
+                         main = "Comparison of scenarios",
+                         line.col = "blue",
+                         lwd = 3)
 }
