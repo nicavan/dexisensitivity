@@ -8,27 +8,27 @@
 #' structure.
 #'
 #'
-#' @slot id Object of class "numeric", unique sequential id of the node.
-#' @slot name Object of class "character", name of the node.
-#' @slot isLeaf Object of class "logical", indicating if it is a leaf.
-#' @slot isLeafAndAggregated Object of class "logical", indicating if this leaf
+#' @slot Id Object of class "numeric", unique sequential id of the node.
+#' @slot Name Object of class "character", name of the node.
+#' @slot IsLeaf Object of class "logical", indicating if it is a leaf.
+#' @slot IsLeafAndAggregated Object of class "logical", indicating if this leaf
 #'   is also an aggregated node.
-#' @slot children Object of class "character", list of the names of the node's
+#' @slot Children Object of class "character", list of the names of the node's
 #'   children.
-#' @slot sisters Object of class "character", list of the names of the node's
+#' @slot Sisters Object of class "character", list of the names of the node's
 #'   sisters.
-#' @slot mother Object of class "character", name of the node's mother.
-#' @slot aggregation Object of class "matrix", aggregation table if the node is
+#' @slot Mother Object of class "character", name of the node's mother.
+#' @slot Aggregation Object of class "matrix", aggregation table if the node is
 #'   aggregated.
-#' @slot Proba Object of class "numeric", estimated weight of aggregation.
+#' @slot Probability Object of class "numeric", estimated weight of aggregation.
 #' @slot Depth Object of class "numeric", depth of the node.
 #' @slot Twin Object of class "numeric", id of the other leaves in case of
 #'   multiple leaves.
-#' @slot CondiProbaList Object of class "list", list to store conditional
+#' @slot ConditionalProbabilityList Object of class "list", list to store conditional
 #'   probabilities.
-#' @slot rangeScale Object of class "numeric", range scale.
-#' @slot scaleLabel Object of class "character", labels of the different scales.
-#' @slot nodePath Object of class "character", node path from root to leaf.
+#' @slot RangeScale Object of class "numeric", range scale.
+#' @slot ScaleLabel Object of class "character", labels of the different scales.
+#' @slot NodePath Object of class "character", node path from root to leaf.
 #'
 #' @return An object of class Node.
 #'
@@ -39,21 +39,22 @@
 #'
 #' @export
 setClass("Node",
-         representation(id = "numeric",
-                        name = "character",
-                        isLeaf = "logical",
-                        isLeafAndAggregated = "logical",
-                        children = "character",
-                        sisters = "character",
-                        mother = "character",
-                        aggregation = "matrix",
-                        Proba = "numeric",
-                        Depth = "numeric",
-                        Twin = "numeric",
-                        CondiProbaList = "list",
-                        rangeScale = "numeric",
-                        scaleLabel = "character",
-                        nodePath = "character"
+         representation(
+             Id = "numeric",
+             Name = "character",
+             IsLeaf = "logical",
+             IsLeafAndAggregated = "logical",
+             Children = "character",
+             Sisters = "character",
+             Mother = "character",
+             Aggregation = "matrix",
+             Probability = "numeric",
+             Depth = "numeric",
+             Twin = "numeric",
+             ConditionalProbabilityList = "list", # Inutilisé ?
+             RangeScale = "numeric",
+             ScaleLabel = "character",
+             NodePath = "character"
          )
 )
 
@@ -75,30 +76,30 @@ setClass("Node",
 #' @export
 setMethod("print","Node",
           function(x,...){
-              cat("Node name:", x@name)
-              cat("\nID:", x@id)
+              cat("Node name:", x@Name)
+              cat("\nID:", x@Id)
               cat("\nNode depth:", x@Depth)
-              cat("\nFrom root to node:", paste0(x@nodePath, col = "->"))
-              cat("\nIs it a leaf:", x@isLeaf)
+              cat("\nFrom root to node:", paste0(x@NodePath, col = "->"))
+              cat("\nIs it a leaf:", x@IsLeaf)
               cat("\nIs is a leaf-aggregated:",
-                  if (length(x@isLeafAndAggregated) && x@isLeafAndAggregated) {
+                  if (length(x@IsLeafAndAggregated) && x@IsLeafAndAggregated) {
                       "TRUE"
                   } else {"FALSE"})
               cat("\nMother:",
-                  if (length(x@mother) == 0) {
+                  if (length(x@Mother) == 0) {
                       ""
-                  } else if (is.na(x@mother)) {
+                  } else if (is.na(x@Mother)) {
                       "Root"
-                  } else {x@mother})
+                  } else {x@Mother})
               cat("\nSisters:",
-                  if (length(x@sisters) && length(x@sisters)) {
-                      x@sisters
+                  if (length(x@Sisters) && length(x@Sisters)) {
+                      x@Sisters
                   } else {"None"})
               cat("\nChildren:",
-                  if (length(x@children) && length(x@children)) {
-                      x@children
+                  if (length(x@Children) && length(x@Children)) {
+                      x@Children
                   } else {"None"})
-              cat("\nEstimated weights:", x@Proba)
+              cat("\nEstimated weights:", x@Probability)
           }
 )
 
@@ -116,7 +117,7 @@ setMethod("print","Node",
 #'
 #' @export
 getEstimatedWeights <- function(aNode) {
-    aggregationTable <- aNode@aggregation
+    aggregationTable <- aNode@Aggregation
     y <- aggregationTable[ ,dim(aggregationTable)[2]]
     x <- aggregationTable[ ,-c(dim(aggregationTable)[2])]
     res <- (lm(y~x)$coefficients[-1]) / (sum(lm(y~x)$coefficients[-1]))
@@ -154,13 +155,13 @@ createAggregationMatrix <- function(aNode,
     # The gene is the value of the aggregated node; the optimisation function is
     # the difference between the expected weight and the actual weight at the
     # power 2
-    minValue <- rep(1, dim(aNode@aggregation)[1])
-    maxValue <- rep(aNode@rangeScale, dim(aNode@aggregation)[1])
-    nbChildren <- dim(aNode@aggregation)[2] - 1
+    minValue <- rep(1, dim(aNode@Aggregation)[1])
+    maxValue <- rep(aNode@RangeScale, dim(aNode@Aggregation)[1])
+    nbChildren <- dim(aNode@Aggregation)[2] - 1
     evaluate <- function(string = c()) {
         # Modify the option with the new gene
         y <- as.integer(round(string))
-        x <- aNode@aggregation[ ,1:nbChildren]
+        x <- aNode@Aggregation[ ,1:nbChildren]
         res <- lm(y~x)$coefficients[-1] / sum(lm(y~x)$coefficients[-1])
         return(sum((expectedWeight - res)^2))
     }
@@ -176,7 +177,7 @@ createAggregationMatrix <- function(aNode,
                    MARGIN = 2)
     out <- list()
     for(i in 1:nbTables) {
-        out[[i]] <- cbind(aNode@aggregation[ ,1:nbChildren],
+        out[[i]] <- cbind(aNode@Aggregation[ ,1:nbChildren],
                           res1[ ,i])
     }
 

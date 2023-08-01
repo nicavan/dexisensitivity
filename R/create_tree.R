@@ -69,8 +69,8 @@ createTree <- function(MT) {
         TreeNodes <- vector(nbAttrib, mode = "list")
         TreeNodes <- lapply(listPath, createNode, MT = MT)
         for(i in 1:nbAttrib) {
-            TreeNodes[[i]]@id <- i
-            TreeNodes[[i]]@isLeafAndAggregated <- F
+            TreeNodes[[i]]@Id <- i
+            TreeNodes[[i]]@IsLeafAndAggregated <- F
             TreeNodes[[i]]@Twin <- numeric(0)
         }
 
@@ -79,12 +79,12 @@ createTree <- function(MT) {
 
         # List of leaves
         l.Leaves <- unlist(sapply(TreeNodes,
-                                  function(x) {if(x@isLeaf) x@name}))
+                                  function(x) {if(x@IsLeaf) x@Name}))
         nbLeaves<-length(l.Leaves)
 
         # List of Aggregated
         l.Aggregated <- unlist(sapply(TreeNodes,
-                                      function(x) {if(!x@isLeaf) x@name}))
+                                      function(x) {if(!x@IsLeaf) x@Name}))
         nbAggregated <- length(l.Aggregated)
 
         # Leaf-Aggregated attribute
@@ -94,8 +94,8 @@ createTree <- function(MT) {
             for(i in 1:length(l.LeafAggregated)) {
                 dup <- getID(TreeNodes, l.LeafAggregated[i])
                 for(j in 1:length(dup)) {
-                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup, TreeNodes[[j]]@id)))]
-                    TreeNodes[[dup[j]]]@isLeafAndAggregated <- T
+                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup, TreeNodes[[j]]@Id)))]
+                    TreeNodes[[dup[j]]]@IsLeafAndAggregated <- T
                 }
             }
         } else {isLeafAggregated <- F}
@@ -110,7 +110,7 @@ createTree <- function(MT) {
             for(i in 1:dim(Multiple)[1]) {
                 dup <- getID(TreeNodes, rownames(Multiple)[i])
                 for(j in 1:length(dup)) {
-                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup, TreeNodes[[dup[j]]]@id)))]
+                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup, TreeNodes[[dup[j]]]@Id)))]
                 }
             }
             isMultiple <- T
@@ -270,17 +270,17 @@ createNode <- function(listeNoeuds, MT) {
 
     # Output
     out <- new("Node",
-               name = listeNoeuds[length(listeNoeuds)],
+               Name = listeNoeuds[length(listeNoeuds)],
                Depth = length(listeNoeuds),
-               isLeaf = isLeaf,
-               mother = mother,
-               sisters = l.Sisters,
-               children = l.Children,
-               aggregation = aggregation,
-               rangeScale = scaleNode,
-               scaleLabel = scaleLabel,
-               Proba = WeightList,
-               nodePath = listeNoeuds)
+               IsLeaf = isLeaf,
+               Mother = mother,
+               Sisters = l.Sisters,
+               Children = l.Children,
+               Aggregation = aggregation,
+               RangeScale = scaleNode,
+               ScaleLabel = scaleLabel,
+               Probability = WeightList,
+               NodePath = listeNoeuds)
 }
 
 
@@ -320,17 +320,17 @@ getChaine <- function(listeNoeuds) {
 # getID <- function(listNodes,nodeName) {
 #     out <- numeric(0)
 #     for(i in 1:length(listNodes)) {
-#         if(rev(listNodes[[i]]@nodePath)[1] == nodeName)
-#             out <- c(out, listNodes[[i]]@id)
+#         if(rev(listNodes[[i]]@NodePath)[1] == nodeName)
+#             out <- c(out, listNodes[[i]]@Id)
 #     }
 #     return(out)
 # }
 getID <- function(listNodes,nodeName) {
     out <- numeric(0)
     for(i in 1:length(listNodes)) {
-        nodePathLength <- length(listNodes[[i]]@nodePath)
-        if(listNodes[[i]]@nodePath[nodePathLength] == nodeName)
-            out <- c(out,listNodes[[i]]@id)
+        nodePathLength <- length(listNodes[[i]]@NodePath)
+        if(listNodes[[i]]@NodePath[nodePathLength] == nodeName)
+            out <- c(out,listNodes[[i]]@Id)
     }
     return(out)
 }
@@ -363,7 +363,7 @@ EvaluateOrder <- function(aTree) {
                 l.Leaves <- getLeaves(aTree, l.Nodes[i])
                 if(l.Leaves %>%
                    sapply(function(x) {
-                       ifelse(results[aTree@Nodes[[x]]@name] == -1, 1, 0)
+                       ifelse(results[aTree@Nodes[[x]]@Name] == -1, 1, 0)
                    }) %>%
                    unlist() %>%
                    sum()) {
@@ -373,7 +373,7 @@ EvaluateOrder <- function(aTree) {
                     id <- getID(aTree@Nodes, l.Nodes[i])
                     if(length(id) > 1)
                         id <- unlist(sapply(id, function(x) {
-                            if(!aTree@Nodes[[x]]@isLeaf) {x}
+                            if(!aTree@Nodes[[x]]@IsLeaf) {x}
                         }))
                     evalOrder <- c(evalOrder, id)
                 }
@@ -405,55 +405,16 @@ getLeaves <- function(aTree,nodeID) {
     if (is.character(nodeID)) {
         l.id <- getID(aTree@Nodes, nodeID)
         nodeID <- unlist(sapply(l.id, function(x) {
-            if(!aTree@Nodes[[x]]@isLeaf)aTree@Nodes[[x]]@id
+            if(!aTree@Nodes[[x]]@IsLeaf)aTree@Nodes[[x]]@Id
         }))
     }
 
     l.Nodes <- unlist(sapply(aTree@Nodes, function(x) {
-        if(length(grep(paste(aTree@Nodes[[nodeID]]@nodePath, collapse = ""),
-                       paste(x@nodePath, collapse = ""))))x@id
+        if(length(grep(paste(aTree@Nodes[[nodeID]]@NodePath, collapse = ""),
+                       paste(x@NodePath, collapse = ""))))x@Id
     }))
 
     return(unlist(sapply(l.Nodes, function(x) {
-        if (aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
+        if (aTree@Nodes[[x]]@IsLeaf) {aTree@Nodes[[x]]@Id}
     })))
-}
-
-
-#' Convert old Tree class objects to new Tree class objects
-#'
-#' This function takes an object of the old "Tree" class (from JEB's scripts)
-#' and returns a new object of the new "Tree" class (package's one), with the
-#' attribute names changed according to the new class definition.
-#'
-#' @param oldTree An object of the old "Tree" class. This should be a valid
-#'   "Tree" object.
-#'
-#' @return A new object of the new "Tree" class, with the attribute names
-#'   changed.
-#'
-#' @export
-convertTreeClass <- function(oldTree) {
-    if(!is(oldTree, "Tree")) {
-        stop("The input object is not of class 'Tree'")
-    }
-
-    # Create a new Tree object with the renamed slots
-    newTree <- new("Tree",
-                   NumberOfAttributes = oldTree@nbAttributes,
-                   NumberOfLeaves     = oldTree@nbLeaves,
-                   Depth              = oldTree@Depth,
-                   Attributes         = oldTree@Attributes,
-                   Leaves             = oldTree@Leaves,
-                   Aggregated         = oldTree@Aggregated,
-                   IsMultiple         = oldTree@isMultiple,
-                   Multiple           = oldTree@Multiple,
-                   IsLeafAggregated   = oldTree@isLeafAggregated,
-                   LeafAggregated     = oldTree@LeafAggregated,
-                   Paths              = oldTree@Paths,
-                   Nodes              = oldTree@Nodes,
-                   EvaluationOrder    = oldTree@EvalOrder,
-                   RootName           = oldTree@rootName)
-
-    return(newTree)
 }

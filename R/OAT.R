@@ -25,7 +25,7 @@ OAT <- function(aTree,
         #Option +
         newOption <- option
         newOption[i, ] <- option[i, ] + 1
-        if (newOption[i, ] > aTree@Nodes[[getID(aTree@Nodes, i)[1]]]@rangeScale) {
+        if (newOption[i, ] > aTree@Nodes[[getID(aTree@Nodes, i)[1]]]@RangeScale) {
             results[, j]<- -1
         } else {
             results[, j] <- EvaluateScenario(aTree, as.matrix(newOption))
@@ -68,7 +68,7 @@ showOAT <- function(nodeName, aResults, aTree) {
     if (aTree@IsLeafAggregated) {
         id <- id %>%
             sapply(function(x) {
-                if (!aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
+                if (!aTree@Nodes[[x]]@IsLeaf) {aTree@Nodes[[x]]@Id}
             }) %>%
             unlist()
     }
@@ -86,13 +86,13 @@ showOAT <- function(nodeName, aResults, aTree) {
 
     plot(1:length(myChildren), nominal,
          pch = "o", xlab = "", ylab = "Score", main = nodeName, axes = FALSE,
-         ylim = c(1, aTree@Nodes[[id]]@rangeScale))
+         ylim = c(1, aTree@Nodes[[id]]@RangeScale))
     points(1:length(myChildren), minus, pch = "-")
     points(1:length(myChildren), plus, pch = "+")
     axis(side = 1, at = 1:length(myChildren),
          labels = abbreviate(sapply(1:length(myChildren),
-                                    function(x) {aTree@Nodes[[myChildren[x]]]@name})),
+                                    function(x) {aTree@Nodes[[myChildren[x]]]@Name})),
          las = 2)
-    axis(side = 2, at = c(1:aTree@Nodes[[id]]@rangeScale),
-         labels = 1:aTree@Nodes[[id]]@rangeScale)
+    axis(side = 2, at = c(1:aTree@Nodes[[id]]@RangeScale),
+         labels = 1:aTree@Nodes[[id]]@RangeScale)
 }

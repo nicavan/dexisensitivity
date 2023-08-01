@@ -20,9 +20,9 @@ infoMC <- function(aTree,
                      ncol = iTest)
     rownames(option) <- aTree@Leaves
     for(k in aTree@Leaves) {
-        option[k, ] <- aTree@Nodes[[getID(aTree@Nodes,k)[1]]]@rangeScale %>%
+        option[k, ] <- aTree@Nodes[[getID(aTree@Nodes,k)[1]]]@RangeScale %>%
             sample(size = iTest,
-                   prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Proba,
+                   prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Probability,
                    replace = TRUE)
     }
 
@@ -68,9 +68,9 @@ MonteCarlo <- function(aTree,
     rownames(option) <- aTree@Leaves
 
     for(k in aTree@Leaves) {
-        option[k, ] <- aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@rangeScale %>%
+        option[k, ] <- aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@RangeScale %>%
             sample(size = nbRuns,
-                   prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Proba,
+                   prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Probability,
                    replace = TRUE)
     }
 
@@ -114,29 +114,29 @@ ShowMC <- function(Node,
 
     #  Node<-theTree@Nodes[[nodeName]]
     typ <- "A"
-    if (Node@isLeaf) { typ <- "L" }
+    if (Node@IsLeaf) { typ <- "L" }
 
-    bar <- MC[Node@name, ] %>%
-        tapply(MC[Node@name, ], sum)
+    bar <- MC[Node@Name, ] %>%
+        tapply(MC[Node@Name, ], sum)
 
-    if (length(bar) < Node@rangeScale) {
+    if (length(bar) < Node@RangeScale) {
         newbar <- array(data = 0,
-                        dim = Node@rangeScale,
-                        dimnames = list(c(seq(1:Node@rangeScale))))
+                        dim = Node@RangeScale,
+                        dimnames = list(c(seq(1:Node@RangeScale))))
         for(i in 1:dim(bar)) {
             newbar[names(bar)[i]] <- bar[i]
         }
         bar <- newbar
     }
 
-    bar[] <- (bar[] / c(1:Node@rangeScale)) / nbRuns
+    bar[] <- (bar[] / c(1:Node@RangeScale)) / nbRuns
     mc <- barplot(bar,
-                  main = paste(Node@name, " [", typ, "]", sep = ""),
+                  main = paste(Node@Name, " [", typ, "]", sep = ""),
                   xlab = "Modalities",
                   ylab = "Frequencies",
                   ylim = c(0, (max(bar) + 0.1)),
                   las = 1, cex = 1, cex.main = 1, cex.lab = 1, cex.axis = 0.9)
-    #,names.arg=Node@scaleLabel
+    #,names.arg=Node@ScaleLabel
 
     text(mc, bar,
          format(round(bar, digits = 2)),
@@ -146,12 +146,12 @@ ShowMC <- function(Node,
     #  points(mc,as.vector(na.omit((ref_points))),pch=18,col=2)
 
     legend("topright",
-           legend = paste(names(bar), abbreviate(Node@scaleLabel)),
+           legend = paste(names(bar), abbreviate(Node@ScaleLabel)),
            box.lty = 0, cex =0.8)
     text(length(bar))
 
     #write.table(bar,file="MC bar lengths.csv",sep=",",row.names=T,col.names=NA)
-    cat(row.names = Node@name,
+    cat(row.names = Node@Name,
         bar,
         file = "MC bar lengths.csv",
         sep = ",", fill = T, append = T)

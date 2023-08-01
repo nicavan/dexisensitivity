@@ -23,9 +23,9 @@ createOptions <- function(aTree, nbOptions = 1, aSeed = NULL) {
     rownames(option) <- aTree@Leaves
 
     for(k in aTree@Leaves) {
-        option[k, ] <- sample(aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@rangeScale,
+        option[k, ] <- sample(aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@RangeScale,
                               size = nbOptions,
-                              prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Proba,
+                              prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Probability,
                               replace = TRUE)
     }
 
@@ -79,18 +79,18 @@ EvaluateScenario <- function(aTree, option) {
                     if(length(id) > 1) {
                         id <- id %>%
                             sapply(function(x) {
-                                if (!subTree@Nodes[[x]]@isLeaf) {x}
+                                if (!subTree@Nodes[[x]]@IsLeaf) {x}
                             }) %>%
                             unlist()
                     }
 
                     # It may happen that the tree structure is repeated !!!!
                     for(ii in id) {
-                        nbc <- length(subTree@Nodes[[ii]]@children)
-                        value <- subTree@Nodes[[ii]]@aggregation
+                        nbc <- length(subTree@Nodes[[ii]]@Children)
+                        value <- subTree@Nodes[[ii]]@Aggregation
 
                         for(k in 1:nbc) {
-                            value <- value[value[, k] == results[subTree@Nodes[[ii]]@children[k]], ]
+                            value <- value[value[, k] == results[subTree@Nodes[[ii]]@Children[k]], ]
                         }
 
                         results[j]<-value[nbc+1]
@@ -112,14 +112,14 @@ EvaluateScenario <- function(aTree, option) {
 
             if(length(id) > 1) {
                 id <- id %>%
-                    sapply(function(x) {if (!aTree@Nodes[[x]]@isLeaf) {x}})
+                    sapply(function(x) {if (!aTree@Nodes[[x]]@IsLeaf) {x}})
             }
 
-            nbc <- length(aTree@Nodes[[id]]@children)
-            value <- aTree@Nodes[[id]]@aggregation
+            nbc <- length(aTree@Nodes[[id]]@Children)
+            value <- aTree@Nodes[[id]]@Aggregation
 
             for(j in 1:nbc) {
-                value <- value[value[, j] == results[aTree@Nodes[[id]]@children[j]], ]
+                value <- value[value[, j] == results[aTree@Nodes[[id]]@Children[j]], ]
             }
 
             results[i] <- value[nbc + 1]
@@ -248,13 +248,13 @@ showScenario <- function(aScenario,
     myGreyValue <- lapply(1:7, function(x) {grDevices::gray.colors(x, 0, 1) })
     myCol <- aTree@Leaves %>%
         sapply(function(x) {
-            myGreyValue[[aTree@Nodes[[getID(aTree@Nodes, x)[1]]]@rangeScale]][aScenario[x, ]]
+            myGreyValue[[aTree@Nodes[[getID(aTree@Nodes, x)[1]]]@RangeScale]][aScenario[x, ]]
         }) %>%
         unlist()
 
     theMax <- aTree@Attributes %>%
         lapply(function(x) {
-            aTree@Nodes[[getID(aTree@Nodes, x)[1]]]@rangeScale
+            aTree@Nodes[[getID(aTree@Nodes, x)[1]]]@RangeScale
         }) %>%
         unlist() %>%
         matrix(ncol = 1)

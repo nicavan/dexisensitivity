@@ -16,41 +16,41 @@ structure.
 \section{Slots}{
 
 \describe{
-\item{\code{id}}{Object of class "numeric", unique sequential id of the node.}
+\item{\code{Id}}{Object of class "numeric", unique sequential id of the node.}
 
-\item{\code{name}}{Object of class "character", name of the node.}
+\item{\code{Name}}{Object of class "character", name of the node.}
 
-\item{\code{isLeaf}}{Object of class "logical", indicating if it is a leaf.}
+\item{\code{IsLeaf}}{Object of class "logical", indicating if it is a leaf.}
 
-\item{\code{isLeafAndAggregated}}{Object of class "logical", indicating if this leaf
+\item{\code{IsLeafAndAggregated}}{Object of class "logical", indicating if this leaf
 is also an aggregated node.}
 
-\item{\code{children}}{Object of class "character", list of the names of the node's
+\item{\code{Children}}{Object of class "character", list of the names of the node's
 children.}
 
-\item{\code{sisters}}{Object of class "character", list of the names of the node's
+\item{\code{Sisters}}{Object of class "character", list of the names of the node's
 sisters.}
 
-\item{\code{mother}}{Object of class "character", name of the node's mother.}
+\item{\code{Mother}}{Object of class "character", name of the node's mother.}
 
-\item{\code{aggregation}}{Object of class "matrix", aggregation table if the node is
+\item{\code{Aggregation}}{Object of class "matrix", aggregation table if the node is
 aggregated.}
 
-\item{\code{Proba}}{Object of class "numeric", estimated weight of aggregation.}
+\item{\code{Probability}}{Object of class "numeric", estimated weight of aggregation.}
 
 \item{\code{Depth}}{Object of class "numeric", depth of the node.}
 
 \item{\code{Twin}}{Object of class "numeric", id of the other leaves in case of
 multiple leaves.}
 
-\item{\code{CondiProbaList}}{Object of class "list", list to store conditional
+\item{\code{ConditionalProbabilityList}}{Object of class "list", list to store conditional
 probabilities.}
 
-\item{\code{rangeScale}}{Object of class "numeric", range scale.}
+\item{\code{RangeScale}}{Object of class "numeric", range scale.}
 
-\item{\code{scaleLabel}}{Object of class "character", labels of the different scales.}
+\item{\code{ScaleLabel}}{Object of class "character", labels of the different scales.}
 
-\item{\code{nodePath}}{Object of class "character", node path from root to leaf.}
+\item{\code{NodePath}}{Object of class "character", node path from root to leaf.}
 }}
 
 \seealso{

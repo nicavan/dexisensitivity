@@ -26,7 +26,7 @@ SI_DEXi <- function(aTree,
                     ncol = 2)
 
         for(j in 2:sousArbre@NumberOfAttributes) {
-            l[j-1,1] <- sousArbre@Nodes[[j]]@isLeaf
+            l[j-1,1] <- sousArbre@Nodes[[j]]@IsLeaf
             l[j-1,2] <- sousArbre@Nodes[[j]]@Depth - sousArbre@Nodes[[1]]@Depth + 1
         }
 
@@ -80,7 +80,7 @@ clcSI_DEXi <- function(aTree, avoidrep = F) {
     names(WeightList) <- aTree@Attributes
 
     for(i in 1:aTree@NumberOfAttributes) {
-        WeightList[[i]] <- aTree@Nodes[[i]]@Proba
+        WeightList[[i]] <- aTree@Nodes[[i]]@Probability
     }
 
     CondiProbaList <- vector(mode = "list",
@@ -95,7 +95,7 @@ clcSI_DEXi <- function(aTree, avoidrep = F) {
         if (length(id) > 1) {
             id <- id %>%
                 sapply(function(x) {
-                    if (!aTree@Nodes[[x]]@isLeaf) {x}
+                    if (!aTree@Nodes[[x]]@IsLeaf) {x}
                 }) %>%
                 unlist()
         }
@@ -109,42 +109,42 @@ clcSI_DEXi <- function(aTree, avoidrep = F) {
 
         # info on weights required for direct descendant calculations
         ChildrenWeights <- vector(mode = "list",
-                                  length = length(Node@children))
-        for(i in seq(Node@children)) {
-            ChildrenWeights[[i]] <- WeightList[[Node@children[[i]]]]
+                                  length = length(Node@Children))
+        for(i in seq(Node@Children)) {
+            ChildrenWeights[[i]] <- WeightList[[Node@Children[[i]]]]
         }
 
         # conditional proba calculations (direct descendants)
-        Probas <- condprob.direct(Node@aggregation,
+        Probas <- condprob.direct(Node@Aggregation,
                                   ChildrenWeights,
-                                  Node@rangeScale)
+                                  Node@RangeScale)
 
         #In case of rangeScale <> of modalities in Y aggregation table, need to add some information in Probas
-        if (Node@rangeScale != (length(Probas[[length(Node@children) + 1]]))) {
-            nbC <- length(Node@children)
+        if (Node@RangeScale != (length(Probas[[length(Node@Children) + 1]]))) {
+            nbC <- length(Node@Children)
             nbVal <- length(Probas[[nbC + 1]])
-            diff <- Node@rangeScale - nbVal
-            Probas[[nbC + 1]][c((nbVal + 1):Node@rangeScale)] <- 0
+            diff <- Node@RangeScale - nbVal
+            Probas[[nbC + 1]][c((nbVal + 1):Node@RangeScale)] <- 0
             names(Probas[[nbC + 1]]) <- c(names(Probas[[nbC+1]][1:nbVal]),
-                                          setdiff(as.character(seq(1:Node@rangeScale)),
+                                          setdiff(as.character(seq(1:Node@RangeScale)),
                                                   names(Probas[[nbC + 1]])))
         }
 
-        names(Probas) <- c(Node@children, node.name)
+        names(Probas) <- c(Node@Children, node.name)
         NodeWeights <- Probas[[length(Probas)]]
         DirectCondiProbaList <- Probas[-length(Probas)]
         # conditional proba calculations (indirect descendants)
         IndirectCondiProbaList <- vector(mode = "list",
                                          length = 0)
-        for(i in seq(Node@children)) {
+        for(i in seq(Node@Children)) {
             id  <- getID(aTree@Nodes,
-                         Node@children[[i]])
+                         Node@Children[[i]])
 
             #If several nodes with the same name, we will choose the one with the proper mother
             if(length(id) > 1) {
                 id <- id %>%
                     sapply(function(x) {
-                        if (aTree@Nodes[[x]]@mother==Node@name) {x}
+                        if (aTree@Nodes[[x]]@Mother==Node@Name) {x}
                     }) %>%
                     unlist()
             }
@@ -155,12 +155,12 @@ clcSI_DEXi <- function(aTree, avoidrep = F) {
             }
 
             child.node <- aTree@Nodes[[id]]
-            if (!child.node@isLeaf) {
-                CPL.DA <- CondiProbaList[[Node@children[[i]]]]
+            if (!child.node@IsLeaf) {
+                CPL.DA <- CondiProbaList[[Node@Children[[i]]]]
                 CPL.DY <- vector(mode = "list",
                                  length = length(CPL.DA))
                 for(j in seq(CPL.DA)) {
-                    CPL.DY[[j]] <- CPL.DA[[j]] %*% Probas[[Node@children[[i]]]]
+                    CPL.DY[[j]] <- CPL.DA[[j]] %*% Probas[[Node@Children[[i]]]]
                 }
                 names(CPL.DY) <- names(CPL.DA)
                 IndirectCondiProbaList <- c(IndirectCondiProbaList, CPL.DY)

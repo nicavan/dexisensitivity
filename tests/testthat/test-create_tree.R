@@ -11,7 +11,7 @@ test_that("same output as JEB's scripts", {
     list_output <- readRDS(system.file("testdata", "listDEXi.rds",
                                        package = "dexiranalysis"))
 
-    expected_output <- list_output[[1]] %>% convertTreeClass()
+    expected_output <- list_output[[1]]
 
     ### - End - ###
 
@@ -32,7 +32,7 @@ test_that("same output as JEB's scripts 2", {
     test_output <- createTree(XML::xmlDeserializeHook(tree))
     list_output <- readRDS(system.file("testdata", "TestDEXiPM.rds",
                                        package = "dexiranalysis"))
-    expected_output <- list_output[[1]] %>% convertTreeClass()
+    expected_output <- list_output[[1]]
 
     ### - End - ###
 

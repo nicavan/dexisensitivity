@@ -21,7 +21,7 @@ createSubTree <- function(aTree, nodeName, avoidrep = F) {
     if (aTree@IsLeafAggregated) {
         id <- id %>%
             sapply(function(x) {
-                if (!aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
+                if (!aTree@Nodes[[x]]@IsLeaf) {aTree@Nodes[[x]]@Id}
             }) %>%
             unlist()
     }
@@ -34,10 +34,10 @@ createSubTree <- function(aTree, nodeName, avoidrep = F) {
     # On récupère les noeuds qui possèdent le nodePath du noeud ou l'on coupe
     l.Attributes <- aTree@Nodes %>%
         sapply(function(x) {
-            if (grep(paste(aTree@Nodes[[id]]@nodePath, collapse = " "),
-                     paste(x@nodePath, collapse = " "),
+            if (grep(paste(aTree@Nodes[[id]]@NodePath, collapse = " "),
+                     paste(x@NodePath, collapse = " "),
                      fixed=TRUE) %>%
-                length()) {x@id}
+                length()) {x@Id}
         }) %>%
         unlist()
 
@@ -46,41 +46,41 @@ createSubTree <- function(aTree, nodeName, avoidrep = F) {
     # On récupère les informations pour créer l'arbre et modifier les noeuds.
     l.Leaves <- l.Attributes %>%
         sapply(function(x) {
-            if (aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
+            if (aTree@Nodes[[x]]@IsLeaf) {aTree@Nodes[[x]]@Id}
         }) %>%
         unlist()
 
     l.Aggregated <- l.Attributes %>%
         sapply(function(x) {
-            if (!aTree@Nodes[[x]]@isLeaf) {aTree@Nodes[[x]]@id}
+            if (!aTree@Nodes[[x]]@IsLeaf) {aTree@Nodes[[x]]@Id}
         }) %>%
         unlist()
 
     # On crée le nouvel arbre
     Paths <- l.Attributes %>%
         lapply(function(x) {
-            aTree@Nodes[[x]]@nodePath[aTree@Nodes[[id]]@Depth:length(aTree@Nodes[[x]]@nodePath)]
+            aTree@Nodes[[x]]@NodePath[aTree@Nodes[[id]]@Depth:length(aTree@Nodes[[x]]@NodePath)]
         })
 
     TreeNodes <- aTree@Nodes[l.Attributes]
     for(i in 1:NumberOfAttributes) {
-        TreeNodes[[i]]@id <- i
-        TreeNodes[[i]]@nodePath <- Paths[[i]]
-        TreeNodes[[i]]@Depth <- length(TreeNodes[[i]]@nodePath)
-        TreeNodes[[i]]@isLeafAndAggregated <- FALSE
+        TreeNodes[[i]]@Id <- i
+        TreeNodes[[i]]@NodePath <- Paths[[i]]
+        TreeNodes[[i]]@Depth <- length(TreeNodes[[i]]@NodePath)
+        TreeNodes[[i]]@IsLeafAndAggregated <- FALSE
         TreeNodes[[i]]@Twin <- integer(0)
-        if (i == 1) {TreeNodes[[i]]@mother <- ""}
+        if (i == 1) {TreeNodes[[i]]@Mother <- ""}
     }
 
     l.Leaves <- TreeNodes %>%
         sapply(function(x) {
-            if (x@isLeaf) {x@name}
+            if (x@IsLeaf) {x@Name}
         }) %>%
         unlist()
 
     l.Aggregated <- TreeNodes %>%
         sapply(function(x) {
-            if (!x@isLeaf) {x@name}
+            if (!x@IsLeaf) {x@Name}
         }) %>%
         unlist()
 
@@ -94,7 +94,7 @@ createSubTree <- function(aTree, nodeName, avoidrep = F) {
             for(i in 1:dim(Multiple)[1]) {
                 dup <- getID(TreeNodes, rownames(Multiple)[i])
                 for(j in 1:length(dup)) {
-                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup,TreeNodes[[dup[j]]]@id)))]
+                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup,TreeNodes[[dup[j]]]@Id)))]
                 }
             }
 
@@ -116,8 +116,8 @@ createSubTree <- function(aTree, nodeName, avoidrep = F) {
             for(i in 1:length(l.LeafAggregated)) {
                 dup <- getID(TreeNodes, l.LeafAggregated[i])
                 for(j in 1:length(dup)) {
-                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup,TreeNodes[[dup[j]]]@id)))]
-                    TreeNodes[[dup[j]]]@isLeafAndAggregated <- T
+                    TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup,TreeNodes[[dup[j]]]@Id)))]
+                    TreeNodes[[dup[j]]]@IsLeafAndAggregated <- T
                 }
             }
         } else {
@@ -139,7 +139,7 @@ createSubTree <- function(aTree, nodeName, avoidrep = F) {
         sapply(function(x) {length(x)}) %>%
         max()
     l.Attributes <- l.Attributes %>%
-        sapply(function(x) {aTree@Nodes[[x]]@name})
+        sapply(function(x) {aTree@Nodes[[x]]@Name})
 
     out <- new("Tree",
                RootName = nodeName,

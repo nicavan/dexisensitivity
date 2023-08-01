@@ -14,7 +14,7 @@
 infoAOV <- function(aTree, iTest = 50) {
     # Compute the size of the factorial plan and the time requested to run it
     preprod <- aTree@Nodes %>%
-        sapply(function(x) {if (x@isLeaf) {x@rangeScale}}) %>%
+        sapply(function(x) {if (x@IsLeaf) {x@RangeScale}}) %>%
         unlist() %>%
         cumprod()
     nbRuns <- preprod[aTree@NumberOfLeaves]
@@ -24,9 +24,9 @@ infoAOV <- function(aTree, iTest = 50) {
                      ncol = iTest)
     rownames(option) <- aTree@Leaves
     for(k in aTree@Leaves) {
-        option[k,] <- sample(aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@rangeScale,
+        option[k,] <- sample(aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@RangeScale,
                              size = iTest,
-                             prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Proba,
+                             prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Probability,
                              replace = TRUE)
     }
 
@@ -442,7 +442,7 @@ showAOV <- function(aAOV_DEXi,
 AOV_DEXi <- function(aTree) {
     # Create the simulation plan
     leavesOptionIndices <- aTree@Nodes %>%
-        sapply(function(x) { if (x@isLeaf) {x@rangeScale} }) %>%
+        sapply(function(x) { if (x@IsLeaf) {x@RangeScale} }) %>%
         unlist()
 
     factorialPlan <- t(gen.factorial(as.numeric(leavesOptionIndices),

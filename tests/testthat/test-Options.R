@@ -2,7 +2,7 @@ test_that("createOption : same output as JEB's scripts", {
     # Load the complex DEXi tree needed for the test
     list_tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
                                      package = "dexiranalysis"))
-    tree <- list_tree[[1]] %>% convertTreeClass()
+    tree <- list_tree[[1]]
 
     # Unit test
     test_output <- createOptions(tree, nbOptions = 3, aSeed = 42)
@@ -19,7 +19,7 @@ test_that("eval 1 option : same output as JEB's scripts", {
     # Load the complex DEXi tree and option needed for the test
     list_tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
                                      package = "dexiranalysis"))
-    tree <- list_tree[[1]] %>% convertTreeClass()
+    tree <- list_tree[[1]]
     options <- readRDS(system.file("testdata", "TestcreateOptionsDEXiPM.rds",
                                    package = "dexiranalysis"))
 
@@ -37,7 +37,7 @@ test_that("eval all option : same output as JEB's scripts", {
     # Load the complex DEXi tree and option needed for the test
     list_tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
                                      package = "dexiranalysis"))
-    tree <- list_tree[[1]] %>% convertTreeClass()
+    tree <- list_tree[[1]]
     options <- readRDS(system.file("testdata", "TestcreateOptionsDEXiPM.rds",
                                    package = "dexiranalysis"))
 
@@ -93,7 +93,7 @@ test_that("showScenario : same output as JEB's scripts and par is reset", {
                                     package = "dexiranalysis"))
     lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
                                  package = "dexiranalysis"))
-    DEXi <- lDEXi[[1]] %>% convertTreeClass()
+    DEXi <- lDEXi[[1]]
 
     # Unit test
     vdiffr::expect_doppelganger("showScenario-plot",
@@ -113,7 +113,7 @@ test_that("compareScenario : same output as JEB's scripts and par is reset", {
                                     package = "dexiranalysis"))
     lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
                                  package = "dexiranalysis"))
-    DEXi <- lDEXi[[1]] %>% convertTreeClass()
+    DEXi <- lDEXi[[1]]
 
 
     # Unit test

@@ -135,7 +135,7 @@ setMethod("show", "Tree",
 
                       if (i == 1) {
                           prefix <- "Z : "
-                      } else if (object@Nodes[[i]]@isLeaf) {
+                      } else if (object@Nodes[[i]]@IsLeaf) {
                           prefix <- "X : "
                       } else {
                           prefix <- "Y : "
@@ -143,7 +143,7 @@ setMethod("show", "Tree",
 
                       cat("< ", formatC(i, width = digit), " > ",
                           rep("- ", (object@Nodes[[i]]@Depth - 1)),
-                          prefix, object@Nodes[[i]]@name,
+                          prefix, object@Nodes[[i]]@Name,
                           if(length(object@Nodes[[i]]@Twin)) {
                               paste0(" [", c(object@Nodes[[i]]@Twin), "]")
                           }, "\n", sep = "")
