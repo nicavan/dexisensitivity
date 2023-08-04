@@ -9,6 +9,9 @@ describe(object)
 \arguments{
 \item{object}{the Tree}
 }
+\value{
+No explicit return.
+}
 \description{
 Title
 }

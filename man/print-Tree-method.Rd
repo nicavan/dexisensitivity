@@ -12,6 +12,9 @@
 
 \item{...}{additional parameters to be passed to the print function.}
 }
+\value{
+No explicit return. Print the Tree object.
+}
 \description{
 Custom print method for Tree class object. Prints basic information about the
 tree including root name, number of attributes, leaves, depth and specific

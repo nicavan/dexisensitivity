@@ -12,6 +12,11 @@ An object of class Tree.
 It includes several slots to store attributes, leaves, nodes, path, and
 additional information related to the tree structure.
 }
+\details{
+Tree class objects are used in the creation and display of tree structures.
+Information from the object is used to create and print the tree structure in
+a human-readable format.
+}
 \section{Slots}{
 
 \describe{

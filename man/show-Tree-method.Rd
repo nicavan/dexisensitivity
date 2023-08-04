@@ -10,6 +10,9 @@
 \arguments{
 \item{object}{The Tree object to be shown.}
 }
+\value{
+No explicit return. Show the Tree class object.
+}
 \description{
 Each node of the tree is printed with its depth, name, and twin
 attributes. Different prefixes are used depending on whether the node is

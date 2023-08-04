@@ -6,6 +6,10 @@
 #' It includes several slots to store attributes, leaves, nodes, path, and
 #' additional information related to the tree structure.
 #'
+#' Tree class objects are used in the creation and display of tree structures.
+#' Information from the object is used to create and print the tree structure in
+#' a human-readable format.
+#'
 #' @slot NumberOfAttributes Object of class "numeric", the number of attributes
 #'   in the tree.
 #' @slot NumberOfLeaves Object of class "numeric", the number of leaves in the
@@ -31,10 +35,6 @@
 #' @slot EvaluationOrder Object of class "numeric", evaluation order in case of
 #'   LeafAggregated nodes.
 #' @slot RootName Object of class "character", name of the root node.
-#'
-#' @method Tree class objects are used in the creation and display of tree
-#'   structures. Information from the object is used to create and print the
-#'   tree structure in a human-readable format.
 #'
 #' @return An object of class Tree.
 #'
@@ -76,7 +76,7 @@ methods::setClass(
 #'
 #' @aliases print.Tree
 #'
-#' @return
+#' @return No explicit return. Print the Tree object.
 #'
 #' @export
 setMethod(
@@ -121,7 +121,7 @@ setMethod(
 #'
 #' @param object The Tree object to be shown.
 #'
-#' @return
+#' @return No explicit return. Show the Tree class object.
 #'
 #' @aliases show.Tree
 #'
@@ -200,7 +200,7 @@ calculate_digit <- function(number_of_attributes) {
 #'
 #' @param object the Tree
 #'
-#' @return
+#' @return No explicit return.
 #'
 #' @export
 setGeneric("describe", function(object) {standardGeneric("describe")})
