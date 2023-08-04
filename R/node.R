@@ -36,7 +36,7 @@
 #' @return An object of class Node.
 #'
 #' @seealso \code{\link{print.Node}}, \code{\link{get_estimated_weights}},
-#'   \code{\link{createAggregationMatrix}}
+#'   \code{\link{create_aggregation_matrix}}
 #'
 #' @aliases Node
 #'
@@ -140,7 +140,7 @@ get_estimated_weights <- function(node) {
   x <- aggregation_table[, -ncol(aggregation_table)]
 
   ## Calcul estimated weights:
-  coefficients <- lm(y~x)$coefficients[-1] # '-1' to exclude the intercept
+  coefficients <- stats::lm(y~x)$coefficients[-1] # '-1' to exclude intercept
   weight <- coefficients / sum(coefficients)
 
   return(weight)
@@ -152,56 +152,64 @@ get_estimated_weights <- function(node) {
 #' Creates an aggregation matrix for a node using genetic algorithm
 #' optimization.
 #'
-#' @param aNode A Node object.
-#' @param expectedWeight Numeric vector of expected weights.
-#' @param nbTables Numeric, number of tables (default is 1).
-#' @param popSize Numeric, population size for genetic algorithm (default is
-#'   50).
-#' @param iters Numeric, number of iterations for genetic algorithm (default is
-#'   50).
+#' Utilize a genetic algorithm to determine the optimal aggregation matrix.
+#' Here, the "gene" corresponds to the value of the aggregated node. The
+#' optimization function aims to minimize the squared difference between the
+#' expected weight and the actual weight, which ensures that the weights closely
+#' match their expected values.
+#'
+#' @param node A Node object.
+#' @param expected_weights Numeric vector of expected weights.
+#' @param number_of_tables Numeric, number of tables (default is 1).
+#' @param population_size Numeric, population size for genetic algorithm
+#'   (default is 50).
+#' @param iterations Numeric, number of iterations for genetic algorithm
+#'   (default is 50).
 #'
 #' @return A list of aggregation matrices.
-#'
-#' @aliases createAggregationMatrix.Node
 #'
 #' @export
 #'
 #' @importFrom genalg rbga
-createAggregationMatrix <- function(aNode,
-                                    expectedWeight,
-                                    nbTables = 1,
-                                    popSize = 50,
-                                    iters = 50) {
+create_aggregation_matrix <- function(node,
+                                    expected_weights,
+                                    number_of_tables = 1,
+                                    population_size = 50,
+                                    iterations = 50) {
 
-    # we use an algogen to find the matrix
-    # The gene is the value of the aggregated node; the optimisation function is
-    # the difference between the expected weight and the actual weight at the
-    # power 2
-    minValue <- rep(1, dim(aNode@Aggregation)[1])
-    maxValue <- rep(aNode@RangeScale, dim(aNode@Aggregation)[1])
-    nbChildren <- dim(aNode@Aggregation)[2] - 1
-    evaluate <- function(string = c()) {
-        # Modify the option with the new gene
-        y <- as.integer(round(string))
-        x <- aNode@Aggregation[ ,1:nbChildren]
-        res <- lm(y~x)$coefficients[-1] / sum(lm(y~x)$coefficients[-1])
-        return(sum((expectedWeight - res)^2))
-    }
+  # Define the minimum and maximum values for the genetic algorithm
+  minValue <- rep(1, nrow(node@Aggregation))
+  maxValue <- rep(node@RangeScale, nrow(node@Aggregation))
 
-    #Do the job
-    rbga.results <- genalg::rbga(minValue,
-                                 maxValue,
-                                 evalFunc = evaluate,
-                                 popSize = popSize,
-                                 iters = iters,
-                                 verbose = F)
-    res1 <- unique(t(round(rbga.results$population)),
-                   MARGIN = 2)
-    out <- list()
-    for(i in 1:nbTables) {
-        out[[i]] <- cbind(aNode@Aggregation[ ,1:nbChildren],
-                          res1[ ,i])
-    }
+  nbChildren <- ncol(node@Aggregation) - 1
 
-    return(out)
+  # Define the evaluation function for the genetic algorithm
+  evaluate <- function(string = c()) {
+    y <- as.integer(round(string))
+    x <- node@Aggregation[, 1:nbChildren]
+    coefficients <- stats::lm(y~x)$coefficients[-1]
+    weights <- coefficients / sum(coefficients)
+    return(sum((expected_weights - weights)^2))
+  }
+
+  # Run the genetic algorithm
+  rbga_results <- genalg::rbga(minValue, maxValue,
+                               evalFunc = evaluate,
+                               popSize = population_size,
+                               iters = iterations,
+                               verbose = F)
+
+  # Get unique rounded population values
+  population_values <- rbga_results$population %>%
+    round() %>%
+    t() %>%
+    unique(MARGIN = 2)
+
+  # Prepare the output list
+  out <- list()
+  for(i in 1:number_of_tables) {
+    out[[i]] <- cbind(node@Aggregation[, 1:nbChildren], population_values[, i])
+  }
+
+  return(out)
 }

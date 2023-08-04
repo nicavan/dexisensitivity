@@ -77,7 +77,7 @@ test_that("createAggregationMatrix : same output as JEB's scripts and par is res
     set.seed(42)
 
     ### - Unit test - ###
-    test_output <- createAggregationMatrix(DEXi@Nodes[[1]], myWeights, 5)
+    test_output <- create_aggregation_matrix(DEXi@Nodes[[1]], myWeights, 5)
 
     expected_output <- readRDS(system.file("testdata",
                                            "newAggregation42DEXiPM.rds",

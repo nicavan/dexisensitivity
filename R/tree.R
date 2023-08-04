@@ -236,7 +236,7 @@ setMethod(
     # Call print for every node
     object@Nodes %>%
       lapply(function(node) {
-        selectMethod("print", class(node))(node)
+        methods::selectMethod("print", class(node))(node)
         cat("\n\n")
       }) %>%
       invisible() # we only want to see node prints
