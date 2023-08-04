@@ -43,8 +43,8 @@ aggregated.}
 \item{\code{Twin}}{Object of class "numeric", id of the other leaves in case of
 multiple leaves.}
 
-\item{\code{ConditionalProbabilityList}}{Object of class "list", list to store conditional
-probabilities.}
+\item{\code{ConditionalProbabilityList}}{Object of class "list", list to store
+conditional probabilities.}
 
 \item{\code{RangeScale}}{Object of class "numeric", range scale.}
 

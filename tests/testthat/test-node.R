@@ -35,7 +35,7 @@ test_that("Empty Node print correctly", {
         cat("Node name: ")
         cat("\nID: ")
         cat("\nNode depth: ")
-        cat("\nFrom root to node: ->")
+        cat("\nFrom root to node: \n  ")
         cat("\nIs it a leaf: ")
         cat("\nIs is a leaf-aggregated: FALSE")
         cat("\nMother: ")
@@ -89,3 +89,4 @@ test_that("createAggregationMatrix : same output as JEB's scripts and par is res
     # restore random seed
     set.seed(NULL)
 })
+

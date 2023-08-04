@@ -3,6 +3,7 @@
 
 
 #### - Node Class Definition - #### ####
+
 #' An S4 class to represent a Node
 #'
 #' It includes several slots to store information related to the node, such as
@@ -26,8 +27,8 @@
 #' @slot Depth Object of class "numeric", depth of the node.
 #' @slot Twin Object of class "numeric", id of the other leaves in case of
 #'   multiple leaves.
-#' @slot ConditionalProbabilityList Object of class "list", list to store conditional
-#'   probabilities.
+#' @slot ConditionalProbabilityList Object of class "list", list to store
+#'   conditional probabilities.
 #' @slot RangeScale Object of class "numeric", range scale.
 #' @slot ScaleLabel Object of class "character", labels of the different scales.
 #' @slot NodePath Object of class "character", node path from root to leaf.
@@ -35,33 +36,35 @@
 #' @return An object of class Node.
 #'
 #' @seealso \code{\link{print.Node}}, \code{\link{getEstimatedWeights}},
-#' \code{\link{createAggregationMatrix}}
+#'   \code{\link{createAggregationMatrix}}
 #'
 #' @aliases Node
 #'
 #' @export
-setClass("Node",
-         representation(
-             Id = "numeric",
-             Name = "character",
-             IsLeaf = "logical",
-             IsLeafAndAggregated = "logical",
-             Children = "character",
-             Sisters = "character",
-             Mother = "character",
-             Aggregation = "matrix",
-             Probability = "numeric",
-             Depth = "numeric",
-             Twin = "numeric",
-             ConditionalProbabilityList = "list", # Inutilisé ?
-             RangeScale = "numeric",
-             ScaleLabel = "character",
-             NodePath = "character"
-         )
+setClass(
+  "Node",
+  representation(
+    Id = "numeric",
+    Name = "character",
+    IsLeaf = "logical",
+    IsLeafAndAggregated = "logical",
+    Children = "character",
+    Sisters = "character",
+    Mother = "character",
+    Aggregation = "matrix",
+    Probability = "numeric",
+    Depth = "numeric",
+    Twin = "numeric",
+    ConditionalProbabilityList = "list", # Inutilisé ?
+    RangeScale = "numeric",
+    ScaleLabel = "character",
+    NodePath = "character"
+  )
 )
 
 
 #### - print Method - #### ####
+
 #' print method for Node class object
 #'
 #' Prints basic information about the node including its name, id, depth, path,
@@ -76,37 +79,39 @@ setClass("Node",
 #' @aliases print.Node
 #'
 #' @export
-setMethod("print","Node",
-          function(x,...){
-              cat("Node name:", x@Name)
-              cat("\nID:", x@Id)
-              cat("\nNode depth:", x@Depth)
-              cat("\nFrom root to node:", paste0(x@NodePath, col = "->"))
-              cat("\nIs it a leaf:", x@IsLeaf)
-              cat("\nIs is a leaf-aggregated:",
-                  if (length(x@IsLeafAndAggregated) && x@IsLeafAndAggregated) {
-                      "TRUE"
-                  } else {"FALSE"})
-              cat("\nMother:",
-                  if (length(x@Mother) == 0) {
-                      ""
-                  } else if (is.na(x@Mother)) {
-                      "Root"
-                  } else {x@Mother})
-              cat("\nSisters:",
-                  if (length(x@Sisters) && length(x@Sisters)) {
-                      x@Sisters
-                  } else {"None"})
-              cat("\nChildren:",
-                  if (length(x@Children) && length(x@Children)) {
-                      x@Children
-                  } else {"None"})
-              cat("\nEstimated weights:", x@Probability)
-          }
+setMethod(
+  "print","Node",
+  function(x, ...) {
+    cat("Node name:", x@Name)
+    cat("\nID:", x@Id)
+    cat("\nNode depth:", x@Depth)
+    cat("\nFrom root to node: \n ", paste0(x@NodePath, collapse = " -> "))
+    cat("\nIs it a leaf:", x@IsLeaf)
+    cat("\nIs is a leaf-aggregated:",
+        if ((length(x@IsLeafAndAggregated) > 0) && x@IsLeafAndAggregated) {
+          "TRUE"
+        } else {"FALSE"})
+    cat("\nMother:",
+        if (length(x@Mother) == 0) {
+          ""
+        } else if (is.na(x@Mother)) {
+          "Root"
+        } else {x@Mother})
+    cat("\nSisters:",
+        if (length(x@Sisters) > 0) {
+          x@Sisters
+        } else {"None"})
+    cat("\nChildren:",
+        if (length(x@Children) > 0) {
+          x@Children
+        } else {"None"})
+    cat("\nEstimated weights:", x@Probability)
+  }
 )
 
 
 #### - Utility Functions - #### ####
+
 #' Get Estimated Weights for Node
 #'
 #' Calculates the estimated weights from the aggregation table of a Node object.
