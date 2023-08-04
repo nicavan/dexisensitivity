@@ -12,6 +12,9 @@
 
 \item{...}{additional parameters to be passed to the print function.}
 }
+\value{
+No explicit return. Print the Node object.
+}
 \description{
 Prints basic information about the node including its name, id, depth, path,
 and other properties.

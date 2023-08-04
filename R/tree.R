@@ -1,6 +1,8 @@
 # S4 Tree Class #
-#################
+# # # # # # # # #
 
+
+#### - Tree Class Definition - #### ####
 #' An S4 class to represent a Tree
 #'
 #' It includes several slots to store attributes, leaves, nodes, path, and
@@ -65,6 +67,7 @@ methods::setClass(
 )
 
 
+#### - print Method - #### ####
 #' print method for Tree class object
 #'
 #' Custom print method for Tree class object. Prints basic information about the
@@ -107,7 +110,7 @@ setMethod(
 )
 
 
-
+#### - show Method - #### ####
 #' show method for Tree class object
 #'
 #' Custom show method for Tree class object. Prints a formatted structure of the
@@ -196,6 +199,7 @@ calculate_digit <- function(number_of_attributes) {
 }
 
 
+#### - describe Method - #### ####
 #' Title
 #'
 #' @param object the Tree
@@ -204,6 +208,7 @@ calculate_digit <- function(number_of_attributes) {
 #'
 #' @export
 setGeneric("describe", function(object) {standardGeneric("describe")})
+
 
 #' describe method for Tree class object
 #'

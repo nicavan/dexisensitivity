@@ -1,6 +1,8 @@
 # S4 Node Class #
-#################
+# # # # # # # # #
 
+
+#### - Node Class Definition - #### ####
 #' An S4 class to represent a Node
 #'
 #' It includes several slots to store information related to the node, such as
@@ -59,7 +61,7 @@ setClass("Node",
 )
 
 
-
+#### - print Method - #### ####
 #' print method for Node class object
 #'
 #' Prints basic information about the node including its name, id, depth, path,
@@ -69,7 +71,7 @@ setClass("Node",
 #'
 #' @param ... additional parameters to be passed to the print function.
 #'
-#' @return
+#' @return No explicit return. Print the Node object.
 #'
 #' @aliases print.Node
 #'
@@ -104,7 +106,7 @@ setMethod("print","Node",
 )
 
 
-
+#### - Utility Functions - #### ####
 #' Get Estimated Weights for Node
 #'
 #' Calculates the estimated weights from the aggregation table of a Node object.
