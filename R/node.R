@@ -35,7 +35,7 @@
 #'
 #' @return An object of class Node.
 #'
-#' @seealso \code{\link{print.Node}}, \code{\link{getEstimatedWeights}},
+#' @seealso \code{\link{print.Node}}, \code{\link{get_estimated_weights}},
 #'   \code{\link{createAggregationMatrix}}
 #'
 #' @aliases Node
@@ -114,21 +114,36 @@ setMethod(
 
 #' Get Estimated Weights for Node
 #'
-#' Calculates the estimated weights from the aggregation table of a Node object.
+#' `get_estimated_weights` takes a `Node` object and calculates weights for each
+#' of its leaves.
 #'
-#' @param aNode A Node object.
+#' The process utilizes a linear regression model, where the root node's
+#' aggregation table values form the response variable (denoted as 'y'), and the
+#' leaf values are the predictors ('x').
+#'
+#' Coefficients derived from the model, excluding the intercept, signify the
+#' relative contributions of each leaf to the root node. Normalizing these
+#' coefficients to sum up to 1 provides an estimate of the weight for each leaf.
+#'
+#' @param node A Node object.
 #'
 #' @return A numeric vector of estimated weights.
 #'
-#' @aliases getEstimatedWeights.Node
-#'
 #' @export
-getEstimatedWeights <- function(aNode) {
-    aggregationTable <- aNode@Aggregation
-    y <- aggregationTable[ ,dim(aggregationTable)[2]]
-    x <- aggregationTable[ ,-c(dim(aggregationTable)[2])]
-    res <- (lm(y~x)$coefficients[-1]) / (sum(lm(y~x)$coefficients[-1]))
-    return(res)
+get_estimated_weights <- function(node) {
+  # Ensure the input is a Node object
+  stopifnot("Input should be a Node object" = inherits(node, "Node"))
+
+  ## Structure data
+  aggregation_table <- node@Aggregation
+  y <- aggregation_table[, ncol(aggregation_table)]
+  x <- aggregation_table[, -ncol(aggregation_table)]
+
+  ## Calcul estimated weights:
+  coefficients <- lm(y~x)$coefficients[-1] # '-1' to exclude the intercept
+  weight <- coefficients / sum(coefficients)
+
+  return(weight)
 }
 
 

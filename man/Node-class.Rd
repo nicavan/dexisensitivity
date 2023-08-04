@@ -54,6 +54,6 @@ conditional probabilities.}
 }}
 
 \seealso{
-\code{\link{print.Node}}, \code{\link{getEstimatedWeights}},
+\code{\link{print.Node}}, \code{\link{get_estimated_weights}},
 \code{\link{createAggregationMatrix}}
 }
