@@ -3,6 +3,7 @@
 
 
 #### - Tree Class Definition - #### ####
+
 #' An S4 class to represent a Tree
 #'
 #' It includes several slots to store attributes, leaves, nodes, path, and
@@ -68,6 +69,7 @@ methods::setClass(
 
 
 #### - print Method - #### ####
+
 #' print method for Tree class object
 #'
 #' Custom print method for Tree class object. Prints basic information about the
@@ -111,6 +113,7 @@ setMethod(
 
 
 #### - show Method - #### ####
+
 #' show method for Tree class object
 #'
 #' Custom show method for Tree class object. Prints a formatted structure of the
@@ -200,6 +203,7 @@ calculate_digit <- function(number_of_attributes) {
 
 
 #### - describe Method - #### ####
+
 #' Title
 #'
 #' @param object the Tree
@@ -231,8 +235,8 @@ setMethod(
 
     # Call print for every node
     object@Nodes %>%
-      lapply(function(y) {
-        selectMethod("print", class(y))(y)
+      lapply(function(node) {
+        selectMethod("print", class(node))(node)
         cat("\n\n")
       }) %>%
       invisible() # we only want to see node prints
