@@ -44,23 +44,23 @@
 #'
 #' @export
 methods::setClass(
-    "Tree",
-    representation(
-        NumberOfAttributes = "numeric",
-        NumberOfLeaves     = "numeric",
-        Depth              = "numeric",
-        Attributes         = "character",
-        Leaves             = "character",
-        Aggregated         = "character",
-        IsMultiple         = "logical",
-        Multiple           = "data.frame",
-        IsLeafAggregated   = "logical",
-        LeafAggregated     = "character",
-        Paths              = "list",
-        Nodes              = "list",
-        EvaluationOrder    = "numeric",
-        RootName           = "character"
-    )
+  "Tree",
+  representation(
+    NumberOfAttributes = "numeric",
+    NumberOfLeaves     = "numeric",
+    Depth              = "numeric",
+    Attributes         = "character",
+    Leaves             = "character",
+    Aggregated         = "character",
+    IsMultiple         = "logical",
+    Multiple           = "data.frame",
+    IsLeafAggregated   = "logical",
+    LeafAggregated     = "character",
+    Paths              = "list",
+    Nodes              = "list",
+    EvaluationOrder    = "numeric",
+    RootName           = "character"
+  )
 )
 
 
@@ -78,30 +78,31 @@ methods::setClass(
 #' @return
 #'
 #' @export
-setMethod("print", "Tree",
-          function(x, ...) {
-              cat("Root name:", x@RootName)
-              cat("\nNumber of attributes:", length(x@Attributes))
-              cat("\nNumber of aggregated attributes:", length(x@Aggregated))
-              cat("\nNumber of true leaves (no multiple, no aggregated):",
-                  x@NumberOfLeaves)
-              cat("\nMaximum depth:", x@Depth)
-              cat("\nList of repeated aggregated nodes:",
-                  if(length(which(table(x@Aggregated) > 1))) {
-                      names(which(table(x@Aggregated) > 1))
-                  } else {"Non"}
-              )
+setMethod(
+  "print", "Tree",
+  function(x, ...) {
+    cat("Root name:", x@RootName)
+    cat("\nNumber of attributes:", length(x@Attributes))
+    cat("\nNumber of aggregated attributes:", length(x@Aggregated))
+    cat("\nNumber of true leaves (no multiple, no aggregated):",
+        x@NumberOfLeaves)
+    cat("\nMaximum depth:", x@Depth)
+    cat("\nList of repeated aggregated nodes:",
+        if(length(which(table(x@Aggregated) > 1))) {
+          names(which(table(x@Aggregated) > 1))
+        } else {"Non"}
+    )
 
-              if(length(x@IsMultiple) > 0 && x@IsMultiple) {
-                  cat("\nMultiple leaves: \n")
-                  print(x@Multiple)
-              } else {cat("\nNo multiple leaves")}
+    if(length(x@IsMultiple) > 0 && x@IsMultiple) {
+      cat("\nMultiple leaves: \n")
+      print(x@Multiple)
+    } else {cat("\nNo multiple leaves")}
 
-              if(length(x@IsLeafAggregated) > 0 && x@IsLeafAggregated) {
-                  cat("\nLeaf-Aggregated attributes: \n")
-                  print(x@LeafAggregated)
-              } else {cat("\nNo Leaf-Aggregated Leaf")}
-          }
+    if(length(x@IsLeafAggregated) > 0 && x@IsLeafAggregated) {
+      cat("\nLeaf-Aggregated attributes: \n")
+      print(x@LeafAggregated)
+    } else {cat("\nNo Leaf-Aggregated Leaf")}
+  }
 )
 
 
@@ -111,6 +112,11 @@ setMethod("print", "Tree",
 #' Custom show method for Tree class object. Prints a formatted structure of the
 #' tree using a set of rules based on node properties.
 #'
+#' @description Each node of the tree is printed with its depth, name, and twin attributes.
+#' Different prefixes are used depending on whether the node is the first one (prefix "Z : "),
+#' a leaf node (prefix "X : "), or a non-leaf node (prefix "Y : ").
+#' If a tree has no attributes, it prints "*** Tree without attributes ***".
+#'
 #' @param object The Tree object to be shown.
 #'
 #' @return
@@ -118,39 +124,75 @@ setMethod("print", "Tree",
 #' @aliases show.Tree
 #'
 #' @export
-setMethod("show", "Tree",
-          function(object) {
+setMethod(
+  "show", "Tree",
+  function(object) {
 
-              if(identical(object@NumberOfAttributes, numeric(0))) {
-                  cat("*** Tree without attributes ***")
-              } else {
+    # The tree might not have any attributes - handle this edge case first
+    if (identical(object@NumberOfAttributes, numeric(0))) {
+      cat("*** Tree without attributes ***")
+    } else {
+      # Digit is used to ensure proper formatting when printing the Tree
+      digit <- calculate_digit(object@NumberOfAttributes)
 
-                  if(object@NumberOfAttributes != 0) {
-                      digit <- floor(log10(object@NumberOfAttributes)) + 1
-                  } else {
-                      digit <- 1
-                  }
+      # Iterate over each attribute of the tree
+      for(i in 1:object@NumberOfAttributes) {
 
-                  for(i in 1:object@NumberOfAttributes) {
+        # We use different prefixes to signify the type and position of a node
+        if (i == 1) {
+          prefix <- "Z : "
+        } else if (object@Nodes[[i]]@IsLeaf) {
+          prefix <- "X : "
+        } else {
+          prefix <- "Y : "
+        }
 
-                      if (i == 1) {
-                          prefix <- "Z : "
-                      } else if (object@Nodes[[i]]@IsLeaf) {
-                          prefix <- "X : "
-                      } else {
-                          prefix <- "Y : "
-                      }
+        # Not every node has a twin - handle this case to prevent errors
+        if (length(object@Nodes[[i]]@Twin)) {
+          twin <- paste0(" [", c(object@Nodes[[i]]@Twin), "]")
+        } else {
+          twin <- ""
+        }
 
-                      cat("< ", formatC(i, width = digit), " > ",
-                          rep("- ", (object@Nodes[[i]]@Depth - 1)),
-                          prefix, object@Nodes[[i]]@Name,
-                          if(length(object@Nodes[[i]]@Twin)) {
-                              paste0(" [", c(object@Nodes[[i]]@Twin), "]")
-                          }, "\n", sep = "")
-                  }
-              }
-          }
+        # Print the tree in a specific, structured format for readability
+        cat(
+          "< ", formatC(i, width = digit), " > ",
+          rep("- ", (object@Nodes[[i]]@Depth - 1)),
+          prefix, object@Nodes[[i]]@Name,
+          twin, "\n",
+          sep = ""
+        )
+      }
+    }
+  }
 )
+
+
+#' Calculate Digit
+#'
+#' Calculates the number of digits of a given non-negative number. Returns 1 if
+#' the input is 0.
+#'
+#' @description This is an internal helper function used within the package.
+#'   It's used in the `show` method for the `Tree` class to calculate the number
+#'   of digits in `number_of_attributes`.
+#'
+#' @param number_of_attributes A non-negative number representing the number of
+#'   attributes.
+#'
+#' @return The number of digits in the `number_of_attributes`. Returns 1 if
+#'   `number_of_attributes` is 0.
+#'
+#' @keywords internal
+#'
+calculate_digit <- function(number_of_attributes) {
+  if (number_of_attributes != 0) {
+    return(floor(log10(number_of_attributes)) + 1)
+  } else {
+    return(1)
+  }
+}
+
 
 #' Title
 #'

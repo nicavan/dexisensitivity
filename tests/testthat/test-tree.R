@@ -53,6 +53,26 @@ test_that("Empty Tree show correct message", {
                  "*** Tree without attributes ***")
 })
 
+#### - calculate_digit test - #### ####
+test_that("calculate_digit returns correct number of digits", {
+
+  # Test avec nombre de chiffres différents
+  expect_equal(calculate_digit(0), 1)
+  expect_equal(calculate_digit(1), 1)
+  expect_equal(calculate_digit(1.5), 1)
+  expect_equal(calculate_digit(10), 2)
+  expect_equal(calculate_digit(100), 3)
+  expect_equal(calculate_digit(1000), 4)
+
+})
+
+test_that("calculate_digit can't handles non-integer input", {
+  # Vérifier que la fonction retourne une erreur pour les inputs négatifs ou non
+  # numeric
+  expect_warning(calculate_digit(-1))
+  expect_error(calculate_digit("string"))
+})
+
 
 #### - describe method test - #### ####
 test_that("describe return correct error if no Nodes", {
