@@ -6,9 +6,10 @@
 #' It includes several slots to store attributes, leaves, nodes, path, and
 #' additional information related to the tree structure.
 #'
-#' @slot NumberOfAttributes Object of class "numeric", the number of attributes in the
+#' @slot NumberOfAttributes Object of class "numeric", the number of attributes
+#'   in the tree.
+#' @slot NumberOfLeaves Object of class "numeric", the number of leaves in the
 #'   tree.
-#' @slot NumberOfLeaves Object of class "numeric", the number of leaves in the tree.
 #' @slot Depth Object of class "numeric", the maximum depth of the tree.
 #' @slot Attributes Object of class "character", list of names of attributes in
 #'   the tree.
@@ -112,10 +113,11 @@ setMethod(
 #' Custom show method for Tree class object. Prints a formatted structure of the
 #' tree using a set of rules based on node properties.
 #'
-#' @description Each node of the tree is printed with its depth, name, and twin attributes.
-#' Different prefixes are used depending on whether the node is the first one (prefix "Z : "),
-#' a leaf node (prefix "X : "), or a non-leaf node (prefix "Y : ").
-#' If a tree has no attributes, it prints "*** Tree without attributes ***".
+#' @description Each node of the tree is printed with its depth, name, and twin
+#'   attributes. Different prefixes are used depending on whether the node is
+#'   the first one (prefix "Z : "), a leaf node (prefix "X : "), or a non-leaf
+#'   node (prefix "Y : "). If a tree has no attributes, it prints "*** Tree
+#'   without attributes ***".
 #'
 #' @param object The Tree object to be shown.
 #'
@@ -208,24 +210,27 @@ setGeneric("describe", function(object) {standardGeneric("describe")})
 #' A method to describe the structure of a Tree object in a comprehensive way.
 #' It prints each node and its properties separately.
 #'
-#' @param Tree The Tree object to be described.
-#'
 #' @param object Object
 #'
 #' @aliases describe.Tree
 #'
-#' @return
+#' @return Primarily invoked for its side effect of displaying the nodes of the
+#'   Tree object, the function does not produce a meaningful return value.
 #'
 #' @export
-setMethod("describe", "Tree", function(object) {
-    stopifnot("Tree without any node!" = length(object@Nodes)>0)
+setMethod(
+  "describe", "Tree",
+  function(object) {
+    # Nodes are necessary for this method
+    stopifnot("Tree without any node!" = length(object@Nodes) > 0)
 
+    # Call print for every node
     object@Nodes %>%
-        lapply(function(y) {
-            selectMethod("print", class(y))(y)
-            cat("\n\n")}
-        ) %>%
-        invisible()
-}
+      lapply(function(y) {
+        selectMethod("print", class(y))(y)
+        cat("\n\n")
+      }) %>%
+      invisible() # we only want to see node prints
+  }
 )
 

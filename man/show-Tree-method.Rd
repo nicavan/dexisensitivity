@@ -11,10 +11,11 @@
 \item{object}{The Tree object to be shown.}
 }
 \description{
-Each node of the tree is printed with its depth, name, and twin attributes.
-Different prefixes are used depending on whether the node is the first one (prefix "Z : "),
-a leaf node (prefix "X : "), or a non-leaf node (prefix "Y : ").
-If a tree has no attributes, it prints "*** Tree without attributes ***".
+Each node of the tree is printed with its depth, name, and twin
+attributes. Different prefixes are used depending on whether the node is
+the first one (prefix "Z : "), a leaf node (prefix "X : "), or a non-leaf
+node (prefix "Y : "). If a tree has no attributes, it prints "*** Tree
+without attributes ***".
 }
 \details{
 Custom show method for Tree class object. Prints a formatted structure of the

@@ -15,10 +15,11 @@ additional information related to the tree structure.
 \section{Slots}{
 
 \describe{
-\item{\code{NumberOfAttributes}}{Object of class "numeric", the number of attributes in the
-tree.}
+\item{\code{NumberOfAttributes}}{Object of class "numeric", the number of attributes
+in the tree.}
 
-\item{\code{NumberOfLeaves}}{Object of class "numeric", the number of leaves in the tree.}
+\item{\code{NumberOfLeaves}}{Object of class "numeric", the number of leaves in the
+tree.}
 
 \item{\code{Depth}}{Object of class "numeric", the maximum depth of the tree.}
 

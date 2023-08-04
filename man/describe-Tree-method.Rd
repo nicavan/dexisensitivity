@@ -9,8 +9,10 @@
 }
 \arguments{
 \item{object}{Object}
-
-\item{Tree}{The Tree object to be described.}
+}
+\value{
+Primarily invoked for its side effect of displaying the nodes of the
+Tree object, the function does not produce a meaningful return value.
 }
 \description{
 A method to describe the structure of a Tree object in a comprehensive way.
