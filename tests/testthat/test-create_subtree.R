@@ -7,7 +7,7 @@ test_that("same output as JEB's scripts", {
     #   We used a character object and apply xmlDeserializeHook function
     # to transform it in an external pointer (usual object for this function)
     # since we can't save an external pointer directly.
-    tree <- createTree(XML::xmlDeserializeHook(TestTree))
+    tree <- create_tree(XML::xmlDeserializeHook(TestTree))
 
     test_output <- createSubTree(tree[[1]], tree[[1]]@Nodes[[2]]@Name)
 
@@ -28,7 +28,7 @@ test_that("same output as JEB's scripts 2", {
     #   We used a character object and apply xmlDeserializeHook function
     # to transform it in an external pointer (usual object for this function)
     # since we can't save an external pointer directly.
-    tree <- createTree(XML::xmlDeserializeHook(xmltree))
+    tree <- create_tree(XML::xmlDeserializeHook(xmltree))
     test_output <- createSubTree(tree[[1]], tree[[1]]@Nodes[[2]]@Name)
 
     expected_output <- readRDS(system.file("testdata", "TestsubtreeDEXiPM.rds",

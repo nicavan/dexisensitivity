@@ -87,7 +87,7 @@ test_that("Empty Tree describe correct message", {
                                 package = "dexiranalysis"))
 
     # Unit test
-    test_output <- createTree(XML::xmlDeserializeHook(tree))
+    test_output <- create_tree(XML::xmlDeserializeHook(tree))
 
     expected_output <- readRDS(system.file("testdata", "describeDEXiPM.rds",
                                            package = "dexiranalysis"))
