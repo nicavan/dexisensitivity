@@ -4,12 +4,12 @@
 \alias{createNode}
 \title{Create a node for the decision tree}
 \usage{
-createNode(listeNoeuds, MT)
+createNode(listeNoeuds, main_tree)
 }
 \arguments{
 \item{listeNoeuds}{A list of nodes}
 
-\item{MT}{The main tree (an XML object)}
+\item{main_tree}{The main tree (an XML object)}
 }
 \value{
 A new Node object

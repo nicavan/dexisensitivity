@@ -2,7 +2,7 @@
 #'
 #' Use the DEXi's XML output to create the Tree.
 #'
-#' @param MT Tree model
+#' @param main_tree Tree model
 #'
 #' @return A list of trees
 #'
@@ -10,10 +10,10 @@
 #' @import AlgDesign
 #'
 #' @export
-createTree <- function(MT) {
+createTree <- function(main_tree) {
 
     # Get root(s) name(s) of the DEXi Tree
-    listRootName <- sapply(XML::getNodeSet(doc = MT,
+    listRootName <- sapply(XML::getNodeSet(doc = main_tree,
                                            path = "/DEXi/ATTRIBUTE/NAME"),
                            XML::xmlValue)
     listTree <- list()
@@ -26,7 +26,7 @@ createTree <- function(MT) {
 
         # List of the attributes names
         to.search <- paste0("//ATTRIBUTE[NAME='",rootName,"']//ATTRIBUTE/NAME")
-        l.Attrib <- c(rootName, XML::xmlValue(XML::getNodeSet(MT, to.search)))
+        l.Attrib <- c(rootName, XML::xmlValue(XML::getNodeSet(main_tree, to.search)))
         nbAttrib <- length(l.Attrib)
 
         # List of Paths
@@ -40,7 +40,7 @@ createTree <- function(MT) {
                 chaine <- getChaine(listPath[[nbNoeuds]])
 
                 #
-                if (XML::getNodeSet(MT, paste0(chaine, "/ATTRIBUTE[NAME='",
+                if (XML::getNodeSet(main_tree, paste0(chaine, "/ATTRIBUTE[NAME='",
                                                l.Attrib[i], "']")) %>%
                     sapply(XML::xmlSize) %>%
                     length()) {
@@ -67,7 +67,7 @@ createTree <- function(MT) {
 
         # Creates the nodes
         TreeNodes <- vector(nbAttrib, mode = "list")
-        TreeNodes <- lapply(listPath, createNode, MT = MT)
+        TreeNodes <- lapply(listPath, createNode, main_tree = main_tree)
         for(i in 1:nbAttrib) {
             TreeNodes[[i]]@Id <- i
             TreeNodes[[i]]@IsLeafAndAggregated <- F
@@ -156,15 +156,15 @@ createTree <- function(MT) {
 #' Create a node for the decision tree
 #'
 #' @param listeNoeuds A list of nodes
-#' @param MT The main tree (an XML object)
+#' @param main_tree The main tree (an XML object)
 #'
 #' @return A new Node object
 #'
 #' @export
-createNode <- function(listeNoeuds, MT) {
+createNode <- function(listeNoeuds, main_tree) {
 
     # Is it a leaf?
-    isLeaf <- ifelse(XML::getNodeSet(MT, paste0(getChaine(listeNoeuds),
+    isLeaf <- ifelse(XML::getNodeSet(main_tree, paste0(getChaine(listeNoeuds),
                                                 "/FUNCTION")) %>%
                          sapply(XML::xmlSize) %>%
                          length(),
@@ -173,7 +173,7 @@ createNode <- function(listeNoeuds, MT) {
     l.Children <- if (isLeaf) {
         vector(mode="character",length=0)
     } else {
-        sapply(XML::getNodeSet(MT, paste0(getChaine(listeNoeuds),
+        sapply(XML::getNodeSet(main_tree, paste0(getChaine(listeNoeuds),
                                           "/ATTRIBUTE/NAME")),
                XML::xmlValue)
     }
@@ -185,7 +185,7 @@ createNode <- function(listeNoeuds, MT) {
 
     # Sisters: they do have the same mother
     l.Sisters <- if (length(listeNoeuds)>1) {
-        MT %>%
+        main_tree %>%
             XML::getNodeSet(paste0(getChaine(listeNoeuds[1:length(listeNoeuds)-1]),
                                    "/ATTRIBUTE/NAME")) %>%
             sapply(XML::xmlValue)
@@ -193,19 +193,19 @@ createNode <- function(listeNoeuds, MT) {
     l.Sisters <- l.Sisters[l.Sisters[] != listeNoeuds[length(listeNoeuds)]]
 
     # Scale and labels
-    scaleNode <- MT %>%
+    scaleNode <- main_tree %>%
         XML::getNodeSet(paste0(getChaine(listeNoeuds), "/SCALE/SCALEVALUE")) %>%
         sapply(XML::xmlSize) %>%
         length()
 
-    scaleLabel <- MT %>%
+    scaleLabel <- main_tree %>%
         XML::getNodeSet(paste0(getChaine(listeNoeuds),
                                "/SCALE/SCALEVALUE/NAME")) %>%
         sapply(XML::xmlValue)
 
     # Aggregation function
     if (!isLeaf) {
-        c.Function <- MT %>%
+        c.Function <- main_tree %>%
             XML::getNodeSet(paste0(getChaine(listeNoeuds), "/FUNCTION/LOW")) %>%
             sapply(XML::xmlValue)
 
@@ -221,7 +221,7 @@ createNode <- function(listeNoeuds, MT) {
         nbChildren <- length(l.Children)
         scaleChildren <- numeric(nbChildren)
         for(i in 1:nbChildren) {
-            scaleChildren[i] <- MT %>%
+            scaleChildren[i] <- main_tree %>%
                 XML::getNodeSet(paste0(getChaine(c(listeNoeuds,l.Children[i])),
                                        "/SCALE/SCALEVALUE")) %>%
                 sapply(XML::xmlSize) %>%
@@ -252,13 +252,13 @@ createNode <- function(listeNoeuds, MT) {
         WeightList <- rep(1/scaleNode,scaleNode)
     } else if (nbChildren==1) {
         WeightList <- 100
-    } else if (MT %>%
+    } else if (main_tree %>%
                XML::getNodeSet(paste0(getChaine(listeNoeuds),
                                       "/FUNCTION/WEIGHTS")) %>%
                sapply(XML::xmlValue) %>%
                length()) {
 
-        WeightList <- MT %>%
+        WeightList <- main_tree %>%
             XML::getNodeSet(paste0(getChaine(listeNoeuds),
                                    "/FUNCTION/WEIGHTS")) %>%
             sapply(XML::xmlValue) %>%

@@ -4,10 +4,10 @@
 \alias{createTree}
 \title{Create a Tree from DEXi's XML output}
 \usage{
-createTree(MT)
+createTree(main_tree)
 }
 \arguments{
-\item{MT}{Tree model}
+\item{main_tree}{Tree model}
 }
 \value{
 A list of trees
