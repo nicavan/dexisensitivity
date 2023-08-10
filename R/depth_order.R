@@ -14,7 +14,7 @@ depth_order <- function(aTree) {
 
     for(i in 1:dim(dtest)[1]) {
         tmpname <- dtest[i, "name"]
-        tmpID <- getID(aTree@Nodes, tmpname)
+        tmpID <- get_id(aTree@Nodes, tmpname)
 
         if(length(tmpID) > 1) {
             vecdepth <- NULL

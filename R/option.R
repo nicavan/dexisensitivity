@@ -23,9 +23,9 @@ createOptions <- function(aTree, nbOptions = 1, aSeed = NULL) {
     rownames(option) <- aTree@Leaves
 
     for(k in aTree@Leaves) {
-        option[k, ] <- sample(aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@RangeScale,
+        option[k, ] <- sample(aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@RangeScale,
                               size = nbOptions,
-                              prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Probability,
+                              prob = aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@Probability,
                               replace = TRUE)
     }
 
@@ -74,7 +74,7 @@ EvaluateScenario <- function(aTree, option) {
 
                 # Compute the value thanks to the attribution table
                 if(results[j] < 0) {
-                    id <- getID(subTree@Nodes, j)
+                    id <- get_id(subTree@Nodes, j)
 
                     if(length(id) > 1) {
                         id <- id %>%
@@ -102,13 +102,13 @@ EvaluateScenario <- function(aTree, option) {
 
     # Thanks to the hierchical structure of the tree... use rev()
     for(k in aTree@Attributes) {
-        results[getID(aTree@Nodes, k)] <- max(results[getID(aTree@Nodes, k)])
+        results[get_id(aTree@Nodes, k)] <- max(results[get_id(aTree@Nodes, k)])
     }
 
     for(i in rev(aTree@Aggregated)) {
         #Compute the value thanks to the attribution table
         if (results[i] < 0) {
-            id <- getID(aTree@Nodes, i)
+            id <- get_id(aTree@Nodes, i)
 
             if(length(id) > 1) {
                 id <- id %>%
@@ -127,7 +127,7 @@ EvaluateScenario <- function(aTree, option) {
     }
 
     for(k in aTree@Attributes) {
-        results[getID(aTree@Nodes, k)] <- max(results[getID(aTree@Nodes, k)])
+        results[get_id(aTree@Nodes, k)] <- max(results[get_id(aTree@Nodes, k)])
     }
 
     return(results)
@@ -248,13 +248,13 @@ showScenario <- function(aScenario,
     myGreyValue <- lapply(1:7, function(x) {grDevices::gray.colors(x, 0, 1) })
     myCol <- aTree@Leaves %>%
         sapply(function(x) {
-            myGreyValue[[aTree@Nodes[[getID(aTree@Nodes, x)[1]]]@RangeScale]][aScenario[x, ]]
+            myGreyValue[[aTree@Nodes[[get_id(aTree@Nodes, x)[1]]]@RangeScale]][aScenario[x, ]]
         }) %>%
         unlist()
 
     theMax <- aTree@Attributes %>%
         lapply(function(x) {
-            aTree@Nodes[[getID(aTree@Nodes, x)[1]]]@RangeScale
+            aTree@Nodes[[get_id(aTree@Nodes, x)[1]]]@RangeScale
         }) %>%
         unlist() %>%
         matrix(ncol = 1)

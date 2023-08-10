@@ -20,9 +20,9 @@ infoMC <- function(aTree,
                      ncol = iTest)
     rownames(option) <- aTree@Leaves
     for(k in aTree@Leaves) {
-        option[k, ] <- aTree@Nodes[[getID(aTree@Nodes,k)[1]]]@RangeScale %>%
+        option[k, ] <- aTree@Nodes[[get_id(aTree@Nodes,k)[1]]]@RangeScale %>%
             sample(size = iTest,
-                   prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Probability,
+                   prob = aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@Probability,
                    replace = TRUE)
     }
 
@@ -68,9 +68,9 @@ MonteCarlo <- function(aTree,
     rownames(option) <- aTree@Leaves
 
     for(k in aTree@Leaves) {
-        option[k, ] <- aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@RangeScale %>%
+        option[k, ] <- aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@RangeScale %>%
             sample(size = nbRuns,
-                   prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Probability,
+                   prob = aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@Probability,
                    replace = TRUE)
     }
 

@@ -25,7 +25,7 @@ OAT <- function(aTree,
         #Option +
         newOption <- option
         newOption[i, ] <- option[i, ] + 1
-        if (newOption[i, ] > aTree@Nodes[[getID(aTree@Nodes, i)[1]]]@RangeScale) {
+        if (newOption[i, ] > aTree@Nodes[[get_id(aTree@Nodes, i)[1]]]@RangeScale) {
             results[, j]<- -1
         } else {
             results[, j] <- EvaluateScenario(aTree, as.matrix(newOption))
@@ -62,7 +62,7 @@ OAT <- function(aTree,
 #' @export
 showOAT <- function(nodeName, aResults, aTree) {
     #On récupère l'ID du noeud
-    id <- getID(aTree@Nodes, nodeName)
+    id <- get_id(aTree@Nodes, nodeName)
     # Si on est dans le cas d'une Leaf-Aggregated !
     #   on récupère le noeud aggrégé et non le noeud feuille
     if (aTree@IsLeafAggregated) {

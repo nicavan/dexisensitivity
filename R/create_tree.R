@@ -220,7 +220,7 @@ process_aggregated_leaf <- function(tree_nodes, leaves, aggregated) {
     is_leaf_aggregated <- TRUE
     for (i in seq_along(leaf_aggregated)) {
       # Get IDs corresponding to the leaf-aggregated node
-      dup <- getID(tree_nodes, leaf_aggregated[i])
+      dup <- get_id(tree_nodes, leaf_aggregated[i])
 
       for (j in seq_along(dup)) {
         # Exclude the current ID and assign others as twins
@@ -238,6 +238,7 @@ process_aggregated_leaf <- function(tree_nodes, leaves, aggregated) {
               is_leaf_aggregated = is_leaf_aggregated,
               tree_nodes = tree_nodes))
 }
+
 
 #' Process Duplicated leaf
 #'
@@ -271,7 +272,7 @@ process_duplicated_leaf <- function(tree_nodes, leaves) {
     # Iterate through the multiple occurrences and set the 'Twin' reference
     for (i in 1:dim(multiple)[1]) {
       # Get the IDs corresponding to the leaf attribute
-      dup <- getID(tree_nodes, rownames(multiple)[i])
+      dup <- get_id(tree_nodes, rownames(multiple)[i])
 
       # Set the 'Twin' reference for each duplicate
       for (j in 1:length(dup)) {
@@ -296,7 +297,6 @@ process_duplicated_leaf <- function(tree_nodes, leaves) {
               is_multiple = is_multiple,
               tree_nodes = tree_nodes))
 }
-
 
 
 #' Create a Node for the Decision Tree
@@ -423,6 +423,7 @@ determine_mother <- function(node_path) {
   }
 }
 
+
 #' Find the Sisters of a Node
 #'
 #' Aids in understanding horizontal relationships within the tree, crucial for
@@ -446,6 +447,7 @@ determine_sisters <- function(node_path, main_tree) {
 
   sisters[sisters != node_path[length(node_path)]]
 }
+
 
 #' Determine the Scale of a Node
 #'
@@ -606,10 +608,9 @@ determine_weight_list <- function(node_path, main_tree,
 }
 
 
-
 #' Get the chain of nodes
 #'
-#' Retrieves the chain of nodes from a given list of nodes.
+#' Retrieves the chain of nodes from a given node path.
 #'
 #' @param node_path A character vector representing the path to the node.
 #'
@@ -634,28 +635,27 @@ get_chaine <- function(node_path) {
 #'
 #' Retrieves the ID of a given node from a list of nodes.
 #'
-#' @param listNodes A list of nodes
-#' @param nodeName The name of the node
+#' @param list_nodes A list of nodes
+#' @param node_name The name of the node
 #'
 #' @return The ID of the node
 #'
 #' @export
-# getID <- function(listNodes,nodeName) {
-#     out <- numeric(0)
-#     for(i in 1:length(listNodes)) {
-#         if(rev(listNodes[[i]]@NodePath)[1] == nodeName)
-#             out <- c(out, listNodes[[i]]@Id)
-#     }
-#     return(out)
-# }
-getID <- function(listNodes,nodeName) {
-  out <- numeric(0)
-  for(i in 1:length(listNodes)) {
-    nodePathLength <- length(listNodes[[i]]@NodePath)
-    if(listNodes[[i]]@NodePath[nodePathLength] == nodeName)
-      out <- c(out,listNodes[[i]]@Id)
+get_id <- function(list_nodes, node_name) {
+  # Get the names of all nodes in the list
+  node_names <- sapply(list_nodes, function(node) node@Name)
+
+  # Find the indexes matching the given node name
+  matching_index <- which(node_names == node_name)
+
+  # If at least one matching index is found
+  if (length(matching_index) > 0) {
+    # Return the IDs of the matching nodes as a numeric vector
+    return(sapply(matching_index, function(idx) as.numeric(list_nodes[[idx]]@Id)))
+  } else {
+    # Return NULL if no matching node is found
+    return(NULL)
   }
-  return(out)
 }
 
 
@@ -693,7 +693,7 @@ EvaluateOrder <- function(aTree) {
           skip <- c(skip,l.Nodes[i])
         } else {
           results[l.Nodes[i]] <- 1
-          id <- getID(aTree@Nodes, l.Nodes[i])
+          id <- get_id(aTree@Nodes, l.Nodes[i])
           if(length(id) > 1)
             id <- unlist(sapply(id, function(x) {
               if(!aTree@Nodes[[x]]@IsLeaf) {x}
@@ -726,7 +726,7 @@ EvaluateOrder <- function(aTree) {
 #' @export
 getLeaves <- function(aTree,nodeID) {
   if (is.character(nodeID)) {
-    l.id <- getID(aTree@Nodes, nodeID)
+    l.id <- get_id(aTree@Nodes, nodeID)
     nodeID <- unlist(sapply(l.id, function(x) {
       if(!aTree@Nodes[[x]]@IsLeaf)aTree@Nodes[[x]]@Id
     }))

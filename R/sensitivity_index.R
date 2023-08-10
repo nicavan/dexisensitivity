@@ -91,7 +91,7 @@ clcSI_DEXi <- function(aTree, avoidrep = F) {
 
     # Loop on the Aggregate attributes in reverse order
     for(node.name in depthorder) {
-        id <- getID(aTree@Nodes, node.name)
+        id <- get_id(aTree@Nodes, node.name)
         if (length(id) > 1) {
             id <- id %>%
                 sapply(function(x) {
@@ -137,7 +137,7 @@ clcSI_DEXi <- function(aTree, avoidrep = F) {
         IndirectCondiProbaList <- vector(mode = "list",
                                          length = 0)
         for(i in seq(Node@Children)) {
-            id  <- getID(aTree@Nodes,
+            id  <- get_id(aTree@Nodes,
                          Node@Children[[i]])
 
             #If several nodes with the same name, we will choose the one with the proper mother

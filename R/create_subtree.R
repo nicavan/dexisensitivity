@@ -14,7 +14,7 @@
 createSubTree <- function(aTree, nodeName, avoidrep = F) {
 
     # On récupère l'ID du noeud
-    id <- getID(aTree@Nodes, nodeName)
+    id <- get_id(aTree@Nodes, nodeName)
 
     # Si on est dans le cas d'une Leaf-Aggregated !
     # on récupère le noeud aggrégé et non le noeud feuille
@@ -92,7 +92,7 @@ createSubTree <- function(aTree, nodeName, avoidrep = F) {
             colnames(Multiple) <- "Occ"
 
             for(i in 1:dim(Multiple)[1]) {
-                dup <- getID(TreeNodes, rownames(Multiple)[i])
+                dup <- get_id(TreeNodes, rownames(Multiple)[i])
                 for(j in 1:length(dup)) {
                     TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup,TreeNodes[[dup[j]]]@Id)))]
                 }
@@ -114,7 +114,7 @@ createSubTree <- function(aTree, nodeName, avoidrep = F) {
             isLeafAggregated <- T
 
             for(i in 1:length(l.LeafAggregated)) {
-                dup <- getID(TreeNodes, l.LeafAggregated[i])
+                dup <- get_id(TreeNodes, l.LeafAggregated[i])
                 for(j in 1:length(dup)) {
                     TreeNodes[[dup[j]]]@Twin <- dup[-c(which(is.element(dup,TreeNodes[[dup[j]]]@Id)))]
                     TreeNodes[[dup[j]]]@IsLeafAndAggregated <- T

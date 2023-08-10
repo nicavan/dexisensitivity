@@ -13,5 +13,5 @@ get_chaine(node_path)
 A string representing the chain of nodes
 }
 \description{
-Retrieves the chain of nodes from a given list of nodes.
+Retrieves the chain of nodes from a given node path.
 }

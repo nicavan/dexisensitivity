@@ -24,9 +24,9 @@ infoAOV <- function(aTree, iTest = 50) {
                      ncol = iTest)
     rownames(option) <- aTree@Leaves
     for(k in aTree@Leaves) {
-        option[k,] <- sample(aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@RangeScale,
+        option[k,] <- sample(aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@RangeScale,
                              size = iTest,
-                             prob = aTree@Nodes[[getID(aTree@Nodes, k)[1]]]@Probability,
+                             prob = aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@Probability,
                              replace = TRUE)
     }
 
