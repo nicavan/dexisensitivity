@@ -39,7 +39,7 @@ create_tree <- function(main_tree) {
     list_path <- get_paths(attributes, main_tree, root_name)
 
     # Creates the nodes
-    tree_nodes <- lapply(list_path, createNode, main_tree = main_tree)
+    tree_nodes <- lapply(list_path, create_node, main_tree = main_tree)
     for(i in 1:number_of_attributes) {
       tree_nodes[[i]]@Id <- i
     }
@@ -160,7 +160,7 @@ get_paths <- function(attributes, main_tree, root_name) {
       if (path_found) {break}
 
       # Get the chain for the current path node
-      chain <- getChaine(list_path[[node_count]])
+      chain <- get_chaine(list_path[[node_count]])
 
       # Search in the main_tree for the attribute. We are looking for the
       # attribute in the XML tree to find its exact location.
@@ -299,155 +299,330 @@ process_duplicated_leaf <- function(tree_nodes, leaves) {
 
 
 
-#' Create a node for the decision tree
+#' Create a Node for the Decision Tree
 #'
-#' @param listeNoeuds A list of nodes
-#' @param main_tree The main tree (an XML object)
+#' Constructs a new node for the decision tree, incorporating various attributes
+#' and details including leaf status, children, mother, sisters, scale, scale
+#' label, aggregation, and weight list.
 #'
-#' @return A new Node object
+#' @param node_path A character vector representing the path to the node.
+#' @param main_tree An XML object representing the main tree structure
+#'   containing the XML data.
+#'
+#' @return A new "Node" object containing the following components:
+#' \describe{
+#'   \item{Name}{The name of the node.}
+#'   \item{Depth}{The depth of the node within the tree.}
+#'   \item{Twin}{Numeric value representing a twin node, initialized to 0.}
+#'   \item{IsLeaf}{Boolean indicating if the node is a leaf.}
+#'   \item{IsLeafAndAggregated}{Boolean, initialized to FALSE.}
+#'   \item{Mother}{Character representing the mother of the node.}
+#'   \item{Sisters}{Character vector representing the sisters of the node.}
+#'   \item{Children}{Character vector representing the children of the node.}
+#'   \item{Aggregation}{Aggregation structure for the node.}
+#'   \item{RangeScale}{The range scale of the node.}
+#'   \item{ScaleLabel}{Character vector representing the scale label of the
+#'   node.}
+#'   \item{Probability}{Numeric vector representing the probability or weights
+#'   for the node.}
+#'   \item{NodePath}{Character vector representing the path to the node.}
+#' }
 #'
 #' @export
-createNode <- function(listeNoeuds, main_tree) {
+create_node <- function(node_path, main_tree) {
 
-  # Is it a leaf?
-  isLeaf <- ifelse(XML::getNodeSet(main_tree, paste0(getChaine(listeNoeuds),
-                                                     "/FUNCTION")) %>%
-                     sapply(XML::xmlSize) %>%
-                     length(),
-                   F, T)
-  # Children
-  l.Children <- if (isLeaf) {
-    vector(mode="character",length=0)
+  is_leaf <- determine_leaf_status(node_path, main_tree)
+  children <- determine_children(node_path, main_tree, is_leaf)
+  mother <- determine_mother(node_path)
+  sisters <- determine_sisters(node_path, main_tree)
+  scale_node <- determine_scale_node(node_path, main_tree)
+  scale_label <- determine_scale_label(node_path, main_tree)
+  aggregation <- determine_aggregation(node_path, main_tree, is_leaf, children)
+  weight_list <- determine_weight_list(node_path, main_tree, is_leaf,
+                                       aggregation, children)
+
+  # Output
+  out <- new("Node",
+             Name = node_path[length(node_path)],
+             Depth = length(node_path),
+             Twin = numeric(0),
+             IsLeaf = is_leaf,
+             IsLeafAndAggregated = FALSE,
+             Mother = mother,
+             Sisters = sisters,
+             Children = children,
+             Aggregation = aggregation,
+             RangeScale = scale_node,
+             ScaleLabel = scale_label,
+             Probability = weight_list,
+             NodePath = node_path)
+}
+
+
+#' Identify if a Node is a Leaf
+#'
+#' Essential to understand the tree structure and facilitates further
+#' decision-making about the node.
+#'
+#' @param node_path A character vector representing the path to the node.
+#' @param main_tree Main tree structure containing the XML data.
+#'
+#' @return Boolean indicating if the node is a leaf.
+#'
+#' @keywords internal
+determine_leaf_status <- function(node_path, main_tree) {
+  if (XML::getNodeSet(main_tree,
+                      paste0(get_chaine(node_path), "/FUNCTION")) %>%
+      sapply(XML::xmlSize) %>%
+      length()) {
+    FALSE
   } else {
-    sapply(XML::getNodeSet(main_tree, paste0(getChaine(listeNoeuds),
-                                             "/ATTRIBUTE/NAME")),
+    TRUE
+  }
+}
+
+
+#' Find the Children of a Node
+#'
+#' Enhances readability by encapsulating the logic for understanding the node's
+#' offspring.
+#'
+#' @param node_path A character vector representing the path to the node.
+#' @param main_tree Main tree structure containing the XML data.
+#' @param is_leaf Boolean indicating if the node is a leaf.
+#'
+#' @return A list of children.
+#'
+#' @keywords internal
+determine_children <- function(node_path, main_tree, is_leaf) {
+  if (is_leaf) {
+    vector(mode = "character", length = 0)
+  } else {
+    sapply(XML::getNodeSet(main_tree,
+                           paste0(get_chaine(node_path), "/ATTRIBUTE/NAME")),
            XML::xmlValue)
   }
+}
 
-  # Mother if any
-  mother<-ifelse(length(listeNoeuds) > 1,
-                 listeNoeuds[length(listeNoeuds) - 1],
-                 character(0))
 
-  # Sisters: they do have the same mother
-  l.Sisters <- if (length(listeNoeuds)>1) {
-    main_tree %>%
-      XML::getNodeSet(paste0(getChaine(listeNoeuds[1:length(listeNoeuds)-1]),
+#' Identify the Mother of a Node
+#'
+#' Contributes to understanding the relationship between nodes and navigation
+#' within the tree's structure.
+#'
+#' @param node_path A character vector representing the path to the node.
+#'
+#' @return Mother of the node if exists.
+#'
+#' @keywords internal
+determine_mother <- function(node_path) {
+  if (length(node_path) > 1) {
+    unlist(node_path[length(node_path) - 1])
+  } else {
+    as.character(NA)
+  }
+}
+
+#' Find the Sisters of a Node
+#'
+#' Aids in understanding horizontal relationships within the tree, crucial for
+#' some analyses.
+#'
+#' @param node_path A character vector representing the path to the node.
+#' @param main_tree Main tree structure containing the XML data.
+#'
+#' @return A list of sisters.
+#'
+#' @keywords internal
+determine_sisters <- function(node_path, main_tree) {
+  if (length(node_path) > 1) {
+    sisters <- main_tree %>%
+      XML::getNodeSet(paste0(get_chaine(node_path[1:length(node_path) - 1]),
                              "/ATTRIBUTE/NAME")) %>%
       sapply(XML::xmlValue)
-  } else {vector(mode = "character", length = 0)}
-  l.Sisters <- l.Sisters[l.Sisters[] != listeNoeuds[length(listeNoeuds)]]
+  } else {
+    sisters <- vector(mode = "character", length = 0)
+  }
 
-  # Scale and labels
-  scaleNode <- main_tree %>%
-    XML::getNodeSet(paste0(getChaine(listeNoeuds), "/SCALE/SCALEVALUE")) %>%
+  sisters[sisters != node_path[length(node_path)]]
+}
+
+#' Determine the Scale of a Node
+#'
+#' Used to understand the node's working scale, which might be necessary for
+#' subsequent calculations or visualization.
+#'
+#' @param node_path A character vector representing the path to the node.
+#' @param main_tree Main tree structure containing the XML data.
+#'
+#' @return Scale of the node.
+#'
+#' @keywords internal
+determine_scale_node <- function(node_path, main_tree) {
+  main_tree %>%
+    XML::getNodeSet(paste0(get_chaine(node_path), "/SCALE/SCALEVALUE")) %>%
     sapply(XML::xmlSize) %>%
     length()
+}
 
-  scaleLabel <- main_tree %>%
-    XML::getNodeSet(paste0(getChaine(listeNoeuds),
-                           "/SCALE/SCALEVALUE/NAME")) %>%
+
+#' Determine a Node's Scale Label
+#'
+#' Useful for annotating or understanding the node at a more descriptive level.
+#'
+#' @param node_path A character vector representing the path to the node.
+#' @param main_tree Main tree structure containing the XML data.
+#'
+#' @return Scale label of the node.
+#'
+#' @keywords internal
+determine_scale_label <- function(node_path, main_tree) {
+  main_tree %>%
+    XML::getNodeSet(paste0(get_chaine(node_path), "/SCALE/SCALEVALUE/NAME")) %>%
     sapply(XML::xmlValue)
+}
 
-  # Aggregation function
-  if (!isLeaf) {
-    c.Function <- main_tree %>%
-      XML::getNodeSet(paste0(getChaine(listeNoeuds), "/FUNCTION/LOW")) %>%
-      sapply(XML::xmlValue)
 
-    # Transform as a vector
-    nbChar <- nchar(c.Function)
-    v.Function <- numeric(nbChar)
-    for(i in 1:nbChar) {
-      # Modify attribute 0...n to 1...n+1
-      v.Function[i] <- as.numeric(substr(c.Function, i, i)) + 1
-    }
+#' Determine Aggregation for a Node
+#'
+#' crucial for understanding how information is combined at the node level. It
+#' contains the logic for aggregation based on whether the node is a leaf and
+#' other properties. The function retrieves the low function values from the XML
+#' and adjusts them to numeric format. Then, it determines the scales from nodes
+#' n-1 and creates the factorial plan or sequence depending on the number of
+#' children. If the node is a leaf, it returns a matrix with zero.
+#'
+#' @param node_path A character vector representing the path to the node.
+#' @param main_tree Main tree structure containing the XML data.
+#' @param is_leaf Boolean indicating if the node is a leaf.
+#' @param children List of children nodes.
+#'
+#' @return If the node is not a leaf, the function returns the aggregation
+#'   structure, including a matrix representing the factorial plan and
+#'   transformed low function values. If the node is a leaf, the function
+#'   returns a matrix with zero.
+#'
+#' @keywords internal
+determine_aggregation <- function(node_path, main_tree, is_leaf, children) {
+  # Check if the node is not a leaf
+  if (!is_leaf) {
 
-    # Scales from nodes n-1
-    nbChildren <- length(l.Children)
-    scaleChildren <- numeric(nbChildren)
-    for(i in 1:nbChildren) {
-      scaleChildren[i] <- main_tree %>%
-        XML::getNodeSet(paste0(getChaine(c(listeNoeuds,l.Children[i])),
-                               "/SCALE/SCALEVALUE")) %>%
-        sapply(XML::xmlSize) %>%
-        length()
-    }
+    # Retrieve the low function values from the XML
+    low_function_char <- main_tree %>%
+      XML::getNodeSet(paste0(get_chaine(node_path), "/FUNCTION/LOW")) %>%
+      sapply(XML::xmlValue) %>%
+      strsplit("")
 
-    # Create the factorial plan
-    if(nbChildren == 1) {
-      aggregation <- (1:scaleChildren)
+    # Adjust the attribute from 0...n (char) to 1...n+1 (numeric)
+    transformed_values <- as.numeric(low_function_char[[1]]) + 1
+
+    # Determine the scales from nodes n-1 using a vectorized approach
+    children_paths <- sapply(children, function(child) {
+      get_chaine(c(node_path, child))
+      })
+
+    children_scales <- children_paths %>%
+      sapply(function(path) {
+        main_tree %>%
+          XML::getNodeSet(paste0(path, "/SCALE/SCALEVALUE")) %>%
+          sapply(XML::xmlSize) %>%
+          length()
+      })
+
+    # Create the factorial plan if there's more than one child, otherwise use a
+    # simple sequence
+    if (length(children_scales) == 1) {
+      aggregation <- seq_len(children_scales)
     } else {
-      factorialPlan <- scaleChildren %>%
-        as.numeric() %>%
+      factorial_plan <- children_scales %>%
         rev() %>%
         AlgDesign::gen.factorial(center = FALSE) %>%
         rev()
 
-      nbFactorialPlan <- dim(factorialPlan)[1]
-      aggregation <- as.matrix(factorialPlan[, seq(ncol(factorialPlan))])
+      # Convert the selected columns of the factorial plan into a matrix
+      aggregation <- as.matrix(factorial_plan)
     }
-    aggregation <- cbind(aggregation, v.Function)
-    colnames(aggregation) <- c(l.Children, listeNoeuds[length(listeNoeuds)])
-  } else {aggregation <- as.matrix(0)}
 
-  # Create the weights (equal weights if not defined)
-  WeightList <- numeric(scaleNode)
+    # Combine the aggregation matrix with the transformed values
+    aggregation <- cbind(aggregation, transformed_values)
 
-  if (isLeaf) {
-    WeightList <- rep(1/scaleNode,scaleNode)
-  } else if (nbChildren==1) {
-    WeightList <- 100
+    # Set the column names for the aggregation matrix
+    colnames(aggregation) <- c(children, node_path[length(node_path)])
+
+  } else {
+    # If the node is a leaf, set the aggregation to a matrix containing 0
+    aggregation <- as.matrix(0)
+  }
+
+  return(aggregation)
+}
+
+
+#' Determine Weight List for a Node
+#'
+#' Calculates the weights associated with a particular node based on
+#' various conditions, such as whether the node is a leaf and the
+#' number of children. Weights may represent probabilities or importance
+#' factors in the overall tree structure.
+#'
+#' @param node_path A character vector representing the path to the node.
+#' @param main_tree Main tree structure containing the XML data.
+#' @param is_leaf Boolean indicating if the node is a leaf.
+#' @param aggregation Aggregation structure, possibly used in the calculation.
+#' @param children List of children nodes.
+#'
+#' @return A numeric vector containing the weights for the node.
+#'
+#' @keywords internal
+determine_weight_list <- function(node_path, main_tree,
+                                  is_leaf, aggregation, children) {
+  # Initialize the weight list with the same size as the scale of the node
+  weight_list <- numeric(determine_scale_node(node_path, main_tree))
+
+  if (is_leaf) {
+    # If the node is a leaf, assign equal weights
+    weight_list <- rep(1 / length(weight_list), length(weight_list))
+  } else if (length(children) == 1) {
+    # If there's only one child, set the weight to 100
+    weight_list <- 100
   } else if (main_tree %>%
-             XML::getNodeSet(paste0(getChaine(listeNoeuds),
+             XML::getNodeSet(paste0(get_chaine(node_path),
                                     "/FUNCTION/WEIGHTS")) %>%
              sapply(XML::xmlValue) %>%
              length()) {
-
-    WeightList <- main_tree %>%
-      XML::getNodeSet(paste0(getChaine(listeNoeuds),
-                             "/FUNCTION/WEIGHTS")) %>%
+    # If specific weights are defined in the XML, retrieve and convert them
+    weight_list <- main_tree %>%
+      XML::getNodeSet(paste0(get_chaine(node_path), "/FUNCTION/WEIGHTS")) %>%
       sapply(XML::xmlValue) %>%
       strsplit(";") %>%
       unlist() %>%
       as.numeric()
+  } else {
+    # If no specific condition is met, set the weight list to -1
+    weight_list <- -1
+  }
 
-  } else { WeightList <- -1 }
-
-  # Output
-  out <- new("Node",
-             Name = listeNoeuds[length(listeNoeuds)],
-             Depth = length(listeNoeuds),
-             Twin = numeric(0),
-             IsLeaf = isLeaf,
-             IsLeafAndAggregated = FALSE,
-             Mother = mother,
-             Sisters = l.Sisters,
-             Children = l.Children,
-             Aggregation = aggregation,
-             RangeScale = scaleNode,
-             ScaleLabel = scaleLabel,
-             Probability = WeightList,
-             NodePath = listeNoeuds)
+  return(weight_list)
 }
+
 
 
 #' Get the chain of nodes
 #'
 #' Retrieves the chain of nodes from a given list of nodes.
 #'
-#' @param listeNoeuds A list of nodes
+#' @param node_path A character vector representing the path to the node.
 #'
 #' @return A string representing the chain of nodes
 #'
 #' @export
-getChaine <- function(listeNoeuds) {
+get_chaine <- function(node_path) {
 
-  for(k in 1:length(listeNoeuds)) {
+  for(k in 1:length(node_path)) {
     if (k==1) {
-      chaine <- paste0("//ATTRIBUTE[NAME='", listeNoeuds[k], "']")
+      chaine <- paste0("//ATTRIBUTE[NAME='", node_path[k], "']")
     } else {
-      chaine <- paste0(chaine, "/ATTRIBUTE[NAME='", listeNoeuds[k], "']")
+      chaine <- paste0(chaine, "/ATTRIBUTE[NAME='", node_path[k], "']")
     }
   }
 
