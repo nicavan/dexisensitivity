@@ -73,7 +73,7 @@ showOAT <- function(nodeName, aResults, aTree) {
             unlist()
     }
 
-    myChildren <- getLeaves(aTree, id)
+    myChildren <- get_leaves(aTree, id)
     list1 <- aResults[nodeName, ]
     nominal <- rep(list1[1], length(myChildren))
     plus <- numeric(length(myChildren))

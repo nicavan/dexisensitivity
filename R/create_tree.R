@@ -697,7 +697,7 @@ evaluate_order <- function(tree) {
     # haven't, it means this node might depend on another one and thus, we'll
     # skip it for now.
     for (i in seq_along(leaf_nodes)) {
-      if (are_leaves_unevaluated(getLeaves(tree, leaf_nodes[i]),
+      if (are_leaves_unevaluated(get_leaves(tree, leaf_nodes[i]),
                                  results,
                                  tree@Nodes)) {
         nodes_to_skip <- c(nodes_to_skip, leaf_nodes[i])
@@ -747,30 +747,35 @@ are_leaves_unevaluated <- function(leaves, results, nodes) {
 }
 
 
-#' Get the leaves of a given node
+#' Retrieve leaves associated with a given node in a tree
 #'
-#' Retrieves the leaves of a given node
+#' @param tree A tree object with nested nodes and leaves.
+#' @param node_id The identifier of the node for which leaves are to be fetched.
 #'
-#' @param aTree A Tree
-#' @param nodeID The ID of the node
-#'
-#' @return The leaves of the node
+#' @return A vector of leaf IDs associated with the specified node.
 #'
 #' @export
-getLeaves <- function(aTree,nodeID) {
-  if (is.character(nodeID)) {
-    l.id <- get_id(aTree@Nodes, nodeID)
-    nodeID <- unlist(sapply(l.id, function(x) {
-      if(!aTree@Nodes[[x]]@IsLeaf)aTree@Nodes[[x]]@Id
+get_leaves <- function(tree, node_id) {
+
+  # If node_id is character, convert it to numeric
+  if (is.character(node_id)) {
+    leaf_id <- get_id(tree@Nodes, node_id)
+    node_id <- unlist(lapply(leaf_id, function(x) {
+      if (!tree@Nodes[[x]]@IsLeaf) tree@Nodes[[x]]@Id
     }))
   }
 
-  l.Nodes <- unlist(sapply(aTree@Nodes, function(x) {
-    if(length(grep(paste(aTree@Nodes[[nodeID]]@NodePath, collapse = ""),
-                   paste(x@NodePath, collapse = ""))))x@Id
+  # Fetch nodes whose path matches the specified node's path
+  leaf_nodes <- unlist(lapply(tree@Nodes, function(x) {
+    if (length(grep(paste(tree@Nodes[[node_id]]@NodePath, collapse = ""),
+                    paste(x@NodePath, collapse = "")))) x@Id
   }))
 
-  return(unlist(sapply(l.Nodes, function(x) {
-    if (aTree@Nodes[[x]]@IsLeaf) {aTree@Nodes[[x]]@Id}
-  })))
+  # Filter out the leaves from the fetched nodes and return their IDs
+  leaves_ids <- unlist(lapply(leaf_nodes, function(x) {
+    if (tree@Nodes[[x]]@IsLeaf) tree@Nodes[[x]]@Id
+  }))
+
+  return(leaves_ids)
 }
+
