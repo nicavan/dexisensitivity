@@ -96,7 +96,7 @@ create_tree <- function(main_tree) {
                 EvaluationOrder = numeric(0),
                 Paths = list_path)
 
-    tree@EvaluationOrder <- EvaluateOrder(tree)
+    tree@EvaluationOrder <- evaluate_order(tree)
 
     list_tree[[i_root_name]] <- tree
   }
@@ -659,58 +659,91 @@ get_id <- function(list_nodes, node_name) {
 }
 
 
-#' Evaluate the order of nodes in a tree
+#' Evaluate Order of Tree Nodes
 #'
-#' @param aTree A tree
+#' Determines the order in which nodes in a tree should be evaluated, especially
+#' when dealing with aggregated leaves.
 #'
-#' @return The evaluated order of nodes
+#' @param tree A tree object which contains information about nodes and their
+#'   relationships.
 #'
-#' @export
-EvaluateOrder <- function(aTree) {
-  evalOrder <- numeric(0)
-  if (aTree@IsLeafAggregated) {
+#' @return A numeric vector representing the order in which nodes should be
+#'   evaluated.
+evaluate_order <- function(tree) {
 
-    results <- numeric(aTree@NumberOfAttributes)
-    names(results) <- aTree@Attributes
-    results[] <- -1
-    results[aTree@Leaves] <- 1
-    l.Nodes <- aTree@LeafAggregated
-    isDone <- F
-
-    while (!isDone) {
-      skip <- numeric(0)
-
-      for(i in 1:length(l.Nodes)) {
-        # In case of interelated subTrees ..
-        # .. need to find the first one without LeafAggregated Leaves
-        l.Leaves <- getLeaves(aTree, l.Nodes[i])
-        if(l.Leaves %>%
-           sapply(function(x) {
-             ifelse(results[aTree@Nodes[[x]]@Name] == -1, 1, 0)
-           }) %>%
-           unlist() %>%
-           sum()) {
-          skip <- c(skip,l.Nodes[i])
-        } else {
-          results[l.Nodes[i]] <- 1
-          id <- get_id(aTree@Nodes, l.Nodes[i])
-          if(length(id) > 1)
-            id <- unlist(sapply(id, function(x) {
-              if(!aTree@Nodes[[x]]@IsLeaf) {x}
-            }))
-          evalOrder <- c(evalOrder, id)
-        }
-      }
-
-      if(!length(skip)) {
-        isDone <- T
-      } else {
-        l.Nodes <- skip
-      }
-
-    }
+  # Early exit if the tree doesn't have aggregated leaves, as there's no order
+  # to evaluate
+  if (!tree@IsLeafAggregated) {
+    return(numeric(0))
   }
-  return(evalOrder)
+
+  # Set an initial state assuming none of the attributes have been evaluated
+  # yet. We then immediately mark the tree's leaves as evaluated (with a value
+  # of 1).
+  results <- stats::setNames(rep(-1, tree@NumberOfAttributes), tree@Attributes)
+  results[tree@Leaves] <- 1
+
+  eval_order <- numeric(0)  # Will store the final order of evaluation
+  leaf_nodes <- tree@LeafAggregated
+
+  # We'll iterate over leaf nodes, trying to evaluate them. However, some might
+  # be dependent on others, so we might skip them for the current iteration and
+  # retry in the next one.
+  previous_nodes_to_skip <- NULL
+  for (iteration in 1:length(leaf_nodes)) {
+    nodes_to_skip <- numeric(0)
+
+    # For each node, we'll check if its leaves have been evaluated. If they
+    # haven't, it means this node might depend on another one and thus, we'll
+    # skip it for now.
+    for (i in seq_along(leaf_nodes)) {
+      if (are_leaves_unevaluated(getLeaves(tree, leaf_nodes[i]),
+                                 results,
+                                 tree@Nodes)) {
+        nodes_to_skip <- c(nodes_to_skip, leaf_nodes[i])
+      } else {
+        results[leaf_nodes[i]] <- 1
+
+        # Add the node to the final evaluation order. In cases where a node has
+        # multiple IDs, we're only interested in the non-leaf ones.
+        node_id <- get_id(tree@Nodes, leaf_nodes[i])
+        eval_order <- c(eval_order,
+                        Filter(function(id) !tree@Nodes[[id]]@IsLeaf, node_id))
+      }
+    }
+
+    # If we end up with the same nodes to skip in two consecutive iterations, it
+    # means we've hit a cycle or a dead-end and should break to avoid an
+    # infinite loop.
+    if (identical(nodes_to_skip, previous_nodes_to_skip)) {
+      break
+    }
+
+    previous_nodes_to_skip <- nodes_to_skip
+    leaf_nodes <- nodes_to_skip
+  }
+
+  return(eval_order)
+}
+
+
+#' Check if Any Leaves are Unevaluated
+#'
+#' Determines if any of the provided leaves are marked as unevaluated in the
+#' results. A leaf is considered unevaluated if its corresponding value in the
+#' results is -1.
+#'
+#' @param leaves A vector of leaves to check.
+#' @param results A named vector where names are node names and values indicate
+#'   whether the node has been evaluated.
+#' @param nodes A list of nodes containing node details.
+#'
+#' @return Logical. Returns `TRUE` if any leaves are unevaluated, and `FALSE`
+#'   otherwise.
+#'
+#' @keywords internal
+are_leaves_unevaluated <- function(leaves, results, nodes) {
+  any(sapply(leaves, function(leaf) results[nodes[[leaf]]@Name] == -1))
 }
 
 

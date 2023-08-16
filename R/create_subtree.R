@@ -157,7 +157,7 @@ createSubTree <- function(aTree, nodeName, avoidrep = F) {
                EvaluationOrder = numeric(0),
                Paths = Paths)
 
-    out@EvaluationOrder <- EvaluateOrder(out)
+    out@EvaluationOrder <- evaluate_order(out)
 
     return(out)
 }
