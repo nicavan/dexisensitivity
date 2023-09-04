@@ -4,7 +4,7 @@ test_that("Depth order return correct order for DEXiPM", {
                                      package = "dexiranalysis"))
     tree <- list_tree[[1]]
 
-    sousArbre <- createSubTree(tree, "Flora")
+    sousArbre <- create_sub_tree(tree, "Flora")
 
     # Test depth order on a subTree
     test_output <- depth_order(sousArbre)

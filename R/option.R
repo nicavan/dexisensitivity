@@ -65,7 +65,7 @@ EvaluateScenario <- function(aTree, option) {
     # If leaf aggregated leaves, deal first with the subtree
     if (aTree@IsLeafAggregated) {
         for(i in 1:length(aTree@EvaluationOrder)) {
-            subTree <- createSubTree(aTree,
+            subTree <- create_sub_tree(aTree,
                                      aTree@Attributes[aTree@EvaluationOrder[i]])
 
             #Get the proper option
