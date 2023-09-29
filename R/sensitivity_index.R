@@ -21,7 +21,7 @@ SI_DEXi <- function(aTree,
     names(SI) <- aTree@Aggregated
 
     for(node.name in aTree@Aggregated) {
-        sousArbre <- create_sub_tree(aTree, node.name, avoidrep = avoidrep)
+        sousArbre <- create_sub_tree(aTree, node.name, avoid_repetition = avoidrep)
         l <- matrix(nrow = sousArbre@NumberOfAttributes - 1,
                     ncol = 2)
 
