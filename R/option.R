@@ -1,35 +1,50 @@
-#' Generate a matrix of random options for a given tree
+#' Generate Random Options Matrix for a Given Tree
 #'
-#' The options are generated based on the `rangeScale` and `Proba` properties of
-#' the tree nodes. This is useful for creating random scenarios for simulation
-#' or analysis.
+#' Create random options based on the `RangeScale` and `Probability` attributes
+#' of tree nodes. This is useful for creating random scenarios for simulation or
+#' analysis.
 #'
-#' @param aTree An object of class Tree.
-#' @param nbOptions n integer representing the number of options to generate.
-#'   Default is 1.
-#' @param aSeed An integer seed to be used for random number generation. Default
-#'   is NULL, which means no seed is set.
+#' @param tree Tree object.
+#' @param num_options integer. Number of options to generate. Default is 1.
+#' @param seed integer. Seed for random number generation. Default is NULL (no
+#'   seed set).
 #'
-#' @return A matrix of size `aTree@NumberOfLeaves` x `nbOptions`, where each row
-#'   represents a leaf of the tree and each column represents a sampled option.
+#' @return A matrix where rows represent tree leaves and columns represent
+#'   sampled options.
 #'
 #' @export
-createOptions <- function(aTree, nbOptions = 1, aSeed = NULL) {
-    if (!is.null(aSeed)) {
-        set.seed(aSeed)
-    }
+create_options <- function(tree, num_options = 1, seed = NULL) {
 
-    option <- matrix(nrow = aTree@NumberOfLeaves, ncol = nbOptions)
-    rownames(option) <- aTree@Leaves
+  # Ensure inputs are of the expected type
+  if (!inherits(tree, "Tree")) {
+    stop("Expected 'tree' to be of class 'Tree'")
+  }
+  if (!is.numeric(num_options) || length(num_options) != 1) {
+    stop("'num_options' should be a single numeric value")
+  }
+  if (!is.null(seed) && (!is.numeric(seed) || length(seed) != 1)) {
+    stop("'seed' should be a single numeric value or NULL")
+  }
 
-    for(k in aTree@Leaves) {
-        option[k, ] <- sample(aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@RangeScale,
-                              size = nbOptions,
-                              prob = aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@Probability,
-                              replace = TRUE)
-    }
+  # Set seed if provided
+  if (!is.null(seed)) { set.seed(seed) }
 
-    return(option)
+  # Initialize the options matrix
+  options_matrix <- matrix(nrow = tree@NumberOfLeaves, ncol = num_options)
+  rownames(options_matrix) <- tree@Leaves
+
+  # Populate the matrix with random samples based on node attributes
+  for(leaf in tree@Leaves) {
+    node_id <- get_id(tree@Nodes, leaf)[1]
+    node <- tree@Nodes[[node_id]]
+
+    options_matrix[leaf, ] <- sample(node@RangeScale,
+                                    size = num_options,
+                                    prob = node@Probability,
+                                    replace = TRUE)
+  }
+
+  return(options_matrix)
 }
 
 

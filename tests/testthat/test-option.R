@@ -5,7 +5,7 @@ test_that("createOption : same output as JEB's scripts", {
     tree <- list_tree[[1]]
 
     # Unit test
-    test_output <- createOptions(tree, nbOptions = 3, aSeed = 42)
+    test_output <- create_options(tree, num_options = 3, seed = 42)
 
     expected_output <- readRDS(system.file("testdata",
                                            "TestcreateOptionsDEXiPM.rds",

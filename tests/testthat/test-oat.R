@@ -8,7 +8,7 @@ test_that("OAT : same output as JEB's scripts", {
     set.seed(42)
 
     ### - Unit test - ###
-    optionOAT <- createOptions(tree, 1)
+    optionOAT <- create_options(tree, 1)
 
     test_output <- OAT(tree, optionOAT)
     expected_output <- readRDS(system.file("testdata", "TestOATsmall.rds",
