@@ -1,4 +1,4 @@
-#' Generate Random Options Matrix for a Given Tree
+#' Generate random options matrix for a given rree
 #'
 #' Create random options based on the `RangeScale` and `Probability` attributes
 #' of tree nodes. This is useful for creating random scenarios for simulation or
@@ -48,16 +48,19 @@ create_options <- function(tree, num_options = 1, seed = NULL) {
 }
 
 
-#' Evaluate Node Values in a Tree
+#' Evaluate node values in a tree
 #'
 #' Calculate the values of the tree's nodes by progressing from the leaves
-#' (values provided by the option) up to the root. This bottom-up approach ensures
-#' that each node's value is determined considering the values of its child nodes.
+#' (values provided by the option) up to the root. This bottom-up approach
+#' ensures that each node's value is determined considering the values of its
+#' child nodes.
 #'
 #' @param tree A Tree object.
-#' @param option Matrix representation of a scenario, providing values for the tree's leaves.
+#' @param option Matrix representation of a scenario, providing values for the
+#'   tree's leaves.
 #'
-#' @return Numeric vector representing the evaluated values for all nodes, from leaves to root.
+#' @return Numeric vector representing the evaluated values for all nodes, from
+#'   leaves to root.
 #'
 #' @export
 evaluate_scenario <- function(tree, option) {
@@ -87,7 +90,7 @@ evaluate_scenario <- function(tree, option) {
 }
 
 
-#' Assign Values to the Leaves of the Tree
+#' Assign values to the leaves of the tree
 #'
 #' Ensure that there are no Leaf-Aggregated leaves in the given option.
 #'
@@ -105,7 +108,7 @@ assign_values_to_leaves <- function(results, option) {
 }
 
 
-#' Calculate Values for Leaf-Aggregated Scenarios
+#' Calculate values for leaf-aggregated scenarios
 #'
 #' Considers tree's evaluation order to derive aggregated values.
 #'
@@ -123,7 +126,7 @@ compute_aggregated_values <- function(tree, results) {
 }
 
 
-#' Compute Final Aggregated Values
+#' Compute final aggregated values
 #'
 #' Uses tree structure to finalize aggregation.
 #'
@@ -144,10 +147,10 @@ compute_final_aggregated_values <- function(tree, results) {
 }
 
 
-#' Compute Node Values from Aggregation Table
+#' Compute node values from aggregation table
 #'
-#' Takes a tree and pre-existing results to determine node values.
-#' Iteratively adjusts values based on the aggregation table and related children.
+#' Takes a tree and pre-existing results to determine node values. Iteratively
+#' adjusts values based on the aggregation table and related children.
 #'
 #' @param tree A Tree object.
 #' @param results Numeric vector with pre-existing values.
