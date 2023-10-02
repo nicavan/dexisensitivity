@@ -117,11 +117,11 @@ test_that("compareScenario : same output as JEB's scripts and par is reset", {
 
 
   # Unit test
-  plot_compareScenario <- compareScenario(DEXi, Scenario,
-                                          c("OVERALL SUSTAINABILITY",
-                                            "ECONOMIC",
-                                            "SOCIAL",
-                                            "ENVIRONMENTAL"))
+  plot_compareScenario <- compare_scenarios(DEXi, Scenario,
+                                            c("OVERALL SUSTAINABILITY",
+                                              "ECONOMIC",
+                                              "SOCIAL",
+                                              "ENVIRONMENTAL"))
 
   vdiffr::expect_doppelganger("compareScenario-plot", plot_compareScenario)
 

@@ -347,32 +347,36 @@ show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
 
 #' Compare scenarios using a radial plot
 #'
-#' Visualizes the comparison of values assigned to a list of nodes across
-#' multiple scenarios using a radial plot.
+#' Visualizes the comparison of node values across multiple scenarios
+#' with a radial plot. This representation provides an intuitive view of how
+#' different scenarios compare for the selected nodes.
 #'
-#' @param aTree A "Tree" object
-#' @param theScenarios A list of numeric vectors representing the evaluation
-#'   results of the scenarios
-#' @param listNodes A list of node names to include in the comparison
+#' @param tree Tree object.
+#' @param scenarios_results List of numeric vectors with scenario evaluation results.
+#' @param nodes_list List of node names to be compared in the plot.
+#'
+#' @return NULL
 #'
 #' @seealso \code{\link{evaluate_scenarios}}
 #'
-#' @return NULL
-#' @export
-#'
 #' @importFrom plotrix radial.plot
-compareScenario <- function(aTree,
-                            theScenarios,
-                            listNodes) {
-    oldpar <- par(ps = 6)
-    withr::defer(par(oldpar))
+#' @export
+compare_scenarios <- function(tree, scenarios_results, nodes_list) {
+  # Adjust the point size for better visualization in the radial plot
+  old_par <- par(ps = 6)
+  withr::defer(par(old_par))
 
-    plotrix::radial.plot(t(theScenarios[listNodes, ]),
-                         labels = abbreviate(names.arg = listNodes,
-                                             minlength = 6),
-                         rp.type = "p",
-                         start = pi/2,
-                         main = "Comparison of scenarios",
-                         line.col = "blue",
-                         lwd = 3)
+  # Find the maximum value across all scenarios and nodes for setting the radial limit
+  max_value <- max(scenarios_results[nodes_list, ], na.rm = TRUE)
+
+  # Utilizing the plotrix package to generate a radial plot
+  plotrix::radial.plot(t(scenarios_results[nodes_list, ]),
+                       labels = abbreviate(names.arg = nodes_list, minlength = 6),
+                       rp.type = "p",
+                       start = pi/2,
+                       radial.lim = c(0, max_value),  # Set the radial limits to start from 0
+                       main = "Comparison of scenarios",
+                       line.col = "blue",
+                       lwd = 3)
 }
+
