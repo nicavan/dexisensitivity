@@ -278,17 +278,15 @@ save_scenarios <- function(scenarios_results, file_name) {
 }
 
 
-#' Plot a bar chart of a single scenario
+#' Plot a bar chart for a single scenario
 #'
-#' Visualizes the values assigned to each attribute in a given scenario and
-#' marks the maximum possible value for each attribute using a bar chart.
+#' Visualizes the attribute values of a provided scenario. For each attribute,
+#' a bar is plotted, and the maximum possible value is highlighted.
 #'
-#' @param aScenario the scenario to graph
-#' @param aTree The associated "Tree" object
-#' @param isLabelY A logical value indicating whether to include labels on the Y
-#'   axis (Default: TRUE)
-#' @param isPar A logical value indicating whether to modify the graph's
-#'   parameters (Default: TRUE)
+#' @param scenario Scenario data to visualize.
+#' @param tree Associated Tree object providing attribute details.
+#' @param label_y Logical value indicating whether to label the Y-axis (default is TRUE).
+#' @param modify_par Logical value to decide if graphical parameters should be modified (default is TRUE).
 #'
 #' @return NULL
 #'
@@ -297,51 +295,53 @@ save_scenarios <- function(scenarios_results, file_name) {
 #' @importFrom withr defer
 #'
 #' @export
-showScenario <- function(aScenario,
-                         aTree,
-                         isLabelY = TRUE,
-                         isPar = T) {
-    if (isPar) {
-        oldpar <- par(mgp = c(7,1,0), oma = c(0,20,0,0), cex = 0.5)
-        withr::defer(par(oldpar))
-    }
+show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
 
-    # Determine the gray scale, we use grey.scale
-    myGreyValue <- lapply(1:7, function(x) {grDevices::gray.colors(x, 0, 1) })
-    myCol <- aTree@Leaves %>%
-        sapply(function(x) {
-            myGreyValue[[aTree@Nodes[[get_id(aTree@Nodes, x)[1]]]@RangeScale]][aScenario[x, ]]
-        }) %>%
-        unlist()
+  if (modify_par) {
+    old_par <- par(mgp = c(7,1,0), oma = c(0,20,0,0), cex = 0.5)
+    withr::defer(par(old_par))
+  }
 
-    theMax <- aTree@Attributes %>%
-        lapply(function(x) {
-            aTree@Nodes[[get_id(aTree@Nodes, x)[1]]]@RangeScale
-        }) %>%
-        unlist() %>%
-        matrix(ncol = 1)
+  # Define the gray scale based on the range scale of attributes
+  grey_values <- lapply(1:7, function(x) { grDevices::gray.colors(x, 0, 1) })
+  bar_colors <- tree@Leaves %>%
+    sapply(function(x) {
+      grey_values[[tree@Nodes[[get_id(tree@Nodes, x)[1]]]@RangeScale]][scenario[x, ]]
+    }) %>%
+    unlist()
 
-    mc <- graphics::barplot(as.vector(rev(aScenario)),
-                            xlim = c(0, max(theMax[]) + 0.5),
-                            ylab = "Indicators",
-                            xlab = "Mark",
-                            horiz = T,
-                            col = rev(myCol))
+  max_values <- tree@Attributes %>%
+    lapply(function(x) {
+      tree@Nodes[[get_id(tree@Nodes, x)[1]]]@RangeScale
+    }) %>%
+    unlist() %>%
+    matrix(ncol = 1)
 
-    if (isLabelY) {
-        graphics::axis(side = 2,
-                       at = mc,
-                       labels = rev(rownames(aScenario)),
-                       las = 2,
-                       cex = 0.5)
-    }
+  # Plot the bars
+  mc <- graphics::barplot(as.vector(rev(scenario)),
+                          xlim = c(0, max(max_values[]) + 0.5),
+                          ylab = "Indicators",
+                          xlab = "Mark",
+                          horiz = TRUE,
+                          col = rev(bar_colors))
 
-    graphics::points(as.vector(rev(theMax)),
-                     mc,
-                     col = "black",
-                     pch = "<")
+  # Add Y-axis labels if needed
+  if (label_y) {
+    graphics::axis(side = 2,
+                   at = mc,
+                   labels = rev(rownames(scenario)),
+                   las = 2,
+                   cex = 0.5)
+  }
 
-    graphics::abline(v = c(1:max(theMax)), untf = FALSE, lty = 3)
+  # Mark maximum values
+  graphics::points(as.vector(rev(max_values)),
+                   mc,
+                   col = "black",
+                   pch = "<")
+
+  # Add dashed vertical lines for reference
+  graphics::abline(v = c(1:max(max_values)), untf = FALSE, lty = 3)
 }
 
 
