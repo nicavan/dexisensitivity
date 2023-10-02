@@ -76,65 +76,60 @@ monte_carlo<- function(tree, num_runs, write_to_file = FALSE, verbose = TRUE) {
 
 #' Displays the Monte Carlo simulation results
 #'
-#' This function generates a bar chart of the frequency of each outcome in the
-#' Monte Carlo simulation results for a given node. It also writes the bar
-#' lengths to a .csv file.
+#' Visualizes the Monte Carlo simulation outcomes for a given node as a bar chart,
+#' depicting the frequency of each outcome. Additionally, the bar lengths are saved
+#' to a .csv file named "MC bar lengths.csv".
 #'
-#' @param Node Node of interest
-#' @param MC Monte Carlo simulation results
-#' @param nbRuns Number of Monte Carlo simulations performed
+#' @param node Node of interest.
+#' @param mc_results Monte Carlo simulation results matrix.
+#' @param num_runs Number of Monte Carlo simulations conducted.
 #'
-#' @return Returns the bar chart data
+#' @return A vector representing the bar chart data.
 #'
 #' @importFrom graphics legend text
 #'
 #' @export
-ShowMC <- function(Node,
-                   MC,
-                   nbRuns) {
+show_mc_results <- function(node, mc_results, num_runs) {
 
-  #  Node<-theTree@Nodes[[nodeName]]
-  typ <- "A"
-  if (Node@IsLeaf) { typ <- "L" }
+  node_type <- ifelse(node@IsLeaf, "L", "A")
 
-  bar <- MC[Node@Name, ] %>%
-    tapply(MC[Node@Name, ], sum)
+  bar_data <- mc_results[node@Name, ] %>% table()
 
-  if (length(bar) < Node@RangeScale) {
-    newbar <- array(data = 0,
-                    dim = Node@RangeScale,
-                    dimnames = list(c(seq(1:Node@RangeScale))))
-    for(i in 1:dim(bar)) {
-      newbar[names(bar)[i]] <- bar[i]
-    }
-    bar <- newbar
+  # Fill missing bars with zeros
+  if (length(bar_data) < node@RangeScale) {
+    bar_data <- bar_data + numeric(node@RangeScale)
   }
 
-  bar[] <- (bar[] / c(1:Node@RangeScale)) / nbRuns
-  mc <- barplot(bar,
-                main = paste(Node@Name, " [", typ, "]", sep = ""),
-                xlab = "Modalities",
-                ylab = "Frequencies",
-                ylim = c(0, (max(bar) + 0.1)),
-                las = 1, cex = 1, cex.main = 1, cex.lab = 1, cex.axis = 0.9)
-  #,names.arg=Node@ScaleLabel
+  # Normalize bar data
+  bar_data <- (bar_data) / num_runs
 
-  text(mc, bar,
-       format(round(bar, digits = 2)),
-       xpd = T, cex = 0.8, pos = 3)
+  # Plot the bar chart
+  bar_positions <- barplot(
+    bar_data,
+    main = paste(node@Name, " [", node_type, "]", sep = ""),
+    xlab = "Modalities",
+    ylab = "Frequencies",
+    ylim = c(0, max(bar_data) + 0.1),
+    las = 1, cex = 1, cex.main = 1, cex.lab = 1, cex.axis = 0.9
+  )
 
-  #  ref_points<-as.matrix(read.table(file="MC bar lengths_ref.csv",sep=",",row.names=1))
-  #  points(mc,as.vector(na.omit((ref_points))),pch=18,col=2)
+  text(bar_positions, bar_data,
+       format(round(bar_data, 2)),
+       xpd = TRUE, cex = 0.8, pos = 3)
 
-  legend("topright",
-         legend = paste(names(bar), abbreviate(Node@ScaleLabel)),
-         box.lty = 0, cex =0.8)
-  text(length(bar))
+  legend(
+    "topright",
+    legend = paste(names(bar_data), abbreviate(node@ScaleLabel)),
+    box.lty = 0, cex = 0.8
+  )
 
-  #write.table(bar,file="MC bar lengths.csv",sep=",",row.names=T,col.names=NA)
-  cat(row.names = Node@Name,
-      bar,
+  # Save the bar lengths to a .csv file
+  cat(row.names = node@Name,
+      bar_data,
       file = "MC bar lengths.csv",
-      sep = ",", fill = T, append = T)
-  return(bar)
+      sep = ",", fill = TRUE, append = TRUE)
+
+  return(bar_data)
 }
+
+
