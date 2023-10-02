@@ -191,22 +191,22 @@ compute_values_from_aggregation_table <- function(tree, results) {
 
 #' Evaluate multiple scenarios for a given tree
 #'
-#' Works as a wrapper for the `evaluate_scenario` function that allows evaluation
-#' of multiple scenarios at once. The scenarios are given as columns in the
-#' `options` matrix.
+#' Uses `evaluate_scenario` to evaluate multiple scenarios simultaneously.
+#' Each scenario is represented as a column in the `options_matrix`.
 #'
-#' @param aTree A "Tree" object
-#' @param options A matrix representing multiple options to evaluate
+#' @param tree Tree object for evaluation.
+#' @param options_matrix Matrix where each column represents a scenario.
 #'
-#' @return A list of numeric vectors representing the evaluation results of the
-#'   scenarios
+#' @return List of numeric vectors with evaluation results for each scenario.
 #'
 #' @export
-evaluate_scenarios <- function(aTree, options) {
-    1:dim(options)[2] %>%
-        sapply(function(x) {
-            evaluate_scenario(aTree, as.matrix(options[, x]))
-        })
+evaluate_scenarios <- function(tree, options_matrix) {
+  # Using sapply to loop over each column in options_matrix.
+  # Each column is treated as a scenario and passed to evaluate_scenario.
+  1:dim(options_matrix)[2] %>%
+    sapply(function(x) {
+      evaluate_scenario(tree, as.matrix(options_matrix[, x]))
+    })
 }
 
 

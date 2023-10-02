@@ -4,19 +4,17 @@
 \alias{evaluate_scenarios}
 \title{Evaluate multiple scenarios for a given tree}
 \usage{
-evaluate_scenarios(aTree, options)
+evaluate_scenarios(tree, options_matrix)
 }
 \arguments{
-\item{aTree}{A "Tree" object}
+\item{tree}{Tree object for evaluation.}
 
-\item{options}{A matrix representing multiple options to evaluate}
+\item{options_matrix}{Matrix where each column represents a scenario.}
 }
 \value{
-A list of numeric vectors representing the evaluation results of the
-scenarios
+List of numeric vectors with evaluation results for each scenario.
 }
 \description{
-Works as a wrapper for the \code{evaluate_scenario} function that allows evaluation
-of multiple scenarios at once. The scenarios are given as columns in the
-\code{options} matrix.
+Uses \code{evaluate_scenario} to evaluate multiple scenarios simultaneously.
+Each scenario is represented as a column in the \code{options_matrix}.
 }
