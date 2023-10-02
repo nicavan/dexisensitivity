@@ -259,22 +259,23 @@ load_options <- function(file_name) {
 #'
 #' Stores the results of scenario evaluations into a file for later analysis.
 #'
-#' @param theScenarios A list of numeric vectors representing the evaluation
-#'   results of the scenarios
-#' @param file The name of the file to save the scenarios
+#' @param scenarios_results List of numeric vectors with scenario evaluation
+#'   results.
+#' @param file_name Desired file name for saving the scenario results.
 #'
 #' @return NULL
 #'
 #' @export
-saveScenarios <- function(theScenarios,
-                          file) {
-    utils::write.table(theScenarios,
-                       file = file,
-                       sep = "\t",
-                       row.names = T,
-                       col.names = NA)
+save_scenarios <- function(scenarios_results, file_name) {
+  # Using the utils package to write the scenario results into a file. The
+  # choice of tab-separated format ensures readability and compatibility across
+  # many applications.
+  utils::write.table(scenarios_results,
+                     file = file_name,
+                     sep = "\t",
+                     row.names = TRUE,
+                     col.names = NA)
 }
-
 
 
 #' Plot a bar chart of a single scenario
