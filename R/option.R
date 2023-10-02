@@ -234,21 +234,24 @@ save_options <- function(options_table, file_name) {
 }
 
 
-#' Load a table of options from a file
+#' Load options table from a file
 #'
-#' Retrieves previously saved options from a file for further analysis or
-#' processing.
+#' Retrieves a matrix of options saved in a file. This matrix can then be used
+#' for further analysis or processing.
 #'
-#' @param filename The name of the file to load the options table from
+#' @param file_name File from which to load the options matrix.
 #'
-#' @return A matrix representing the loaded options table
+#' @return Matrix of the loaded options.
 #'
 #' @export
-loadOptions <- function(filename) {
-    return(as.matrix(utils::read.table(file = filename,
-                                       header = T,
-                                       sep = "\t",
-                                       row.names = 1)))
+load_options <- function(file_name) {
+  # Using utils package to read the table from the file.
+  # The choice of tab-separated format matches our save_options function
+  # to ensure consistent data interchange.
+  as.matrix(utils::read.table(file = file_name,
+                              header = TRUE,
+                              sep = "\t",
+                              row.names = 1))
 }
 
 
