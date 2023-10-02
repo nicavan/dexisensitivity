@@ -210,26 +210,28 @@ evaluate_scenarios <- function(aTree, options) {
 }
 
 
-#' Save a table of options to a file
+#' Save options table
 #'
-#' Stores a table of options into a file for later use or analysis.
+#' Stores a matrix of options into a file, primarily for archival or subsequent
+#' analysis.
 #'
-#' @param anOptionsTable A matrix representing options
-#' @param aFileName The name of the file to save the options table
+#' @param options_table Matrix containing option values.
+#' @param file_name Desired file name for saving the options.
 #'
 #' @return NULL
 #'
 #' @export
-saveOptions <- function(anOptionsTable,
-                        aFileName) {
-    utils::write.table(anOptionsTable,
-                       file = aFileName,
-                       sep = "\t",
-                       row.names = T,
-                       col.names = NA,
-                       quote = FALSE)
+save_options <- function(options_table, file_name) {
+  # Utilizing utils package to write the options table into a file The choice of
+  # tab-separated format ensures readability and compatibility with many
+  # applications
+  utils::write.table(options_table,
+                     file = file_name,
+                     sep = "\t",
+                     row.names = TRUE,
+                     col.names = NA,
+                     quote = FALSE)
 }
-
 
 
 #' Load a table of options from a file

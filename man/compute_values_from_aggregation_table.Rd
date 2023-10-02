@@ -2,7 +2,7 @@
 % Please edit documentation in R/option.R
 \name{compute_values_from_aggregation_table}
 \alias{compute_values_from_aggregation_table}
-\title{Compute Node Values from Aggregation Table}
+\title{Compute node values from aggregation table}
 \usage{
 compute_values_from_aggregation_table(tree, results)
 }
@@ -15,6 +15,6 @@ compute_values_from_aggregation_table(tree, results)
 Numeric vector with updated node values.
 }
 \description{
-Takes a tree and pre-existing results to determine node values.
-Iteratively adjusts values based on the aggregation table and related children.
+Takes a tree and pre-existing results to determine node values. Iteratively
+adjusts values based on the aggregation table and related children.
 }

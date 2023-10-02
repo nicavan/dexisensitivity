@@ -2,20 +2,23 @@
 % Please edit documentation in R/option.R
 \name{evaluate_scenario}
 \alias{evaluate_scenario}
-\title{Evaluate Node Values in a Tree}
+\title{Evaluate node values in a tree}
 \usage{
 evaluate_scenario(tree, option)
 }
 \arguments{
 \item{tree}{A Tree object.}
 
-\item{option}{Matrix representation of a scenario, providing values for the tree's leaves.}
+\item{option}{Matrix representation of a scenario, providing values for the
+tree's leaves.}
 }
 \value{
-Numeric vector representing the evaluated values for all nodes, from leaves to root.
+Numeric vector representing the evaluated values for all nodes, from
+leaves to root.
 }
 \description{
 Calculate the values of the tree's nodes by progressing from the leaves
-(values provided by the option) up to the root. This bottom-up approach ensures
-that each node's value is determined considering the values of its child nodes.
+(values provided by the option) up to the root. This bottom-up approach
+ensures that each node's value is determined considering the values of its
+child nodes.
 }

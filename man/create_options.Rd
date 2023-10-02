@@ -2,7 +2,7 @@
 % Please edit documentation in R/option.R
 \name{create_options}
 \alias{create_options}
-\title{Generate Random Options Matrix for a Given Tree}
+\title{Generate random options matrix for a given rree}
 \usage{
 create_options(tree, num_options = 1, seed = NULL)
 }

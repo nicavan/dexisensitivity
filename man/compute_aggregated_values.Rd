@@ -2,7 +2,7 @@
 % Please edit documentation in R/option.R
 \name{compute_aggregated_values}
 \alias{compute_aggregated_values}
-\title{Calculate Values for Leaf-Aggregated Scenarios}
+\title{Calculate values for leaf-aggregated scenarios}
 \usage{
 compute_aggregated_values(tree, results)
 }

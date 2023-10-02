@@ -2,7 +2,7 @@
 % Please edit documentation in R/option.R
 \name{assign_values_to_leaves}
 \alias{assign_values_to_leaves}
-\title{Assign Values to the Leaves of the Tree}
+\title{Assign values to the leaves of the tree}
 \usage{
 assign_values_to_leaves(results, option)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/option.R
 \name{compute_final_aggregated_values}
 \alias{compute_final_aggregated_values}
-\title{Compute Final Aggregated Values}
+\title{Compute final aggregated values}
 \usage{
 compute_final_aggregated_values(tree, results)
 }

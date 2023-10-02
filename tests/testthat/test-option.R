@@ -65,7 +65,7 @@ test_that("Saved and loaded option are the same when option have rownames", {
 
     # Unit test
     colnames(options) <- c("A", "B", "C")
-    saveOptions(options, "C:/Users/rallart/E-DISC/option.csv")
+    save_options(options, "C:/Users/rallart/E-DISC/option.csv")
 
     test_output <- loadOptions("C:/Users/rallart/E-DISC/option.csv")
     expected_output <- options
