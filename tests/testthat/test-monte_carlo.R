@@ -8,8 +8,8 @@ test_that("MC : same output as JEB's scripts", {
     set.seed(42)
 
     ### - Unit test - ###
-    test_output <- MonteCarlo(tree, 1000,
-                              verbose = F)
+    test_output <- monte_carlo(tree, 1000,
+                               verbose = F)
     expected_output <- readRDS(system.file("testdata", "TestMCsmall.rds",
                                            package = "dexiranalysis"))
 

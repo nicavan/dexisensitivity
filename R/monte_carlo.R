@@ -32,55 +32,44 @@ estimate_mc_time <- function(tree, num_runs, num_test = 50) {
 #' Performs a Monte Carlo simulation
 #'
 #' Conducts a Monte Carlo simulation on a given decision tree with a specified
-#' number of runs. If `isFile` is set to TRUE, a .csv file named "MC
-#' options.csv" is saved, which contains all the random options selected for the
-#' Monte Carlo analysis.
+#' number of runs. If `write_to_file` is set to TRUE, a .csv file named "MC
+#' options.csv" is saved, containing the random options selected for the Monte Carlo analysis.
 #'
-#' @param aTree Decision tree to run the simulation on
-#' @param nbRuns Number of Monte Carlo simulations to perform
-#' @param isFile Logical value to decide whether to write a file or not
-#' @param verbose Logical value for printing additional information
+#' @param tree Decision tree for the simulation.
+#' @param num_runs Number of Monte Carlo simulations to conduct.
+#' @param write_to_file Logical determining if results should be saved to a file.
+#' @param verbose Logical determining if additional information should be printed.
 #'
-#' @return Returns a matrix representing the Monte Carlo simulations
+#' @return A matrix representing the Monte Carlo simulation results.
 #'
 #' @export
-MonteCarlo <- function(aTree,
-                       nbRuns,
-                       isFile = F,
-                       verbose = T) {
+monte_carlo<- function(tree, num_runs, write_to_file = FALSE, verbose = TRUE) {
+
   if (verbose) {
-    cat("\n Time in: ", date())
+    cat("\n Starting simulation at: ", date())
   }
 
-  MC <- matrix(ncol = nbRuns,
-               nrow = aTree@NumberOfAttributes,
-               dimnames = list(c(aTree@Attributes), c(seq(1:nbRuns))))
-  option <- matrix(nrow = aTree@NumberOfLeaves,
-                   ncol = nbRuns)
-  rownames(option) <- aTree@Leaves
+  # Use create_options function to generate the options for the simulation
+  options_matrix <- create_options(tree, num_options = num_runs)
 
-  for(k in aTree@Leaves) {
-    option[k, ] <- aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@RangeScale %>%
-      sample(size = nbRuns,
-             prob = aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@Probability,
-             replace = TRUE)
-  }
+  # Perform the Monte Carlo simulation
+  simulation_results <- 1:num_runs %>%
+    sapply(function(x) {
+      evaluate_scenario(tree, as.matrix(options_matrix[, x]))
+    })
 
-  MC <- 1:nbRuns %>%
-    sapply(function(x) {evaluate_scenario(aTree,
-                                          as.matrix(option[, x]))})
-
-  if (isFile) {
-    # Write a file that contain all the random options selected for the MC analysis
-    write.table(option,
+  # Save options to a file if required
+  if (write_to_file) {
+    write.table(options_matrix,
                 file = "MC options.csv",
-                sep = ",", row.names = T, col.names = NA)
+                sep = ",", row.names = TRUE, col.names = NA)
   }
 
   if (verbose) {
-    cat("\n Time out: ",date())
+    cat("\n Simulation finished at: ", date())
   }
-  return(MC)
+
+  return(simulation_results)
 }
 
 
