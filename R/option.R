@@ -48,109 +48,147 @@ create_options <- function(tree, num_options = 1, seed = NULL) {
 }
 
 
-#' Evaluates a single scenario for a given tree
+#' Evaluate Node Values in a Tree
 #'
-#' Evaluates a single scenario by assigning values to the leaves of the tree
-#' according to the given option and calculates the values of the aggregated
-#' nodes.
+#' Calculate the values of the tree's nodes by progressing from the leaves
+#' (values provided by the option) up to the root. This bottom-up approach ensures
+#' that each node's value is determined considering the values of its child nodes.
 #'
-#' @param aTree A "Tree" object
-#' @param option A matrix representing a single option to evaluate
+#' @param tree A Tree object.
+#' @param option Matrix representation of a scenario, providing values for the tree's leaves.
 #'
-#' @return A numeric vector representing the evaluation results of the scenario
+#' @return Numeric vector representing the evaluated values for all nodes, from leaves to root.
 #'
 #' @export
-EvaluateScenario <- function(aTree, option) {
+evaluate_scenario <- function(tree, option) {
 
-    # Create the return array
-    if (!is.matrix(option)) {
-        stop(cat("\nl'option n'est pas une matrice"), call)
-    }
+  # Ensure the option is matrix-formatted
+  if (!is.matrix(option)) {
+    stop("The option must be a matrix.")
+  }
 
-    results <- numeric(aTree@NumberOfAttributes)
-    names(results) <- aTree@Attributes
-    results[] <- -1
+  # Set a starting state for results
+  results <- numeric(tree@NumberOfAttributes)
+  names(results) <- tree@Attributes
+  results[] <- -1
 
-    # Give value for all leaves --- Deal with multiple leaves.
-    # Leaf-Aggretated leaves should not be in option
-    for(i in 1:length(option)) {
-        results[which(names(results) == dimnames(option)[[1]][i])] <- option[i]
-    }
+  # Assign values to the leaves of the tree based on the provided option
+  results <- assign_values_to_leaves(results, option)
 
-    # If leaf aggregated leaves, deal first with the subtree
-    if (aTree@IsLeafAggregated) {
-        for(i in 1:length(aTree@EvaluationOrder)) {
-            subTree <- create_sub_tree(aTree,
-                                     aTree@Attributes[aTree@EvaluationOrder[i]])
+  # If the tree has leaf-aggregated scenarios, compute the aggregated values
+  if (tree@IsLeafAggregated) {
+    results <- compute_aggregated_values(tree, results)
+  }
 
-            #Get the proper option
-            subOption <- as.matrix(results[c(subTree@Leaves)])
-            for(j in rev(subTree@Aggregated)) {
+  # Compute the final aggregated values based on the tree structure
+  results <- compute_final_aggregated_values(tree, results)
 
-                # Compute the value thanks to the attribution table
-                if(results[j] < 0) {
-                    id <- get_id(subTree@Nodes, j)
-
-                    if(length(id) > 1) {
-                        id <- id %>%
-                            sapply(function(x) {
-                                if (!subTree@Nodes[[x]]@IsLeaf) {x}
-                            }) %>%
-                            unlist()
-                    }
-
-                    # It may happen that the tree structure is repeated !!!!
-                    for(ii in id) {
-                        nbc <- length(subTree@Nodes[[ii]]@Children)
-                        value <- subTree@Nodes[[ii]]@Aggregation
-
-                        for(k in 1:nbc) {
-                            value <- value[value[, k] == results[subTree@Nodes[[ii]]@Children[k]], ]
-                        }
-
-                        results[j]<-value[nbc+1]
-                    }
-                }
-            }
-        }
-    }
-
-    # Thanks to the hierchical structure of the tree... use rev()
-    for(k in aTree@Attributes) {
-        results[get_id(aTree@Nodes, k)] <- max(results[get_id(aTree@Nodes, k)])
-    }
-
-    for(i in rev(aTree@Aggregated)) {
-        #Compute the value thanks to the attribution table
-        if (results[i] < 0) {
-            id <- get_id(aTree@Nodes, i)
-
-            if(length(id) > 1) {
-                id <- id %>%
-                    sapply(function(x) {if (!aTree@Nodes[[x]]@IsLeaf) {x}})
-            }
-
-            nbc <- length(aTree@Nodes[[id]]@Children)
-            value <- aTree@Nodes[[id]]@Aggregation
-
-            for(j in 1:nbc) {
-                value <- value[value[, j] == results[aTree@Nodes[[id]]@Children[j]], ]
-            }
-
-            results[i] <- value[nbc + 1]
-        }
-    }
-
-    for(k in aTree@Attributes) {
-        results[get_id(aTree@Nodes, k)] <- max(results[get_id(aTree@Nodes, k)])
-    }
-
-    return(results)
+  return(results)
 }
+
+
+#' Assign Values to the Leaves of the Tree
+#'
+#' Ensure that there are no Leaf-Aggregated leaves in the given option.
+#'
+#' @param results Numeric vector placeholder for results.
+#' @param option A matrix representing a single option/scenario to evaluate.
+#'
+#' @return Numeric vector with leaf-populated values.
+assign_values_to_leaves <- function(results, option) {
+  # Assign values from the option matrix to the corresponding leaf in results
+  for(i in 1:length(option)) {
+    leaf_name <- dimnames(option)[[1]][i]
+    results[which(names(results) == leaf_name)] <- option[i]
+  }
+  return(results)
+}
+
+
+#' Calculate Values for Leaf-Aggregated Scenarios
+#'
+#' Considers tree's evaluation order to derive aggregated values.
+#'
+#' @param tree A Tree object.
+#' @param results Numeric vector placeholder for results.
+#'
+#' @return Numeric vector with aggregated values.
+compute_aggregated_values <- function(tree, results) {
+  # Use the tree's order for aggregating results
+  for(i in 1:length(tree@EvaluationOrder)) {
+    sub_tree <- create_sub_tree(tree, tree@Attributes[tree@EvaluationOrder[i]])
+    results <- compute_values_from_aggregation_table(sub_tree, results)
+  }
+  return(results)
+}
+
+
+#' Compute Final Aggregated Values
+#'
+#' Uses tree structure to finalize aggregation.
+#'
+#' @param tree Tree object.
+#' @param results Numeric vector placeholder for results.
+#'
+#' @return Numeric vector with final values.
+compute_final_aggregated_values <- function(tree, results) {
+  results <- compute_values_from_aggregation_table(tree, results)
+
+  # Propagate values through the main tree
+  for(k in tree@Attributes) {
+    gotten_id <- get_id(tree@Nodes, k)
+    results[gotten_id] <- max(results[gotten_id])
+  }
+
+  return(results)
+}
+
+
+#' Compute Node Values from Aggregation Table
+#'
+#' Takes a tree and pre-existing results to determine node values.
+#' Iteratively adjusts values based on the aggregation table and related children.
+#'
+#' @param tree A Tree object.
+#' @param results Numeric vector with pre-existing values.
+#'
+#' @return Numeric vector with updated node values.
+compute_values_from_aggregation_table <- function(tree, results) {
+  for(agg_nodes_rev in rev(tree@Aggregated)) {
+    if (results[agg_nodes_rev] < 0) {
+      node_ids <- get_id(tree@Nodes, agg_nodes_rev)
+
+      # Address non-leaf nodes
+      if (length(node_ids) > 1) {
+        node_ids <- node_ids %>%
+          sapply(function(x) {
+            if (!tree@Nodes[[x]]@IsLeaf) {x}
+          }) %>%
+          unlist()
+      }
+
+      for(node_id in node_ids) {
+        num_children <- length(tree@Nodes[[node_id]]@Children)
+        aggregation_table <- tree@Nodes[[node_id]]@Aggregation
+
+        # Adjust values based on child nodes and aggregation table
+        for(k in 1:num_children) {
+          child_value <- results[tree@Nodes[[node_id]]@Children[k]]
+          aggregation_table <- aggregation_table[aggregation_table[, k] == child_value, ]
+        }
+
+        results[agg_nodes_rev] <- aggregation_table[num_children + 1]
+      }
+    }
+  }
+
+  return(results)
+}
+
 
 #' Evaluate multiple scenarios for a given tree
 #'
-#' Works as a wrapper for the `EvaluateScenario` function that allows evaluation
+#' Works as a wrapper for the `evaluate_scenario` function that allows evaluation
 #' of multiple scenarios at once. The scenarios are given as columns in the
 #' `options` matrix.
 #'
@@ -161,10 +199,10 @@ EvaluateScenario <- function(aTree, option) {
 #'   scenarios
 #'
 #' @export
-EvaluateScenarios <- function(aTree, options) {
+evaluate_scenarios <- function(aTree, options) {
     1:dim(options)[2] %>%
         sapply(function(x) {
-            EvaluateScenario(aTree, as.matrix(options[, x]))
+            evaluate_scenario(aTree, as.matrix(options[, x]))
         })
 }
 
@@ -245,7 +283,7 @@ saveScenarios <- function(theScenarios,
 #'
 #' @return NULL
 #'
-#' @seealso \code{\link{EvaluateScenario}}
+#' @seealso \code{\link{evaluate_scenario}}
 #'
 #' @importFrom withr defer
 #'
@@ -308,7 +346,7 @@ showScenario <- function(aScenario,
 #'   results of the scenarios
 #' @param listNodes A list of node names to include in the comparison
 #'
-#' @seealso \code{\link{EvaluateScenarios}}
+#' @seealso \code{\link{evaluate_scenarios}}
 #'
 #' @return NULL
 #' @export

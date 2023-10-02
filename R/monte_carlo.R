@@ -27,7 +27,7 @@ infoMC <- function(aTree,
     }
 
     dummy <- sapply(1:iTest,
-                    function(x) {EvaluateScenario(aTree,
+                    function(x) {evaluate_scenario(aTree,
                                                   as.matrix(option[, x]))})
     end_time <- Sys.time()
     cat("\n Approximative required time to run MC with ",
@@ -75,7 +75,7 @@ MonteCarlo <- function(aTree,
     }
 
     MC <- 1:nbRuns %>%
-        sapply(function(x) {EvaluateScenario(aTree,
+        sapply(function(x) {evaluate_scenario(aTree,
                                              as.matrix(option[, x]))})
 
     if (isFile) {

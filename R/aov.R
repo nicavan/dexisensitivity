@@ -32,7 +32,7 @@ infoAOV <- function(aTree, iTest = 50) {
 
     dummy <- sapply(1:iTest,
                     function(x) {
-                        EvaluateScenario(aTree, as.matrix(option[, x]))
+                        evaluate_scenario(aTree, as.matrix(option[, x]))
                     })
     end_time <- Sys.time()
     cat("\n", aTree@NumberOfLeaves, " factors",
@@ -451,7 +451,7 @@ AOV_DEXi <- function(aTree) {
     #Perform the simulation
     myResults <- sapply(1:dim(factorialPlan)[2],
                         function(x) {
-                            EvaluateScenario(aTree,
+                            evaluate_scenario(aTree,
                                              as.matrix(factorialPlan[, x]))
                         })
     myResults <- myResults[c(aTree@RootName, aTree@Leaves), ]

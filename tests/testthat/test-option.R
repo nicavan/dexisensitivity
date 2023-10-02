@@ -24,7 +24,7 @@ test_that("eval 1 option : same output as JEB's scripts", {
                                    package = "dexiranalysis"))
 
     # Unit test
-    test_output <- EvaluateScenario(tree, as.matrix(options[, 1]))
+    test_output <- evaluate_scenario(tree, as.matrix(options[, 1]))
 
     expected_output <- readRDS(system.file("testdata", "DEXiPMeval1option.rds",
                                            package = "dexiranalysis"))
@@ -42,7 +42,7 @@ test_that("eval all option : same output as JEB's scripts", {
                                    package = "dexiranalysis"))
 
     # Unit test
-    test_output <- EvaluateScenarios(tree, options)
+    test_output <- evaluate_scenarios(tree, options)
 
     expected_output_a <- readRDS(system.file("testdata",
                                              "DEXiPMevalalloptions.rds",
@@ -50,7 +50,7 @@ test_that("eval all option : same output as JEB's scripts", {
 
     expected_output_b <- 1:dim(options)[2] %>%
         sapply(function(x) {
-            EvaluateScenario(tree, as.matrix(options[, x]))
+            evaluate_scenario(tree, as.matrix(options[, x]))
         })
 
     expect_equal(test_output, expected_output_a)

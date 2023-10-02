@@ -22,5 +22,5 @@ Visualizes the values assigned to each attribute in a given scenario and
 marks the maximum possible value for each attribute using a bar chart.
 }
 \seealso{
-\code{\link{EvaluateScenario}}
+\code{\link{evaluate_scenario}}
 }

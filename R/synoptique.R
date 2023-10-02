@@ -49,7 +49,7 @@ create_synoptique <- function(Tree, option, depth = NA) {
     unlist()
 
   # columns used for colors
-  df$eval <- EvaluateScenario(Tree, option)
+  df$eval <- evaluate_scenario(Tree, option)
   df$rangecol <- lapply(df$attribut, function(x) {
     Tree@Nodes[[which(Tree@Attributes == x)]]@RangeScale
   }) %>%

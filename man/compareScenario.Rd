@@ -19,5 +19,5 @@ Visualizes the comparison of values assigned to a list of nodes across
 multiple scenarios using a radial plot.
 }
 \seealso{
-\code{\link{EvaluateScenarios}}
+\code{\link{evaluate_scenarios}}
 }

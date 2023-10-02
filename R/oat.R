@@ -19,7 +19,7 @@ OAT <- function(aTree,
     results <- matrix(nrow = aTree@NumberOfAttributes,
                       ncol = aTree@NumberOfLeaves*2 + 1)
     rownames(results) <- aTree@Attributes
-    results[, 1] <- EvaluateScenario(aTree, as.matrix(option))
+    results[, 1] <- evaluate_scenario(aTree, as.matrix(option))
     j <- 2
     for(i in aTree@Leaves) {
         #Option +
@@ -28,7 +28,7 @@ OAT <- function(aTree,
         if (newOption[i, ] > aTree@Nodes[[get_id(aTree@Nodes, i)[1]]]@RangeScale) {
             results[, j]<- -1
         } else {
-            results[, j] <- EvaluateScenario(aTree, as.matrix(newOption))
+            results[, j] <- evaluate_scenario(aTree, as.matrix(newOption))
         }
 
         #Option -
@@ -37,7 +37,7 @@ OAT <- function(aTree,
         if(newOption[i, ] == 0) {
             results[, j + 1] <- -1
         } else {
-            results[, j + 1] <- EvaluateScenario(aTree, as.matrix(newOption))
+            results[, j + 1] <- evaluate_scenario(aTree, as.matrix(newOption))
         }
 
         j <- j + 2
