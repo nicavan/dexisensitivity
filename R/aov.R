@@ -1,43 +1,47 @@
 #' Estimates the execution time for factorial simulations
 #'
-#' Performs a time estimation for a specified number of factorial simulations.
-#' The estimation is based on the time taken to execute a smaller number of
-#' simulations specified by `iTest`.
+#' Estimates the execution time for a specified number of factorial simulations
+#' based on the time taken to run a subset of simulations.
 #'
-#' @param aTree Decision tree to run simulations on.
-#' @param iTest Number of simulations to be used for time estimation, defaults
-#'   to 50.
+#' @param tree The Tree object on which simulations are run.
+#' @param test_runs Number of simulations to be used for time estimation. Default is 50.
 #'
-#' @return No explicit return. Prints out the estimated execution time.
+#' @return No explicit return. Prints the estimated execution time.
 #'
 #' @export
-infoAOV <- function(aTree, iTest = 50) {
-    # Compute the size of the factorial plan and the time requested to run it
-    preprod <- aTree@Nodes %>%
-        sapply(function(x) {if (x@IsLeaf) {x@RangeScale}}) %>%
-        unlist() %>%
-        cumprod()
-    nbRuns <- preprod[aTree@NumberOfLeaves]
+estimate_aov_time <- function(tree, test_runs = 50) {
 
-    start_time <- Sys.time()
-    option <- matrix(nrow = aTree@NumberOfLeaves,
-                     ncol = iTest)
-    rownames(option) <- aTree@Leaves
-    for(k in aTree@Leaves) {
-        option[k,] <- sample(aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@RangeScale,
-                             size = iTest,
-                             prob = aTree@Nodes[[get_id(aTree@Nodes, k)[1]]]@Probability,
-                             replace = TRUE)
-    }
+  # Compute the total number of simulations based on tree leaves
+  total_simulations <- tree@Nodes %>%
+    sapply(function(node) {
+      if (node@IsLeaf) node@RangeScale
+    }) %>%
+    unlist() %>%
+    prod()
 
-    dummy <- sapply(1:iTest,
-                    function(x) {
-                        evaluate_scenario(aTree, as.matrix(option[, x]))
-                    })
-    end_time <- Sys.time()
-    cat("\n", aTree@NumberOfLeaves, " factors",
-        "\n Approximative required time to run the ", nbRuns, " modalities",
-        (end_time-start_time)*nbRuns/iTest/60, " minutes")
+  # Generate sample scenarios
+  sample_scenarios <- matrix(nrow = tree@NumberOfLeaves,
+                             ncol = test_runs)
+  rownames(sample_scenarios) <- tree@Leaves
+
+  sample_scenarios[] <- sapply(tree@Leaves, function(leaf) {
+    node <- tree@Nodes[[get_id(tree@Nodes, leaf)[1]]]
+    sample(node@RangeScale, size = test_runs, prob = node@Probability, replace = TRUE)
+  })
+
+  # Measure time taken for the subset of simulations
+  start_time <- Sys.time()
+  apply(sample_scenarios, 2, function(scenario) {
+    evaluate_scenario(tree, as.matrix(scenario))
+  })
+  end_time <- Sys.time()
+  elapsed_time <- difftime(end_time, start_time, units = "mins")
+
+  # Estimate total execution time
+  estimated_time_minutes <- elapsed_time * total_simulations / test_runs
+  cat("\n", tree@NumberOfLeaves, " factors",
+      "\n Approximate time to run the ", total_simulations, " modalities: ",
+      estimated_time_minutes, " minutes")
 }
 
 
