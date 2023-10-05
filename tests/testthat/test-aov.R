@@ -8,7 +8,7 @@ test_that("AOV : same output as JEB's scripts", {
     set.seed(42)
 
     ### - Unit test - ###
-    test_output <- AOV_DEXi(tree)
+    test_output <- aov_tree(tree)
     expected_output <- readRDS(system.file("testdata", "TestAOVsmall.rds",
                                            package = "dexiranalysis"))
 

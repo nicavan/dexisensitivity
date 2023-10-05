@@ -9,7 +9,8 @@ estimate_aov_time(tree, test_runs = 50)
 \arguments{
 \item{tree}{The Tree object on which simulations are run.}
 
-\item{test_runs}{Number of simulations to be used for time estimation. Default is 50.}
+\item{test_runs}{Number of simulations to be used for time estimation.
+Default is 50.}
 }
 \value{
 No explicit return. Prints the estimated execution time.

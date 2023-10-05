@@ -13,7 +13,7 @@
 #'   regarding the structure of the decision model.
 #'
 #' @import XML
-#' @import AlgDesign
+#' @importFrom AlgDesign gen.factorial
 #'
 #' @seealso
 #' \code{\link{process_aggregated_leaf}},

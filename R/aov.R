@@ -4,7 +4,8 @@
 #' based on the time taken to run a subset of simulations.
 #'
 #' @param tree The Tree object on which simulations are run.
-#' @param test_runs Number of simulations to be used for time estimation. Default is 50.
+#' @param test_runs Number of simulations to be used for time estimation.
+#'   Default is 50.
 #'
 #' @return No explicit return. Prints the estimated execution time.
 #'
@@ -26,7 +27,8 @@ estimate_aov_time <- function(tree, test_runs = 50) {
 
   sample_scenarios[] <- sapply(tree@Leaves, function(leaf) {
     node <- tree@Nodes[[get_id(tree@Nodes, leaf)[1]]]
-    sample(node@RangeScale, size = test_runs, prob = node@Probability, replace = TRUE)
+    sample(node@RangeScale, size = test_runs,
+           prob = node@Probability, replace = TRUE)
   })
 
   # Measure time taken for the subset of simulations
@@ -45,18 +47,115 @@ estimate_aov_time <- function(tree, test_runs = 50) {
 }
 
 
+#' Calculate AOV Results
+#'
+#' Provides the results of an Analysis of Variance (AOV) based on a given tree.
+#'
+#' @param tree Tree object for analysis.
+#'
+#' @importFrom stats aov as.formula
+#'
+#' @return A list containing AOV results.
+#'
+#' @export
+aov_tree <- function(tree) {
+  # Create the factorial plan
+  factorial_plan <- create_factorial_plan(tree)
+
+  # Simulate scenarios based on the plan
+  results <- sapply(1:dim(factorial_plan)[2], function(x) {
+    evaluate_scenario(tree, as.matrix(factorial_plan[, x]))
+  })
+  results <- results[c(tree@RootName, tree@Leaves), ]
+
+  # Convert results matrix to data frame and factorize
+  results_df <- as.data.frame(t(results))
+  for (i in 1:tree@NumberOfLeaves) {
+    results_df[[i+1]] <- factor(results_df[[i+1]])
+  }
+
+  # Abbreviate column names
+  colnames(results_df) <- abbreviate(colnames(results_df),
+                                     minlength = 4, dot = FALSE)
+
+  # Generate AOV formulas
+  formula_1 <- generate_aov_formula(results_df, order = 1)
+  formula_2 <- generate_aov_formula(results_df, order = 2)
+
+  # AOV for first-order effects
+  aov_results_1 <- aov(formula_1, data = results_df)
+  output <- list()
+  output[[1]] <- round(sensib.total(aov_results_1), 3)
+  output[[2]] <- round(sensib.effet(aov_results_1), 3)
+
+  # AOV considering 2nd order interactions
+  aov_results_2 <- aov(formula_2, data = results_df)
+  output[[3]] <- round(sensib.total(aov_results_2), 3)
+  output[[4]] <- round(sensib.effet(aov_results_2), 3)
+
+  return(output)
+}
+
+
+#' Create Factorial Plan from Tree
+#'
+#' Extracts leaf indices from the tree and creates the factorial plan based on
+#' gen.factorial function.
+#'
+#' @param tree Tree object for analysis.
+#'
+#' @importFrom AlgDesign gen.factorial
+#'
+#' @return A matrix representing the factorial plan.
+create_factorial_plan <- function(tree) {
+  # Extract leaf indices from the tree
+  leaf_indices <- tree@Nodes %>%
+    sapply(function(node) {
+      if (node@IsLeaf) {
+        node@RangeScale
+      }
+    }) %>%
+    unlist()
+
+  # Generate factorial plan
+  factorial_plan <- t(gen.factorial(as.numeric(leaf_indices), center = FALSE))
+  rownames(factorial_plan) <- tree@Leaves
+
+  return(factorial_plan)
+}
+
+
+#' Generate AOV Formula
+#'
+#' Constructs an Analysis of Variance (AOV) formula based on the results
+#' dataframe.
+#'
+#' @param results_df Data frame containing AOV results.
+#' @param order Integer representing the order of interaction; 1 for
+#'   first-order, 2 for second-order.
+#'
+#' @return A formula object for AOV.
+generate_aov_formula <- function(results_df, order = 1) {
+  # Construct AOV formula based on the order
+  predictors <- paste(colnames(results_df)[2:ncol(results_df)], collapse = "+")
+  if (order == 2) {
+    formula_str <- paste(colnames(results_df)[1], "~", "(", predictors, ")^2")
+  } else {
+    formula_str <- paste(colnames(results_df)[1], "~", predictors)
+  }
+
+  return(as.formula(formula_str))
+}
+
+
 #' Calculate sensitivity criteria for model terms
 #'
-#' Calculates sensitivity criteria for each term in a fitted model, including
-#' degree of freedom, sum of squares, ratio of sum of squares to total sum of
-#' squares, mean squares, and the F value.
+#' Calculates sensitivity criteria for each term in a fitted model.
 #'
 #' @param aov.obj An object of class `aov` resulting from a call to `aov()`.
 #'
-#' @return A data frame with the degree of freedom, sum of squares, ratio of sum
-#'   of squares to total sum of squares, mean squares, and the F value for each
-#'   term in the model. The rows of the data frame are ordered in decreasing
-#'   order of the ratio of sum of squares to total sum of squares.
+#' @return A data frame with sensitivity criteria for each term in the model.
+#'   The rows are ordered in decreasing order of the ratio of sum of squares to total sum of squares.
 #'
 #' @export
 sensib.effet <- function(aov.obj) {
@@ -432,60 +531,4 @@ showAOV <- function(aAOV_DEXi,
 }
 
 
-#' Calculate AOV results
-#'
-#' Calculates the results of an Analysis of Variance (AOV).
-#'
-#' @param aTree A decision tree object to perform the analysis on.
-#'
-#' @importFrom stats aov as.formula
-#'
-#' @return A list with the results of the AOV.
-#'
-#' @export
-AOV_DEXi <- function(aTree) {
-    # Create the simulation plan
-    leavesOptionIndices <- aTree@Nodes %>%
-        sapply(function(x) { if (x@IsLeaf) {x@RangeScale} }) %>%
-        unlist()
 
-    factorialPlan <- t(gen.factorial(as.numeric(leavesOptionIndices),
-                                     center = FALSE))
-    rownames(factorialPlan) <- aTree@Leaves
-    #Perform the simulation
-    myResults <- sapply(1:dim(factorialPlan)[2],
-                        function(x) {
-                            evaluate_scenario(aTree,
-                                             as.matrix(factorialPlan[, x]))
-                        })
-    myResults <- myResults[c(aTree@RootName, aTree@Leaves), ]
-    #Transform the matrix for AOV
-    myResults <- as.data.frame(t(myResults))
-    for(i in 1:aTree@NumberOfLeaves) {
-        myResults[[i+1]] <- factor(myResults[[i+1]])
-    }
-
-    # Need to abbreviate the names ... a 4 letters abbreviations
-    colnames(myResults) <- abbreviate(colnames(myResults),
-                                      minlength = 4,
-                                      dot = FALSE)
-    #Create the formula
-    xNames <- paste(colnames(myResults)[2:(aTree@NumberOfLeaves+1)],
-                    collapse = "+")
-    myFormula <- as.formula(paste(colnames(myResults)[1],
-                                  " ~ ",
-                                  paste(xNames, collapse = "+")))
-    # Perform the AOV: effet de premier ordre
-    myResults.aov <- aov(myFormula, data = myResults)
-    out <- list()
-    out[[1]] <- round(sensib.total(myResults.aov), 3)
-    out[[2]] <- round(sensib.effet(myResults.aov), 3)
-    # Take into account interaction order 2
-    myFormula2 <- as.formula(paste(colnames(myResults)[1],
-                                   " ~ ", "(",
-                                   paste(xNames, collapse= "+"), ")^2"))
-    myResults2.aov <- aov(myFormula2, data = myResults)
-    out[[3]] <- round(sensib.total(myResults2.aov), 3)
-    out[[4]] <- round(sensib.effet(myResults2.aov), 3)
-    return(out)
-}
