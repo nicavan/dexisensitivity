@@ -10,7 +10,8 @@ compute_aov_total_sensitivity(aov_obj)
 \item{aov_obj}{An object of class \code{aov} from a call to \code{aov()}.}
 }
 \value{
-A data frame with total sensitivity factors for each term in the model.
+A data frame with total sensitivity factors for each term in the
+model.
 }
 \description{
 Computes total sensitivity factors for each term in a fitted model.

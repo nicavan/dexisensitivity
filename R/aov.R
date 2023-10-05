@@ -270,15 +270,17 @@ compute_aov_total_sensitivity <- function(aov_obj) {
 
 #' Visualize AOV results
 #'
-#' Visualizes the results of an Analysis of Variance (AOV).
+#' Visualizes the results of an Analysis of Variance (AOV). It provides both a
+#' complete total and effect visualization using bar plots.
 #'
-#' @param aAOV_DEXi A list containing the AOV results.
-#' @param main.show Logical, if TRUE, main effects and total sums of squares are
+#' @param aov_results A list containing the AOV results.
+#' @param show_main Logical, if TRUE, main effects and total sums of squares are
 #'   displayed in the plot. Defaults to TRUE.
-#' @param nb.plot The number of plots to display.
-#' @param beside Logical, if TRUE, the bar plot is displayed horizontally.
+#' @param num_plots The number of effects to display.
+#' @param horizontal Logical, if TRUE, the bar plot is displayed horizontally.
 #'   Defaults to TRUE.
-#' @param las The style of axis labels on the bar plots. Default is 1.
+#' @param axis_label_style The style of axis labels on the bar plots. Default is
+#'   1.
 #' @param ... Additional arguments to control the appearance of the bar plots.
 #'
 #' @importFrom grDevices heat.colors
@@ -286,113 +288,116 @@ compute_aov_total_sensitivity <- function(aov_obj) {
 #' @return A data frame with the summed square proportions.
 #'
 #' @export
-showAOV <- function(aAOV_DEXi,
-                    main.show = T,
-                    nb.plot = 8,
-                    beside = T,
-                    las = 1,
-                    ...) {
-    # x11()
-    par(mfrow = c(2, 2))
-    #Total complet
-    out <- aAOV_DEXi[[1]]
-    outgraph <- out[rev(1:nrow(out)), ]
-    outnames <- rownames(outgraph)
-    outnames <- gsub("([ ])", "", outnames)
-    if (main.show == F) {
-        barplot(outgraph$ss.ratio,
-                horiz = T,
-                names.arg = outnames,
-                main = "Total Sums of Squares",
-                las = las,
-                ...)
-    } else {
-        outgraph.2 <- rbind(outgraph$main.ss.ratio,
-                            outgraph$ss.ratio - outgraph$main.ss.ratio)
-        barplot(outgraph.2,
-                horiz = T,
-                names.arg = outnames,
-                main = "Main-effect and total Sums of Squares",
-                col = heat.colors(2),
-                beside = F,
-                las = las,
-                ...)
-    }
-    #Effect complet
-    out <- aAOV_DEXi[[2]]
-    # sélection des principaux effets
-    outgraph <- out[rev(1:min(nb.plot,nrow(out))), ]
-    outnames <- rownames(outgraph)
-    outnames <- gsub("([ ])", "", outnames)
-    # calcul des SS cumulées
-    temp <- outgraph$ss.ratio
-    temp2 <- rev(cumsum(rev(temp)))
-    # graphiques
-    if (beside == F) {
-        outgraph.2 <- rbind(outgraph$ss.ratio,
-                            temp2 - temp)
-    } else {
-        outgraph.2 <- rbind(outgraph$ss.ratio, temp2)
-    }
-    barplot(outgraph.2,
-            horiz = T,
-            names.arg = outnames,
-            main = "Sums of Squares proportions",
-            col = heat.colors(2),
-            beside = beside,
-            las = las,
-            ...)
-    #Total power 2
-    out <- aAOV_DEXi[[3]]
-    outgraph <- out[rev(1:nrow(out)), ]
-    outnames <- rownames(outgraph)
-    outnames <- gsub("([ ])", "", outnames)
-    if (main.show==F) {
-        barplot(outgraph$ss.ratio,
-                horiz = T,
-                names.arg = outnames,
-                main = "Total Sums of Squares",
-                las = las,
-                ...)
-    } else {
-        outgraph.2 <- rbind(outgraph$main.ss.ratio,
-                            outgraph$ss.ratio - outgraph$main.ss.ratio)
-        barplot(outgraph.2,
-                horiz = T,
-                names.arg = outnames,
-                main = "Main-effect and total Sums of Squares",
-                col = heat.colors(2),
-                beside = F,
-                las = las,
-                ...)
-    }
-    #Effect complet
-    out <- aAOV_DEXi[[4]]
-    # sélection des principaux effets
-    outgraph <- out[rev(1:min(nb.plot, nrow(out))), ]
-    outnames <- rownames(outgraph)
-    outnames <- gsub("([ ])", "", outnames)
-    # calcul des SS cumulées
-    temp <- outgraph$ss.ratio
-    temp2 <- rev(cumsum(rev(temp)))
-    # graphiques
-    if (beside == F) {
-        outgraph.2 <- rbind(outgraph$ss.ratio,
-                            temp2 - temp)
-    } else {
-        outgraph.2 <- rbind(outgraph$ss.ratio, temp2)
-    }
-    barplot(outgraph.2,
-            horiz = T,
-            names.arg = outnames,
-            main = "Sums of Squares proportions",
-            col = heat.colors(2),
-            beside = beside,
-            las = las,
-            ...)
+visualize_aov_results <- function(aov_results,
+                                  show_main = TRUE,
+                                  num_plots = 8,
+                                  horizontal = TRUE,
+                                  axis_label_style = 1,
+                                  ...) {
 
-    out
+
+
+  # Setting up the plotting environment
+  par(mfrow = c(2, 2))
+
+  # Create barplots for each result set in the AOV results
+  create_aov_barplot(data = aov_results[[1]], is_effect = FALSE,
+                     horizontal = horizontal, num_plots = num_plots,
+                     show_main = show_main, axis_label_style = axis_label_style,
+                     ...)
+  create_aov_barplot(data = aov_results[[2]], is_effect = TRUE,
+                     horizontal = horizontal,num_plots = num_plots,
+                     show_main = show_main, axis_label_style = axis_label_style,
+                     ...)
+  create_aov_barplot(data = aov_results[[3]], is_effect = FALSE,
+                     horizontal = horizontal, num_plots = num_plots,
+                     show_main = show_main, axis_label_style = axis_label_style,
+                     ...)
+  create_aov_barplot(data = aov_results[[4]], is_effect = TRUE,
+                     horizontal = horizontal, num_plots = num_plots,
+                     show_main = show_main, axis_label_style = axis_label_style,
+                     ...)
+
+  # Return the final result set
+  return(aov_results[[4]])
 }
+
+#' Create AOV Bar Plot
+#'
+#' Helper function specifically designed to create bar plots to visualize the
+#' results of an AOV (Analysis of Variance). It has the flexibility to handle
+#' both total sums of squares and effect visualizations.
+#'
+#' @param data A data frame containing the AOV results to be plotted.
+#' @param is_effect A logical flag. If TRUE, indicates that the data represents
+#'   effects; otherwise, it represents totals.
+#' @param horizontal A logical flag. If TRUE, the bar plots will be oriented
+#'   horizontally; otherwise, they will be vertical.
+#' @param num_plots An integer specifying the number of effects to display in
+#'   the bar plot.
+#' @param show_main A logical flag. If TRUE, the main effects and total sums of
+#'   squares are combined and displayed. This is effective only if `is_effect`
+#'   is FALSE.
+#' @param axis_label_style An integer representing the style of the axis labels
+#'   on the bar plots.
+#' @param ... Additional arguments that will be passed to the `barplot` function
+#'   to control its appearance.
+create_aov_barplot <- function(data,
+                               is_effect,
+                               horizontal,
+                               num_plots,
+                               show_main,
+                               axis_label_style,
+                               ...) {
+
+  # Selects either all rows or a subset based on `num_plots` and whether we are
+  # dealing with effects or not. If dealing with effects, it takes the minimum
+  # of `num_plots` and the number of rows in the data. Otherwise, it takes all
+  # rows.
+  selected <- if (is_effect) min(num_plots, nrow(data)) else nrow(data)
+
+  # Reverses the order of the rows based on `selected` to ensure the largest
+  # effects (or totals) are displayed at the top.
+  data <- data[rev(1:(selected)), ]
+
+  # Removes spaces from the row names, which usually represent variable names or
+  # effects in AOV.
+  names <- gsub(" ", "", rownames(data))
+
+  # Depending on the combination of flags (`show_main` and `is_effect`),
+  # the function decides which type of bar plot visualization to generate.
+
+  # If `show_main` is TRUE and not dealing with effects, it visualizes both main
+  # effects and total sums of squares side by side.
+  if (show_main && !is_effect) {
+    data_subset <- rbind(data$main.ss.ratio, data$ss.ratio - data$main.ss.ratio)
+    barplot(data_subset, horiz = horizontal, names.arg = names,
+            main = "Main-effect and total Sums of Squares",
+            col = heat.colors(2), beside = FALSE, las = axis_label_style, ...)
+
+    # If dealing with effects, it visualizes the proportional sums of squares.
+    # It also provides a cumulated sum of squares for reference.
+  } else if (is_effect) {
+    ss_cumulated <- rev(cumsum(rev(data$ss.ratio)))
+    data_subset <- if (horizontal) {
+      rbind(data$ss.ratio, ss_cumulated)
+    } else {
+      rbind(data$ss.ratio, ss_cumulated - data$ss.ratio)
+    }
+    barplot(data_subset, horiz = horizontal, names.arg = names,
+            main = "Sums of Squares proportions",
+            col = heat.colors(2), beside = horizontal,
+            las = axis_label_style, ...)
+
+    # If not dealing with main effects or specific effects, it visualizes the
+    # total sums of squares.
+  } else {
+    barplot(data$ss.ratio, horiz = horizontal, names.arg = names,
+            main = "Total Sums of Squares", las = axis_label_style, ...)
+  }
+}
+
+
 
 
 
