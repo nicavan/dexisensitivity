@@ -75,49 +75,48 @@ evaluate_variation <- function(tree, option, leaf_index,
 
 #' Visualize One-Factor-At-A-Time (OFAT) Sensitivity Analysis Results
 #'
-#' Generates a plot to visualize the results of One-Factor-At-A-Time (OFAT)
-#' sensitivity analysis.
+#' Generates a plot visualizing the results of the OFAT sensitivity analysis.
 #'
-#' @param nodeName Name of the node for which to generate the plot.
-#' @param aResults Matrix of evaluation results returned by the OAT function.
-#' @param aTree A decision tree object that was used in the OAT function.
+#' @param node_name Name of the node for the visualization.
+#' @param results Evaluation results matrix obtained from `ofat_sensitivity_analysis`.
+#' @param tree Decision tree object used in the OFAT analysis.
 #'
-#' @return No return value, but generates a plot.
+#' @return No return value; the function displays a plot.
 #'
 #' @export
-showOAT <- function(nodeName, aResults, aTree) {
-    #On récupère l'ID du noeud
-    id <- get_id(aTree@Nodes, nodeName)
-    # Si on est dans le cas d'une Leaf-Aggregated !
-    #   on récupère le noeud aggrégé et non le noeud feuille
-    if (aTree@IsLeafAggregated) {
-        id <- id %>%
-            sapply(function(x) {
-                if (!aTree@Nodes[[x]]@IsLeaf) {aTree@Nodes[[x]]@Id}
-            }) %>%
-            unlist()
-    }
+show_oat_results <- function(node_name, results, tree) {
 
-    myChildren <- get_leaves(aTree, id)
-    list1 <- aResults[nodeName, ]
-    nominal <- rep(list1[1], length(myChildren))
-    plus <- numeric(length(myChildren))
-    minus <- numeric(length(myChildren))
+  # Retrieve the node ID
+  node_id <- get_id(tree@Nodes, node_name)
 
-    for(i in 1:length(myChildren)) {
-        plus[i] <- list1[2*myChildren[i]]
-        minus[i] <- list1[2*myChildren[i] + 1]
-    }
+  # Handle the case of a Leaf-Aggregated node:
+  # Retrieve the aggregated node instead of the leaf node
+  if (tree@IsLeafAggregated) {
+    node_id <- sapply(node_id, function(x) {
+      if (!tree@Nodes[[x]]@IsLeaf) tree@Nodes[[x]]@Id
+    }) %>% unlist()
+  }
 
-    plot(1:length(myChildren), nominal,
-         pch = "o", xlab = "", ylab = "Score", main = nodeName, axes = FALSE,
-         ylim = c(1, aTree@Nodes[[id]]@RangeScale))
-    points(1:length(myChildren), minus, pch = "-")
-    points(1:length(myChildren), plus, pch = "+")
-    axis(side = 1, at = 1:length(myChildren),
-         labels = abbreviate(sapply(1:length(myChildren),
-                                    function(x) {aTree@Nodes[[myChildren[x]]]@Name})),
-         las = 2)
-    axis(side = 2, at = c(1:aTree@Nodes[[id]]@RangeScale),
-         labels = 1:aTree@Nodes[[id]]@RangeScale)
+  child_nodes <- get_leaves(tree, node_id)
+  scores <- results[node_name, ]
+  nominal_scores <- rep(scores[1], length(child_nodes))
+
+  # Extract positive and negative variations for each child node
+  plus_scores <- sapply(child_nodes, function(x) scores[2 * x])
+  minus_scores <- sapply(child_nodes, function(x) scores[2 * x + 1])
+
+  # Create the plot
+  plot(1:length(child_nodes), nominal_scores,
+       pch = "o", xlab = "", ylab = "Score", main = node_name, axes = FALSE,
+       ylim = c(1, tree@Nodes[[node_id]]@RangeScale))
+
+  # Add negative and positive variations to the plot
+  points(1:length(child_nodes), minus_scores, pch = "-")
+  points(1:length(child_nodes), plus_scores, pch = "+")
+
+  # Add axis labels
+  axis_labels <- abbreviate(sapply(child_nodes, function(x) tree@Nodes[[x]]@Name))
+  axis(side = 1, at = 1:length(child_nodes), labels = axis_labels, las = 2)
+  axis(side = 2, at = c(1:tree@Nodes[[node_id]]@RangeScale),
+       labels = 1:tree@Nodes[[node_id]]@RangeScale)
 }
