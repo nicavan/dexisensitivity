@@ -85,12 +85,12 @@ aov_tree <- function(tree) {
   # AOV for first-order effects
   aov_results_1 <- aov(formula_1, data = results_df)
   output <- list()
-  output[[1]] <- round(sensib.total(aov_results_1), 3)
+  output[[1]] <- round(compute_aov_total_sensitivity(aov_results_1), 3)
   output[[2]] <- round(compute_aov_sensitivity_effects(aov_results_1), 3)
 
   # AOV considering 2nd order interactions
   aov_results_2 <- aov(formula_2, data = results_df)
-  output[[3]] <- round(sensib.total(aov_results_2), 3)
+  output[[3]] <- round(compute_aov_total_sensitivity(aov_results_2), 3)
   output[[4]] <- round(compute_aov_sensitivity_effects(aov_results_2), 3)
 
   return(output)
@@ -125,7 +125,7 @@ create_factorial_plan <- function(tree) {
 }
 
 
-#' Generate AOV Formula
+#' Generate AOV formula
 #'
 #' Constructs an Analysis of Variance (AOV) formula based on the results
 #' dataframe.
@@ -202,68 +202,69 @@ compute_aov_sensitivity_effects <- function(aov_obj) {
 }
 
 
-#' Calculate sensitivity factors for model terms
+#' Calculate total Sensitivity Factors for Model Terms
 #'
-#' Calculates sensitivity factors for each term in a fitted model.
+#' Computes total sensitivity factors for each term in a fitted model.
 #'
-#' @param aov.obj An object of class `aov` resulting from a call to `aov()`.
+#' @param aov_obj An object of class `aov` from a call to `aov()`.
 #'
-#' @return A data frame with sensitivity factors for each term in the model.
-#'
-#' @export
-sensib.total <- function(aov.obj) {
+#' @return A data frame with total sensitivity factors for each term in the
+#'   model.
+compute_aov_total_sensitivity <- function(aov_obj) {
 
-    #### PRELIMINAIRES: récupération des résultats d'anova
+  # Ensure the object is of class 'aov'
+  if(!inherits(aov_obj, "aov")) {
+    stop("Provided object isn't of class 'aov'")
+  }
 
-    # indic.fact: matrice 0-1 de correspondance facteurs*termes-du-modèle
-    indic.fact <- attr(aov.obj$terms, "factors")[-1, ]
-    # aov.df: vecteur des Degrés de Liberté, résiduelle comprise
-    # aov.ss: vecteur des Sommes de Carrés, résiduelle comprise
-    # aov.cm: vecteur des Carrés Moyens, résiduelle comprise
-    #### ATTENTION ####
-    # sous S:
-    #aov.summ <- summary(aov.obj)
-    #aov.ss <- aov.summ[,"Sum of Sq"]
-    # sous R:
-    aov.summ <- summary(aov.obj)[[1]]
-    aov.ss <- aov.summ[, "Sum Sq"]
-    #### FIN DE "ATTENTION" ####
-    aov.df <- aov.summ[, "Df"]
-    aov.cm <- aov.ss/aov.df
+  # Retrieve ANOVA results
+  factor_indicator <- attr(aov_obj$terms, "factors")[-1, ]
+  aov_summary <- summary(aov_obj)[[1]]
+  sum_squares <- aov_summary[, "Sum Sq"]
+  degrees_freedom <- aov_summary[, "Df"]
+  mean_squares <- sum_squares / degrees_freedom
 
-    # Total SS, df and MS
-    tss <- sum(aov.ss)
-    tdf <- sum(aov.df)
-    tms <- tss/tdf
-    # Residual SS, df, MS
-    rdf <- aov.obj$df.residual
-    if (rdf>0) {
-        rss <- aov.ss[length(aov.ss)]
-        rms <- rss/rdf
-    } else {
-        rss <- NA
-        rms <- NA
-    }
+  # Calculate total and residual values
+  total_ss <- sum(sum_squares)
+  total_df <- sum(degrees_freedom)
+  total_ms <- total_ss / total_df
 
+  residual_df <- aov_obj$df.residual
+  if (residual_df > 0) {
+    residual_ss <- sum_squares[length(sum_squares)]
+    residual_ms <- residual_ss / residual_df
+  } else {
+    residual_ss <- NA
+    residual_ms <- NA
+  }
 
-    #### Critères de sensibilité totale
+  # Compute total sensitivity criteria
+  if (residual_df > 0) {
+    sum_squares <- sum_squares[-length(sum_squares)]
+    degrees_freedom <- degrees_freedom[-length(degrees_freedom)]
+  }
 
-    # calculs
-    if (rdf>0) {
-        aov.ss <- aov.ss[-length(aov.ss)]
-        aov.df <- aov.df[-length(aov.df)]
-    }
-    total.ss <- indic.fact %*% aov.ss
-    total.df <- indic.fact %*% aov.df
-    total.cm <- total.ss/total.df
-    # calculs effets principaux
-    filtre.main <- apply(indic.fact, 2, sum) == 1
-    main.ss <- indic.fact[, filtre.main] %*% aov.ss[filtre.main]
-    # sorties
-    out <- data.frame(df = total.df, ss = total.ss, ss.ratio = total.ss/tss,
-                      main.ss.ratio = main.ss/tss, cm = total.cm,
-                      F = total.cm/rms)
-    out <- out[rev(order(out$ss.ratio)), ]
+  total_sum_squares <- factor_indicator %*% sum_squares
+  total_degrees_freedom <- factor_indicator %*% degrees_freedom
+  total_mean_squares <- total_sum_squares / total_degrees_freedom
+
+  # Main effects computation
+  main_filter <- apply(factor_indicator, 2, sum) == 1
+  main_sum_squares <- factor_indicator[, main_filter] %*% sum_squares[main_filter]
+
+  # Prepare output
+  output <- data.frame(
+    df = total_degrees_freedom,
+    ss = total_sum_squares,
+    ss.ratio = total_sum_squares / total_ss,
+    main.ss.ratio = main_sum_squares / total_ss,
+    cm = total_mean_squares,
+    F = total_mean_squares / residual_ms
+  )
+
+  output <- output[rev(order(output$ss.ratio)), ]
+
+  return(output)
 }
 
 

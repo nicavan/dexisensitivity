@@ -2,7 +2,7 @@
 % Please edit documentation in R/aov.R
 \name{generate_aov_formula}
 \alias{generate_aov_formula}
-\title{Generate AOV Formula}
+\title{Generate AOV formula}
 \usage{
 generate_aov_formula(results_df, order = 1)
 }
