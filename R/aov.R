@@ -86,12 +86,12 @@ aov_tree <- function(tree) {
   aov_results_1 <- aov(formula_1, data = results_df)
   output <- list()
   output[[1]] <- round(sensib.total(aov_results_1), 3)
-  output[[2]] <- round(sensib.effet(aov_results_1), 3)
+  output[[2]] <- round(compute_aov_sensitivity_effects(aov_results_1), 3)
 
   # AOV considering 2nd order interactions
   aov_results_2 <- aov(formula_2, data = results_df)
   output[[3]] <- round(sensib.total(aov_results_2), 3)
-  output[[4]] <- round(sensib.effet(aov_results_2), 3)
+  output[[4]] <- round(compute_aov_sensitivity_effects(aov_results_2), 3)
 
   return(output)
 }
@@ -150,87 +150,56 @@ generate_aov_formula <- function(results_df, order = 1) {
 
 #' Calculate sensitivity criteria for model terms
 #'
-#' Calculates sensitivity criteria for each term in a fitted model.
+#' Provides sensitivity criteria for each term in a fitted model.
 #'
-#' @param aov.obj An object of class `aov` resulting from a call to `aov()`.
+#' @param aov_obj An object of class `aov` from a call to `aov()`.
 #'
 #' @return A data frame with sensitivity criteria for each term in the model.
-#'   The rows are ordered in decreasing order of the ratio of sum of squares to total sum of squares.
+#'   The columns of the data frame include:
+#'   - `df`: degrees of freedom
+#'   - `ss`: sum of squares
+#'   - `ss.ratio`: ratio of sum of squares to total sum of squares
+#'   - `cm`: mean square (or variance) for each term
+#'   - `F`: F-statistic for each term
 #'
-#' @export
-sensib.effet <- function(aov.obj) {
-    # PRELIMINARIES: ANOVA results retrieval
-    indic.fact <- attr(aov.obj$terms, "factors")[-1, ]
-    aov.summ <- summary(aov.obj)[[1]]
-    aov.ss <- aov.summ[, "Sum Sq"]
-    aov.df <- aov.summ[, "Df"]
-    aov.cm <- aov.ss/aov.df
+#'   Rows are ordered in decreasing order of ss.ratio.
+compute_aov_sensitivity_effects <- function(aov_obj) {
+  # Ensure the object is of class 'aov'
+  if(!inherits(aov_obj, "aov")) {
+    stop("Provided object isn't of class 'aov'")
+  }
 
-    # Total SS, df and MS
-    tss <- sum(aov.ss)
-    tdf <- sum(aov.df)
-    tms <- tss/tdf
+  # ANOVA results extraction
+  aov_summary <- summary(aov_obj)[[1]]
+  sum_squares <- aov_summary[, "Sum Sq"]
+  degrees_freedom <- aov_summary[, "Df"]
+  mean_squares <- sum_squares/degrees_freedom
 
-    # Residual SS, df, MS
-    rdf <- aov.obj$df.residual
-    if (rdf > 0) {
-        rss <- aov.ss[length(aov.ss)]
-        rms <- rss/rdf
-    } else {
-        rss <- NA
-        rms <- NA
-    }
+  # Total sum of squares, degrees of freedom, and mean squares
+  total_ss <- sum(sum_squares)
+  total_df <- sum(degrees_freedom)
+  total_ms <- total_ss/total_df
 
-    # Sensitivity criteria term by term
-    out <- data.frame(df = aov.df, ss = aov.ss, ss.ratio = aov.ss/tss,
-                      cm = aov.cm, F = aov.cm/rms)
-    rownames(out) <- rownames(aov.summ)
-    out <- out[rev(order(out$ss.ratio)), ]
+  # Residual sum of squares, degrees of freedom, and mean squares
+  residual_df <- aov_obj$df.residual
+  if (residual_df > 0) {
+    residual_ss <- sum_squares[length(sum_squares)]
+    residual_ms <- residual_ss/residual_df
+  } else {
+    residual_ss <- NA
+    residual_ms <- NA
+  }
 
-    return(out)
+  # Calculate sensitivity criteria for each term
+  output <- data.frame(df = degrees_freedom, ss = sum_squares,
+                       ss.ratio = sum_squares/total_ss, cm = mean_squares,
+                       F = mean_squares/residual_ms)
+
+  rownames(output) <- rownames(aov_summary)
+  output <- output[rev(order(output$ss.ratio)), ]
+
+  return(output)
 }
-# sensib.effet <- function(aov.obj) {
-#
-#     #### PRELIMINAIRES: récupération des résultats d'anova
-#     # indic.fact: matrice 0-1 de correspondance facteurs*termes-du-modèle
-#     indic.fact <- attr(aov.obj$terms, "factors")[-1, ]
-#     # aov.df: vecteur des Degrés de Liberté, résiduelle comprise
-#     # aov.ss: vecteur des Sommes de Carrés, résiduelle comprise
-#     # aov.cm: vecteur des Carrés Moyens, résiduelle comprise
-#     ### ATTENTION ###
-#     # sous S:
-#     #aov.summ <- summary(aov.obj)
-#     #aov.ss <- aov.summ[,"Sum of Sq"]
-#     # sous R:
-#     aov.summ <- summary(aov.obj)[[1]]
-#     aov.ss <- aov.summ[, "Sum Sq"]
-#     ### FIN DE "ATTENTION" ###
-#     aov.df <- aov.summ[, "Df"]
-#     aov.cm <- aov.ss/aov.df
-#
-#     # Total SS, df and MS
-#     tss <- sum(aov.ss)
-#     tdf <- sum(aov.df)
-#     tms <- tss/tdf
-#     # Residual SS, df, MS
-#     rdf <- aov.obj$df.residual
-#     if (rdf>0) {
-#         rss <- aov.ss[length(aov.ss)]
-#         rms <- rss/rdf
-#     } else {
-#         rss <- NA
-#         rms <- NA
-#     }
-#
-#     #-------------------------------------------------------------------------
-#     #### Critères de sensibilité terme par terme
-#     #-------------------------------------------------------------------------
-#     # sorties
-#     out <- data.frame(df = aov.df, ss = aov.ss, ss.ratio = aov.ss/tss,
-#                       cm = aov.cm, F = aov.cm/rms)
-#     rownames(out) <- rownames(aov.summ)
-#     out <- out[rev(order(out$ss.ratio)), ]
-# }
 
 
 #' Calculate sensitivity factors for model terms
