@@ -1,51 +1,76 @@
 #' Perform One-Factor-At-A-Time (OFAT) Sensitivity Analysis
 #'
-#' Conducts One-Factor-At-A-Time (OFAT) sensitivity analysis by performing
-#' simulations with varying factors, keeping all but one factor constant for
-#' each simulation.
+#' Conducts OFAT sensitivity analysis by performing
+#' simulations with varying factors, keeping all but one factor constant
+#' for each simulation.
 #'
-#' @param aTree A decision tree object to perform the analysis on.
-#' @param option The initial configuration for the decision tree parameters.
+#' @param tree A decision tree object to analyze.
+#' @param option Initial configuration for tree parameters.
 #'
-#' @return A matrix with evaluation results for each attribute in the decision
-#'   tree, under different variations of the parameters.
+#' @return A matrix with evaluation results for each attribute in the tree,
+#' under different parameter variations.
 #'
 #' @export
-OAT <- function(aTree,
-                option) {
+oat <- function(tree, option) {
+  # Initialize results matrix
+  results <- matrix(nrow = tree@NumberOfAttributes,
+                    ncol = tree@NumberOfLeaves * 2 + 1)
+  rownames(results) <- tree@Attributes
+  results[, 1] <- evaluate_scenario(tree, as.matrix(option))
 
-    # Define the matrix that will be returned:
-    # nominal evaluation and for each leaves +1 and -1 and if touching border "-1"
-    results <- matrix(nrow = aTree@NumberOfAttributes,
-                      ncol = aTree@NumberOfLeaves*2 + 1)
-    rownames(results) <- aTree@Attributes
-    results[, 1] <- evaluate_scenario(aTree, as.matrix(option))
-    j <- 2
-    for(i in aTree@Leaves) {
-        #Option +
-        newOption <- option
-        newOption[i, ] <- option[i, ] + 1
-        if (newOption[i, ] > aTree@Nodes[[get_id(aTree@Nodes, i)[1]]]@RangeScale) {
-            results[, j]<- -1
-        } else {
-            results[, j] <- evaluate_scenario(aTree, as.matrix(newOption))
-        }
+  # Iterate through each leaf and evaluate scenarios with +/- 1 variation
+  for (leaf_index in 1:length(tree@Leaves)) {
+    # For easier reference
+    current_node <- tree@Nodes[[get_id(tree@Nodes, tree@Leaves[leaf_index])[1]]]
 
-        #Option -
-        newOption <- option
-        newOption[i, ] <- newOption[i, ] - 1
-        if(newOption[i, ] == 0) {
-            results[, j + 1] <- -1
-        } else {
-            results[, j + 1] <- evaluate_scenario(aTree, as.matrix(newOption))
-        }
+    # Evaluate positive variation
+    results[, leaf_index * 2] <- evaluate_variation(tree, option,
+                                                    leaf_index, 1,
+                                                    current_node@RangeScale)
 
-        j <- j + 2
-    }
+    # Evaluate negative variation
+    results[, leaf_index * 2 + 1] <- evaluate_variation(tree, option,
+                                                        leaf_index, -1,
+                                                        current_node@RangeScale)
+  }
 
-    return(results)
+  return(results)
 }
 
+
+#' Evaluate Variation for Sensitivity Analysis
+#'
+#' Helper function to evaluate a specific variation for the sensitivity
+#' analysis. It checks both positive and negative variations and returns the
+#' evaluation result or -1 if a variation is out of bounds.
+#'
+#' @param tree A decision tree object to analyze.
+#' @param option Configuration to be modified for variation.
+#' @param leaf_index Index of the leaf to be varied.
+#' @param variation Numeric value indicating the amount and direction of the
+#'   variation (+1 or -1).
+#' @param range_scale The maximum allowed range for the variation.
+#'
+#' @return Numeric value indicating the evaluation result of the variation or -1
+#'   if out of bounds.
+#'
+evaluate_variation <- function(tree, option, leaf_index,
+                               variation, range_scale) {
+  option_copy <- option
+  option_copy[leaf_index, ] <- option_copy[leaf_index, ] + variation
+
+  # For positive variation, check if the variation exceeds the range scale
+  if (variation > 0 && option_copy[leaf_index, ] > range_scale) {
+    return(-1)
+  }
+
+  # For negative variation, check if the variation touches the border
+  if (variation < 0 && option_copy[leaf_index, ] == 0) {
+    return(-1)
+  }
+
+  return(evaluate_scenario(tree, as.matrix(option_copy)))
+}
 
 
 #' Visualize One-Factor-At-A-Time (OFAT) Sensitivity Analysis Results

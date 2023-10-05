@@ -10,7 +10,7 @@ test_that("OAT : same output as JEB's scripts", {
     ### - Unit test - ###
     optionOAT <- create_options(tree, 1)
 
-    test_output <- OAT(tree, optionOAT)
+    test_output <- oat(tree, optionOAT)
     expected_output <- readRDS(system.file("testdata", "TestOATsmall.rds",
                                            package = "dexiranalysis"))
     expect_equal(test_output, expected_output)
