@@ -361,7 +361,6 @@ calculate_conditional_probabilities <- function(input_table,
 #' @param weight_list The list of weights for the A_i factor levels.
 #'
 #' @return A vector of Sensitivity Indices (SI).
-#' @export
 calculate_sensitivity_indices <- function(conditional_prob_list, weight_list) {
   # Preliminary steps
   num_factors <- length(conditional_prob_list) - 1
@@ -399,7 +398,6 @@ calculate_sensitivity_indices <- function(conditional_prob_list, weight_list) {
 #' @return No return value, but generates a bar plot.
 #'
 #' @importFrom graphics mtext
-#' @export
 plot_sensitivity_index <- function(tree, sensitivity_indices) {
   # Bar plot parameters and plot generation
   mc <- barplot(

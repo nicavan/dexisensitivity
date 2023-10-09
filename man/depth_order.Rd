@@ -4,15 +4,15 @@
 \alias{depth_order}
 \title{Get Aggregated Attributes Ordered by Depth}
 \usage{
-depth_order(aTree)
+depth_order(tree)
 }
 \arguments{
-\item{aTree}{A decision tree object.}
+\item{tree}{A decision tree object.}
 }
 \value{
 A vector of aggregated attribute names, ordered by depth.
 }
 \description{
-Return aggregated attributes ordered by depth. This function is typically
+Returns aggregated attributes ordered by depth. Typically
 used for analysis strategy (AS).
 }
