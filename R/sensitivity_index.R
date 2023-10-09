@@ -2,61 +2,77 @@
 #'
 #' Calculates the Sensitivity Index (SI) for a given decision tree.
 #'
-#' @param aTree A decision tree object to perform the analysis on.
-#' @param fileName The file name to write the SI to. Default is "SI_out.csv".
-#' @param isFile A boolean to decide whether to write the SI to a file. Default
+#' @param tree A decision tree object to perform the analysis on.
+#' @param file_name The file name to write the SI to. Default is "SI_out.csv".
+#' @param is_file A boolean to decide whether to write the SI to a file. Default
 #'   is TRUE.
-#' @param avoidrep A boolean to decide whether to avoid repeated nodes. Default
-#'   is FALSE.
+#' @param avoid_repetition A boolean to decide whether to avoid repeated nodes.
+#'   Default is FALSE.
 #'
 #' @return A list of Sensitivity Indices for each node in the tree.
 #'
 #' @export
-SI_DEXi <- function(aTree,
-                    fileName = "SI_out.csv",
-                    isFile = T,
-                    avoidrep = F) {
-    SI <- vector(mode = "list",
-                 length(aTree@Aggregated))
-    names(SI) <- aTree@Aggregated
+si_dexi <- function(tree,
+                    file_name = "SI_out.csv",
+                    is_file = TRUE,
+                    avoid_repetition = FALSE) {
 
-    for(node.name in aTree@Aggregated) {
-        sousArbre <- create_sub_tree(aTree, node.name, avoid_repetition = avoidrep)
-        l <- matrix(nrow = sousArbre@NumberOfAttributes - 1,
-                    ncol = 2)
+  # Initialize SI list for each aggregated node in the decision tree
+  si <- vector(mode = "list", length = length(tree@Aggregated))
+  names(si) <- tree@Aggregated
 
-        for(j in 2:sousArbre@NumberOfAttributes) {
-            l[j-1,1] <- sousArbre@Nodes[[j]]@IsLeaf
-            l[j-1,2] <- sousArbre@Nodes[[j]]@Depth - sousArbre@Nodes[[1]]@Depth + 1
-        }
+  # Calculate SI for each aggregated node
+  for (node_name in tree@Aggregated) {
+    # Generate a subtree based on the current node and avoidance settings
+    sub_tree <- create_sub_tree(tree, node_name,
+                                avoid_repetition = avoid_repetition)
 
-        zSI <- clcSI_DEXi(sousArbre, avoidrep = avoidrep)
-        SI[[node.name]] <- matrix(c(zSI[c(sousArbre@Attributes[-1])], l),
-                                  byrow = F,
-                                  ncol = 3,
-                                  dimnames =list(c(sousArbre@Attributes[-1]),
-                                                 c("SI", "Leaf", "Depth")))
+    # Prepare a matrix to store leaf status and depth information for each
+    # attribute
+    leaf_depth_info <- matrix(nrow = sub_tree@NumberOfAttributes - 1, ncol = 2)
+
+    # Populate the leaf status and depth information
+    for (j in 2:sub_tree@NumberOfAttributes) {
+      leaf_depth_info[j-1, 1] <- sub_tree@Nodes[[j]]@IsLeaf
+      leaf_depth_info[j-1, 2] <- sub_tree@Nodes[[j]]@Depth - sub_tree@Nodes[[1]]@Depth + 1
     }
 
-    if (isFile) {
-        for(i in 1:length(aTree@Aggregated)) {
-            write.table(names(SI)[i],
-                        file = fileName,
-                        append = T,
-                        sep = "",
-                        row.names = F,
-                        col.names = F)
+    # Calculate the Sensitivity Index for the subtree using the external
+    # function `clcSI_DEXi`
+    calculated_si <- clcSI_DEXi(sub_tree, avoidrep = avoid_repetition)
 
-            write.table(SI[[i]],
-                        file = fileName,
-                        append = T,
-                        sep = ",",
-                        row.names = T,
-                        col.names = F)
-        }
+    # Merge Sensitivity Index results with leaf and depth data, then store in
+    # the main SI list
+    si[[node_name]] <- matrix(c(calculated_si[c(sub_tree@Attributes[-1])],
+                                leaf_depth_info),
+                              byrow = FALSE,
+                              ncol = 3,
+                              dimnames = list(c(sub_tree@Attributes[-1]),
+                                              c("SI", "Leaf", "Depth")))
+  }
+
+  # Write the SI values to a file if required
+  if (is_file) {
+    for (i in 1:length(tree@Aggregated)) {
+      # First, write the node name header
+      write.table(names(si)[i],
+                  file = file_name,
+                  append = TRUE,
+                  sep = "",
+                  row.names = FALSE,
+                  col.names = FALSE)
+
+      # Next, append the corresponding SI values for that node
+      write.table(si[[i]],
+                  file = file_name,
+                  append = TRUE,
+                  sep = ",",
+                  row.names = TRUE,
+                  col.names = FALSE)
     }
+  }
 
-    return(SI)
+  return(si)
 }
 
 

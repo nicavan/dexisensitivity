@@ -8,7 +8,7 @@ test_that("SI : same output as JEB's scripts", {
     set.seed(42)
 
     # Unit test
-    test_output <- SI_DEXi(tree, isFile = FALSE)
+    test_output <- si_dexi(tree, is_file = FALSE)
 
     expected_output <- readRDS(system.file("testdata", "TestSIsmall.rds",
                                            package = "dexiranalysis"))
