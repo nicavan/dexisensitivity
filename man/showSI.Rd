@@ -4,10 +4,10 @@
 \alias{showSI}
 \title{Show Sensitivity Index (SI)}
 \usage{
-showSI(aTree, aSI)
+showSI(tree, aSI)
 }
 \arguments{
-\item{aTree}{A decision tree object to perform the analysis on.}
+\item{tree}{A decision tree object to perform the analysis on.}
 
 \item{aSI}{A vector of Sensitivity Indices for each leaf in the decision
 tree.}

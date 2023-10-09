@@ -4,12 +4,12 @@
 \alias{clcSI_DEXi}
 \title{Calculate Sensitivity Index (SI) Helper Function}
 \usage{
-clcSI_DEXi(aTree, avoidrep = F)
+clcSI_DEXi(tree, avoid_repetition = F)
 }
 \arguments{
-\item{aTree}{A decision tree object to perform the analysis on.}
+\item{tree}{A decision tree object to perform the analysis on.}
 
-\item{avoidrep}{A boolean to decide whether to avoid repeated nodes. Default
+\item{avoid_repetition}{A boolean to decide whether to avoid repeated nodes. Default
 is FALSE.}
 }
 \value{

@@ -39,7 +39,7 @@ si_dexi <- function(tree,
 
     # Calculate the Sensitivity Index for the subtree using the external
     # function `clcSI_DEXi`
-    calculated_si <- clcSI_DEXi(sub_tree, avoidrep = avoid_repetition)
+    calculated_si <- clcSI_DEXi(sub_tree, avoid_repetition = avoid_repetition)
 
     # Merge Sensitivity Index results with leaf and depth data, then store in
     # the main SI list
@@ -81,47 +81,47 @@ si_dexi <- function(tree,
 #' A helper function for `SI_DEXi` to calculate Sensitivity Index (SI) of a
 #' decision tree.
 #'
-#' @param aTree A decision tree object to perform the analysis on.
-#' @param avoidrep A boolean to decide whether to avoid repeated nodes. Default
+#' @param tree A decision tree object to perform the analysis on.
+#' @param avoid_repetition A boolean to decide whether to avoid repeated nodes. Default
 #'   is FALSE.
 #'
 #' @return A vector of Sensitivity Indices for each attribute in the decision
 #'   tree.
 #'
 #' @export
-clcSI_DEXi <- function(aTree, avoidrep = F) {
-    nodeName <- aTree@RootName
+clcSI_DEXi <- function(tree, avoid_repetition = F) {
+    nodeName <- tree@RootName
     WeightList <- vector(mode = "list",
-                         length = aTree@NumberOfAttributes)
-    names(WeightList) <- aTree@Attributes
+                         length = tree@NumberOfAttributes)
+    names(WeightList) <- tree@Attributes
 
-    for(i in 1:aTree@NumberOfAttributes) {
-        WeightList[[i]] <- aTree@Nodes[[i]]@Probability
+    for(i in 1:tree@NumberOfAttributes) {
+        WeightList[[i]] <- tree@Nodes[[i]]@Probability
     }
 
     CondiProbaList <- vector(mode = "list",
-                             length = aTree@NumberOfAttributes)
-    names(CondiProbaList) <-aTree@Attributes
+                             length = tree@NumberOfAttributes)
+    names(CondiProbaList) <-tree@Attributes
 
-    depthorder <- depth_order(aTree)
+    depthorder <- depth_order(tree)
 
     # Loop on the Aggregate attributes in reverse order
     for(node.name in depthorder) {
-        id <- get_id(aTree@Nodes, node.name)
+        id <- get_id(tree@Nodes, node.name)
         if (length(id) > 1) {
             id <- id %>%
                 sapply(function(x) {
-                    if (!aTree@Nodes[[x]]@IsLeaf) {x}
+                    if (!tree@Nodes[[x]]@IsLeaf) {x}
                 }) %>%
                 unlist()
         }
 
         # to avoid repeted branch
-        if (length(id)>1 & avoidrep) {
+        if (length(id)>1 & avoid_repetition) {
             id <- id[1]
         }
 
-        Node <- aTree@Nodes[[id]]
+        Node <- tree@Nodes[[id]]
 
         # info on weights required for direct descendant calculations
         ChildrenWeights <- vector(mode = "list",
@@ -153,24 +153,24 @@ clcSI_DEXi <- function(aTree, avoidrep = F) {
         IndirectCondiProbaList <- vector(mode = "list",
                                          length = 0)
         for(i in seq(Node@Children)) {
-            id  <- get_id(aTree@Nodes,
+            id  <- get_id(tree@Nodes,
                          Node@Children[[i]])
 
             #If several nodes with the same name, we will choose the one with the proper mother
             if(length(id) > 1) {
                 id <- id %>%
                     sapply(function(x) {
-                        if (aTree@Nodes[[x]]@Mother==Node@Name) {x}
+                        if (tree@Nodes[[x]]@Mother==Node@Name) {x}
                     }) %>%
                     unlist()
             }
 
             # to avoid repeted branch
-            if (length(id)>1 & avoidrep) {
+            if (length(id)>1 & avoid_repetition) {
                 id <- id[1]
             }
 
-            child.node <- aTree@Nodes[[id]]
+            child.node <- tree@Nodes[[id]]
             if (!child.node@IsLeaf) {
                 CPL.DA <- CondiProbaList[[Node@Children[[i]]]]
                 CPL.DY <- vector(mode = "list",
@@ -194,7 +194,6 @@ clcSI_DEXi <- function(aTree, avoidrep = F) {
 
     return(SI)
 }
-
 
 
 #' Calculate Conditional Probabilities
@@ -361,7 +360,7 @@ sensitivity.condprob <- function(condproblist,
 #' Generates a bar plot to visualize the Sensitivity Index (SI) of the leaves of
 #' a given decision tree.
 #'
-#' @param aTree A decision tree object to perform the analysis on.
+#' @param tree A decision tree object to perform the analysis on.
 #' @param aSI A vector of Sensitivity Indices for each leaf in the decision
 #'   tree.
 #'
@@ -370,16 +369,16 @@ sensitivity.condprob <- function(condproblist,
 #' @importFrom graphics mtext
 #'
 #' @export
-showSI <- function(aTree,
+showSI <- function(tree,
                    aSI) {
     #   par(mgp=c(7,1,0),oma=c(0,20,0,0))
-    mc <- barplot(as.vector(rev(aSI[aTree@Leaves,1])),
+    mc <- barplot(as.vector(rev(aSI[tree@Leaves,1])),
                   horiz = T,
-                  xlim = c(0, max(aSI[aTree@Leaves,1])),
+                  xlim = c(0, max(aSI[tree@Leaves,1])),
                   ylab = "Indicators")
     axis(side = 2,
          at = mc,
-         labels = rev(aTree@Leaves),
+         labels = rev(tree@Leaves),
          las = 2)
     abline(v = 0.02, untf = FALSE, lty = 3)
     mtext("Sensitity Index", 1, line = 3)
