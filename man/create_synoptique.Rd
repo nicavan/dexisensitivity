@@ -2,17 +2,20 @@
 % Please edit documentation in R/synoptique.R
 \name{create_synoptique}
 \alias{create_synoptique}
-\title{Title}
+\title{Create a Synoptic Plot from a Given Tree Structure}
 \usage{
-create_synoptique(Tree, option, depth = NA)
+create_synoptique(tree, option, depth = NA)
 }
 \arguments{
-\item{Tree}{Tree}
+\item{tree}{Tree structure object.}
 
-\item{option}{option}
+\item{option}{Evaluation options for the tree.}
 
-\item{depth}{depth}
+\item{depth}{Depth of the tree; if provided, produces a sub-tree.}
+}
+\value{
+A ggplot object representing the synoptic plot.
 }
 \description{
-Title
+Create a Synoptic Plot from a Given Tree Structure
 }

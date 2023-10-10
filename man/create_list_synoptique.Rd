@@ -2,17 +2,25 @@
 % Please edit documentation in R/synoptique.R
 \name{create_list_synoptique}
 \alias{create_list_synoptique}
-\title{Title}
+\title{Create a List of Synoptic Plots Based on Different Options}
 \usage{
-create_list_synoptique(Tree, options, depth = NA)
+create_list_synoptique(tree, options, depth = NA)
 }
 \arguments{
-\item{Tree}{Tree}
+\item{tree}{Tree structure object.}
 
-\item{options}{options}
+\item{options}{Matrix where each column represents a different set of options
+for tree evaluation.}
 
-\item{depth}{depth}
+\item{depth}{Depth of the tree; if provided, produces a sub-tree. Default is
+NA.}
+}
+\value{
+List of ggplot objects, each representing a different synoptic plot
+based on the provided options.
 }
 \description{
-Title
+For each column in the 'options' matrix, this function generates a synoptic
+plot by calling \code{create_synoptique}. The function will thus produce as many
+plots as there are columns in 'options'.
 }
