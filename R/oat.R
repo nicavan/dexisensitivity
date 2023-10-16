@@ -13,8 +13,10 @@
 #' @export
 oat <- function(tree, option) {
   # Initialize results matrix
-  results <- matrix(nrow = tree@NumberOfAttributes,
-                    ncol = tree@NumberOfLeaves * 2 + 1)
+  results <- matrix(
+    nrow = tree@NumberOfAttributes,
+    ncol = tree@NumberOfLeaves * 2 + 1
+  )
   rownames(results) <- tree@Attributes
   results[, 1] <- evaluate_scenario(tree, as.matrix(option))
 
@@ -24,14 +26,18 @@ oat <- function(tree, option) {
     current_node <- tree@Nodes[[get_id(tree@Nodes, tree@Leaves[leaf_index])[1]]]
 
     # Evaluate positive variation
-    results[, leaf_index * 2] <- evaluate_variation(tree, option,
-                                                    leaf_index, 1,
-                                                    current_node@RangeScale)
+    results[, leaf_index * 2] <- evaluate_variation(
+      tree, option,
+      leaf_index, 1,
+      current_node@RangeScale
+    )
 
     # Evaluate negative variation
-    results[, leaf_index * 2 + 1] <- evaluate_variation(tree, option,
-                                                        leaf_index, -1,
-                                                        current_node@RangeScale)
+    results[, leaf_index * 2 + 1] <- evaluate_variation(
+      tree, option,
+      leaf_index, -1,
+      current_node@RangeScale
+    )
   }
 
   return(results)
@@ -85,7 +91,6 @@ evaluate_variation <- function(tree, option, leaf_index,
 #'
 #' @export
 show_oat_results <- function(node_name, results, tree) {
-
   # Retrieve the node ID
   node_id <- get_id(tree@Nodes, node_name)
 
@@ -107,8 +112,9 @@ show_oat_results <- function(node_name, results, tree) {
 
   # Create the plot
   plot(1:length(child_nodes), nominal_scores,
-       pch = "o", xlab = "", ylab = "Score", main = node_name, axes = FALSE,
-       ylim = c(1, tree@Nodes[[node_id]]@RangeScale))
+    pch = "o", xlab = "", ylab = "Score", main = node_name, axes = FALSE,
+    ylim = c(1, tree@Nodes[[node_id]]@RangeScale)
+  )
 
   # Add negative and positive variations to the plot
   points(1:length(child_nodes), minus_scores, pch = "-")
@@ -117,6 +123,8 @@ show_oat_results <- function(node_name, results, tree) {
   # Add axis labels
   axis_labels <- abbreviate(sapply(child_nodes, function(x) tree@Nodes[[x]]@Name))
   axis(side = 1, at = 1:length(child_nodes), labels = axis_labels, las = 2)
-  axis(side = 2, at = c(1:tree@Nodes[[node_id]]@RangeScale),
-       labels = 1:tree@Nodes[[node_id]]@RangeScale)
+  axis(
+    side = 2, at = c(1:tree@Nodes[[node_id]]@RangeScale),
+    labels = 1:tree@Nodes[[node_id]]@RangeScale
+  )
 }

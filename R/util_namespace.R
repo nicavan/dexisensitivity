@@ -1,4 +1,4 @@
-#test pour namespace#
+# test pour namespace#
 #####################
 
 #' @import methods
@@ -9,4 +9,3 @@ NULL
 #' @importFrom graphics abline axis barplot par points
 #' @importFrom stats lm na.omit setNames
 NULL
-

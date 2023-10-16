@@ -1,8 +1,4 @@
-# S4 Node Class #
-# # # # # # # # #
-
-
-#### - Node Class Definition - #### ####
+#### Node Class Definition ####
 
 #' An S4 class to represent a Node
 #'
@@ -63,7 +59,7 @@ setClass(
 )
 
 
-#### - print Method - #### ####
+#### print Method ####
 
 #' print method for Node class object
 #'
@@ -80,37 +76,53 @@ setClass(
 #'
 #' @export
 setMethod(
-  "print","Node",
+  "print", "Node",
   function(x, ...) {
     cat("Node name:", x@Name)
     cat("\nID:", x@Id)
     cat("\nNode depth:", x@Depth)
     cat("\nFrom root to node: \n ", paste0(x@NodePath, collapse = " -> "))
     cat("\nIs it a leaf:", x@IsLeaf)
-    cat("\nIs is a leaf-aggregated:",
-        if ((length(x@IsLeafAndAggregated) > 0) && x@IsLeafAndAggregated) {
-          "TRUE"
-        } else {"FALSE"})
-    cat("\nMother:",
-        if (length(x@Mother) == 0) {
-          ""
-        } else if (is.na(x@Mother)) {
-          "Root"
-        } else {x@Mother})
-    cat("\nSisters:",
-        if (length(x@Sisters) > 0) {
-          x@Sisters
-        } else {"None"})
-    cat("\nChildren:",
-        if (length(x@Children) > 0) {
-          x@Children
-        } else {"None"})
+    cat(
+      "\nIs is a leaf-aggregated:",
+      if ((length(x@IsLeafAndAggregated) > 0) && x@IsLeafAndAggregated) {
+        "TRUE"
+      } else {
+        "FALSE"
+      }
+    )
+    cat(
+      "\nMother:",
+      if (length(x@Mother) == 0) {
+        ""
+      } else if (is.na(x@Mother)) {
+        "Root"
+      } else {
+        x@Mother
+      }
+    )
+    cat(
+      "\nSisters:",
+      if (length(x@Sisters) > 0) {
+        x@Sisters
+      } else {
+        "None"
+      }
+    )
+    cat(
+      "\nChildren:",
+      if (length(x@Children) > 0) {
+        x@Children
+      } else {
+        "None"
+      }
+    )
     cat("\nEstimated weights:", x@Probability)
   }
 )
 
 
-#### - Utility Functions - #### ####
+#### Node Utility Functions ####
 
 #' Get Estimated Weights for Node
 #'
@@ -140,7 +152,7 @@ get_estimated_weights <- function(node) {
   x <- aggregation_table[, -ncol(aggregation_table)]
 
   ## Calcul estimated weights:
-  coefficients <- stats::lm(y~x)$coefficients[-1] # '-1' to exclude intercept
+  coefficients <- stats::lm(y ~ x)$coefficients[-1] # '-1' to exclude intercept
   weight <- coefficients / sum(coefficients)
 
   return(weight)
@@ -172,11 +184,10 @@ get_estimated_weights <- function(node) {
 #'
 #' @importFrom genalg rbga
 create_aggregation_matrix <- function(node,
-                                    expected_weights,
-                                    number_of_tables = 1,
-                                    population_size = 50,
-                                    iterations = 50) {
-
+                                      expected_weights,
+                                      number_of_tables = 1,
+                                      population_size = 50,
+                                      iterations = 50) {
   # Define the minimum and maximum values for the genetic algorithm
   minValue <- rep(1, nrow(node@Aggregation))
   maxValue <- rep(node@RangeScale, nrow(node@Aggregation))
@@ -187,17 +198,18 @@ create_aggregation_matrix <- function(node,
   evaluate <- function(string = c()) {
     y <- as.integer(round(string))
     x <- node@Aggregation[, 1:nbChildren]
-    coefficients <- stats::lm(y~x)$coefficients[-1]
+    coefficients <- stats::lm(y ~ x)$coefficients[-1]
     weights <- coefficients / sum(coefficients)
     return(sum((expected_weights - weights)^2))
   }
 
   # Run the genetic algorithm
   rbga_results <- genalg::rbga(minValue, maxValue,
-                               evalFunc = evaluate,
-                               popSize = population_size,
-                               iters = iterations,
-                               verbose = F)
+    evalFunc = evaluate,
+    popSize = population_size,
+    iters = iterations,
+    verbose = F
+  )
 
   # Get unique rounded population values
   population_values <- rbga_results$population %>%
@@ -207,7 +219,7 @@ create_aggregation_matrix <- function(node,
 
   # Prepare the output list
   out <- list()
-  for(i in 1:number_of_tables) {
+  for (i in 1:number_of_tables) {
     out[[i]] <- cbind(node@Aggregation[, 1:nbChildren], population_values[, i])
   }
 

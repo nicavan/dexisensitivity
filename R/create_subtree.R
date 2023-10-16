@@ -11,7 +11,6 @@
 #'
 #' @export
 create_sub_tree <- function(tree, node_name, avoid_repetition = FALSE) {
-
   # Retrieve the node ID corresponding to the provided node name
   selected_node_id <- get_id(tree@Nodes, node_name)
 
@@ -22,7 +21,7 @@ create_sub_tree <- function(tree, node_name, avoid_repetition = FALSE) {
 
   # If multiple node IDs are found and repetition should be avoided, use only
   # the first node ID
-  if (length(selected_node_id)>1 & avoid_repetition) {
+  if (length(selected_node_id) > 1 & avoid_repetition) {
     selected_node_id <- selected_node_id[1]
   }
 
@@ -56,14 +55,16 @@ create_sub_tree <- function(tree, node_name, avoid_repetition = FALSE) {
   # Note dev :
   #  If handle_multiple don't detect multiple, it returns a data.frame
 
-  leaf_aggregated <- handle_leaf_aggregated(tree, tree_nodes,
-                                            leaf_names, aggregated_names)
+  leaf_aggregated <- handle_leaf_aggregated(
+    tree, tree_nodes,
+    leaf_names, aggregated_names
+  )
   is_leaf_aggregated <- length(leaf_aggregated) > 0 & all(leaf_aggregated != "")
 
   # Update Twin and IsLeafAndAggregated attributes
-  for(i in seq_along(leaf_aggregated)) {
+  for (i in seq_along(leaf_aggregated)) {
     dup <- get_id(tree_nodes, leaf_aggregated[i])
-    for(j in seq_along(dup)) {
+    for (j in seq_along(dup)) {
       tree_nodes[[dup[j]]]@Twin <- setdiff(dup, tree_nodes[[dup[j]]]@Id)
       tree_nodes[[dup[j]]]@IsLeafAndAggregated <- TRUE
     }
@@ -79,23 +80,26 @@ create_sub_tree <- function(tree, node_name, avoid_repetition = FALSE) {
   nb_levels <- max(sapply(paths, length))
 
   attribute_ids <- attribute_ids %>%
-    sapply(function(x) {tree@Nodes[[x]]@Name})
+    sapply(function(x) {
+      tree@Nodes[[x]]@Name
+    })
 
   sub_tree <- new("Tree",
-                  RootName = node_name,
-                  NumberOfAttributes = length(tree_nodes),
-                  NumberOfLeaves = nb_leaves,
-                  Depth = nb_levels,
-                  Nodes = tree_nodes,
-                  Multiple = as.data.frame(multiple),
-                  IsMultiple = is_multiple,
-                  IsLeafAggregated = is_leaf_aggregated,
-                  LeafAggregated = leaf_aggregated,
-                  Attributes = attribute_ids,
-                  Leaves = leaf_names,
-                  Aggregated = aggregated_names,
-                  EvaluationOrder = numeric(0),
-                  Paths = paths)
+    RootName = node_name,
+    NumberOfAttributes = length(tree_nodes),
+    NumberOfLeaves = nb_leaves,
+    Depth = nb_levels,
+    Nodes = tree_nodes,
+    Multiple = as.data.frame(multiple),
+    IsMultiple = is_multiple,
+    IsLeafAggregated = is_leaf_aggregated,
+    LeafAggregated = leaf_aggregated,
+    Attributes = attribute_ids,
+    Leaves = leaf_names,
+    Aggregated = aggregated_names,
+    EvaluationOrder = numeric(0),
+    Paths = paths
+  )
 
   sub_tree@EvaluationOrder <- evaluate_order(sub_tree)
 
@@ -115,7 +119,9 @@ create_sub_tree <- function(tree, node_name, avoid_repetition = FALSE) {
 adjust_for_leaf_aggregated <- function(tree, node_id) {
   adjusted_id <- node_id %>%
     sapply(function(x) {
-      if (!tree@Nodes[[x]]@IsLeaf) {tree@Nodes[[x]]@Id}
+      if (!tree@Nodes[[x]]@IsLeaf) {
+        tree@Nodes[[x]]@Id
+      }
     }) %>%
     unlist()
   return(adjusted_id)
@@ -132,14 +138,15 @@ adjust_for_leaf_aggregated <- function(tree, node_id) {
 #'
 #' @return A vector of attribute IDs representing descendant nodes.
 obtain_attribute_ids <- function(tree, node_id) {
-
   # Extract attribute IDs based on the node path
   attribute_ids <- tree@Nodes %>%
     sapply(function(x) {
       if (grep(paste(tree@Nodes[[node_id]]@NodePath, collapse = " "),
                paste(x@NodePath, collapse = " "),
-               fixed=TRUE) %>%
-          length()) {x@Id}
+               fixed = TRUE) %>%
+          length()) {
+        x@Id
+      }
     }) %>%
     unlist()
 
@@ -159,7 +166,7 @@ obtain_attribute_ids <- function(tree, node_id) {
 #' @return A modified list of tree nodes tailored for the subtree.
 modify_tree_nodes <- function(tree, attribute_ids, paths) {
   tree_nodes <- tree@Nodes[attribute_ids]
-  for(i in seq_along(attribute_ids)) {
+  for (i in seq_along(attribute_ids)) {
     tree_nodes[[i]]@Id <- i
     tree_nodes[[i]]@NodePath <- paths[[i]]
     tree_nodes[[i]]@Depth <- length(tree_nodes[[i]]@NodePath)
@@ -203,10 +210,14 @@ extract_names <- function(tree_nodes, is_leaf = TRUE) {
 #' @return A matrix detailing occurrences of nodes or a data frame if no
 #'   multiple nodes.
 handle_multiple <- function(tree, tree_nodes, leaf_names) {
-  if (!tree@IsMultiple) return(data.frame(Leaf = NA, Occ = NA))
+  if (!tree@IsMultiple) {
+    return(data.frame(Leaf = NA, Occ = NA))
+  }
 
   multiple <- table(leaf_names)
-  if (max(multiple) <= 1) return(data.frame(Occ = NA))
+  if (max(multiple) <= 1) {
+    return(data.frame(Occ = NA))
+  }
 
   multiple <- as.matrix(multiple[multiple > 1])
   colnames(multiple) <- "Occ"
@@ -230,14 +241,18 @@ handle_leaf_aggregated <- function(tree,
                                    tree_nodes,
                                    leaf_names,
                                    aggregated_names) {
-  if (!tree@IsLeafAggregated) return("")
+  if (!tree@IsLeafAggregated) {
+    return("")
+  }
 
   leaf_aggregated <- intersect(leaf_names, aggregated_names)
-  if (length(leaf_aggregated) == 0) return("")
+  if (length(leaf_aggregated) == 0) {
+    return("")
+  }
 
-  for(i in seq_along(leaf_aggregated)) {
+  for (i in seq_along(leaf_aggregated)) {
     dup <- get_id(tree_nodes, leaf_aggregated[i])
-    for(j in seq_along(dup)) {
+    for (j in seq_along(dup)) {
       tree_nodes[[dup[j]]]@Twin <- setdiff(dup, tree_nodes[[dup[j]]]@Id)
       tree_nodes[[dup[j]]]@IsLeafAndAggregated <- TRUE
     }

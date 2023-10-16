@@ -11,7 +11,6 @@
 #'
 #' @export
 create_synoptique <- function(tree, option, depth = NA) {
-
   # Determine if a subtree is required based on depth
   if (!is.na(depth) && depth != tree@RootName) {
     tree <- create_sub_tree(tree, depth)
@@ -139,19 +138,28 @@ get_box_coordinates <- function(df) {
 create_plot <- function(df2) {
   # Design synoptic plot
   p <- ggplot(data = df2) +
-    geom_rect(aes_string(xmin = 'xmin', xmax = 'xmax',
-                         ymin = 'ymin', ymax = 'ymax',
-                         fill = 'norm_eval'),
-              color = "black", size = 0.5) +
-    geom_text(aes_string(x = 'mean_x', y = 'mean_y', label = 'label'),
-              hjust = 0.5, vjust = 0.5, color = "black", size = 3) +
-    scale_fill_gradient2(low = "red", mid = "yellow", high = "green",
-                         name = "Normed Evaluation", midpoint = 0.5) +
+    geom_rect(
+      aes_string(
+        xmin = "xmin", xmax = "xmax",
+        ymin = "ymin", ymax = "ymax",
+        fill = "norm_eval"
+      ),
+      color = "black", size = 0.5
+    ) +
+    geom_text(aes_string(x = "mean_x", y = "mean_y", label = "label"),
+      hjust = 0.5, vjust = 0.5, color = "black", size = 3
+    ) +
+    scale_fill_gradient2(
+      low = "red", mid = "yellow", high = "green",
+      name = "Normed Evaluation", midpoint = 0.5
+    ) +
     theme_minimal() +
-    theme(axis.text = element_blank(),
-          axis.ticks = element_blank(),
-          axis.title = element_blank(),
-          legend.position = "bottom") +
+    theme(
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      axis.title = element_blank(),
+      legend.position = "bottom"
+    ) +
     scale_y_reverse(breaks = 1:7, labels = paste("Leaf", 1:7)) +
     scale_size_continuous(range = c(3, 6), guide = "none")
 
@@ -305,11 +313,9 @@ create_list_synoptique <- function(tree, options, depth = NA) {
   list_synop <- list()
 
   # Generate a synoptic plot for each column in options
-  for(i in 1:dim(options)[2]) {
+  for (i in 1:dim(options)[2]) {
     list_synop[[i]] <- create_synoptique(tree, as.matrix(options[, i]), depth)
   }
 
   return(list_synop)
 }
-
-

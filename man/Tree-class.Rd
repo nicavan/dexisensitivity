@@ -61,6 +61,7 @@ LeafAggregated nodes.}
 }}
 
 \seealso{
-\code{\link{print.Tree}}, \code{\link{show.Tree}},
+\code{\link{print.Tree}},
+\code{\link{show.Tree}},
 \code{\link{describe.Tree}}
 }

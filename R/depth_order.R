@@ -34,7 +34,7 @@ depth_order <- function(tree) {
   }
 
   # Order the attributes by depth in descending order
-  ordered_depth_data <- depth_data[order(depth_data$depth, decreasing = TRUE),]
+  ordered_depth_data <- depth_data[order(depth_data$depth, decreasing = TRUE), ]
 
   return(ordered_depth_data$name)
 }

@@ -23,16 +23,14 @@
 #'
 #' @export
 create_tree <- function(main_tree) {
-
   # Get root(s) name(s) of the DEXi Tree
-  list_root_name <- sapply(XML::getNodeSet(doc = main_tree,
-                                           path = "/DEXi/ATTRIBUTE/NAME"),
-                           XML::xmlValue)
-  list_tree <- list()
+  roots_xml <- XML::getNodeSet(doc = main_tree, path = "/DEXi/ATTRIBUTE/NAME")
+  list_root_name <- sapply(roots_xml, XML::xmlValue)
+
+  list_tree <- list() # To stock created Trees
 
   # For each Tree's roots
-  for(i_root_name in seq_along(list_root_name)) {
-
+  for (i_root_name in seq_along(list_root_name)) {
     root_name <- list_root_name[i_root_name]
     attributes <- get_dexi_attributes(main_tree, root_name)
     number_of_attributes <- length(attributes)
@@ -40,7 +38,7 @@ create_tree <- function(main_tree) {
 
     # Creates the nodes
     tree_nodes <- lapply(list_path, create_node, main_tree = main_tree)
-    for(i in 1:number_of_attributes) {
+    for (i in 1:number_of_attributes) {
       tree_nodes[[i]]@Id <- i
     }
 
@@ -48,22 +46,34 @@ create_tree <- function(main_tree) {
     number_of_levels <- max(sapply(list_path, length))
 
     # List of leaves
-    leaves <- unlist(sapply(tree_nodes,
-                            function(x) {if(x@IsLeaf) x@Name}))
+    leaves <- sapply(
+      tree_nodes,
+      function(x) {
+        if (x@IsLeaf) x@Name
+      }
+    ) %>%
+      unlist()
 
     # List of Aggregated
-    aggregated <- unlist(sapply(tree_nodes,
-                                function(x) {if(!x@IsLeaf) x@Name}))
+    aggregated <- sapply(
+      tree_nodes,
+      function(x) {
+        if (!x@IsLeaf) x@Name
+      }
+    ) %>%
+      unlist()
 
     # Leaf-Aggregated attribute
-    leaf_aggregated_result <- process_aggregated_leaf(tree_nodes,
-                                                      leaves,
-                                                      aggregated)
+    leaf_aggregated_result <- process_aggregated_leaf(
+      tree_nodes,
+      leaves,
+      aggregated
+    )
+
     # Extract the result
     leaf_aggregated <- leaf_aggregated_result$leaf_aggregated
     is_leaf_aggregated <- leaf_aggregated_result$is_leaf_aggregated
     tree_nodes <- leaf_aggregated_result$tree_nodes
-
 
     # Check for duplicated leaves
     duplicated_leaf_result <- process_duplicated_leaf(tree_nodes, leaves)
@@ -73,28 +83,32 @@ create_tree <- function(main_tree) {
 
     # Get the true leaves
     leaves <- unique(leaves) # Remove duplicates
-    if(is_leaf_aggregated) {
-      leaves <- leaves[-c(which(is.element(leaves,
-                                           leaf_aggregated)))]
+    if (is_leaf_aggregated) {
+      # Find the indices of elements in leaves that are also in leaf_aggregated
+      indices_to_remove <- which(leaves %in% leaf_aggregated)
+
+      # Remove those indices from 'leaves'
+      leaves <- leaves[-indices_to_remove]
     }
     number_of_leaves <- length(leaves)
 
     # Define the order to evaluate a tree if LeafAggregated node
     tree <- new("Tree",
-                RootName = root_name,
-                NumberOfAttributes = number_of_attributes,
-                NumberOfLeaves = number_of_leaves,
-                Depth = number_of_levels,
-                Nodes = tree_nodes,
-                Multiple = as.data.frame(multiple),
-                IsMultiple = is_multiple,
-                IsLeafAggregated = is_leaf_aggregated,
-                LeafAggregated = leaf_aggregated,
-                Attributes = attributes,
-                Leaves = leaves,
-                Aggregated = aggregated,
-                EvaluationOrder = numeric(0),
-                Paths = list_path)
+      RootName = root_name,
+      NumberOfAttributes = number_of_attributes,
+      NumberOfLeaves = number_of_leaves,
+      Depth = number_of_levels,
+      Nodes = tree_nodes,
+      Multiple = as.data.frame(multiple),
+      IsMultiple = is_multiple,
+      IsLeafAggregated = is_leaf_aggregated,
+      LeafAggregated = leaf_aggregated,
+      Attributes = attributes,
+      Leaves = leaves,
+      Aggregated = aggregated,
+      EvaluationOrder = numeric(0),
+      Paths = list_path
+    )
 
     tree@EvaluationOrder <- evaluate_order(tree)
 
@@ -123,8 +137,10 @@ create_tree <- function(main_tree) {
 #'   XML tree.
 get_dexi_attributes <- function(main_tree, root_name) {
   to_search <- paste0("//ATTRIBUTE[NAME='", root_name, "']//ATTRIBUTE/NAME")
-  attributes <- c(root_name,
-                  XML::xmlValue(XML::getNodeSet(main_tree, to_search)))
+  attributes <- c(
+    root_name,
+    XML::xmlValue(XML::getNodeSet(main_tree, to_search))
+  )
 }
 
 
@@ -157,28 +173,37 @@ get_paths <- function(attributes, main_tree, root_name) {
     # Reversing the search ensures we consider deeper paths first.
     for (node_count in (i - 1):1) {
       # If the path is found we can exit the loop
-      if (path_found) {break}
+      if (path_found) {
+        break
+      }
 
       # Get the chain for the current path node
       chain <- get_chaine(list_path[[node_count]])
 
-      # Search in the main_tree for the attribute. We are looking for the
-      # attribute in the XML tree to find its exact location.
-      if (XML::getNodeSet(main_tree,
-                          paste0(chain, "/ATTRIBUTE[NAME='",
-                                 attributes[i], "']")) %>%
-          sapply(XML::xmlSize) %>%
-          length()) {
 
-        # We check that the current path has not already been identified to
-        # prevent duplicates.
-        if (list_path %>%
-            lapply(function(x) {
-              identical(c(list_path[[node_count]], attributes[i]), x)
-            }) %>%
-            unlist() %>%
-            sum() %>%
-            `!`) {
+      ## Find exact attribute location
+      # get the depth of the node
+      xml_path <- paste0(chain, "/ATTRIBUTE[NAME='", attributes[i], "']")
+      node_set <- XML::getNodeSet(main_tree, xml_path)
+      node_set_length <- sapply(node_set, XML::xmlSize) %>%
+        length()
+
+      # If the path exists
+      if (node_set_length) {
+        # Create the path to check against existing paths
+        check_path <- c(list_path[[node_count]], attributes[i])
+
+        # Check if the path is already in the list
+        is_duplicate <- sapply(
+          list_path,
+          function(existing_path) {
+            identical(check_path, existing_path)
+          }
+        ) %>%
+          any()
+
+        # Use the negation of is_duplicate for the logic you need
+        if (!is_duplicate) {
           path_found <- TRUE
           list_path[[i]] <- c(list_path[[node_count]], attributes[i])
         }
@@ -186,7 +211,7 @@ get_paths <- function(attributes, main_tree, root_name) {
     }
   }
 
-  return(list_path)
+  list_path
 }
 
 
@@ -234,9 +259,11 @@ process_aggregated_leaf <- function(tree_nodes, leaves, aggregated) {
     is_leaf_aggregated <- FALSE
   }
 
-  return(list(leaf_aggregated = leaf_aggregated,
-              is_leaf_aggregated = is_leaf_aggregated,
-              tree_nodes = tree_nodes))
+  return(list(
+    leaf_aggregated = leaf_aggregated,
+    is_leaf_aggregated = is_leaf_aggregated,
+    tree_nodes = tree_nodes
+  ))
 }
 
 
@@ -293,9 +320,11 @@ process_duplicated_leaf <- function(tree_nodes, leaves) {
     multiple <- data.frame(Occ = NA)
   }
 
-  return(list(multiple = multiple,
-              is_multiple = is_multiple,
-              tree_nodes = tree_nodes))
+  return(list(
+    multiple = multiple,
+    is_multiple = is_multiple,
+    tree_nodes = tree_nodes
+  ))
 }
 
 
@@ -330,7 +359,6 @@ process_duplicated_leaf <- function(tree_nodes, leaves) {
 #'
 #' @export
 create_node <- function(node_path, main_tree) {
-
   is_leaf <- determine_leaf_status(node_path, main_tree)
   children <- determine_children(node_path, main_tree, is_leaf)
   mother <- determine_mother(node_path)
@@ -338,24 +366,27 @@ create_node <- function(node_path, main_tree) {
   scale_node <- determine_scale_node(node_path, main_tree)
   scale_label <- determine_scale_label(node_path, main_tree)
   aggregation <- determine_aggregation(node_path, main_tree, is_leaf, children)
-  weight_list <- determine_weight_list(node_path, main_tree, is_leaf,
-                                       aggregation, children)
+  weight_list <- determine_weight_list(
+    node_path, main_tree, is_leaf,
+    aggregation, children
+  )
 
   # Output
   out <- new("Node",
-             Name = node_path[length(node_path)],
-             Depth = length(node_path),
-             Twin = numeric(0),
-             IsLeaf = is_leaf,
-             IsLeafAndAggregated = FALSE,
-             Mother = mother,
-             Sisters = sisters,
-             Children = children,
-             Aggregation = aggregation,
-             RangeScale = scale_node,
-             ScaleLabel = scale_label,
-             Probability = weight_list,
-             NodePath = node_path)
+    Name = node_path[length(node_path)],
+    Depth = length(node_path),
+    Twin = numeric(0),
+    IsLeaf = is_leaf,
+    IsLeafAndAggregated = FALSE,
+    Mother = mother,
+    Sisters = sisters,
+    Children = children,
+    Aggregation = aggregation,
+    RangeScale = scale_node,
+    ScaleLabel = scale_label,
+    Probability = weight_list,
+    NodePath = node_path
+  )
 }
 
 
@@ -371,15 +402,19 @@ create_node <- function(node_path, main_tree) {
 #'
 #' @keywords internal
 determine_leaf_status <- function(node_path, main_tree) {
-  if (XML::getNodeSet(main_tree,
-                      paste0(get_chaine(node_path), "/FUNCTION")) %>%
-      sapply(XML::xmlSize) %>%
-      length()) {
-    FALSE
-  } else {
-    TRUE
-  }
+  # Construct the XML path
+  xml_path <- paste0(get_chaine(node_path), "/FUNCTION")
+
+  # Find nodes matching the path
+  node_set <- XML::getNodeSet(main_tree, xml_path)
+
+  # Check if any nodes were found
+  has_nodes <- length(sapply(node_set, XML::xmlSize)) > 0
+
+  # Return the opposite of has_nodes (since you want TRUE if no nodes were found)
+  return(!has_nodes)
 }
+
 
 
 #' Find the Children of a Node
@@ -398,9 +433,13 @@ determine_children <- function(node_path, main_tree, is_leaf) {
   if (is_leaf) {
     vector(mode = "character", length = 0)
   } else {
-    sapply(XML::getNodeSet(main_tree,
-                           paste0(get_chaine(node_path), "/ATTRIBUTE/NAME")),
-           XML::xmlValue)
+    sapply(
+      XML::getNodeSet(
+        main_tree,
+        paste0(get_chaine(node_path), "/ATTRIBUTE/NAME")
+      ),
+      XML::xmlValue
+    )
   }
 }
 
@@ -438,8 +477,10 @@ determine_mother <- function(node_path) {
 determine_sisters <- function(node_path, main_tree) {
   if (length(node_path) > 1) {
     sisters <- main_tree %>%
-      XML::getNodeSet(paste0(get_chaine(node_path[1:length(node_path) - 1]),
-                             "/ATTRIBUTE/NAME")) %>%
+      XML::getNodeSet(paste0(
+        get_chaine(node_path[1:length(node_path) - 1]),
+        "/ATTRIBUTE/NAME"
+      )) %>%
       sapply(XML::xmlValue)
   } else {
     sisters <- vector(mode = "character", length = 0)
@@ -508,7 +549,6 @@ determine_scale_label <- function(node_path, main_tree) {
 determine_aggregation <- function(node_path, main_tree, is_leaf, children) {
   # Check if the node is not a leaf
   if (!is_leaf) {
-
     # Retrieve the low function values from the XML
     low_function_char <- main_tree %>%
       XML::getNodeSet(paste0(get_chaine(node_path), "/FUNCTION/LOW")) %>%
@@ -521,7 +561,7 @@ determine_aggregation <- function(node_path, main_tree, is_leaf, children) {
     # Determine the scales from nodes n-1 using a vectorized approach
     children_paths <- sapply(children, function(child) {
       get_chaine(c(node_path, child))
-      })
+    })
 
     children_scales <- children_paths %>%
       sapply(function(path) {
@@ -550,7 +590,6 @@ determine_aggregation <- function(node_path, main_tree, is_leaf, children) {
 
     # Set the column names for the aggregation matrix
     colnames(aggregation) <- c(children, node_path[length(node_path)])
-
   } else {
     # If the node is a leaf, set the aggregation to a matrix containing 0
     aggregation <- as.matrix(0)
@@ -588,10 +627,12 @@ determine_weight_list <- function(node_path, main_tree,
     # If there's only one child, set the weight to 100
     weight_list <- 100
   } else if (main_tree %>%
-             XML::getNodeSet(paste0(get_chaine(node_path),
-                                    "/FUNCTION/WEIGHTS")) %>%
-             sapply(XML::xmlValue) %>%
-             length()) {
+    XML::getNodeSet(paste0(
+      get_chaine(node_path),
+      "/FUNCTION/WEIGHTS"
+    )) %>%
+    sapply(XML::xmlValue) %>%
+    length()) {
     # If specific weights are defined in the XML, retrieve and convert them
     weight_list <- main_tree %>%
       XML::getNodeSet(paste0(get_chaine(node_path), "/FUNCTION/WEIGHTS")) %>%
@@ -618,9 +659,8 @@ determine_weight_list <- function(node_path, main_tree,
 #'
 #' @export
 get_chaine <- function(node_path) {
-
-  for(k in 1:length(node_path)) {
-    if (k==1) {
+  for (k in 1:length(node_path)) {
+    if (k == 1) {
       chaine <- paste0("//ATTRIBUTE[NAME='", node_path[k], "']")
     } else {
       chaine <- paste0(chaine, "/ATTRIBUTE[NAME='", node_path[k], "']")
@@ -670,7 +710,6 @@ get_id <- function(list_nodes, node_name) {
 #' @return A numeric vector representing the order in which nodes should be
 #'   evaluated.
 evaluate_order <- function(tree) {
-
   # Early exit if the tree doesn't have aggregated leaves, as there's no order
   # to evaluate
   if (!tree@IsLeafAggregated) {
@@ -683,7 +722,7 @@ evaluate_order <- function(tree) {
   results <- stats::setNames(rep(-1, tree@NumberOfAttributes), tree@Attributes)
   results[tree@Leaves] <- 1
 
-  eval_order <- numeric(0)  # Will store the final order of evaluation
+  eval_order <- numeric(0) # Will store the final order of evaluation
   leaf_nodes <- tree@LeafAggregated
 
   # We'll iterate over leaf nodes, trying to evaluate them. However, some might
@@ -697,9 +736,11 @@ evaluate_order <- function(tree) {
     # haven't, it means this node might depend on another one and thus, we'll
     # skip it for now.
     for (i in seq_along(leaf_nodes)) {
-      if (are_leaves_unevaluated(get_leaves(tree, leaf_nodes[i]),
-                                 results,
-                                 tree@Nodes)) {
+      if (are_leaves_unevaluated(
+        get_leaves(tree, leaf_nodes[i]),
+        results,
+        tree@Nodes
+      )) {
         nodes_to_skip <- c(nodes_to_skip, leaf_nodes[i])
       } else {
         results[leaf_nodes[i]] <- 1
@@ -707,8 +748,10 @@ evaluate_order <- function(tree) {
         # Add the node to the final evaluation order. In cases where a node has
         # multiple IDs, we're only interested in the non-leaf ones.
         node_id <- get_id(tree@Nodes, leaf_nodes[i])
-        eval_order <- c(eval_order,
-                        Filter(function(id) !tree@Nodes[[id]]@IsLeaf, node_id))
+        eval_order <- c(
+          eval_order,
+          Filter(function(id) !tree@Nodes[[id]]@IsLeaf, node_id)
+        )
       }
     }
 
@@ -756,7 +799,6 @@ are_leaves_unevaluated <- function(leaves, results, nodes) {
 #'
 #' @export
 get_leaves <- function(tree, node_id) {
-
   # If node_id is character, convert it to numeric
   if (is.character(node_id)) {
     leaf_id <- get_id(tree@Nodes, node_id)
@@ -767,8 +809,12 @@ get_leaves <- function(tree, node_id) {
 
   # Fetch nodes whose path matches the specified node's path
   leaf_nodes <- unlist(lapply(tree@Nodes, function(x) {
-    if (length(grep(paste(tree@Nodes[[node_id]]@NodePath, collapse = ""),
-                    paste(x@NodePath, collapse = "")))) x@Id
+    if (length(grep(
+      paste(tree@Nodes[[node_id]]@NodePath, collapse = ""),
+      paste(x@NodePath, collapse = "")
+    ))) {
+      x@Id
+    }
   }))
 
   # Filter out the leaves from the fetched nodes and return their IDs
@@ -778,4 +824,3 @@ get_leaves <- function(tree, node_id) {
 
   return(leaves_ids)
 }
-

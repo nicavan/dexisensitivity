@@ -1,8 +1,4 @@
-# S4 Tree Class #
-# # # # # # # # #
-
-
-#### - Tree Class Definition - #### ####
+#### Tree Class Definition ####
 
 #' An S4 class to represent a Tree
 #'
@@ -41,8 +37,9 @@
 #'
 #' @return An object of class Tree.
 #'
-#' @seealso \code{\link{print.Tree}}, \code{\link{show.Tree}},
-#'   \code{\link{describe.Tree}}
+#' @seealso \code{\link{print.Tree}},
+#'  \code{\link{show.Tree}},
+#'  \code{\link{describe.Tree}}
 #'
 #' @aliases Tree
 #'
@@ -68,7 +65,7 @@ methods::setClass(
 )
 
 
-#### - print Method - #### ####
+#### print Method ####
 
 #' print method for Tree class object
 #'
@@ -90,29 +87,38 @@ setMethod(
     cat("Root name:", x@RootName)
     cat("\nNumber of attributes:", length(x@Attributes))
     cat("\nNumber of aggregated attributes:", length(x@Aggregated))
-    cat("\nNumber of true leaves (no multiple, no aggregated):",
-        x@NumberOfLeaves)
+    cat(
+      "\nNumber of true leaves (no multiple, no aggregated):",
+      x@NumberOfLeaves
+    )
     cat("\nMaximum depth:", x@Depth)
-    cat("\nList of repeated aggregated nodes:",
-        if(length(which(table(x@Aggregated) > 1))) {
-          names(which(table(x@Aggregated) > 1))
-        } else {"Non"}
+    cat(
+      "\nList of repeated aggregated nodes:",
+      if (length(which(table(x@Aggregated) > 1))) {
+        names(which(table(x@Aggregated) > 1))
+      } else {
+        "Non"
+      }
     )
 
-    if(length(x@IsMultiple) > 0 && x@IsMultiple) {
+    if (length(x@IsMultiple) > 0 && x@IsMultiple) {
       cat("\nMultiple leaves: \n")
       print(x@Multiple)
-    } else {cat("\nNo multiple leaves")}
+    } else {
+      cat("\nNo multiple leaves")
+    }
 
-    if(length(x@IsLeafAggregated) > 0 && x@IsLeafAggregated) {
+    if (length(x@IsLeafAggregated) > 0 && x@IsLeafAggregated) {
       cat("\nLeaf-Aggregated attributes: \n")
       print(x@LeafAggregated)
-    } else {cat("\nNo Leaf-Aggregated Leaf")}
+    } else {
+      cat("\nNo Leaf-Aggregated Leaf")
+    }
   }
 )
 
 
-#### - show Method - #### ####
+#### show Method ####
 
 #' show method for Tree class object
 #'
@@ -135,7 +141,6 @@ setMethod(
 setMethod(
   "show", "Tree",
   function(object) {
-
     # The tree might not have any attributes - handle this edge case first
     if (identical(object@NumberOfAttributes, numeric(0))) {
       cat("*** Tree without attributes ***")
@@ -144,8 +149,7 @@ setMethod(
       digit <- calculate_digit(object@NumberOfAttributes)
 
       # Iterate over each attribute of the tree
-      for(i in 1:object@NumberOfAttributes) {
-
+      for (i in 1:object@NumberOfAttributes) {
         # We use different prefixes to signify the type and position of a node
         if (i == 1) {
           prefix <- "Z : "
@@ -202,7 +206,7 @@ calculate_digit <- function(number_of_attributes) {
 }
 
 
-#### - describe Method - #### ####
+#### describe Method ####
 
 #' Title
 #'
@@ -211,7 +215,9 @@ calculate_digit <- function(number_of_attributes) {
 #' @return No explicit return.
 #'
 #' @export
-setGeneric("describe", function(object) {standardGeneric("describe")})
+setGeneric("describe", function(object) {
+  standardGeneric("describe")
+})
 
 
 #' describe method for Tree class object
@@ -242,4 +248,3 @@ setMethod(
       invisible() # we only want to see node prints
   }
 )
-

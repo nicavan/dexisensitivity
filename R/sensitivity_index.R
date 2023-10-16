@@ -16,7 +16,6 @@ si_dexi <- function(tree,
                     file_name = "SI_out.csv",
                     is_file = TRUE,
                     avoid_repetition = FALSE) {
-
   # Initialize SI list for each aggregated node in the decision tree
   si <- vector(mode = "list", length = length(tree@Aggregated))
   names(si) <- tree@Aggregated
@@ -25,7 +24,8 @@ si_dexi <- function(tree,
   for (node_name in tree@Aggregated) {
     # Generate a subtree based on the current node and avoidance settings
     sub_tree <- create_sub_tree(tree, node_name,
-                                avoid_repetition = avoid_repetition)
+      avoid_repetition = avoid_repetition
+    )
 
     # Prepare a matrix to store leaf status and depth information for each
     # attribute
@@ -33,8 +33,8 @@ si_dexi <- function(tree,
 
     # Populate the leaf status and depth information
     for (j in 2:sub_tree@NumberOfAttributes) {
-      leaf_depth_info[j-1, 1] <- sub_tree@Nodes[[j]]@IsLeaf
-      leaf_depth_info[j-1, 2] <- sub_tree@Nodes[[j]]@Depth - sub_tree@Nodes[[1]]@Depth + 1
+      leaf_depth_info[j - 1, 1] <- sub_tree@Nodes[[j]]@IsLeaf
+      leaf_depth_info[j - 1, 2] <- sub_tree@Nodes[[j]]@Depth - sub_tree@Nodes[[1]]@Depth + 1
     }
 
     # Calculate the Sensitivity Index for the subtree using the external
@@ -43,12 +43,18 @@ si_dexi <- function(tree,
 
     # Merge Sensitivity Index results with leaf and depth data, then store in
     # the main SI list
-    si[[node_name]] <- matrix(c(calculated_si[c(sub_tree@Attributes[-1])],
-                                leaf_depth_info),
-                              byrow = FALSE,
-                              ncol = 3,
-                              dimnames = list(c(sub_tree@Attributes[-1]),
-                                              c("SI", "Leaf", "Depth")))
+    si[[node_name]] <- matrix(
+      c(
+        calculated_si[c(sub_tree@Attributes[-1])],
+        leaf_depth_info
+      ),
+      byrow = FALSE,
+      ncol = 3,
+      dimnames = list(
+        c(sub_tree@Attributes[-1]),
+        c("SI", "Leaf", "Depth")
+      )
+    )
   }
 
   # Write the SI values to a file if required
@@ -56,19 +62,21 @@ si_dexi <- function(tree,
     for (i in 1:length(tree@Aggregated)) {
       # First, write the node name header
       write.table(names(si)[i],
-                  file = file_name,
-                  append = TRUE,
-                  sep = "",
-                  row.names = FALSE,
-                  col.names = FALSE)
+        file = file_name,
+        append = TRUE,
+        sep = "",
+        row.names = FALSE,
+        col.names = FALSE
+      )
 
       # Next, append the corresponding SI values for that node
       write.table(si[[i]],
-                  file = file_name,
-                  append = TRUE,
-                  sep = ",",
-                  row.names = TRUE,
-                  col.names = FALSE)
+        file = file_name,
+        append = TRUE,
+        sep = ",",
+        row.names = TRUE,
+        col.names = FALSE
+      )
     }
   }
 
@@ -86,34 +94,35 @@ si_dexi <- function(tree,
 #'
 #' @return A vector of Sensitivity Indices for each attribute in the tree.
 get_sensitivity_index <- function(tree, avoid_repetition = FALSE) {
-
   # Initialize root name and attribute weights
   root_name <- tree@RootName
   attribute_weights <- vector(mode = "list", length = tree@NumberOfAttributes)
   names(attribute_weights) <- tree@Attributes
 
   # Populate the weights from the nodes
-  for(index in 1:tree@NumberOfAttributes) {
+  for (index in 1:tree@NumberOfAttributes) {
     attribute_weights[[index]] <- tree@Nodes[[index]]@Probability
   }
 
   # Prepare to store conditional probabilities
-  conditional_probabilities <- vector(mode = "list",
-                                      length = tree@NumberOfAttributes)
+  conditional_probabilities <- vector(
+    mode = "list",
+    length = tree@NumberOfAttributes
+  )
   names(conditional_probabilities) <- tree@Attributes
 
   # Determine the order to process nodes based on their depth in the tree
   ordered_depth <- depth_order(tree)
 
   # Process each node in reverse depth order
-  for(node_name in ordered_depth) {
+  for (node_name in ordered_depth) {
     # Get the ID of the node
     node_id <- get_node_id(tree, node_name, avoid_repetition)
     node <- tree@Nodes[[node_id]]
 
     # Get weights of the node's children for direct descendant calculations
     child_weights <- vector(mode = "list", length = length(node@Children))
-    for(i in seq(node@Children)) {
+    for (i in seq(node@Children)) {
       child_weights[[i]] <- attribute_weights[[node@Children[[i]]]]
     }
 
@@ -128,15 +137,21 @@ get_sensitivity_index <- function(tree, avoid_repetition = FALSE) {
     indirect_cond_probs <- compute_indirect_probabilities(node, computed_probabilities, conditional_probabilities, tree, avoid_repetition)
 
     attribute_weights[[node_name]] <- node_weights
-    conditional_probabilities[[node_name]] <- c(direct_cond_probs,
-                                                indirect_cond_probs)
+    conditional_probabilities[[node_name]] <- c(
+      direct_cond_probs,
+      indirect_cond_probs
+    )
   }
 
-  combined_probs <- c(conditional_probabilities[[root_name]],
-                      attribute_weights[root_name])
+  combined_probs <- c(
+    conditional_probabilities[[root_name]],
+    attribute_weights[root_name]
+  )
   weights <- attribute_weights[names(conditional_probabilities[[root_name]])]
-  sensitivity_index <- calculate_sensitivity_indices(conditional_prob_list = combined_probs,
-                                                     weight_list = weights)
+  sensitivity_index <- calculate_sensitivity_indices(
+    conditional_prob_list = combined_probs,
+    weight_list = weights
+  )
 
   return(sensitivity_index)
 }
@@ -160,7 +175,9 @@ get_node_id <- function(tree, node_name, avoid_repetition) {
   # If multiple nodes have the same name, filter out the leaf nodes
   if (length(id) > 1) {
     id <- sapply(id, function(x) {
-      if (!tree@Nodes[[x]]@IsLeaf) {x}
+      if (!tree@Nodes[[x]]@IsLeaf) {
+        x
+      }
     }) %>% unlist()
   }
 
@@ -185,8 +202,10 @@ get_node_id <- function(tree, node_name, avoid_repetition) {
 #' @return A list of computed direct probabilities.
 compute_direct_probabilities <- function(node, child_weights) {
   # Compute the direct probabilities based on the node's aggregation type
-  probs <- calculate_conditional_probabilities(node@Aggregation, child_weights,
-                                               node@RangeScale)
+  probs <- calculate_conditional_probabilities(
+    node@Aggregation, child_weights,
+    node@RangeScale
+  )
 
   # If the probabilities don't match the node's range scale, adjust them
   if (node@RangeScale != length(probs[[length(node@Children) + 1]])) {
@@ -212,9 +231,13 @@ adjust_probas_for_range_scale <- function(probs, node) {
 
   # Make adjustments to ensure the probabilities fit the node's range scale
   probs[[num_children + 1]][c((num_values + 1):node@RangeScale)] <- 0
-  names(probs[[num_children + 1]]) <- c(names(probs[[num_children + 1]][1:num_values]),
-                                        setdiff(as.character(seq(1:node@RangeScale)),
-                                                names(probs[[num_children + 1]])))
+  names(probs[[num_children + 1]]) <- c(
+    names(probs[[num_children + 1]][1:num_values]),
+    setdiff(
+      as.character(seq(1:node@RangeScale)),
+      names(probs[[num_children + 1]])
+    )
+  )
   return(probs)
 }
 
@@ -240,14 +263,16 @@ compute_indirect_probabilities <- function(node, probs,
   indirect_probs <- vector(mode = "list", length = 0)
 
   # Calculate the indirect probabilities for each child of the node
-  for(i in seq(node@Children)) {
-    child_id  <- get_node_id(tree, node@Children[[i]], avoid_repetition)
+  for (i in seq(node@Children)) {
+    child_id <- get_node_id(tree, node@Children[[i]], avoid_repetition)
     child <- tree@Nodes[[child_id]]
     if (!child@IsLeaf) {
       direct_ancestor_probs <- conditional_probabilities[[node@Children[[i]]]]
-      descendant_probs <- vector(mode = "list",
-                                 length = length(direct_ancestor_probs))
-      for(j in seq(direct_ancestor_probs)) {
+      descendant_probs <- vector(
+        mode = "list",
+        length = length(direct_ancestor_probs)
+      )
+      for (j in seq(direct_ancestor_probs)) {
         descendant_probs[[j]] <- direct_ancestor_probs[[j]] %*% probs[[node@Children[[i]]]]
       }
       names(descendant_probs) <- names(direct_ancestor_probs)
@@ -287,7 +312,9 @@ calculate_conditional_probabilities <- function(input_table,
   # Number of factors A (num_factors)
   # and numbers of levels of the factors A (s_levels) and of Y (sy)
   num_factors <- ncol(a_matrix)
-  s_levels <- apply(a_matrix, 2, function(x) { length(unique(x)) })
+  s_levels <- apply(a_matrix, 2, function(x) {
+    length(unique(x))
+  })
 
   if (missing(y_levels)) {
     y_levels <- sort(unique(y_vector))
@@ -295,7 +322,9 @@ calculate_conditional_probabilities <- function(input_table,
 
   # Assign equal weights if weight_list is missing
   if (missing(weight_list)) {
-    weight_list <- lapply(s_levels, function(n) { rep(1, n) / n })
+    weight_list <- lapply(s_levels, function(n) {
+      rep(1, n) / n
+    })
   }
 
   # Weights of the table rows for each A variable and for Y

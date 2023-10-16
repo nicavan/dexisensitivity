@@ -11,7 +11,6 @@
 #' @return No explicit return. The function prints the estimated execution time.
 #' @export
 estimate_mc_time <- function(tree, num_runs, num_test = 50) {
-
   # Generate sample options for test simulations using create_options function
   options_matrix <- create_options(tree, num_options = num_test, seed = NULL)
 
@@ -24,8 +23,10 @@ estimate_mc_time <- function(tree, num_runs, num_test = 50) {
 
   # Estimate and print the required time for desired simulations
   estimated_minutes <- as.numeric(difftime(end_time, start_time, units = "mins")) * num_runs / num_test
-  cat("\n Estimated time for", num_runs,
-      "simulations:", round(estimated_minutes, 2), "minutes\n")
+  cat(
+    "\n Estimated time for", num_runs,
+    "simulations:", round(estimated_minutes, 2), "minutes\n"
+  )
 }
 
 
@@ -43,8 +44,7 @@ estimate_mc_time <- function(tree, num_runs, num_test = 50) {
 #' @return A matrix representing the Monte Carlo simulation results.
 #'
 #' @export
-monte_carlo<- function(tree, num_runs, write_to_file = FALSE, verbose = TRUE) {
-
+monte_carlo <- function(tree, num_runs, write_to_file = FALSE, verbose = TRUE) {
   if (verbose) {
     cat("\n Starting simulation at: ", date())
   }
@@ -61,8 +61,9 @@ monte_carlo<- function(tree, num_runs, write_to_file = FALSE, verbose = TRUE) {
   # Save options to a file if required
   if (write_to_file) {
     write.table(options_matrix,
-                file = "MC options.csv",
-                sep = ",", row.names = TRUE, col.names = NA)
+      file = "MC options.csv",
+      sep = ",", row.names = TRUE, col.names = NA
+    )
   }
 
   if (verbose) {
@@ -90,7 +91,6 @@ monte_carlo<- function(tree, num_runs, write_to_file = FALSE, verbose = TRUE) {
 #'
 #' @export
 show_mc_results <- function(node, mc_results, num_runs) {
-
   node_type <- ifelse(node@IsLeaf, "L", "A")
 
   bar_data <- mc_results[node@Name, ] %>% table()
@@ -114,8 +114,9 @@ show_mc_results <- function(node, mc_results, num_runs) {
   )
 
   text(bar_positions, bar_data,
-       format(round(bar_data, 2)),
-       xpd = TRUE, cex = 0.8, pos = 3)
+    format(round(bar_data, 2)),
+    xpd = TRUE, cex = 0.8, pos = 3
+  )
 
   legend(
     "topright",
@@ -124,12 +125,12 @@ show_mc_results <- function(node, mc_results, num_runs) {
   )
 
   # Save the bar lengths to a .csv file
-  cat(row.names = node@Name,
-      bar_data,
-      file = "MC bar lengths.csv",
-      sep = ",", fill = TRUE, append = TRUE)
+  cat(
+    row.names = node@Name,
+    bar_data,
+    file = "MC bar lengths.csv",
+    sep = ",", fill = TRUE, append = TRUE
+  )
 
   return(bar_data)
 }
-
-

@@ -11,7 +11,6 @@
 #'
 #' @export
 estimate_aov_time <- function(tree, test_runs = 50) {
-
   # Compute the total number of simulations based on tree leaves
   total_simulations <- tree@Nodes %>%
     sapply(function(node) {
@@ -21,14 +20,18 @@ estimate_aov_time <- function(tree, test_runs = 50) {
     prod()
 
   # Generate sample scenarios
-  sample_scenarios <- matrix(nrow = tree@NumberOfLeaves,
-                             ncol = test_runs)
+  sample_scenarios <- matrix(
+    nrow = tree@NumberOfLeaves,
+    ncol = test_runs
+  )
   rownames(sample_scenarios) <- tree@Leaves
 
   sample_scenarios[] <- sapply(tree@Leaves, function(leaf) {
     node <- tree@Nodes[[get_id(tree@Nodes, leaf)[1]]]
-    sample(node@RangeScale, size = test_runs,
-           prob = node@Probability, replace = TRUE)
+    sample(node@RangeScale,
+      size = test_runs,
+      prob = node@Probability, replace = TRUE
+    )
   })
 
   # Measure time taken for the subset of simulations
@@ -41,9 +44,11 @@ estimate_aov_time <- function(tree, test_runs = 50) {
 
   # Estimate total execution time
   estimated_time_minutes <- elapsed_time * total_simulations / test_runs
-  cat("\n", tree@NumberOfLeaves, " factors",
-      "\n Approximate time to run the ", total_simulations, " modalities: ",
-      estimated_time_minutes, " minutes")
+  cat(
+    "\n", tree@NumberOfLeaves, " factors",
+    "\n Approximate time to run the ", total_simulations,
+    " modalities: ", estimated_time_minutes, " minutes"
+  )
 }
 
 
@@ -71,12 +76,14 @@ aov_tree <- function(tree) {
   # Convert results matrix to data frame and factorize
   results_df <- as.data.frame(t(results))
   for (i in 1:tree@NumberOfLeaves) {
-    results_df[[i+1]] <- factor(results_df[[i+1]])
+    results_df[[i + 1]] <- factor(results_df[[i + 1]])
   }
 
   # Abbreviate column names
   colnames(results_df) <- abbreviate(colnames(results_df),
-                                     minlength = 4, dot = FALSE)
+    minlength = 4,
+    dot = FALSE
+  )
 
   # Generate AOV formulas
   formula_1 <- generate_aov_formula(results_df, order = 1)
@@ -165,7 +172,7 @@ generate_aov_formula <- function(results_df, order = 1) {
 #'   Rows are ordered in decreasing order of ss.ratio.
 compute_aov_sensitivity_effects <- function(aov_obj) {
   # Ensure the object is of class 'aov'
-  if(!inherits(aov_obj, "aov")) {
+  if (!inherits(aov_obj, "aov")) {
     stop("Provided object isn't of class 'aov'")
   }
 
@@ -173,27 +180,31 @@ compute_aov_sensitivity_effects <- function(aov_obj) {
   aov_summary <- summary(aov_obj)[[1]]
   sum_squares <- aov_summary[, "Sum Sq"]
   degrees_freedom <- aov_summary[, "Df"]
-  mean_squares <- sum_squares/degrees_freedom
+  mean_squares <- sum_squares / degrees_freedom
 
   # Total sum of squares, degrees of freedom, and mean squares
   total_ss <- sum(sum_squares)
   total_df <- sum(degrees_freedom)
-  total_ms <- total_ss/total_df
+  total_ms <- total_ss / total_df
 
   # Residual sum of squares, degrees of freedom, and mean squares
   residual_df <- aov_obj$df.residual
   if (residual_df > 0) {
     residual_ss <- sum_squares[length(sum_squares)]
-    residual_ms <- residual_ss/residual_df
+    residual_ms <- residual_ss / residual_df
   } else {
     residual_ss <- NA
     residual_ms <- NA
   }
 
   # Calculate sensitivity criteria for each term
-  output <- data.frame(df = degrees_freedom, ss = sum_squares,
-                       ss.ratio = sum_squares/total_ss, cm = mean_squares,
-                       F = mean_squares/residual_ms)
+  output <- data.frame(
+    df = degrees_freedom,
+    ss = sum_squares,
+    ss.ratio = sum_squares / total_ss,
+    cm = mean_squares,
+    F = mean_squares / residual_ms
+  )
 
   rownames(output) <- rownames(aov_summary)
   output <- output[rev(order(output$ss.ratio)), ]
@@ -211,9 +222,8 @@ compute_aov_sensitivity_effects <- function(aov_obj) {
 #' @return A data frame with total sensitivity factors for each term in the
 #'   model.
 compute_aov_total_sensitivity <- function(aov_obj) {
-
   # Ensure the object is of class 'aov'
-  if(!inherits(aov_obj, "aov")) {
+  if (!inherits(aov_obj, "aov")) {
     stop("Provided object isn't of class 'aov'")
   }
 
@@ -294,29 +304,34 @@ visualize_aov_results <- function(aov_results,
                                   horizontal = TRUE,
                                   axis_label_style = 1,
                                   ...) {
-
-
-
   # Setting up the plotting environment
   par(mfrow = c(2, 2))
 
   # Create barplots for each result set in the AOV results
-  create_aov_barplot(data = aov_results[[1]], is_effect = FALSE,
-                     horizontal = horizontal, num_plots = num_plots,
-                     show_main = show_main, axis_label_style = axis_label_style,
-                     ...)
-  create_aov_barplot(data = aov_results[[2]], is_effect = TRUE,
-                     horizontal = horizontal,num_plots = num_plots,
-                     show_main = show_main, axis_label_style = axis_label_style,
-                     ...)
-  create_aov_barplot(data = aov_results[[3]], is_effect = FALSE,
-                     horizontal = horizontal, num_plots = num_plots,
-                     show_main = show_main, axis_label_style = axis_label_style,
-                     ...)
-  create_aov_barplot(data = aov_results[[4]], is_effect = TRUE,
-                     horizontal = horizontal, num_plots = num_plots,
-                     show_main = show_main, axis_label_style = axis_label_style,
-                     ...)
+  create_aov_barplot(
+    data = aov_results[[1]], is_effect = FALSE,
+    horizontal = horizontal, num_plots = num_plots,
+    show_main = show_main, axis_label_style = axis_label_style,
+    ...
+  )
+  create_aov_barplot(
+    data = aov_results[[2]], is_effect = TRUE,
+    horizontal = horizontal, num_plots = num_plots,
+    show_main = show_main, axis_label_style = axis_label_style,
+    ...
+  )
+  create_aov_barplot(
+    data = aov_results[[3]], is_effect = FALSE,
+    horizontal = horizontal, num_plots = num_plots,
+    show_main = show_main, axis_label_style = axis_label_style,
+    ...
+  )
+  create_aov_barplot(
+    data = aov_results[[4]], is_effect = TRUE,
+    horizontal = horizontal, num_plots = num_plots,
+    show_main = show_main, axis_label_style = axis_label_style,
+    ...
+  )
 
   # Return the final result set
   return(aov_results[[4]])
@@ -349,7 +364,6 @@ create_aov_barplot <- function(data,
                                show_main,
                                axis_label_style,
                                ...) {
-
   # Selects either all rows or a subset based on `num_plots` and whether we are
   # dealing with effects or not. If dealing with effects, it takes the minimum
   # of `num_plots` and the number of rows in the data. Otherwise, it takes all
@@ -371,9 +385,11 @@ create_aov_barplot <- function(data,
   # effects and total sums of squares side by side.
   if (show_main && !is_effect) {
     data_subset <- rbind(data$main.ss.ratio, data$ss.ratio - data$main.ss.ratio)
-    barplot(data_subset, horiz = horizontal, names.arg = names,
-            main = "Main-effect and total Sums of Squares",
-            col = heat.colors(2), beside = FALSE, las = axis_label_style, ...)
+    barplot(data_subset,
+      horiz = horizontal, names.arg = names,
+      main = "Main-effect and total Sums of Squares",
+      col = heat.colors(2), beside = FALSE, las = axis_label_style, ...
+    )
 
     # If dealing with effects, it visualizes the proportional sums of squares.
     # It also provides a cumulated sum of squares for reference.
@@ -384,20 +400,19 @@ create_aov_barplot <- function(data,
     } else {
       rbind(data$ss.ratio, ss_cumulated - data$ss.ratio)
     }
-    barplot(data_subset, horiz = horizontal, names.arg = names,
-            main = "Sums of Squares proportions",
-            col = heat.colors(2), beside = horizontal,
-            las = axis_label_style, ...)
+    barplot(data_subset,
+      horiz = horizontal, names.arg = names,
+      main = "Sums of Squares proportions",
+      col = heat.colors(2), beside = horizontal,
+      las = axis_label_style, ...
+    )
 
     # If not dealing with main effects or specific effects, it visualizes the
     # total sums of squares.
   } else {
-    barplot(data$ss.ratio, horiz = horizontal, names.arg = names,
-            main = "Total Sums of Squares", las = axis_label_style, ...)
+    barplot(data$ss.ratio,
+      horiz = horizontal, names.arg = names,
+      main = "Total Sums of Squares", las = axis_label_style, ...
+    )
   }
 }
-
-
-
-
-

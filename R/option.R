@@ -14,7 +14,6 @@
 #'
 #' @export
 create_options <- function(tree, num_options = 1, seed = NULL) {
-
   # Ensure inputs are of the expected type
   if (!inherits(tree, "Tree")) {
     stop("Expected 'tree' to be of class 'Tree'")
@@ -27,21 +26,24 @@ create_options <- function(tree, num_options = 1, seed = NULL) {
   }
 
   # Set seed if provided
-  if (!is.null(seed)) { set.seed(seed) }
+  if (!is.null(seed)) {
+    set.seed(seed)
+  }
 
   # Initialize the options matrix
   options_matrix <- matrix(nrow = tree@NumberOfLeaves, ncol = num_options)
   rownames(options_matrix) <- tree@Leaves
 
   # Populate the matrix with random samples based on node attributes
-  for(leaf in tree@Leaves) {
+  for (leaf in tree@Leaves) {
     node_id <- get_id(tree@Nodes, leaf)[1]
     node <- tree@Nodes[[node_id]]
 
     options_matrix[leaf, ] <- sample(node@RangeScale,
-                                    size = num_options,
-                                    prob = node@Probability,
-                                    replace = TRUE)
+      size = num_options,
+      prob = node@Probability,
+      replace = TRUE
+    )
   }
 
   return(options_matrix)
@@ -64,7 +66,6 @@ create_options <- function(tree, num_options = 1, seed = NULL) {
 #'
 #' @export
 evaluate_scenario <- function(tree, option) {
-
   # Ensure the option is matrix-formatted
   if (!is.matrix(option)) {
     stop("The option must be a matrix.")
@@ -100,7 +101,7 @@ evaluate_scenario <- function(tree, option) {
 #' @return Numeric vector with leaf-populated values.
 assign_values_to_leaves <- function(results, option) {
   # Assign values from the option matrix to the corresponding leaf in results
-  for(i in 1:length(option)) {
+  for (i in 1:length(option)) {
     leaf_name <- dimnames(option)[[1]][i]
     results[which(names(results) == leaf_name)] <- option[i]
   }
@@ -118,7 +119,7 @@ assign_values_to_leaves <- function(results, option) {
 #' @return Numeric vector with aggregated values.
 compute_aggregated_values <- function(tree, results) {
   # Use the tree's order for aggregating results
-  for(i in 1:length(tree@EvaluationOrder)) {
+  for (i in 1:length(tree@EvaluationOrder)) {
     sub_tree <- create_sub_tree(tree, tree@Attributes[tree@EvaluationOrder[i]])
     results <- compute_values_from_aggregation_table(sub_tree, results)
   }
@@ -138,7 +139,7 @@ compute_final_aggregated_values <- function(tree, results) {
   results <- compute_values_from_aggregation_table(tree, results)
 
   # Propagate values through the main tree
-  for(k in tree@Attributes) {
+  for (k in tree@Attributes) {
     gotten_id <- get_id(tree@Nodes, k)
     results[gotten_id] <- max(results[gotten_id])
   }
@@ -157,7 +158,7 @@ compute_final_aggregated_values <- function(tree, results) {
 #'
 #' @return Numeric vector with updated node values.
 compute_values_from_aggregation_table <- function(tree, results) {
-  for(agg_nodes_rev in rev(tree@Aggregated)) {
+  for (agg_nodes_rev in rev(tree@Aggregated)) {
     if (results[agg_nodes_rev] < 0) {
       node_ids <- get_id(tree@Nodes, agg_nodes_rev)
 
@@ -165,17 +166,19 @@ compute_values_from_aggregation_table <- function(tree, results) {
       if (length(node_ids) > 1) {
         node_ids <- node_ids %>%
           sapply(function(x) {
-            if (!tree@Nodes[[x]]@IsLeaf) {x}
+            if (!tree@Nodes[[x]]@IsLeaf) {
+              x
+            }
           }) %>%
           unlist()
       }
 
-      for(node_id in node_ids) {
+      for (node_id in node_ids) {
         num_children <- length(tree@Nodes[[node_id]]@Children)
         aggregation_table <- tree@Nodes[[node_id]]@Aggregation
 
         # Adjust values based on child nodes and aggregation table
-        for(k in 1:num_children) {
+        for (k in 1:num_children) {
           child_value <- results[tree@Nodes[[node_id]]@Children[k]]
           aggregation_table <- aggregation_table[aggregation_table[, k] == child_value, ]
         }
@@ -226,11 +229,12 @@ save_options <- function(options_table, file_name) {
   # tab-separated format ensures readability and compatibility with many
   # applications
   utils::write.table(options_table,
-                     file = file_name,
-                     sep = "\t",
-                     row.names = TRUE,
-                     col.names = NA,
-                     quote = FALSE)
+    file = file_name,
+    sep = "\t",
+    row.names = TRUE,
+    col.names = NA,
+    quote = FALSE
+  )
 }
 
 
@@ -248,10 +252,12 @@ load_options <- function(file_name) {
   # Using utils package to read the table from the file.
   # The choice of tab-separated format matches our save_options function
   # to ensure consistent data interchange.
-  as.matrix(utils::read.table(file = file_name,
-                              header = TRUE,
-                              sep = "\t",
-                              row.names = 1))
+  as.matrix(utils::read.table(
+    file = file_name,
+    header = TRUE,
+    sep = "\t",
+    row.names = 1
+  ))
 }
 
 
@@ -271,10 +277,11 @@ save_scenarios <- function(scenarios_results, file_name) {
   # choice of tab-separated format ensures readability and compatibility across
   # many applications.
   utils::write.table(scenarios_results,
-                     file = file_name,
-                     sep = "\t",
-                     row.names = TRUE,
-                     col.names = NA)
+    file = file_name,
+    sep = "\t",
+    row.names = TRUE,
+    col.names = NA
+  )
 }
 
 
@@ -296,14 +303,15 @@ save_scenarios <- function(scenarios_results, file_name) {
 #'
 #' @export
 show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
-
   if (modify_par) {
-    old_par <- par(mgp = c(7,1,0), oma = c(0,20,0,0), cex = 0.5)
+    old_par <- par(mgp = c(7, 1, 0), oma = c(0, 20, 0, 0), cex = 0.5)
     withr::defer(par(old_par))
   }
 
   # Define the gray scale based on the range scale of attributes
-  grey_values <- lapply(1:7, function(x) { grDevices::gray.colors(x, 0, 1) })
+  grey_values <- lapply(1:7, function(x) {
+    grDevices::gray.colors(x, 0, 1)
+  })
   bar_colors <- tree@Leaves %>%
     sapply(function(x) {
       grey_values[[tree@Nodes[[get_id(tree@Nodes, x)[1]]]@RangeScale]][scenario[x, ]]
@@ -319,26 +327,30 @@ show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
 
   # Plot the bars
   mc <- graphics::barplot(as.vector(rev(scenario)),
-                          xlim = c(0, max(max_values[]) + 0.5),
-                          ylab = "Indicators",
-                          xlab = "Mark",
-                          horiz = TRUE,
-                          col = rev(bar_colors))
+    xlim = c(0, max(max_values[]) + 0.5),
+    ylab = "Indicators",
+    xlab = "Mark",
+    horiz = TRUE,
+    col = rev(bar_colors)
+  )
 
   # Add Y-axis labels if needed
   if (label_y) {
-    graphics::axis(side = 2,
-                   at = mc,
-                   labels = rev(rownames(scenario)),
-                   las = 2,
-                   cex = 0.5)
+    graphics::axis(
+      side = 2,
+      at = mc,
+      labels = rev(rownames(scenario)),
+      las = 2,
+      cex = 0.5
+    )
   }
 
   # Mark maximum values
   graphics::points(as.vector(rev(max_values)),
-                   mc,
-                   col = "black",
-                   pch = "<")
+    mc,
+    col = "black",
+    pch = "<"
+  )
 
   # Add dashed vertical lines for reference
   graphics::abline(v = c(1:max(max_values)), untf = FALSE, lty = 3)
@@ -371,12 +383,12 @@ compare_scenarios <- function(tree, scenarios_results, nodes_list) {
 
   # Utilizing the plotrix package to generate a radial plot
   plotrix::radial.plot(t(scenarios_results[nodes_list, ]),
-                       labels = abbreviate(names.arg = nodes_list, minlength = 6),
-                       rp.type = "p",
-                       start = pi/2,
-                       radial.lim = c(0, max_value),  # Set the radial limits to start from 0
-                       main = "Comparison of scenarios",
-                       line.col = "blue",
-                       lwd = 3)
+    labels = abbreviate(names.arg = nodes_list, minlength = 6),
+    rp.type = "p",
+    start = pi / 2,
+    radial.lim = c(0, max_value), # Set the radial limits to start from 0
+    main = "Comparison of scenarios",
+    line.col = "blue",
+    lwd = 3
+  )
 }
-
