@@ -1,25 +1,21 @@
-#' Create a Tree from DEXi's XML output
+#' Tree Construction from DEXi's XML Output
 #'
-#' Takes the XML output from a DEXi model and constructs a tree structure.
-#' The function iterates through each root attribute in the XML and constructs
-#' tree objects representing the hierarchical decision model.
+#' Constructs a \code{Tree} objects using the XML representation from a DEXi
+#' model.
 #'
-#' @param main_tree An XML object representing the main tree structure. It must
-#'   be a valid XML object containing the DEXi decision model.
+#' Iterates over every root attribute in the provided XML to create tree
+#' structures that depict the hierarchical decision model.
 #'
-#' @return A list of tree objects, each representing a distinct root attribute
-#'   within the DEXi XML structure. Each tree object contains details about the
-#'   root attribute, nodes, leaves, depth, and other related information
-#'   regarding the structure of the decision model.
+#' @param main_tree An object of class \code{XML}. Represents the primary tree
+#'   structure and should encompass the DEXi decision model.
+#'
+#' @return A list of \code{Tree} objects, each corresponding to a unique root
+#'   attribute in the DEXi XML layout. Each tree details the root attribute,
+#'   nodes, leaves, depth, and other associated data regarding the decision
+#'   model's configuration.
 #'
 #' @import XML
 #' @importFrom AlgDesign gen.factorial
-#'
-#' @seealso
-#' \code{\link{process_aggregated_leaf}},
-#'  \code{\link{process_duplicated_leaf}},
-#'   \code{\link{get_dexi_attributes}},
-#'    \code{\link{get_paths}}
 #'
 #' @export
 create_tree <- function(main_tree) {
@@ -119,22 +115,33 @@ create_tree <- function(main_tree) {
 }
 
 
-#' Retrieve Attribute Names from a DEXi XML Tree
+#' Retrieve Attribute Names from DEXi XML Tree
 #'
-#' Retrieves all the attribute names under a specified root node within a DEXi
-#' XML tree structure. It forms a search path within the XML tree to fetch all
-#' child attributes starting from the given root name.
+#' Extracts all attribute names under a specified root node from a DEXi XML
+#' tree. Constructs a search path within the XML structure to capture all
+#' descendant attributes beginning from the provided root name. This function is
+#' primarily an internal utility employed by \code{\link{create_tree}} to help
+#' process the XML tree structure.
 #'
-#' @param main_tree An XML object representing the main tree structure. It must
-#'   be a valid XML object containing the DEXi decision model.
-#' @param root_name A character representing the name of the root attribute from
-#'   which to start the search. This should correspond to an existing attribute
-#'   name within the XML structure.
+#' @param main_tree \code{XML} object representing the main tree of the DEXi
+#'   model. It should be a valid XML containing the DEXi decision model
+#'   structure.
+#' @param root_name \code{character} indicating the name of the root attribute
+#'   for initiating the search. This name should be present as an attribute
+#'   within the provided XML structure.
 #'
-#' @return A character vector containing the names of the root attribute and all
-#'   its descendant attributes. The vector starts with the name of the root
-#'   attribute followed by its child attributes in the order they appear in the
-#'   XML tree.
+#' @return \code{character} vector of attribute names. Begins with the specified
+#'   root attribute's name and continues with its descendant attributes in their
+#'   order from the XML tree.
+#'
+#' @seealso For functions that further process or utilize the DEXi XML
+#' structure:
+#' \itemize{
+#'   \item \code{\link{create_tree}}: The main function that utilizes this
+#'     internal function to construct a tree from the DEXi XML output.
+#' }
+#'
+#' @keywords internal
 get_dexi_attributes <- function(main_tree, root_name) {
   to_search <- paste0("//ATTRIBUTE[NAME='", root_name, "']//ATTRIBUTE/NAME")
   attributes <- c(
@@ -146,20 +153,29 @@ get_dexi_attributes <- function(main_tree, root_name) {
 
 #' Retrieve Attribute Paths in an XML Tree
 #'
-#' Traverses an XML tree (representing a hierarchical structure) to find
-#' specific paths for a given list of attributes, starting from a specified root
-#' name.
+#' Navigates through an XML tree to identify specific paths corresponding to a
+#' set of attributes, beginning from a specified root. This function is an
+#' internal tool, chiefly called by \code{\link{create_tree}} to aid in
+#' interpreting and structuring the XML tree.
 #'
-#' @param attributes   A character vector containing the names of the attributes
-#'   for which to find paths.
-#' @param main_tree    An XML object representing the tree within which to
-#'   search for paths.
-#' @param root_name    A character representing the name of the root attribute
-#'   from which to begin the search.
+#' @param attributes \code{character} vector of attribute names whose paths are
+#'   to be located.
+#' @param main_tree \code{XML} object representing the tree in which paths are
+#'   to be searched.
+#' @param root_name \code{character} indicating the name of the root attribute
+#'   from where the search begins.
 #'
-#' @return             A list of paths, where each path is a character vector
-#'   representing the sequence of attributes from the root name to the target
+#' @return A list of paths where each path is a \code{character} vector,
+#'   detailing the sequence of attributes from the root to the desired
 #'   attribute.
+#'
+#' @seealso Primary functions that integrate or work with the XML structure:
+#' \itemize{
+#'   \item \code{\link{create_tree}}: The main function that invokes
+#'     this internal function to dissect the XML output of DEXi.
+#' }
+#'
+#' @keywords internal
 get_paths <- function(attributes, main_tree, root_name) {
   list_path <- list()
   list_path[[1]] <- root_name
@@ -215,27 +231,37 @@ get_paths <- function(attributes, main_tree, root_name) {
 }
 
 
-#' Process Leaf and Aggregated Nodes
+#' Process Leaf and Aggregated Nodes for Tree Construction
 #'
-#' Identifies and processes the nodes in the tree that are both leaf and
-#' aggregated. Such nodes can have specific roles in decision or aggregation
-#' trees and may require special treatment. By identifying these nodes, the
-#' function aids in properly handling them in the overall evaluation or
-#' traversal of the tree.
+#' An internal function that identifies and processes nodes within a tree that
+#' are both \code{leaf} and \code{aggregated}. These specific nodes often play
+#' unique roles in decision or aggregation trees, necessitating specialized
+#' handling. The primary role of this function is to aid in the correct
+#' construction and traversal of the tree when invoked by primary functions such
+#' as \code{\link{create_tree}}.
 #'
-#' @param tree_nodes A list of tree nodes.
-#' @param leaves A vector containing the names of leaf nodes.
-#' @param aggregated A vector containing the names of aggregated nodes.
+#' @param tree_nodes A \code{list} representing the tree nodes, where each
+#'   element is an object of class \code{Node}.
+#' @param leaves     A \code{character} vector detailing the names of the leaf
+#'   nodes.
+#' @param aggregated A \code{character} vector specifying the names of the
+#'   aggregated nodes.
 #'
-#' @return A list with the following elements:
-#'   \itemize{
-#'     \item \code{leaf_aggregated}: A vector containing the names of nodes
-#'     that are both leaf and aggregated.
-#'     \item \code{is_leaf_aggregated}: A logical value indicating if such nodes
-#'     exist.
-#'     \item \code{tree_nodes}: A list of tree nodes updated with the twin
-#'     information and markings for leaf and aggregated nodes.
-#'   }
+#' @return A list containing the following components:
+#' \itemize{
+#'   \item \code{leaf_aggregated}: A \code{character} vector with names of nodes
+#'         identified as both leaf and aggregated.
+#'   \item \code{is_leaf_aggregated}: A \code{logical} indicating the existence
+#'         of nodes that are both leaf and aggregated.
+#'   \item \code{tree_nodes}: An updated \code{list} of tree nodes, where each
+#'         element is an object of class \code{Node}, enriched with twin
+#'         information and designations for leaf and aggregated nodes.
+#' }
+#'
+#' @seealso \code{\link{create_tree}} for the primary function that constructs
+#'   tree objects using objects of class \code{Node}.
+#'
+#' @keywords internal
 process_aggregated_leaf <- function(tree_nodes, leaves, aggregated) {
   # Identify nodes that are both leaf and aggregated
   leaf_aggregated <- intersect(leaves, aggregated)
@@ -267,24 +293,35 @@ process_aggregated_leaf <- function(tree_nodes, leaves, aggregated) {
 }
 
 
-#' Process Duplicated leaf
+#' Process Duplicate Leaf Nodes in Tree Structure
 #'
-#' Identifies the multiple occurrences of leaf attributes in the tree structure,
-#' marking them with the appropriate `Twin` reference. It also returns a data
-#' frame containing the count of occurrences.
+#' @description An internal utility to identify multiple occurrences of leaf
+#' attributes within a tree and mark them with the appropriate \code{Twin}
+#' reference for differentiation. It also provides a comprehensive overview of
+#' these occurrences, enhancing the process of tree traversal and analysis when
+#' invoked by main functions like \code{\link{create_tree}}.
 #'
-#' @param tree_nodes A list of nodes in the tree structure.
-#' @param leaves A character vector containing the names of leaf attributes.
+#' @param tree_nodes A \code{list} of nodes, where each element is an object of
+#'   class \code{Node}, representing the tree's hierarchical structure.
+#' @param leaves A \code{character} vector detailing the names of leaf
+#'   attributes within the tree.
 #'
-#' @return A list containing two elements:
+#' @return A list containing the following components:
 #' \itemize{
-#'   \item `multiple`: A data frame or matrix containing the count of
-#'   occurrences of leaf attributes.
-#'   \item `is_multiple`: A logical value indicating whether there are multiple
-#'   occurrences of any leaf attributes.
-#'   \item \code{tree_nodes}: A list of tree nodes updated with the twin
-#'     information and markings for duplicated leaf.
+#'   \item \code{multiple}: A \code{data.frame} or \code{matrix} presenting the
+#'         count of occurrences for leaf attributes with more than one
+#'         appearance.
+#'   \item \code{is_multiple}: A \code{logical} indicating the presence of leaf
+#'         attributes with multiple occurrences.
+#'   \item \code{tree_nodes}: An updated \code{list} of tree nodes, where each
+#'         element is an object of class \code{Node}, enriched with
+#'         \code{Twin} information for duplicated leaf attributes.
 #' }
+#'
+#' @seealso \code{\link{create_tree}} for the primary function that utilizes
+#' this utility in tree construction.
+#'
+#' @keywords internal
 process_duplicated_leaf <- function(tree_nodes, leaves) {
   # Create a table containing the count of occurrences for each leaf
   multiple <- table(leaves)
@@ -328,36 +365,54 @@ process_duplicated_leaf <- function(tree_nodes, leaves) {
 }
 
 
-#' Create a Node for the Decision Tree
+#' Construct a Node for a Decision Tree
 #'
-#' Constructs a new node for the decision tree, incorporating various attributes
-#' and details including leaf status, children, mother, sisters, scale, scale
-#' label, aggregation, and weight list.
+#' An internal function that constructs and populates a node for the decision
+#' tree, capturing a variety of node attributes, including its relationships
+#' with other nodes, its depth, status (leaf or aggregated), scale, and weight
+#' information. It's one of the key utilities invoked by the main tree
+#' construction function, \code{\link{create_tree}}.
 #'
-#' @param node_path A character vector representing the path to the node.
-#' @param main_tree An XML object representing the main tree structure
-#'   containing the XML data.
+#' @param node_path A \code{character} vector representing the sequence of
+#'   attributes leading to the node within the tree structure.
+#' @param main_tree An XML object encapsulating the tree's hierarchical
+#'   structure with the associated XML data.
 #'
-#' @return A new "Node" object containing the following components:
+#' @return A new object of class \code{Node}, comprising the following elements:
 #' \describe{
-#'   \item{Name}{The name of the node.}
-#'   \item{Depth}{The depth of the node within the tree.}
-#'   \item{Twin}{Numeric value representing a twin node, initialized to 0.}
-#'   \item{IsLeaf}{Boolean indicating if the node is a leaf.}
-#'   \item{IsLeafAndAggregated}{Boolean, initialized to FALSE.}
-#'   \item{Mother}{Character representing the mother of the node.}
-#'   \item{Sisters}{Character vector representing the sisters of the node.}
-#'   \item{Children}{Character vector representing the children of the node.}
-#'   \item{Aggregation}{Aggregation structure for the node.}
-#'   \item{RangeScale}{The range scale of the node.}
-#'   \item{ScaleLabel}{Character vector representing the scale label of the
-#'   node.}
-#'   \item{Probability}{Numeric vector representing the probability or weights
-#'   for the node.}
-#'   \item{NodePath}{Character vector representing the path to the node.}
+#'   \item{\code{Name}}{The name of the node, derived from the last element of
+#'     \code{node_path}.}
+#'   \item{\code{Depth}}{A \code{numeric} value indicating the depth of the node
+#'     within the tree, derived from the length of \code{node_path}.}
+#'   \item{\code{Twin}}{A \code{numeric} vector, initialized as empty, to store
+#'     any potential twin nodes.}
+#'   \item{\code{IsLeaf}}{A \code{logical} value denoting if the node is a
+#'     terminal node without children.}
+#'   \item{\code{IsLeafAndAggregated}}{A \code{logical} initialized to
+#'     \code{FALSE} to flag nodes that serve as both leaf and aggregated nodes.}
+#'   \item{\code{Mother}}{A \code{character} specifying the immediate parent of
+#'     the node.}
+#'   \item{\code{Sisters}}{A \code{character} vector enumerating nodes that
+#'     share the same mother as the current node.}
+#'   \item{\code{Children}}{A \code{character} vector listing all immediate
+#'     child nodes of the current node.}
+#'   \item{\code{Aggregation}}{The aggregation structure or method associated
+#'     with the node.}
+#'   \item{\code{RangeScale}}{A \code{numeric} value or range indicating the
+#'     scale of the node's value.}
+#'   \item{\code{ScaleLabel}}{A \code{character} vector representing the
+#'     description or label of the node's scale.}
+#'   \item{\code{Probability}}{A \code{numeric} vector detailing the probability
+#'     or weight distribution associated with the node.}
+#'   \item{\code{NodePath}}{A \code{character} vector mirroring the input
+#'     \code{node_path} to trace the node's lineage.}
 #' }
+
 #'
-#' @export
+#' @seealso \code{\link{create_tree}} for the primary function where this
+#' utility function is engaged for tree generation.
+#'
+#' @keywords internal
 create_node <- function(node_path, main_tree) {
   is_leaf <- determine_leaf_status(node_path, main_tree)
   children <- determine_children(node_path, main_tree, is_leaf)
@@ -390,15 +445,20 @@ create_node <- function(node_path, main_tree) {
 }
 
 
-#' Identify if a Node is a Leaf
+#' Determine the Leaf Status of a Node
 #'
-#' Essential to understand the tree structure and facilitates further
-#' decision-making about the node.
+#' Determines whether a given node in the decision tree is a leaf or not. Being
+#' a leaf node implies that the node does not have any children. This
+#' distinction is crucial for the structural understanding of the tree and
+#' further processing of the node.
 #'
-#' @param node_path A character vector representing the path to the node.
-#' @param main_tree Main tree structure containing the XML data.
+#' @param \code{node_path} A \code{character} vector representing the path to
+#'   the node.
+#' @param \code{main_tree} An XML object representing the main tree structure
+#'   containing the XML data.
 #'
-#' @return Boolean indicating if the node is a leaf.
+#' @return A \code{logical} value indicating if the node is a leaf (TRUE) or not
+#'   (FALSE).
 #'
 #' @keywords internal
 determine_leaf_status <- function(node_path, main_tree) {
@@ -411,22 +471,28 @@ determine_leaf_status <- function(node_path, main_tree) {
   # Check if any nodes were found
   has_nodes <- length(sapply(node_set, XML::xmlSize)) > 0
 
-  # Return the opposite of has_nodes (since you want TRUE if no nodes were found)
+  # Return the opposite of has_nodes (since you want TRUE if no nodes are found)
   return(!has_nodes)
 }
 
 
 
-#' Find the Children of a Node
+#' Determine the Children of a Node
 #'
-#' Enhances readability by encapsulating the logic for understanding the node's
-#' offspring.
+#' Identifies and retrieves the children of a specified node within the decision
+#' tree. If the node is a leaf, then it won't have any children, and an empty
+#' character vector will be returned. This distinction helps in the structural
+#' understanding of the tree.
 #'
-#' @param node_path A character vector representing the path to the node.
-#' @param main_tree Main tree structure containing the XML data.
-#' @param is_leaf Boolean indicating if the node is a leaf.
+#' @param \code{node_path} A \code{character} vector representing the path to
+#'   the node.
+#' @param \code{main_tree} An XML object representing the main tree structure
+#'   containing the XML data.
+#' @param \code{is_leaf} A \code{logical} value indicating if the node is a
+#'   leaf.
 #'
-#' @return A list of children.
+#' @return A \code{character} vector containing the names of the children.
+#'   Returns an empty vector if the node is a leaf.
 #'
 #' @keywords internal
 determine_children <- function(node_path, main_tree, is_leaf) {
@@ -444,14 +510,18 @@ determine_children <- function(node_path, main_tree, is_leaf) {
 }
 
 
-#' Identify the Mother of a Node
+#' Determine the Mother of a Node
 #'
-#' Contributes to understanding the relationship between nodes and navigation
-#' within the tree's structure.
+#' Identifies the mother (or parent) of a specified node within the decision
+#' tree. Knowing the parent node facilitates traversal and understanding of the
+#' tree's hierarchical relationships. If the node is at the topmost level, it
+#' won't have a mother, and NA will be returned.
 #'
-#' @param node_path A character vector representing the path to the node.
+#' @param \code{node_path} A \code{character} vector representing the path to
+#'   the node.
 #'
-#' @return Mother of the node if exists.
+#' @return A \code{character} value representing the name of the mother of the
+#'   node. Returns \code{NA} if the node does not have a mother (topmost level).
 #'
 #' @keywords internal
 determine_mother <- function(node_path) {
@@ -463,15 +533,20 @@ determine_mother <- function(node_path) {
 }
 
 
-#' Find the Sisters of a Node
+
+#' Determine the Sisters of a Node
 #'
-#' Aids in understanding horizontal relationships within the tree, crucial for
-#' some analyses.
+#' Identifies the sister nodes (nodes at the same hierarchical level under the
+#' same parent) of a specified node within the decision tree. Sister nodes
+#' provide insight into the horizontal relationships within the tree, which can
+#' be important for certain types of analyses and tree traversals.
 #'
-#' @param node_path A character vector representing the path to the node.
-#' @param main_tree Main tree structure containing the XML data.
+#' @param \code{node_path} A \code{character} vector representing the path to
+#'   the node.
+#' @param \code{main_tree} An XML object representing the main tree structure.
 #'
-#' @return A list of sisters.
+#' @return A \code{character} vector listing the names of the sister nodes.
+#'   Returns an empty \code{character} vector if there are no sister nodes.
 #'
 #' @keywords internal
 determine_sisters <- function(node_path, main_tree) {
@@ -492,13 +567,16 @@ determine_sisters <- function(node_path, main_tree) {
 
 #' Determine the Scale of a Node
 #'
-#' Used to understand the node's working scale, which might be necessary for
-#' subsequent calculations or visualization.
+#' Retrieves the scale associated with a given node within the decision tree.
+#' The scale provides valuable insights into the node's dimension and can be
+#' crucial for subsequent computations and visual representations.
 #'
-#' @param node_path A character vector representing the path to the node.
-#' @param main_tree Main tree structure containing the XML data.
+#' @param \code{node_path} A \code{character} vector representing the path to
+#'   the node.
+#' @param \code{main_tree} An XML object representing the main tree structure.
 #'
-#' @return Scale of the node.
+#' @return An \code{integer} indicating the scale of the node. If no scale is
+#'   found, the function returns 0.
 #'
 #' @keywords internal
 determine_scale_node <- function(node_path, main_tree) {
@@ -511,12 +589,17 @@ determine_scale_node <- function(node_path, main_tree) {
 
 #' Determine a Node's Scale Label
 #'
-#' Useful for annotating or understanding the node at a more descriptive level.
+#' Retrieves the descriptive scale label for a specific node in the decision
+#' tree. This label can offer a more detailed understanding of the node's
+#' dimension and is valuable for annotations and enhanced comprehension of the
+#' node.
 #'
-#' @param node_path A character vector representing the path to the node.
-#' @param main_tree Main tree structure containing the XML data.
+#' @param \code{node_path} A \code{character} vector representing the path to
+#'   the node.
+#' @param \code{main_tree} An XML object representing the main tree structure.
 #'
-#' @return Scale label of the node.
+#' @return A \code{character} vector indicating the scale label of the node. If
+#'   no scale label is found, the function returns an empty character vector.
 #'
 #' @keywords internal
 determine_scale_label <- function(node_path, main_tree) {
@@ -526,24 +609,22 @@ determine_scale_label <- function(node_path, main_tree) {
 }
 
 
-#' Determine Aggregation for a Node
+#' Determine Node Aggregation
 #'
-#' crucial for understanding how information is combined at the node level. It
-#' contains the logic for aggregation based on whether the node is a leaf and
-#' other properties. The function retrieves the low function values from the XML
-#' and adjusts them to numeric format. Then, it determines the scales from nodes
-#' n-1 and creates the factorial plan or sequence depending on the number of
-#' children. If the node is a leaf, it returns a matrix with zero.
+#' Calculates the aggregation structure of a node. Essential for understanding
+#' how information combines at the node level. Retrieves 'LOW' function values
+#' from XML, transforms them, and determines scales using previous nodes.
+#' Computes a factorial plan for nodes with multiple children, otherwise uses a
+#' sequence.
 #'
-#' @param node_path A character vector representing the path to the node.
-#' @param main_tree Main tree structure containing the XML data.
-#' @param is_leaf Boolean indicating if the node is a leaf.
-#' @param children List of children nodes.
+#' @param node_path \code{character} vector representing the path to the node.
+#' @param main_tree Object containing the XML tree structure data.
+#' @param is_leaf \code{logical} indicating if the node is a leaf.
+#' @param children \code{list} of node's children.
 #'
-#' @return If the node is not a leaf, the function returns the aggregation
-#'   structure, including a matrix representing the factorial plan and
-#'   transformed low function values. If the node is a leaf, the function
-#'   returns a matrix with zero.
+#' @return A matrix representing the aggregation structure. If not a leaf, it
+#'   includes the factorial plan and transformed 'LOW' function values. For leaf
+#'   nodes, the matrix contains zero.
 #'
 #' @keywords internal
 determine_aggregation <- function(node_path, main_tree, is_leaf, children) {
@@ -599,20 +680,19 @@ determine_aggregation <- function(node_path, main_tree, is_leaf, children) {
 }
 
 
-#' Determine Weight List for a Node
+#' Calculate Node Weight List
 #'
-#' Calculates the weights associated with a particular node based on
-#' various conditions, such as whether the node is a leaf and the
-#' number of children. Weights may represent probabilities or importance
-#' factors in the overall tree structure.
+#' Computes weights for a node based on its attributes and conditions, such as
+#' its leaf status and child count. Weights can indicate probabilities or
+#' significance within the tree.
 #'
-#' @param node_path A character vector representing the path to the node.
-#' @param main_tree Main tree structure containing the XML data.
-#' @param is_leaf Boolean indicating if the node is a leaf.
-#' @param aggregation Aggregation structure, possibly used in the calculation.
-#' @param children List of children nodes.
+#' @param node_path \code{character} vector indicating the node's path.
+#' @param main_tree Object containing the XML tree structure data.
+#' @param is_leaf \code{logical} flag denoting if the node is a leaf.
+#' @param aggregation Aggregation structure for potential weight determination.
+#' @param children \code{list} of node's children.
 #'
-#' @return A numeric vector containing the weights for the node.
+#' @return \code{numeric} vector of the node's associated weights.
 #'
 #' @keywords internal
 determine_weight_list <- function(node_path, main_tree,
@@ -649,15 +729,15 @@ determine_weight_list <- function(node_path, main_tree,
 }
 
 
-#' Get the chain of nodes
+#' Retrieve Node Chain
 #'
-#' Retrieves the chain of nodes from a given node path.
+#' Extracts the chain of nodes based on the provided node path.
 #'
-#' @param node_path A character vector representing the path to the node.
+#' @param node_path \code{character} vector indicating the node's path.
 #'
-#' @return A string representing the chain of nodes
+#' @return \code{character} representing the node chain.
 #'
-#' @export
+#' @keywords internal
 get_chaine <- function(node_path) {
   for (k in 1:length(node_path)) {
     if (k == 1) {
@@ -671,16 +751,18 @@ get_chaine <- function(node_path) {
 }
 
 
-#' Get the ID of a given node
+#' Retrieve Node ID
 #'
-#' Retrieves the ID of a given node from a list of nodes.
+#' Extracts the ID associated with a specified node name from a provided list of
+#' nodes.
 #'
-#' @param list_nodes A list of nodes
-#' @param node_name The name of the node
+#' @param list_nodes A \code{list} of nodes where each node is an object with at
+#'   least an \code{Id} and \code{Name} attribute.
+#' @param node_name \code{character} specifying the name of the desired node.
 #'
-#' @return The ID of the node
+#' @return \code{numeric} ID of the node if found; \code{NULL} otherwise.
 #'
-#' @export
+#' @keywords internal
 get_id <- function(list_nodes, node_name) {
   # Get the names of all nodes in the list
   node_names <- sapply(list_nodes, function(node) node@Name)
@@ -701,14 +783,37 @@ get_id <- function(list_nodes, node_name) {
 
 #' Evaluate Order of Tree Nodes
 #'
-#' Determines the order in which nodes in a tree should be evaluated, especially
-#' when dealing with aggregated leaves.
+#' Determines the sequential order in which nodes within a tree should be
+#' evaluated. This is particularly pertinent for trees with aggregated leaves,
+#' where the evaluation order of the nodes impacts the final outcomes.
 #'
-#' @param tree A tree object which contains information about nodes and their
-#'   relationships.
+#' @param tree a \code{Tree} object.
 #'
-#' @return A numeric vector representing the order in which nodes should be
-#'   evaluated.
+#' @return A \code{numeric} vector indicating the order in which the nodes
+#'   should be evaluated. An empty vector suggests no specific order.
+#'
+#' @details
+#' The function first checks if the tree has aggregated leaves. If not,
+#' it returns an empty vector since there is no explicit order needed.
+#'
+#' If there are aggregated leaves, the function sets an initial state
+#' assuming none of the attributes are evaluated. It then marks the
+#' tree's leaves as evaluated.
+#'
+#' The main logic revolves around iterating over leaf nodes and evaluating
+#' them. However, if a node depends on another node, it is skipped and
+#' re-evaluated in subsequent iterations. The function also contains a
+#' safeguard against infinite loops by checking if the same nodes are
+#' continually skipped across consecutive iterations.
+#'
+#' @seealso
+#' Relevant functions and objects that can provide further insights:
+#' \itemize{
+#'   \item \code{\link{Tree-class}}: For more details on the Tree class.
+#'   \item \code{\link{Node-class}}: For insights into the Node structure.
+#' }
+#'
+#' @keywords internal
 evaluate_order <- function(tree) {
   # Early exit if the tree doesn't have aggregated leaves, as there's no order
   # to evaluate
@@ -772,17 +877,29 @@ evaluate_order <- function(tree) {
 
 #' Check if Any Leaves are Unevaluated
 #'
-#' Determines if any of the provided leaves are marked as unevaluated in the
-#' results. A leaf is considered unevaluated if its corresponding value in the
-#' results is -1.
+#' Determines if any of the provided leaves within a \code{Tree} have not yet
+#' been evaluated. A leaf is deemed unevaluated if its corresponding value in
+#' the results vector is -1.
 #'
-#' @param leaves A vector of leaves to check.
-#' @param results A named vector where names are node names and values indicate
-#'   whether the node has been evaluated.
-#' @param nodes A list of nodes containing node details.
+#' @param leaves A \code{character} vector listing the leaves to be checked.
+#' @param results A named \code{numeric} vector, where names correspond to
+#'   \code{Node} names and values indicate the evaluation status of the node. A
+#'   value of -1 implies the \code{Node} is unevaluated.
+#' @param nodes A list of \code{Node}s, where each entry contains details of a
+#'   node.
 #'
-#' @return Logical. Returns `TRUE` if any leaves are unevaluated, and `FALSE`
-#'   otherwise.
+#' @return A \code{logical}. Returns `TRUE` if any of the leaves are yet to be
+#'   evaluated; otherwise, it returns `FALSE`.
+#'
+#' @seealso Related functions and objects that might be of interest:
+#' \itemize{
+#'   \item \code{\link{Tree-class}}: For a more detailed understanding of the
+#'     \code{Tree} class.
+#'   \item \code{\link{Node-class}}: To delve deeper into the structure of a
+#'     \code{Node}.
+#'   \item \code{\link{evaluate_order}}: A function that determines the sequence
+#'     for evaluating \code{Node}s in a \code{Tree}.
+#' }
 #'
 #' @keywords internal
 are_leaves_unevaluated <- function(leaves, results, nodes) {
@@ -790,14 +907,29 @@ are_leaves_unevaluated <- function(leaves, results, nodes) {
 }
 
 
-#' Retrieve leaves associated with a given node in a tree
+#' Retrieve Leaves Associated with a Given Node in a Tree
 #'
-#' @param tree A tree object with nested nodes and leaves.
-#' @param node_id The identifier of the node for which leaves are to be fetched.
+#' Extracts the leaf IDs associated with a specified \code{Node} from a given
+#' \code{Tree}.
 #'
-#' @return A vector of leaf IDs associated with the specified node.
+#' @param tree a \code{Tree} object.
+#' @param node_id A \code{numeric} or \code{character} representing the
+#'   identifier or the name of the \code{Node} for which leaves are to be
+#'   retrieved.
 #'
-#' @export
+#' @return A \code{numeric} vector containing the IDs of the leaves associated
+#'   with the specified \code{Node}.
+#'
+#' @seealso Relevant functions and classes that provide more context or might be
+#' of interest:
+#' \itemize{
+#'   \item \code{\link{Tree-class}}: For an in-depth understanding of the
+#'     \code{Tree} class.
+#'   \item \code{\link{Node-class}}: To get more details about the structure of
+#'     a \code{Node}.
+#' }
+#'
+#' @keywords internal
 get_leaves <- function(tree, node_id) {
   # If node_id is character, convert it to numeric
   if (is.character(node_id)) {

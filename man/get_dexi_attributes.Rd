@@ -2,26 +2,37 @@
 % Please edit documentation in R/create_tree.R
 \name{get_dexi_attributes}
 \alias{get_dexi_attributes}
-\title{Retrieve Attribute Names from a DEXi XML Tree}
+\title{Retrieve Attribute Names from DEXi XML Tree}
 \usage{
 get_dexi_attributes(main_tree, root_name)
 }
 \arguments{
-\item{main_tree}{An XML object representing the main tree structure. It must
-be a valid XML object containing the DEXi decision model.}
+\item{main_tree}{\code{XML} object representing the main tree of the DEXi
+model. It should be a valid XML containing the DEXi decision model
+structure.}
 
-\item{root_name}{A character representing the name of the root attribute from
-which to start the search. This should correspond to an existing attribute
-name within the XML structure.}
+\item{root_name}{\code{character} indicating the name of the root attribute
+for initiating the search. This name should be present as an attribute
+within the provided XML structure.}
 }
 \value{
-A character vector containing the names of the root attribute and all
-its descendant attributes. The vector starts with the name of the root
-attribute followed by its child attributes in the order they appear in the
-XML tree.
+\code{character} vector of attribute names. Begins with the specified
+root attribute's name and continues with its descendant attributes in their
+order from the XML tree.
 }
 \description{
-Retrieves all the attribute names under a specified root node within a DEXi
-XML tree structure. It forms a search path within the XML tree to fetch all
-child attributes starting from the given root name.
+Extracts all attribute names under a specified root node from a DEXi XML
+tree. Constructs a search path within the XML structure to capture all
+descendant attributes beginning from the provided root name. This function is
+primarily an internal utility employed by \code{\link{create_tree}} to help
+process the XML tree structure.
 }
+\seealso{
+For functions that further process or utilize the DEXi XML
+structure:
+\itemize{
+\item \code{\link{create_tree}}: The main function that utilizes this
+internal function to construct a tree from the DEXi XML output.
+}
+}
+\keyword{internal}

@@ -2,17 +2,18 @@
 % Please edit documentation in R/aov.R
 \name{create_factorial_plan}
 \alias{create_factorial_plan}
-\title{Create Factorial Plan from Tree}
+\title{Factorial Plan Generation for a Decision Tree}
 \usage{
 create_factorial_plan(tree)
 }
 \arguments{
-\item{tree}{Tree object for analysis.}
+\item{tree}{\code{Tree} object to be analyzed.}
 }
 \value{
-A matrix representing the factorial plan.
+A \code{matrix} detailing the generated factorial plan.
 }
 \description{
-Extracts leaf indices from the tree and creates the factorial plan based on
-gen.factorial function.
+Extracts the leaf indices from a provided decision tree and constructs a
+factorial plan utilizing the \code{gen.factorial} function.
 }
+\keyword{internal}

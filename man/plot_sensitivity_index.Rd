@@ -7,15 +7,15 @@
 plot_sensitivity_index(tree, sensitivity_indices)
 }
 \arguments{
-\item{tree}{A decision tree object for analysis.}
+\item{tree}{\code{Tree} object for analysis.}
 
-\item{sensitivity_indices}{A vector of Sensitivity Indices for each leaf
-in the decision tree.}
+\item{sensitivity_indices}{A \code{numeric} vector representing the
+Sensitivity Indices for each leaf in the decision tree.}
 }
 \value{
-No return value, but generates a bar plot.
+No return value; a bar plot is displayed.
 }
 \description{
-Generates a bar plot to visualize the Sensitivity Index (SI) of the leaves of
-a given decision tree.
+Visualizes the Sensitivity Index (SI) of the leaves of a specified decision
+tree using a bar plot.
 }

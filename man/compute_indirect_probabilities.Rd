@@ -13,22 +13,28 @@ compute_indirect_probabilities(
 )
 }
 \arguments{
-\item{node}{The specific node for which the indirect probabilities should be
+\item{node}{The \code{Node} object for which the indirect probabilities are
 calculated.}
 
-\item{probs}{The computed probabilities for the node.}
+\item{probs}{A \code{list} of computed probabilities for the node.}
 
-\item{conditional_probabilities}{The existing conditional probabilities.}
+\item{conditional_probabilities}{A \code{list} of existing conditional
+probabilities associated with the node's descendants.}
 
-\item{tree}{A decision tree object.}
+\item{tree}{The \code{Tree} object representing the decision tree structure.}
 
-\item{avoid_repetition}{A boolean determining if repeated nodes should be
-avoided.}
+\item{avoid_repetition}{A \code{logical} flag determining if nodes with
+repeated names should be avoided in the calculations.}
 }
 \value{
-A list of computed indirect probabilities.
+A \code{list} of computed indirect probabilities for the node's
+descendants.
 }
 \description{
-Computes the indirect probabilities for descendants of a node based on its
-children, computed probabilities, and the existing conditional probabilities.
+Computes the indirect probabilities for descendants of a specific node,
+considering the computed probabilities of the node, the existing conditional
+probabilities, and the structure of the decision tree. If a child of the node
+is not a leaf, its indirect probabilities are calculated based on its direct
+ancestors' probabilities.
 }
+\keyword{internal}

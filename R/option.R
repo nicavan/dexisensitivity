@@ -1,16 +1,22 @@
-#' Generate random options matrix for a given rree
+#' Generate Random Options Matrix for a Given Tree
 #'
-#' Create random options based on the `RangeScale` and `Probability` attributes
-#' of tree nodes. This is useful for creating random scenarios for simulation or
-#' analysis.
+#' Creates random options based on the \code{RangeScale} and \code{Probability} attributes
+#' of tree nodes. This function is useful for generating random scenarios for simulations
+#' or analyses.
 #'
-#' @param tree Tree object.
-#' @param num_options integer. Number of options to generate. Default is 1.
-#' @param seed integer. Seed for random number generation. Default is NULL (no
-#'   seed set).
+#' @param tree A \code{Tree} object.
+#' @param num_options A single \code{numeric} value specifying the number of options to generate.
+#'   Defaults to 1.
+#' @param seed A single \code{numeric} value for random number generation seed.
+#'   Default is \code{NULL}, which means no seed will be set.
 #'
-#' @return A matrix where rows represent tree leaves and columns represent
+#' @return A \code{matrix} where rows represent tree leaves and columns represent
 #'   sampled options.
+#'
+#' @details
+#' The function creates a matrix of random options based on the attributes of tree nodes.
+#' Specifically, it leverages the \code{RangeScale} and \code{Probability} attributes of tree nodes
+#' to generate random options.
 #'
 #' @export
 create_options <- function(tree, num_options = 1, seed = NULL) {
@@ -50,19 +56,29 @@ create_options <- function(tree, num_options = 1, seed = NULL) {
 }
 
 
-#' Evaluate node values in a tree
+#' Evaluate Node Values in a Tree
 #'
-#' Calculate the values of the tree's nodes by progressing from the leaves
-#' (values provided by the option) up to the root. This bottom-up approach
-#' ensures that each node's value is determined considering the values of its
-#' child nodes.
+#' Calculates the values of the tree nodes using a bottom-up approach. The function
+#' starts by assigning values to the leaves, based on the provided option, and then
+#' aggregates these values up the tree to determine each node's value. This ensures
+#' each node's value considers the values of its child nodes.
 #'
-#' @param tree A Tree object.
-#' @param option Matrix representation of a scenario, providing values for the
-#'   tree's leaves.
+#' @param tree A \code{Tree} object.
+#' @param option A matrix representation of a scenario, providing values for the
+#'   tree's leaves. Each column in the matrix corresponds to a tree leaf, and the
+#'   rows provide different values for the scenario analysis.
 #'
-#' @return Numeric vector representing the evaluated values for all nodes, from
-#'   leaves to root.
+#' @return A named \code{numeric} vector representing the evaluated values for all
+#'   nodes, progressing from the leaves to the root.
+#'
+#' @details
+#' Begins by assigning values to the leaves of the tree based on the
+#' provided option. If the tree structure indicates leaf-aggregated scenarios,
+#' these values are aggregated accordingly. The function then continues to aggregate
+#' values up the tree, considering the tree's structure, to determine each node's value.
+#'
+#' It's essential for the input option matrix to have columns that correspond to the
+#' leaves of the tree and for the tree object to have the appropriate attributes set.
 #'
 #' @export
 evaluate_scenario <- function(tree, option) {
@@ -91,14 +107,21 @@ evaluate_scenario <- function(tree, option) {
 }
 
 
-#' Assign values to the leaves of the tree
+#' Assign Values to the Leaves of the Tree
 #'
-#' Ensure that there are no Leaf-Aggregated leaves in the given option.
+#' Assigns values from the provided option matrix to the corresponding leaf nodes
+#' in the tree's results vector. Ensures that there are no Leaf-Aggregated
+#' leaves in the given option.
 #'
-#' @param results Numeric vector placeholder for results.
-#' @param option A matrix representing a single option/scenario to evaluate.
+#' @param results A \code{numeric} vector that serves as a placeholder for the
+#'   evaluated values.
+#' @param option A matrix representing a single option or scenario to evaluate. Each
+#'   row in the matrix corresponds to a leaf node, and each column provides different
+#'   values for the scenario analysis.
 #'
-#' @return Numeric vector with leaf-populated values.
+#' @return A \code{numeric} vector with leaf-populated values.
+#'
+#' @keywords internal
 assign_values_to_leaves <- function(results, option) {
   # Assign values from the option matrix to the corresponding leaf in results
   for (i in 1:length(option)) {
@@ -109,14 +132,19 @@ assign_values_to_leaves <- function(results, option) {
 }
 
 
-#' Calculate values for leaf-aggregated scenarios
+#' Calculate Values for Leaf-Aggregated Scenarios
 #'
-#' Considers tree's evaluation order to derive aggregated values.
+#' Computes aggregated values for leaf-aggregated scenarios based on the tree's
+#' evaluation order. Ensures that values are calculated in the correct
+#' sequence to account for aggregation.
 #'
-#' @param tree A Tree object.
-#' @param results Numeric vector placeholder for results.
+#' @param tree A \code{Tree} object.
+#' @param results A \code{numeric} vector that serves as a placeholder for the
+#'   evaluated values.
 #'
-#' @return Numeric vector with aggregated values.
+#' @return A \code{numeric} vector with computed aggregated values.
+#'
+#' @keywords internal
 compute_aggregated_values <- function(tree, results) {
   # Use the tree's order for aggregating results
   for (i in 1:length(tree@EvaluationOrder)) {
@@ -127,14 +155,18 @@ compute_aggregated_values <- function(tree, results) {
 }
 
 
-#' Compute final aggregated values
+#' Calculate Final Aggregated Values
 #'
-#' Uses tree structure to finalize aggregation.
+#' Computes the final aggregated values using the tree's structure. Ensures that
+#' values are propagated correctly through the tree.
 #'
-#' @param tree Tree object.
-#' @param results Numeric vector placeholder for results.
+#' @param tree A \code{Tree} object.
+#' @param results A \code{numeric} vector serving as a placeholder for the
+#'   evaluated values.
 #'
-#' @return Numeric vector with final values.
+#' @return A \code{numeric} vector with the final computed aggregated values.
+#'
+#' @keywords internal
 compute_final_aggregated_values <- function(tree, results) {
   results <- compute_values_from_aggregation_table(tree, results)
 
@@ -148,15 +180,16 @@ compute_final_aggregated_values <- function(tree, results) {
 }
 
 
-#' Compute node values from aggregation table
+#' Compute Node Values from Aggregation Table
 #'
-#' Takes a tree and pre-existing results to determine node values. Iteratively
-#' adjusts values based on the aggregation table and related children.
+#' Calculates node values iteratively using the aggregation table and related children.
 #'
-#' @param tree A Tree object.
-#' @param results Numeric vector with pre-existing values.
+#' @param tree A \code{Tree} object.
+#' @param results A \code{numeric} vector with pre-existing values.
 #'
-#' @return Numeric vector with updated node values.
+#' @return A \code{numeric} vector with updated node values.
+#'
+#' @keywords internal
 compute_values_from_aggregation_table <- function(tree, results) {
   for (agg_nodes_rev in rev(tree@Aggregated)) {
     if (results[agg_nodes_rev] < 0) {
@@ -192,15 +225,15 @@ compute_values_from_aggregation_table <- function(tree, results) {
 }
 
 
-#' Evaluate multiple scenarios for a given tree
+#' Evaluate Multiple Scenarios for a Given Tree
 #'
-#' Uses `evaluate_scenario` to evaluate multiple scenarios simultaneously.
-#' Each scenario is represented as a column in the `options_matrix`.
+#' Evaluates multiple scenarios simultaneously using the \code{evaluate_scenario} function.
+#' Each scenario is represented as a column in the \code{options_matrix}.
 #'
-#' @param tree Tree object for evaluation.
-#' @param options_matrix Matrix where each column represents a scenario.
+#' @param tree A \code{Tree} object for evaluation.
+#' @param options_matrix A \code{matrix} where each column represents a scenario.
 #'
-#' @return List of numeric vectors with evaluation results for each scenario.
+#' @return A \code{list} of \code{numeric} vectors with evaluation results for each scenario.
 #'
 #' @export
 evaluate_scenarios <- function(tree, options_matrix) {
@@ -213,13 +246,14 @@ evaluate_scenarios <- function(tree, options_matrix) {
 }
 
 
-#' Save options table
+#' Save Options Table
 #'
 #' Stores a matrix of options into a file, primarily for archival or subsequent
 #' analysis.
 #'
-#' @param options_table Matrix containing option values.
-#' @param file_name Desired file name for saving the options.
+#' @param options_table A \code{matrix} containing option values.
+#' @param file_name A \code{character} string specifying the desired file name for
+#'   saving the options.
 #'
 #' @return NULL
 #'
@@ -238,14 +272,15 @@ save_options <- function(options_table, file_name) {
 }
 
 
-#' Load options table from a file
+#' Load Options Table from a File
 #'
 #' Retrieves a matrix of options saved in a file. This matrix can then be used
 #' for further analysis or processing.
 #'
-#' @param file_name File from which to load the options matrix.
+#' @param file_name A \code{character} string specifying the file from which to
+#'   load the options matrix.
 #'
-#' @return Matrix of the loaded options.
+#' @return A \code{matrix} representing the loaded options.
 #'
 #' @export
 load_options <- function(file_name) {
@@ -261,13 +296,14 @@ load_options <- function(file_name) {
 }
 
 
-#' Save evaluation results of scenarios to a file
+#' Save Evaluation Results of Scenarios to a File
 #'
 #' Stores the results of scenario evaluations into a file for later analysis.
 #'
-#' @param scenarios_results List of numeric vectors with scenario evaluation
+#' @param scenarios_results List of \code{numeric} vectors with scenario
+#'   evaluation results.
+#' @param file_name A \code{character}, to name the file for saving the scenario
 #'   results.
-#' @param file_name Desired file name for saving the scenario results.
 #'
 #' @return NULL
 #'
@@ -285,15 +321,17 @@ save_scenarios <- function(scenarios_results, file_name) {
 }
 
 
-#' Plot a bar chart for a single scenario
+#' Plot a Bar Chart for a Single Scenario
 #'
-#' Visualizes the attribute values of a provided scenario. For each attribute,
-#' a bar is plotted, and the maximum possible value is highlighted.
+#' Visualizes the attribute values of a provided scenario. For each attribute, a
+#' bar is plotted, and the maximum possible value is highlighted.
 #'
 #' @param scenario Scenario data to visualize.
-#' @param tree Associated Tree object providing attribute details.
-#' @param label_y Logical value indicating whether to label the Y-axis (default is TRUE).
-#' @param modify_par Logical value to decide if graphical parameters should be modified (default is TRUE).
+#' @param tree Associated \code{Tree} object providing attribute details.
+#' @param label_y \code{Logical} value indicating whether to label the Y-axis
+#'   (default is \code{TRUE}).
+#' @param modify_par \code{Logical} value to decide if graphical parameters
+#'   should be modified (default is \code{TRUE}).
 #'
 #' @return NULL
 #'
@@ -357,15 +395,17 @@ show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
 }
 
 
-#' Compare scenarios using a radial plot
+#' Compare Scenarios Using a Radial Plot
 #'
-#' Visualizes the comparison of node values across multiple scenarios
-#' with a radial plot. This representation provides an intuitive view of how
-#' different scenarios compare for the selected nodes.
+#' Visualizes the comparison of node values across multiple scenarios with a
+#' radial plot. This representation provides an intuitive view of how different
+#' scenarios compare for the selected nodes.
 #'
-#' @param tree Tree object.
-#' @param scenarios_results List of numeric vectors with scenario evaluation results.
-#' @param nodes_list List of node names to be compared in the plot.
+#' @param tree A \code{Tree} object.
+#' @param scenarios_results List of \code{numeric} vectors with scenario
+#'   evaluation results.
+#' @param nodes_list List of \code{character} node names to be compared in the
+#'   plot.
 #'
 #' @return NULL
 #'

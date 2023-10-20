@@ -2,7 +2,7 @@
 % Please edit documentation in R/sensitivity_index.R
 \name{si_dexi}
 \alias{si_dexi}
-\title{Calculate Sensitivity Index (SI)}
+\title{Compute Sensitivity Index (SI) for Decision Tree}
 \usage{
 si_dexi(
   tree,
@@ -12,19 +12,21 @@ si_dexi(
 )
 }
 \arguments{
-\item{tree}{A decision tree object to perform the analysis on.}
+\item{tree}{A \code{Tree} object on which the analysis will be executed.}
 
-\item{file_name}{The file name to write the SI to. Default is "SI_out.csv".}
+\item{file_name}{\code{character} designating the filename to store the SI.
+Default is "SI_out.csv".}
 
-\item{is_file}{A boolean to decide whether to write the SI to a file. Default
-is TRUE.}
+\item{is_file}{\code{logical} determining whether to save the SI results to a
+file. Defaults to TRUE.}
 
-\item{avoid_repetition}{A boolean to decide whether to avoid repeated nodes.
-Default is FALSE.}
+\item{avoid_repetition}{\code{logical} indicating if repeated nodes should be
+disregarded. Defaults to FALSE.}
 }
 \value{
-A list of Sensitivity Indices for each node in the tree.
+A list containing the Sensitivity Indices for every node in the tree.
 }
 \description{
-Calculates the Sensitivity Index (SI) for a given decision tree.
+Computes the Sensitivity Index (SI) for each node within a specified decision
+tree.
 }

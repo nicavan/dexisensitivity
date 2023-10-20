@@ -7,15 +7,17 @@
 evaluate_and_label(df, tree, option)
 }
 \arguments{
-\item{df}{Data frame from tree.}
+\item{df}{\code{data.frame} that originates from the tree.}
 
-\item{tree}{Tree structure object.}
+\item{tree}{\code{Tree} structure object.}
 
 \item{option}{Evaluation options for the tree.}
 }
 \value{
-Data frame with evaluations and labels.
+\code{data.frame} updated with evaluations and labels.
 }
 \description{
-Evaluate Tree Node and Assign Labels
+Evaluates each node in the given tree based on the provided options and
+then assigns appropriate labels to them.
 }
+\keyword{internal}

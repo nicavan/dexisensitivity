@@ -2,28 +2,31 @@
 % Please edit documentation in R/oat.R
 \name{evaluate_variation}
 \alias{evaluate_variation}
-\title{Evaluate Variation for Sensitivity Analysis}
+\title{positive and negative deviations. It yields the evaluation outcome or returns
+-1 if the deviation is not within the allowed range.}
 \usage{
 evaluate_variation(tree, option, leaf_index, variation, range_scale)
 }
 \arguments{
-\item{tree}{A decision tree object to analyze.}
+\item{tree}{A \code{Tree} object designated for assessment.}
 
-\item{option}{Configuration to be modified for variation.}
+\item{option}{Configuration set for potential alteration.}
 
-\item{leaf_index}{Index of the leaf to be varied.}
+\item{leaf_index}{\code{numeric} specifying the index of the \code{Node}
+(leaf) to be varied.}
 
-\item{variation}{Numeric value indicating the amount and direction of the
-variation (+1 or -1).}
+\item{variation}{\code{numeric} value detailing the magnitude and course of
+the deviation (+1 or -1).}
 
-\item{range_scale}{The maximum allowed range for the variation.}
+\item{range_scale}{\code{numeric} indicating the maximum permissible scope
+for the variation.}
 }
 \value{
-Numeric value indicating the evaluation result of the variation or -1
-if out of bounds.
+A \code{numeric} value representing the assessment result of the
+variation, or -1 if the deviation surpasses the set boundary.
 }
 \description{
-Helper function to evaluate a specific variation for the sensitivity
-analysis. It checks both positive and negative variations and returns the
-evaluation result or -1 if a variation is out of bounds.
+positive and negative deviations. It yields the evaluation outcome or returns
+-1 if the deviation is not within the allowed range.
 }
+\keyword{internal}

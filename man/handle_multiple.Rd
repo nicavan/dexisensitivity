@@ -7,17 +7,20 @@
 handle_multiple(tree, tree_nodes, leaf_names)
 }
 \arguments{
-\item{tree}{Original Tree object.}
+\item{tree}{a \code{Tree} object representing the original tree.}
 
-\item{tree_nodes}{List of tree nodes under consideration.}
+\item{tree_nodes}{a list of \code{Node} objects that are currently under
+consideration.}
 
-\item{leaf_names}{Names of leaf nodes.}
+\item{leaf_names}{a \code{character} vector containing the names of leaf
+nodes.}
 }
 \value{
-A matrix detailing occurrences of nodes or a data frame if no
-multiple nodes.
+A \code{matrix} detailing occurrences of nodes. If no multiple nodes
+are found, a \code{data.frame} is returned instead.
 }
 \description{
 Manages scenarios where nodes might appear multiple times within the tree
 structure.
 }
+\keyword{internal}

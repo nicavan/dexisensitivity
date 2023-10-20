@@ -2,17 +2,20 @@
 % Please edit documentation in R/aov.R
 \name{compute_aov_total_sensitivity}
 \alias{compute_aov_total_sensitivity}
-\title{Calculate total Sensitivity Factors for Model Terms}
+\title{Compute Total Sensitivity Factors for Model Terms}
 \usage{
 compute_aov_total_sensitivity(aov_obj)
 }
 \arguments{
-\item{aov_obj}{An object of class \code{aov} from a call to \code{aov()}.}
+\item{aov_obj}{An \code{aov} object resulting from a call to the \code{aov()}
+function.}
 }
 \value{
-A data frame with total sensitivity factors for each term in the
-model.
+A \code{data.frame} detailing the total sensitivity factors for each
+model term.
 }
 \description{
-Computes total sensitivity factors for each term in a fitted model.
+Derives the total sensitivity factors for each term present in a provided
+fitted model.
 }
+\keyword{internal}

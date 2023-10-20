@@ -1,10 +1,14 @@
 #' Create a Synoptic Plot from a Given Tree Structure
 #'
-#' @param tree Tree structure object.
-#' @param option Evaluation options for the tree.
-#' @param depth Depth of the tree; if provided, produces a sub-tree.
+#' Generates a synoptic plot based on a specified tree structure, providing
+#' visualization of its structure and evaluation options.
 #'
-#' @return A ggplot object representing the synoptic plot.
+#' @param tree \code{Tree} structure object.
+#' @param option \code{list} containing evaluation options for the tree.
+#' @param depth \code{numeric} representing the depth of the tree; if provided,
+#'   produces a sub-tree.
+#'
+#' @return A \code{ggplot} object representing the synoptic plot.
 #'
 #' @import dplyr
 #' @import ggplot2
@@ -34,9 +38,14 @@ create_synoptique <- function(tree, option, depth = NA) {
 
 #' Produce Dataframe Suitable for Plotting from Tree Structure
 #'
-#' @param tree Tree structure object.
+#' Transforms a given tree structure into a dataframe, which is organized
+#' and formatted in a manner that makes it suitable for plotting purposes.
 #'
-#' @return Data frame suitable for plotting.
+#' @param tree \code{Tree} structure object.
+#'
+#' @return \code{data.frame} that is structured for plotting.
+#'
+#' @keywords internal
 create_data_frame_for_plotting <- function(tree) {
   # Initial data extraction
   df <- data.frame(attribut = tree@Attributes)
@@ -72,11 +81,16 @@ create_data_frame_for_plotting <- function(tree) {
 
 #' Evaluate Tree Node and Assign Labels
 #'
-#' @param df Data frame from tree.
-#' @param tree Tree structure object.
+#' Evaluates each node in the given tree based on the provided options and
+#' then assigns appropriate labels to them.
+#'
+#' @param df \code{data.frame} that originates from the tree.
+#' @param tree \code{Tree} structure object.
 #' @param option Evaluation options for the tree.
 #'
-#' @return Data frame with evaluations and labels.
+#' @return \code{data.frame} updated with evaluations and labels.
+#'
+#' @keywords internal
 evaluate_and_label <- function(df, tree, option) {
   # Evaluation based on scenario and range scaling
   df$eval <- evaluate_scenario(tree, option)
@@ -94,9 +108,16 @@ evaluate_and_label <- function(df, tree, option) {
 
 #' Extract Box Coordinates for Plotting
 #'
-#' @param df Data frame with depth and size attributes.
+#' Extracts the necessary coordinates from the data frame to plot boxes
+#' representing the nodes of a decision tree. The function considers the depth
+#' and size attributes to determine the positions and dimensions of the boxes.
 #'
-#' @return Data frame with box plotting coordinates.
+#' @param df \code{data.frame} with depth and size attributes from the tree.
+#'
+#' @return \code{data.frame} enhanced with box plotting coordinates, which
+#'   includes information about box position, dimensions, and labels.
+#'
+#' @keywords internal
 get_box_coordinates <- function(df) {
   # Calculate box coordinates
   df2 <- lapply(1:max(unlist(df$depth)), function(x) {
@@ -132,9 +153,18 @@ get_box_coordinates <- function(df) {
 
 #' Create Synoptic Plot from Data Frame
 #'
-#' @param df2 Data frame with plotting details.
+#' Constructs a synoptic plot visualizing nodes of a decision tree based on the
+#' plotting details provided in a data frame. The plot is color-coded based on
+#' normalized evaluations, with rectangles representing tree nodes and labels
+#' indicating node attributes.
 #'
-#' @return ggplot object.
+#' @param df2 \code{data.frame} containing plotting details, which should
+#'   include coordinates for boxes, normalized evaluation values, and labels.
+#'
+#' @return A \code{ggplot} object depicting the synoptic plot of the decision
+#'   tree.
+#'
+#' @keywords internal
 create_plot <- function(df2) {
   # Design synoptic plot
   p <- ggplot(data = df2) +
@@ -295,18 +325,21 @@ create_plot <- function(df2) {
 
 #' Create a List of Synoptic Plots Based on Different Options
 #'
-#' For each column in the 'options' matrix, this function generates a synoptic
-#' plot by calling `create_synoptique`. The function will thus produce as many
-#' plots as there are columns in 'options'.
+#' Produces a list of synoptic plots, one for each set of options specified in
+#' the columns of the 'options' matrix. Each plot visualizes nodes of a decision
+#' tree based on different evaluation options.
 #'
-#' @param tree Tree structure object.
-#' @param options Matrix where each column represents a different set of options
-#'   for tree evaluation.
-#' @param depth Depth of the tree; if provided, produces a sub-tree. Default is
-#'   NA.
+#' @param tree \code{Tree structure object} representing the decision tree.
+#' @param options \code{matrix} where each column denotes a distinct set of
+#'   options for evaluating the decision tree.
+#' @param depth Optional \code{numeric} specifying the depth of the tree. If
+#'   provided, a sub-tree is produced up to the specified depth. By default, it
+#'   is set to NA.
 #'
-#' @return List of ggplot objects, each representing a different synoptic plot
-#'   based on the provided options.
+#' @return A \code{list} of \code{ggplot} objects. Each item in the list is a
+#'   synoptic plot corresponding to a column from the 'options' matrix.
+#'
+#' @seealso \code{\link{create_synoptique}}
 #'
 #' @export
 create_list_synoptique <- function(tree, options, depth = NA) {

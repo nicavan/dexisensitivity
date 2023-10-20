@@ -1,13 +1,14 @@
-#' Estimates the execution time for factorial simulations
+#' Execution Time Estimation for Factorial Simulations
 #'
-#' Estimates the execution time for a specified number of factorial simulations
-#' based on the time taken to run a subset of simulations.
+#' Estimates the expected execution time for a given number of factorial
+#' simulations using the duration taken to run a sample subset of simulations.
 #'
-#' @param tree The Tree object on which simulations are run.
-#' @param test_runs Number of simulations to be used for time estimation.
-#'   Default is 50.
+#' @param tree \code{Tree} object upon which the simulations are performed.
+#' @param test_runs \code{numeric} denoting the number of simulations utilized
+#'   for estimating the execution time. Default value is set to \code{50}.
 #'
-#' @return No explicit return. Prints the estimated execution time.
+#' @return No explicit return value. The function prints the calculated
+#'   estimated execution time.
 #'
 #' @export
 estimate_aov_time <- function(tree, test_runs = 50) {
@@ -52,15 +53,17 @@ estimate_aov_time <- function(tree, test_runs = 50) {
 }
 
 
-#' Calculate AOV Results
+#' Dual Order AOV on a Decision Tree
 #'
-#' Provides the results of an Analysis of Variance (AOV) based on a given tree.
+#' Conducts an Analysis of Variance (AOV) on a provided decision tree, computing
+#' both first-order and second-order effects.
 #'
-#' @param tree Tree object for analysis.
+#' @param tree \code{Tree} object to be analyzed.
 #'
 #' @importFrom stats aov as.formula
 #'
-#' @return A list containing AOV results.
+#' @return A \code{list} containing results for both first-order and
+#'   second-order AOV analyses.
 #'
 #' @export
 aov_tree <- function(tree) {
@@ -104,16 +107,18 @@ aov_tree <- function(tree) {
 }
 
 
-#' Create Factorial Plan from Tree
+#' Factorial Plan Generation for a Decision Tree
 #'
-#' Extracts leaf indices from the tree and creates the factorial plan based on
-#' gen.factorial function.
+#' Extracts the leaf indices from a provided decision tree and constructs a
+#' factorial plan utilizing the \code{gen.factorial} function.
 #'
-#' @param tree Tree object for analysis.
+#' @param tree \code{Tree} object to be analyzed.
 #'
 #' @importFrom AlgDesign gen.factorial
 #'
-#' @return A matrix representing the factorial plan.
+#' @return A \code{matrix} detailing the generated factorial plan.
+#'
+#' @keywords internal
 create_factorial_plan <- function(tree) {
   # Extract leaf indices from the tree
   leaf_indices <- tree@Nodes %>%
@@ -132,16 +137,19 @@ create_factorial_plan <- function(tree) {
 }
 
 
-#' Generate AOV formula
+#' Construct AOV Formula from Results Dataframe
 #'
-#' Constructs an Analysis of Variance (AOV) formula based on the results
-#' dataframe.
+#' Builds an Analysis of Variance (AOV) formula based on a provided results
+#' dataframe and the desired order of interaction.
 #'
-#' @param results_df Data frame containing AOV results.
-#' @param order Integer representing the order of interaction; 1 for
-#'   first-order, 2 for second-order.
+#' @param results_df \code{data.frame} containing the results for which an AOV
+#'   formula is to be constructed.
+#' @param order \code{numeric} value specifying the interaction order: 1 for
+#'   first-order and 2 for second-order.
 #'
-#' @return A formula object for AOV.
+#' @return A \code{formula} object suitable for AOV analysis.
+#'
+#' @keywords internal
 generate_aov_formula <- function(results_df, order = 1) {
   # Construct AOV formula based on the order
   predictors <- paste(colnames(results_df)[2:ncol(results_df)], collapse = "+")
@@ -155,21 +163,28 @@ generate_aov_formula <- function(results_df, order = 1) {
 }
 
 
-#' Calculate sensitivity criteria for model terms
+#' Compute Sensitivity Criteria for Model Terms
 #'
-#' Provides sensitivity criteria for each term in a fitted model.
+#' Derives sensitivity criteria for each term present in a provided fitted
+#' model.
 #'
-#' @param aov_obj An object of class `aov` from a call to `aov()`.
+#' @param aov_obj An \code{aov} object resulting from a call to the \code{aov()}
+#'   function.
 #'
-#' @return A data frame with sensitivity criteria for each term in the model.
-#'   The columns of the data frame include:
-#'   - `df`: degrees of freedom
-#'   - `ss`: sum of squares
-#'   - `ss.ratio`: ratio of sum of squares to total sum of squares
-#'   - `cm`: mean square (or variance) for each term
-#'   - `F`: F-statistic for each term
+#' @return A \code{data.frame} detailing the sensitivity criteria for each model
+#'   term. The data frame consists of the following columns:
+#'   \itemize{
+#'     \item \code{df}: degrees of freedom.
+#'     \item \code{ss}: sum of squares.
+#'     \item \code{ss.ratio}: ratio of the term's sum of squares to the model's
+#'       total sum of squares.
+#'     \item \code{cm}: mean square (or variance) associated with each term.
+#'     \item \code{F}: F-statistic relevant to each term.
+#'   }
+#'   Entries are organized in descending order based on the \code{ss.ratio}
+#'   values.
 #'
-#'   Rows are ordered in decreasing order of ss.ratio.
+#' @keywords internal
 compute_aov_sensitivity_effects <- function(aov_obj) {
   # Ensure the object is of class 'aov'
   if (!inherits(aov_obj, "aov")) {
@@ -213,14 +228,18 @@ compute_aov_sensitivity_effects <- function(aov_obj) {
 }
 
 
-#' Calculate total Sensitivity Factors for Model Terms
+#' Compute Total Sensitivity Factors for Model Terms
 #'
-#' Computes total sensitivity factors for each term in a fitted model.
+#' Derives the total sensitivity factors for each term present in a provided
+#' fitted model.
 #'
-#' @param aov_obj An object of class `aov` from a call to `aov()`.
+#' @param aov_obj An \code{aov} object resulting from a call to the \code{aov()}
+#'   function.
 #'
-#' @return A data frame with total sensitivity factors for each term in the
-#'   model.
+#' @return A \code{data.frame} detailing the total sensitivity factors for each
+#'   model term.
+#'
+#' @keywords internal
 compute_aov_total_sensitivity <- function(aov_obj) {
   # Ensure the object is of class 'aov'
   if (!inherits(aov_obj, "aov")) {
@@ -278,27 +297,29 @@ compute_aov_total_sensitivity <- function(aov_obj) {
 }
 
 
-#' Visualize AOV results
+#' Visualize AOV Outcomes
 #'
-#' Visualizes the results of an Analysis of Variance (AOV). It provides both a
-#' complete total and effect visualization using bar plots.
+#' Renders the outcomes of an Analysis of Variance (AOV) through bar plots,
+#' allowing a comprehensive display of both total sums and specific effects.
 #'
-#' @param aov_results A list containing the AOV results.
-#' @param show_main Logical, if TRUE, main effects and total sums of squares are
-#'   displayed in the plot. Defaults to TRUE.
-#' @param num_plots The number of effects to display.
-#' @param horizontal Logical, if TRUE, the bar plot is displayed horizontally.
-#'   Defaults to TRUE.
-#' @param axis_label_style The style of axis labels on the bar plots. Default is
-#'   1.
-#' @param ... Additional arguments to control the appearance of the bar plots.
+#' @param aov_results A \code{list} containing the AOV results.
+#' @param show_main \code{logical} indicating if the main effects and total sums
+#'   of squares should be included in the visualization. Default is \code{TRUE}.
+#' @param num_plots \code{numeric} specifying the count of effects to be
+#'   showcased in the display.
+#' @param horizontal \code{logical} determining if the bar plots should be
+#'   oriented horizontally. Default is \code{TRUE}.
+#' @param axis_label_style \code{numeric} designating the label styling for the
+#'   plot's axes. Default is 1.
+#' @param ... Additional arguments affecting the bar plot's aesthetics.
 #'
 #' @importFrom grDevices heat.colors
 #'
-#' @return A data frame with the summed square proportions.
+#' @return A \code{data.frame} containing proportions derived from the sum of
+#'   squares.
 #'
 #' @export
-visualize_aov_results <- function(aov_results,
+visualize_aov <- function(aov_results,
                                   show_main = TRUE,
                                   num_plots = 8,
                                   horizontal = TRUE,
@@ -337,26 +358,29 @@ visualize_aov_results <- function(aov_results,
   return(aov_results[[4]])
 }
 
-#' Create AOV Bar Plot
+#' AOV Bar Plot Generator
 #'
-#' Helper function specifically designed to create bar plots to visualize the
-#' results of an AOV (Analysis of Variance). It has the flexibility to handle
-#' both total sums of squares and effect visualizations.
+#' Constructs bar plots to illustrate the outcomes of an Analysis of Variance
+#' (AOV). Tailored to visualize both the total sum of squares and specific
+#' effects.
 #'
-#' @param data A data frame containing the AOV results to be plotted.
-#' @param is_effect A logical flag. If TRUE, indicates that the data represents
-#'   effects; otherwise, it represents totals.
-#' @param horizontal A logical flag. If TRUE, the bar plots will be oriented
-#'   horizontally; otherwise, they will be vertical.
-#' @param num_plots An integer specifying the number of effects to display in
-#'   the bar plot.
-#' @param show_main A logical flag. If TRUE, the main effects and total sums of
-#'   squares are combined and displayed. This is effective only if `is_effect`
-#'   is FALSE.
-#' @param axis_label_style An integer representing the style of the axis labels
-#'   on the bar plots.
-#' @param ... Additional arguments that will be passed to the `barplot` function
-#'   to control its appearance.
+#' @param data A \code{data.frame} containing the AOV results designated for
+#'   plotting.
+#' @param is_effect \code{logical} signifying whether the provided data
+#'   showcases effects (if \code{TRUE}) or totals (if \code{FALSE}).
+#' @param horizontal \code{logical} indicating the orientation of the bar plots.
+#'   If \code{TRUE}, plots are displayed horizontally; otherwise, vertically.
+#' @param num_plots \code{numeric} dictating the count of effects to be
+#'   presented in the plot.
+#' @param show_main \code{logical} stating if the main effects and total sums of
+#'   squares should be amalgamated and exhibited. Relevant only when `is_effect`
+#'   is \code{FALSE}.
+#' @param axis_label_style \code{numeric} defining the label styling for the
+#'   plot axes.
+#' @param ... Supplementary arguments relayed to the `barplot` function for
+#'   aesthetic adjustments.
+#'
+#' @keywords internal
 create_aov_barplot <- function(data,
                                is_effect,
                                horizontal,

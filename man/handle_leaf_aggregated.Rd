@@ -7,18 +7,23 @@
 handle_leaf_aggregated(tree, tree_nodes, leaf_names, aggregated_names)
 }
 \arguments{
-\item{tree}{Original Tree object.}
+\item{tree}{a \code{Tree} object representing the original tree.}
 
-\item{tree_nodes}{List of tree nodes under consideration.}
+\item{tree_nodes}{a list of \code{Node} objects that are currently under
+consideration.}
 
-\item{leaf_names}{Names of leaf nodes.}
+\item{leaf_names}{a \code{character} vector containing the names of leaf
+nodes.}
 
-\item{aggregated_names}{Names of aggregated nodes.}
+\item{aggregated_names}{a \code{character} vector containing the names of
+aggregated nodes.}
 }
 \value{
-A vector containing names of nodes that are both leaves and
-aggregated.
+A \code{character} vector containing names of nodes that are both
+leaves and aggregated. If no such nodes are found, an empty string is
+returned.
 }
 \description{
 Manages nodes that are both leaves and aggregated within the tree structure.
 }
+\keyword{internal}

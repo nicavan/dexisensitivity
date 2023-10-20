@@ -3,18 +3,29 @@
 \name{describe,Tree-method}
 \alias{describe,Tree-method}
 \alias{describe.Tree}
-\title{describe method for Tree class object}
+\title{Describe Method for Tree Class Objects}
 \usage{
 \S4method{describe}{Tree}(object)
 }
 \arguments{
-\item{object}{Object}
+\item{object}{The Tree object to be described.}
 }
 \value{
-Primarily invoked for its side effect of displaying the nodes of the
-Tree object, the function does not produce a meaningful return value.
+This function is primarily executed for its side effect of presenting
+nodes from the Tree object and does not provide a meaningful return value.
 }
 \description{
-A method to describe the structure of a Tree object in a comprehensive way.
-It prints each node and its properties separately.
+Outputs a detailed structure of a Tree object, with each node and its
+properties displayed distinctly.
+}
+\details{
+Each node within the Tree is presented separately. If the Tree lacks
+nodes, an error "Tree without any node!" is raised.
+}
+\seealso{
+\itemize{
+\item \code{\link{Tree-class}}: For the Tree class definition.
+\item \code{\link{print.Tree}}: For printing a Tree object.
+\item \code{\link{show.Tree}}: For showing a Tree object.
+}
 }

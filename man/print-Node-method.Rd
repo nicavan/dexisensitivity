@@ -3,19 +3,29 @@
 \name{print,Node-method}
 \alias{print,Node-method}
 \alias{print.Node}
-\title{print method for Node class object}
+\alias{\S4method{print}{Node}}
+\title{Print Method for Node Class Object}
 \usage{
 \S4method{print}{Node}(x, ...)
 }
 \arguments{
-\item{x}{The Node object to be printed.}
+\item{x}{An object of class \code{Node} that you want to print.}
 
-\item{...}{additional parameters to be passed to the print function.}
+\item{...}{Additional arguments to be passed to the underlying print
+function, though they might not have any effect in this custom print
+method.}
 }
 \value{
-No explicit return. Print the Node object.
+This function is invoked for its side effect of printing. It does not
+return anything.
 }
 \description{
-Prints basic information about the node including its name, id, depth, path,
-and other properties.
+Provides a comprehensive display of a Node's properties, such as its name,
+ID, depth, path, and more. This method is intended for better readability
+and understanding of a Node's structure and relationships.
+}
+\seealso{
+\itemize{
+\item \code{\link{Node-class}}: For more details on the Node class.
+}
 }

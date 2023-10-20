@@ -7,11 +7,13 @@
 create_data_frame_for_plotting(tree)
 }
 \arguments{
-\item{tree}{Tree structure object.}
+\item{tree}{\code{Tree} structure object.}
 }
 \value{
-Data frame suitable for plotting.
+\code{data.frame} that is structured for plotting.
 }
 \description{
-Produce Dataframe Suitable for Plotting from Tree Structure
+Transforms a given tree structure into a dataframe, which is organized
+and formatted in a manner that makes it suitable for plotting purposes.
 }
+\keyword{internal}

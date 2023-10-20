@@ -2,18 +2,22 @@
 % Please edit documentation in R/option.R
 \name{compute_aggregated_values}
 \alias{compute_aggregated_values}
-\title{Calculate values for leaf-aggregated scenarios}
+\title{Calculate Values for Leaf-Aggregated Scenarios}
 \usage{
 compute_aggregated_values(tree, results)
 }
 \arguments{
-\item{tree}{A Tree object.}
+\item{tree}{A \code{Tree} object.}
 
-\item{results}{Numeric vector placeholder for results.}
+\item{results}{A \code{numeric} vector that serves as a placeholder for the
+evaluated values.}
 }
 \value{
-Numeric vector with aggregated values.
+A \code{numeric} vector with computed aggregated values.
 }
 \description{
-Considers tree's evaluation order to derive aggregated values.
+Computes aggregated values for leaf-aggregated scenarios based on the tree's
+evaluation order. Ensures that values are calculated in the correct
+sequence to account for aggregation.
 }
+\keyword{internal}

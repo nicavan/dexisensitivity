@@ -2,7 +2,7 @@
 % Please edit documentation in R/aov.R
 \name{create_aov_barplot}
 \alias{create_aov_barplot}
-\title{Create AOV Bar Plot}
+\title{AOV Bar Plot Generator}
 \usage{
 create_aov_barplot(
   data,
@@ -15,29 +15,31 @@ create_aov_barplot(
 )
 }
 \arguments{
-\item{data}{A data frame containing the AOV results to be plotted.}
+\item{data}{A \code{data.frame} containing the AOV results designated for
+plotting.}
 
-\item{is_effect}{A logical flag. If TRUE, indicates that the data represents
-effects; otherwise, it represents totals.}
+\item{is_effect}{\code{logical} signifying whether the provided data
+showcases effects (if \code{TRUE}) or totals (if \code{FALSE}).}
 
-\item{horizontal}{A logical flag. If TRUE, the bar plots will be oriented
-horizontally; otherwise, they will be vertical.}
+\item{horizontal}{\code{logical} indicating the orientation of the bar plots.
+If \code{TRUE}, plots are displayed horizontally; otherwise, vertically.}
 
-\item{num_plots}{An integer specifying the number of effects to display in
-the bar plot.}
+\item{num_plots}{\code{numeric} dictating the count of effects to be
+presented in the plot.}
 
-\item{show_main}{A logical flag. If TRUE, the main effects and total sums of
-squares are combined and displayed. This is effective only if \code{is_effect}
-is FALSE.}
+\item{show_main}{\code{logical} stating if the main effects and total sums of
+squares should be amalgamated and exhibited. Relevant only when \code{is_effect}
+is \code{FALSE}.}
 
-\item{axis_label_style}{An integer representing the style of the axis labels
-on the bar plots.}
+\item{axis_label_style}{\code{numeric} defining the label styling for the
+plot axes.}
 
-\item{...}{Additional arguments that will be passed to the \code{barplot} function
-to control its appearance.}
+\item{...}{Supplementary arguments relayed to the \code{barplot} function for
+aesthetic adjustments.}
 }
 \description{
-Helper function specifically designed to create bar plots to visualize the
-results of an AOV (Analysis of Variance). It has the flexibility to handle
-both total sums of squares and effect visualizations.
+Constructs bar plots to illustrate the outcomes of an Analysis of Variance
+(AOV). Tailored to visualize both the total sum of squares and specific
+effects.
 }
+\keyword{internal}

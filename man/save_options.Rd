@@ -2,14 +2,15 @@
 % Please edit documentation in R/option.R
 \name{save_options}
 \alias{save_options}
-\title{Save options table}
+\title{Save Options Table}
 \usage{
 save_options(options_table, file_name)
 }
 \arguments{
-\item{options_table}{Matrix containing option values.}
+\item{options_table}{A \code{matrix} containing option values.}
 
-\item{file_name}{Desired file name for saving the options.}
+\item{file_name}{A \code{character} string specifying the desired file name for
+saving the options.}
 }
 \description{
 Stores a matrix of options into a file, primarily for archival or subsequent

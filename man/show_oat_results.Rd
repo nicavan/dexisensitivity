@@ -2,20 +2,23 @@
 % Please edit documentation in R/oat.R
 \name{show_oat_results}
 \alias{show_oat_results}
-\title{Visualize One-Factor-At-A-Time (OFAT) Sensitivity Analysis Results}
+\title{Visualize OFAT Sensitivity Analysis Outcomes}
 \usage{
 show_oat_results(node_name, results, tree)
 }
 \arguments{
-\item{node_name}{Name of the node for the visualization.}
+\item{node_name}{\code{character} specifying the name of the node intended
+for visualization.}
 
-\item{results}{Evaluation results matrix obtained from \code{ofat_sensitivity_analysis}.}
+\item{results}{Matrix of evaluation results, typically derived from
+\code{ofat_sensitivity_analysis}.}
 
-\item{tree}{Decision tree object used in the OFAT analysis.}
+\item{tree}{A \code{Tree} object that was employed in the OFAT analysis.}
 }
 \value{
-No return value; the function displays a plot.
+This function does not return a value; instead, it exhibits a plot.
 }
 \description{
-Generates a plot visualizing the results of the OFAT sensitivity analysis.
+Renders a visualization representing the One-Factor-At-A-Time (OFAT)
+sensitivity analysis results.
 }

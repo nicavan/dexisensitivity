@@ -7,15 +7,18 @@
 determine_scale_node(node_path, main_tree)
 }
 \arguments{
-\item{node_path}{A character vector representing the path to the node.}
+\item{\code{node_path}}{A \code{character} vector representing the path to
+the node.}
 
-\item{main_tree}{Main tree structure containing the XML data.}
+\item{\code{main_tree}}{An XML object representing the main tree structure.}
 }
 \value{
-Scale of the node.
+An \code{integer} indicating the scale of the node. If no scale is
+found, the function returns 0.
 }
 \description{
-Used to understand the node's working scale, which might be necessary for
-subsequent calculations or visualization.
+Retrieves the scale associated with a given node within the decision tree.
+The scale provides valuable insights into the node's dimension and can be
+crucial for subsequent computations and visual representations.
 }
 \keyword{internal}

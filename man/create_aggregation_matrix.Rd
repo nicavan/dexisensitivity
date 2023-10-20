@@ -2,7 +2,7 @@
 % Please edit documentation in R/node.R
 \name{create_aggregation_matrix}
 \alias{create_aggregation_matrix}
-\title{Create Aggregation Matrix for Node}
+\title{Aggregation Matrix Creation via Genetic Algorithm}
 \usage{
 create_aggregation_matrix(
   node,
@@ -13,29 +13,36 @@ create_aggregation_matrix(
 )
 }
 \arguments{
-\item{node}{A Node object.}
+\item{node}{An object of class \code{Node}. Represents the target node.}
 
-\item{expected_weights}{Numeric vector of expected weights.}
+\item{expected_weights}{\code{numeric} vector, denoting the expected weights.}
 
-\item{number_of_tables}{Numeric, number of tables (default is 1).}
+\item{number_of_tables}{\code{numeric}. Defines the number of tables; default
+is set to 1.}
 
-\item{population_size}{Numeric, population size for genetic algorithm
-(default is 50).}
+\item{population_size}{\code{numeric}. Sets the population size for the
+genetic algorithm; default is 50.}
 
-\item{iterations}{Numeric, number of iterations for genetic algorithm
-(default is 50).}
+\item{iterations}{\code{numeric}. Specifies the number of iterations for the
+genetic algorithm; default is 50.}
 }
 \value{
-A list of aggregation matrices.
+List of aggregation matrices.
 }
 \description{
-Creates an aggregation matrix for a node using genetic algorithm
-optimization.
+Optimizes an aggregation matrix for a specified node.
 }
 \details{
-Utilize a genetic algorithm to determine the optimal aggregation matrix.
-Here, the "gene" corresponds to the value of the aggregated node. The
-optimization function aims to minimize the squared difference between the
-expected weight and the actual weight, which ensures that the weights closely
-match their expected values.
+Leverages a genetic algorithm where each "gene" mirrors the value of the
+aggregated node. This optimization seeks to minimize the squared discrepancy
+between expected and actual weights, ensuring they align closely with
+anticipated values.
 }
+\seealso{
+\itemize{
+\item \code{\link{Node-class}}: For a detailed understanding of the Node class.
+\item \code{\link{rbga}}: The genetic algorithm function from the genalg package.
+\item \code{\link{print.Node}}: To print a Node object.
+}
+}
+\keyword{internal}

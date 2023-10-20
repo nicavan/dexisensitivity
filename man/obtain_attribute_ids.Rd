@@ -7,14 +7,17 @@
 obtain_attribute_ids(tree, node_id)
 }
 \arguments{
-\item{tree}{A Tree object.}
+\item{tree}{a \code{Tree} object.}
 
-\item{node_id}{Node ID that serves as the reference point.}
+\item{node_id}{a \code{numeric} or \code{character} identifier representing
+the \code{Node} that will act as the reference point.}
 }
 \value{
-A vector of attribute IDs representing descendant nodes.
+A \code{numeric} vector of attribute IDs symbolizing descendant
+nodes.
 }
 \description{
 Retrieves all nodes that share a path with the specified node. Such nodes are
 considered descendants of the given node and are included in the subtree.
 }
+\keyword{internal}

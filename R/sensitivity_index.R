@@ -1,17 +1,20 @@
-#' Calculate Sensitivity Index (SI)
+#' Compute Sensitivity Index (SI) for Decision Tree
 #'
-#' Calculates the Sensitivity Index (SI) for a given decision tree.
+#' Computes the Sensitivity Index (SI) for each node within a specified decision
+#' tree.
 #'
-#' @param tree A decision tree object to perform the analysis on.
-#' @param file_name The file name to write the SI to. Default is "SI_out.csv".
-#' @param is_file A boolean to decide whether to write the SI to a file. Default
-#'   is TRUE.
-#' @param avoid_repetition A boolean to decide whether to avoid repeated nodes.
-#'   Default is FALSE.
+#' @param tree A \code{Tree} object on which the analysis will be executed.
+#' @param file_name \code{character} designating the filename to store the SI.
+#'   Default is "SI_out.csv".
+#' @param is_file \code{logical} determining whether to save the SI results to a
+#'   file. Defaults to TRUE.
+#' @param avoid_repetition \code{logical} indicating if repeated nodes should be
+#'   disregarded. Defaults to FALSE.
 #'
-#' @return A list of Sensitivity Indices for each node in the tree.
+#' @return A list containing the Sensitivity Indices for every node in the tree.
 #'
 #' @export
+
 si_dexi <- function(tree,
                     file_name = "SI_out.csv",
                     is_file = TRUE,
@@ -84,15 +87,17 @@ si_dexi <- function(tree,
 }
 
 
-#' Calculate Sensitivity Index
+#' Compute Sensitivity Index for Decision Tree
 #'
-#' Calculates the Sensitivity Index (SI) of a tree.
+#' Computes the Sensitivity Index (SI) for each attribute within the specified
+#' tree.
 #'
-#' @param tree The tree object for analysis.
-#' @param avoid_repetition A boolean determining if repeated nodes should be
-#'   avoided. Default is FALSE.
+#' @param tree A \code{Tree} object on which the analysis is to be performed.
+#' @param avoid_repetition \code{logical} indicating if repeated nodes should be
+#'   disregarded. Defaults to FALSE.
 #'
-#' @return A vector of Sensitivity Indices for each attribute in the tree.
+#' @return A \code{vector} containing the Sensitivity Indices for each attribute
+#'   in the tree.
 get_sensitivity_index <- function(tree, avoid_repetition = FALSE) {
   # Initialize root name and attribute weights
   root_name <- tree@RootName
@@ -157,17 +162,23 @@ get_sensitivity_index <- function(tree, avoid_repetition = FALSE) {
 }
 
 
-#' Retrieve Node ID based on Node Name
+#' Retrieve Node Identifier by Name from Decision Tree
 #'
-#' Retrieves the ID of a specific node from the decision tree based on its name,
-#' considering possible repetitions and the tree structure.
+#' Fetches the unique identifier of a specific node within the provided decision
+#' tree based on the node's name. Takes into account potential name repetitions
+#' and the hierarchical structure of the tree.
 #'
-#' @param tree The tree object
-#' @param node_name The name of the node to find.
-#' @param avoid_repetition A boolean determining if repeated nodes should be
-#'   avoided.
+#' @param tree A \code{Tree} object containing the decision tree structure.
+#' @param node_name \code{character} specifying the name of the node for which
+#'   the ID is sought.
+#' @param avoid_repetition \code{logical} indicating whether to return a single
+#'   ID in cases of node name repetition. Defaults to FALSE.
 #'
-#' @return A numeric value representing the ID of the node.
+#' @return A \code{numeric} representing the identifier of the specified node
+#'   within the tree.
+#'
+#' @keywords internal
+
 get_node_id <- function(tree, node_name, avoid_repetition) {
   # Start by finding the ID using the node name
   id <- get_id(tree@Nodes, node_name)
@@ -190,16 +201,21 @@ get_node_id <- function(tree, node_name, avoid_repetition) {
 }
 
 
-#' Compute Direct Probabilities
+#' Direct Probability Computation for Node's Children
 #'
-#' Computes the direct probabilities for children of a node based on its
-#' aggregation and child weights.
+#' Calculates the direct probabilities associated with the children of a given
+#' node. This computation is based on the aggregation property of the node and
+#' the weights assigned to its children.
 #'
-#' @param node The specific node for which the direct probabilities should be
-#'   calculated.
-#' @param child_weights The weights of the child nodes.
+#' @param node A \code{Node} object representing the specific node for which
+#'   direct probabilities are to be computed.
+#' @param child_weights A \code{numeric} vector containing the weights of each
+#'   child node associated with the provided parent node.
 #'
-#' @return A list of computed direct probabilities.
+#' @return A \code{list} containing the direct probabilities computed for each
+#'   child of the specified node.
+#'
+#' @keywords internal
 compute_direct_probabilities <- function(node, child_weights) {
   # Compute the direct probabilities based on the node's aggregation type
   probs <- calculate_conditional_probabilities(
@@ -216,14 +232,21 @@ compute_direct_probabilities <- function(node, child_weights) {
 }
 
 
-#' Adjust Probabilities for Range Scale
+#' Range Scale Probability Adjustment
 #'
-#' Adjusts the computed probabilities to match the range scale of a node.
+#' Adjusts a set of probabilities to ensure consistency with a node's specified
+#' range scale. If the computed probabilities don't match the node's range
+#' scale, they are modified accordingly.
 #'
-#' @param probs The computed probabilities.
-#' @param node The specific node for which the adjustment should be made.
+#' @param probs A \code{list} of \code{numeric} vectors representing the
+#'   originally computed probabilities for each child of the node.
+#' @param node A \code{Node} object specifying the node for which the
+#'   probabilities are being adjusted.
 #'
-#' @return A list of adjusted probabilities.
+#' @return A \code{list} containing the adjusted probabilities for each child of
+#'   the node to match the node's range scale.
+#'
+#' @keywords internal
 adjust_probas_for_range_scale <- function(probs, node) {
   # Calculate the number of children and values in the probabilities
   num_children <- length(node@Children)
@@ -244,18 +267,25 @@ adjust_probas_for_range_scale <- function(probs, node) {
 
 #' Compute Indirect Probabilities
 #'
-#' Computes the indirect probabilities for descendants of a node based on its
-#' children, computed probabilities, and the existing conditional probabilities.
+#' Computes the indirect probabilities for descendants of a specific node,
+#' considering the computed probabilities of the node, the existing conditional
+#' probabilities, and the structure of the decision tree. If a child of the node
+#' is not a leaf, its indirect probabilities are calculated based on its direct
+#' ancestors' probabilities.
 #'
-#' @param node The specific node for which the indirect probabilities should be
+#' @param node The \code{Node} object for which the indirect probabilities are
 #'   calculated.
-#' @param probs The computed probabilities for the node.
-#' @param conditional_probabilities The existing conditional probabilities.
-#' @param tree A decision tree object.
-#' @param avoid_repetition A boolean determining if repeated nodes should be
-#'   avoided.
+#' @param probs A \code{list} of computed probabilities for the node.
+#' @param conditional_probabilities A \code{list} of existing conditional
+#'   probabilities associated with the node's descendants.
+#' @param tree The \code{Tree} object representing the decision tree structure.
+#' @param avoid_repetition A \code{logical} flag determining if nodes with
+#'   repeated names should be avoided in the calculations.
 #'
-#' @return A list of computed indirect probabilities.
+#' @return A \code{list} of computed indirect probabilities for the node's
+#'   descendants.
+#'
+#' @keywords internal
 compute_indirect_probabilities <- function(node, probs,
                                            conditional_probabilities,
                                            tree, avoid_repetition) {
@@ -286,18 +316,22 @@ compute_indirect_probabilities <- function(node, probs,
 
 #' Calculate Conditional Probabilities
 #'
-#' Calculates the probabilities of Y given its direct descendants A_i.
+#' Determines the probabilities of \( Y \) given its direct descendants \( A_i
+#' \).
 #'
-#' @param input_table A matrix with all the level combinations of the A_i factors
-#'   and, in the last column, the associated Y values.
-#' @param weight_list A list with the weight vectors of each A_i variable.
-#'   If missing, A_i levels have equal weights.
-#' @param sy The number of unique Y values.
-#' @param y_levels Optional, specifies the Y levels. If missing, they are
-#'   extracted from the input_table.
+#' @param input_table A \code{matrix} containing all level combinations of the
+#'   \( A_i \) factors with the associated \( Y \) values in the last column.
+#' @param weight_list A \code{list} with the weight vectors for each \( A_i \)
+#'   variable. If missing, levels of \( A_i \) have equal weights.
+#' @param sy A \code{numeric} indicating the number of unique \( Y \) values.
+#' @param y_levels Optionally, a \code{vector} specifying the \( Y \) levels. If
+#'   missing, they are extracted from the \code{input_table}.
 #'
-#' @return A list containing matrices of Y probabilities conditional to each
-#'   A_i factor and, finally, the vector of marginal Y probabilities.
+#' @return A \code{list} comprising matrices of \( Y \) probabilities
+#'   conditional to each \( A_i \) factor. The last element is the vector of
+#'   marginal \( Y \) probabilities.
+#'
+#' @keywords internal
 calculate_conditional_probabilities <- function(input_table,
                                                 weight_list,
                                                 sy,
@@ -380,16 +414,22 @@ calculate_conditional_probabilities <- function(input_table,
 }
 
 
-#' Calculate Sensitivity indices (SI) From Conditional Probabilities
+#' Calculate Sensitivity Indices (SI) From Conditional Probabilities
 #'
-#' Calculates the first-order sensitivity indices of Y concerning A_i descendants,
-#' given the conditional probabilities and A_i weights.
+#' Computes the first-order sensitivity indices of \( Y \) with respect to \(
+#' A_i \) descendants, utilizing the provided conditional probabilities and \(
+#' A_i \) weights.
 #'
-#' @param conditional_prob_list List of matrices of conditional probabilities
-#'   (Y conditional to each A_i) plus the vector of Y probabilities.
-#' @param weight_list The list of weights for the A_i factor levels.
+#' @param conditional_prob_list A list containing matrices of conditional
+#'   probabilities (of \( Y \) conditional on each \( A_i \)) and a vector of \(
+#'   Y \) probabilities as the last element.
+#' @param weight_list A list representing the weights associated with each \(
+#'   A_i \) factor level.
 #'
-#' @return A vector of Sensitivity Indices (SI).
+#' @return A named vector of Sensitivity Indices (SI) where names correspond to
+#'   the factors.
+#'
+#' @keywords internal
 calculate_sensitivity_indices <- function(conditional_prob_list, weight_list) {
   # Preliminary steps
   num_factors <- length(conditional_prob_list) - 1
@@ -417,16 +457,18 @@ calculate_sensitivity_indices <- function(conditional_prob_list, weight_list) {
 
 #' Show Sensitivity Index (SI)
 #'
-#' Generates a bar plot to visualize the Sensitivity Index (SI) of the leaves of
-#' a given decision tree.
+#' Visualizes the Sensitivity Index (SI) of the leaves of a specified decision
+#' tree using a bar plot.
 #'
-#' @param tree A decision tree object for analysis.
-#' @param sensitivity_indices A vector of Sensitivity Indices for each leaf
-#'   in the decision tree.
+#' @param tree \code{Tree} object for analysis.
+#' @param sensitivity_indices A \code{numeric} vector representing the
+#'   Sensitivity Indices for each leaf in the decision tree.
 #'
-#' @return No return value, but generates a bar plot.
+#' @return No return value; a bar plot is displayed.
 #'
 #' @importFrom graphics mtext
+#'
+#' @export
 plot_sensitivity_index <- function(tree, sensitivity_indices) {
   # Bar plot parameters and plot generation
   mc <- barplot(

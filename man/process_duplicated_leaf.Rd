@@ -2,28 +2,39 @@
 % Please edit documentation in R/create_tree.R
 \name{process_duplicated_leaf}
 \alias{process_duplicated_leaf}
-\title{Process Duplicated leaf}
+\title{Process Duplicate Leaf Nodes in Tree Structure}
 \usage{
 process_duplicated_leaf(tree_nodes, leaves)
 }
 \arguments{
-\item{tree_nodes}{A list of nodes in the tree structure.}
+\item{tree_nodes}{A \code{list} of nodes, where each element is an object of
+class \code{Node}, representing the tree's hierarchical structure.}
 
-\item{leaves}{A character vector containing the names of leaf attributes.}
+\item{leaves}{A \code{character} vector detailing the names of leaf
+attributes within the tree.}
 }
 \value{
-A list containing two elements:
+A list containing the following components:
 \itemize{
-\item \code{multiple}: A data frame or matrix containing the count of
-occurrences of leaf attributes.
-\item \code{is_multiple}: A logical value indicating whether there are multiple
-occurrences of any leaf attributes.
-\item \code{tree_nodes}: A list of tree nodes updated with the twin
-information and markings for duplicated leaf.
+\item \code{multiple}: A \code{data.frame} or \code{matrix} presenting the
+count of occurrences for leaf attributes with more than one
+appearance.
+\item \code{is_multiple}: A \code{logical} indicating the presence of leaf
+attributes with multiple occurrences.
+\item \code{tree_nodes}: An updated \code{list} of tree nodes, where each
+element is an object of class \code{Node}, enriched with
+\code{Twin} information for duplicated leaf attributes.
 }
 }
 \description{
-Identifies the multiple occurrences of leaf attributes in the tree structure,
-marking them with the appropriate \code{Twin} reference. It also returns a data
-frame containing the count of occurrences.
+An internal utility to identify multiple occurrences of leaf
+attributes within a tree and mark them with the appropriate \code{Twin}
+reference for differentiation. It also provides a comprehensive overview of
+these occurrences, enhancing the process of tree traversal and analysis when
+invoked by main functions like \code{\link{create_tree}}.
 }
+\seealso{
+\code{\link{create_tree}} for the primary function that utilizes
+this utility in tree construction.
+}
+\keyword{internal}

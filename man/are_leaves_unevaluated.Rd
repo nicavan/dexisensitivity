@@ -7,20 +7,33 @@
 are_leaves_unevaluated(leaves, results, nodes)
 }
 \arguments{
-\item{leaves}{A vector of leaves to check.}
+\item{leaves}{A \code{character} vector listing the leaves to be checked.}
 
-\item{results}{A named vector where names are node names and values indicate
-whether the node has been evaluated.}
+\item{results}{A named \code{numeric} vector, where names correspond to
+\code{Node} names and values indicate the evaluation status of the node. A
+value of -1 implies the \code{Node} is unevaluated.}
 
-\item{nodes}{A list of nodes containing node details.}
+\item{nodes}{A list of \code{Node}s, where each entry contains details of a
+node.}
 }
 \value{
-Logical. Returns \code{TRUE} if any leaves are unevaluated, and \code{FALSE}
-otherwise.
+A \code{logical}. Returns \code{TRUE} if any of the leaves are yet to be
+evaluated; otherwise, it returns \code{FALSE}.
 }
 \description{
-Determines if any of the provided leaves are marked as unevaluated in the
-results. A leaf is considered unevaluated if its corresponding value in the
-results is -1.
+Determines if any of the provided leaves within a \code{Tree} have not yet
+been evaluated. A leaf is deemed unevaluated if its corresponding value in
+the results vector is -1.
+}
+\seealso{
+Related functions and objects that might be of interest:
+\itemize{
+\item \code{\link{Tree-class}}: For a more detailed understanding of the
+\code{Tree} class.
+\item \code{\link{Node-class}}: To delve deeper into the structure of a
+\code{Node}.
+\item \code{\link{evaluate_order}}: A function that determines the sequence
+for evaluating \code{Node}s in a \code{Tree}.
+}
 }
 \keyword{internal}

@@ -3,57 +3,60 @@
 \docType{class}
 \name{Node-class}
 \alias{Node-class}
-\alias{Node}
-\title{An S4 class to represent a Node}
+\title{Node Class Definition}
 \value{
-An object of class Node.
+An object of class \code{Node}.
 }
 \description{
-It includes several slots to store information related to the node, such as
-its name, its depth, and its relationships with other nodes in the tree
-structure.
+An S4 class to represent a node in a tree structure.
+}
+\details{
+A structured representation of a node, which encompasses various attributes
+such as name, depth, and relationships with other nodes in the tree structure.
+The class \code{Node} is primarily used in the creation, manipulation, and
+display of nodes within tree structures.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{Id}}{Object of class "numeric", unique sequential id of the node.}
+\item{\code{Id}}{\code{numeric} - Unique sequential identifier for the node.}
 
-\item{\code{Name}}{Object of class "character", name of the node.}
+\item{\code{Name}}{\code{character} - Name of the node.}
 
-\item{\code{IsLeaf}}{Object of class "logical", indicating if it is a leaf.}
+\item{\code{IsLeaf}}{\code{logical} - Flag indicating if the node is a leaf.}
 
-\item{\code{IsLeafAndAggregated}}{Object of class "logical", indicating if this leaf
-is also an aggregated node.}
+\item{\code{IsLeafAndAggregated}}{\code{logical} - Flag indicating if the node is both
+a leaf and an aggregated node.}
 
-\item{\code{Children}}{Object of class "character", list of the names of the node's
-children.}
+\item{\code{Children}}{\code{character} - List of the node's children names.}
 
-\item{\code{Sisters}}{Object of class "character", list of the names of the node's
-sisters.}
+\item{\code{Sisters}}{\code{character} - List of the node's sisters names.}
 
-\item{\code{Mother}}{Object of class "character", name of the node's mother.}
+\item{\code{Mother}}{\code{character} - Name of the node's mother.}
 
-\item{\code{Aggregation}}{Object of class "matrix", aggregation table if the node is
-aggregated.}
+\item{\code{Aggregation}}{\code{matrix} - Aggregation table if the node is aggregated.}
 
-\item{\code{Probability}}{Object of class "numeric", estimated weight of aggregation.}
+\item{\code{Probability}}{\code{numeric} - Estimated weight for aggregation.}
 
-\item{\code{Depth}}{Object of class "numeric", depth of the node.}
+\item{\code{Depth}}{\code{numeric} - Depth of the node in the tree.}
 
-\item{\code{Twin}}{Object of class "numeric", id of the other leaves in case of
-multiple leaves.}
+\item{\code{Twin}}{\code{numeric} - ID of the other leaves for nodes with multiple
+leaves.}
 
-\item{\code{ConditionalProbabilityList}}{Object of class "list", list to store
-conditional probabilities.}
+\item{\code{ConditionalProbabilityList}}{\code{list} - List storing conditional
+probabilities.}
 
-\item{\code{RangeScale}}{Object of class "numeric", range scale.}
+\item{\code{RangeScale}}{\code{numeric} - Range scale for the node.}
 
-\item{\code{ScaleLabel}}{Object of class "character", labels of the different scales.}
+\item{\code{ScaleLabel}}{\code{character} - Labels corresponding to different scales.}
 
-\item{\code{NodePath}}{Object of class "character", node path from root to leaf.}
+\item{\code{NodePath}}{\code{character} - Path from the root to the leaf for the node.}
 }}
 
 \seealso{
-\code{\link{print.Node}}, \code{\link{get_estimated_weights}},
-\code{\link{create_aggregation_matrix}}
+\itemize{
+\item \code{\link{print.Node}}: For printing a Node object.
+\item \code{\link{compute_leaf_weights}}: For obtaining estimated weights.
+\item \code{\link{create_aggregation_matrix}}: For creating an aggregation matrix.
+}
 }

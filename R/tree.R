@@ -1,49 +1,44 @@
-#### Tree Class Definition ####
+#### Tree Class ####
 
-#' An S4 class to represent a Tree
+#' Tree Class Definition
 #'
-#' It includes several slots to store attributes, leaves, nodes, path, and
-#' additional information related to the tree structure.
+#' An S4 class to represent a tree structure.
 #'
-#' Tree class objects are used in the creation and display of tree structures.
-#' Information from the object is used to create and print the tree structure in
-#' a human-readable format.
+#' A structured representation of a tree, which includes several slots to store
+#' attributes, leaves, nodes, path, and additional information related to the
+#' tree structure. The class \code{Tree} is primarily used in the creation,
+#' manipulation, and display of tree structures.
 #'
-#' @slot NumberOfAttributes Object of class "numeric", the number of attributes
-#'   in the tree.
-#' @slot NumberOfLeaves Object of class "numeric", the number of leaves in the
+#' @slot NumberOfAttributes \code{numeric} - Number of attributes in the tree.
+#' @slot NumberOfLeaves \code{numeric} - Number of leaves in the tree.
+#' @slot Depth \code{numeric} - Maximum depth of the tree.
+#' @slot Attributes \code{character} - Names of attributes in the tree.
+#' @slot Leaves \code{character} - Names of leaves in the tree.
+#' @slot Aggregated \code{character} - Names of aggregated nodes in the tree.
+#' @slot IsMultiple \code{logical} - Flag indicating if multiple leaves are
+#'   present in the tree.
+#' @slot Multiple \code{data.frame} - List of multiple leaves and their count.
+#' @slot IsLeafAggregated \code{logical} - Flag indicating if leaf-aggregated
+#'   nodes are present in the tree.
+#' @slot LeafAggregated \code{character} - Names of leaf-aggregated nodes in the
 #'   tree.
-#' @slot Depth Object of class "numeric", the maximum depth of the tree.
-#' @slot Attributes Object of class "character", list of names of attributes in
-#'   the tree.
-#' @slot Leaves Object of class "character", list of names of leaves in the
-#'   tree.
-#' @slot Aggregated Object of class "character", list of names of aggregated
-#'   nodes in the tree.
-#' @slot IsMultiple Object of class "logical", flag indicating if there are
-#'   multiple leaves in the tree.
-#' @slot Multiple Object of class "data.frame", list of multiple leaves and
-#'   their count.
-#' @slot IsLeafAggregated Object of class "logical", flag indicating if there
-#'   are leaf-aggregated nodes in the tree.
-#' @slot LeafAggregated Object of class "character", list of names of
-#'   leaf-aggregated nodes in the tree.
-#' @slot Paths Object of class "list", list of paths from the root to the
-#'   leaves.
-#' @slot Nodes Object of class "list", list of nodes in the tree.
-#' @slot EvaluationOrder Object of class "numeric", evaluation order in case of
-#'   LeafAggregated nodes.
-#' @slot RootName Object of class "character", name of the root node.
+#' @slot Paths \code{list} - Paths from the root to the leaves.
+#' @slot Nodes \code{list} - Nodes present in the tree.
+#' @slot EvaluationOrder \code{numeric} - Evaluation order for LeafAggregated
+#'   nodes.
+#' @slot RootName \code{character} - Name of the root node.
 #'
-#' @return An object of class Tree.
+#' @return An object of class \code{Tree}.
 #'
-#' @seealso \code{\link{print.Tree}},
-#'  \code{\link{show.Tree}},
-#'  \code{\link{describe.Tree}}
+#' @seealso
+#' \itemize{
+#'   \item \code{\link{print.Tree}}: For printing a Tree object.
+#'   \item \code{\link{show.Tree}}: For showing a Tree object.
+#'   \item \code{\link{describe.Tree}}: For describing a Tree object.
+#' }
 #'
-#' @aliases Tree
-#'
-#' @export
+#' @name Tree-class
+#' @exportClass Tree
 methods::setClass(
   "Tree",
   representation(
@@ -65,20 +60,31 @@ methods::setClass(
 )
 
 
-#### print Method ####
+#### print.Tree ####
 
-#' print method for Tree class object
+#' Print Method for Tree Class Objects
 #'
-#' Custom print method for Tree class object. Prints basic information about the
-#' tree including root name, number of attributes, leaves, depth and specific
-#' nodes.
+#' Custom print method for objects of class \code{Tree}. This method prints out
+#' basic information about the tree, such as the root name, number of
+#' attributes, number of leaves, depth, and details about specific nodes.
 #'
-#' @param x Tree object to be printed.
-#' @param ... additional parameters to be passed to the print function.
+#' @param x An object of class \code{Tree} that you want to print.
+#' @param ... Additional arguments to be passed to the underlying print
+#'   function, though they might not have any effect in this custom print
+#'   method.
+#'
+#' @return This function is invoked for its side effect of printing. It does not
+#'   return anything.
+#'
+#' @seealso
+#' \itemize{
+#'   \item \code{\link{Tree-class}}: For the Tree class definition.
+#'   \item \code{\link{show.Tree}}: For showing a Tree object.
+#'   \item \code{\link{describe.Tree}}: For describing a Tree object.
+#' }
 #'
 #' @aliases print.Tree
-#'
-#' @return No explicit return. Print the Tree object.
+#' @aliases \S4method{print}{Tree}
 #'
 #' @export
 setMethod(
@@ -87,29 +93,29 @@ setMethod(
     cat("Root name:", x@RootName)
     cat("\nNumber of attributes:", length(x@Attributes))
     cat("\nNumber of aggregated attributes:", length(x@Aggregated))
-    cat(
-      "\nNumber of true leaves (no multiple, no aggregated):",
-      x@NumberOfLeaves
-    )
+    cat("\nNumber of true leaves (no multiple, no aggregated):",
+        x@NumberOfLeaves)
     cat("\nMaximum depth:", x@Depth)
-    cat(
-      "\nList of repeated aggregated nodes:",
-      if (length(which(table(x@Aggregated) > 1))) {
-        names(which(table(x@Aggregated) > 1))
-      } else {
-        "Non"
-      }
-    )
 
+    # Repeated aggregated nodes
+    repeated_nodes <- names(which(table(x@Aggregated) > 1))
+    if (length(repeated_nodes) > 0) {
+      cat("\nList of repeated aggregated nodes:\n", repeated_nodes)
+    } else {
+      cat("\nList of repeated aggregated nodes: Non")
+    }
+
+    # Multiple leaves
     if (length(x@IsMultiple) > 0 && x@IsMultiple) {
-      cat("\nMultiple leaves: \n")
+      cat("\nMultiple leaves:\n")
       print(x@Multiple)
     } else {
       cat("\nNo multiple leaves")
     }
 
+    # Leaf-Aggregated attributes
     if (length(x@IsLeafAggregated) > 0 && x@IsLeafAggregated) {
-      cat("\nLeaf-Aggregated attributes: \n")
+      cat("\nLeaf-Aggregated attributes:\n")
       print(x@LeafAggregated)
     } else {
       cat("\nNo Leaf-Aggregated Leaf")
@@ -118,24 +124,36 @@ setMethod(
 )
 
 
-#### show Method ####
+#### show.Tree ####
 
-#' show method for Tree class object
+#' Show Method for Tree Class Objects
 #'
-#' Custom show method for Tree class object. Prints a formatted structure of the
-#' tree using a set of rules based on node properties.
+#' Custom show method for objects of class \code{Tree}. It presents a structured
+#' representation of the tree using a specific format.
 #'
-#' @description Each node of the tree is printed with its depth, name, and twin
-#'   attributes. Different prefixes are used depending on whether the node is
-#'   the first one (prefix "Z : "), a leaf node (prefix "X : "), or a non-leaf
-#'   node (prefix "Y : "). If a tree has no attributes, it prints "*** Tree
-#'   without attributes ***".
+#' Each node of the tree is displayed with its depth, name, and associated twin
+#' attributes. Node presentation differs based on its type and position within
+#' the tree structure:
+#' \itemize{
+#'   \item Prefix "Z : " is used for the first node of the tree.
+#'   \item Prefix "X : " denotes a leaf node.
+#'   \item Prefix "Y : " indicates a non-leaf node.
+#' }
+#' If a tree has no attributes, it displays "*** Tree without attributes ***".
 #'
-#' @param object The Tree object to be shown.
+#' @param object An object of class \code{Tree} to be shown.
 #'
-#' @return No explicit return. Show the Tree class object.
+#' @return This function is invoked for its side effect of showing a structured
+#'   display of the tree. It does not return anything explicitly.
+#'
+#' @seealso
+#' \itemize{
+#'   \item \code{\link{print.Tree}}: For printing a Tree object.
+#'   \item \code{\link{Tree-class}}: For the Tree class definition.
+#' }
 #'
 #' @aliases show.Tree
+#' @aliases \S4method{show}{Tree}
 #'
 #' @export
 setMethod(
@@ -146,7 +164,7 @@ setMethod(
       cat("*** Tree without attributes ***")
     } else {
       # Digit is used to ensure proper formatting when printing the Tree
-      digit <- calculate_digit(object@NumberOfAttributes)
+      digit <- count_digits(object@NumberOfAttributes)
 
       # Iterate over each attribute of the tree
       for (i in 1:object@NumberOfAttributes) {
@@ -180,24 +198,24 @@ setMethod(
 )
 
 
-#' Calculate Digit
+#' Determine Number of Digits in a Non-negative Number
 #'
-#' Calculates the number of digits of a given non-negative number. Returns 1 if
-#' the input is 0.
+#' Computes the digit count for a provided non-negative number, returning 1 if
+#' the value is 0. Used as an auxiliary function within the package, especially
+#' for the `show` method of the `Tree` class to determine the number of digits
+#' in `number_of_attributes`.
 #'
-#' @description This is an internal helper function used within the package.
-#'   It's used in the `show` method for the `Tree` class to calculate the number
-#'   of digits in `number_of_attributes`.
+#' @param number_of_attributes A non-negative number for which the number of
+#'   digits is required.
 #'
-#' @param number_of_attributes A non-negative number representing the number of
-#'   attributes.
+#' @details If the input `number_of_attributes` is 0, the function returns 1.
+#' Otherwise, it computes the number of digits using logarithmic operations.
 #'
-#' @return The number of digits in the `number_of_attributes`. Returns 1 if
-#'   `number_of_attributes` is 0.
+#' @return An integer representing the number of digits in the
+#'   `number_of_attributes`.
 #'
 #' @keywords internal
-#'
-calculate_digit <- function(number_of_attributes) {
+count_digits <- function(number_of_attributes) {
   if (number_of_attributes != 0) {
     return(floor(log10(number_of_attributes)) + 1)
   } else {
@@ -208,11 +226,18 @@ calculate_digit <- function(number_of_attributes) {
 
 #### describe Method ####
 
-#' Title
+#' Generic Describe Function for Objects
 #'
-#' @param object the Tree
+#' Provides a comprehensive description of an object.
 #'
-#' @return No explicit return.
+#' @param object The object to be described.
+#'
+#' @seealso
+#' \itemize{
+#'   \item \code{\link{Tree-class}}: For the Tree class definition.
+#'   \item \code{\link{print.Tree}}: For printing a Tree object.
+#'   \item \code{\link{show.Tree}}: For showing a Tree object.
+#' }
 #'
 #' @export
 setGeneric("describe", function(object) {
@@ -220,31 +245,41 @@ setGeneric("describe", function(object) {
 })
 
 
-#' describe method for Tree class object
+#' Describe Method for Tree Class Objects
 #'
-#' A method to describe the structure of a Tree object in a comprehensive way.
-#' It prints each node and its properties separately.
+#' Outputs a detailed structure of a Tree object, with each node and its
+#' properties displayed distinctly.
 #'
-#' @param object Object
+#' @param object The Tree object to be described.
+#'
+#' @details Each node within the Tree is presented separately. If the Tree lacks
+#' nodes, an error "Tree without any node!" is raised.
+#'
+#' @seealso
+#' \itemize{
+#'   \item \code{\link{Tree-class}}: For the Tree class definition.
+#'   \item \code{\link{print.Tree}}: For printing a Tree object.
+#'   \item \code{\link{show.Tree}}: For showing a Tree object.
+#' }
+#'
+#' @return This function is primarily executed for its side effect of presenting
+#'   nodes from the Tree object and does not provide a meaningful return value.
 #'
 #' @aliases describe.Tree
-#'
-#' @return Primarily invoked for its side effect of displaying the nodes of the
-#'   Tree object, the function does not produce a meaningful return value.
 #'
 #' @export
 setMethod(
   "describe", "Tree",
   function(object) {
-    # Nodes are necessary for this method
+    # Nodes are essential for this method
     stopifnot("Tree without any node!" = length(object@Nodes) > 0)
 
-    # Call print for every node
+    # Display each node
     object@Nodes %>%
       lapply(function(node) {
         methods::selectMethod("print", class(node))(node)
         cat("\n\n")
       }) %>%
-      invisible() # we only want to see node prints
+      invisible() # Ensure only node details are visible
   }
 )

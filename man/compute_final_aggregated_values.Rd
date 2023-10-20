@@ -2,18 +2,21 @@
 % Please edit documentation in R/option.R
 \name{compute_final_aggregated_values}
 \alias{compute_final_aggregated_values}
-\title{Compute final aggregated values}
+\title{Calculate Final Aggregated Values}
 \usage{
 compute_final_aggregated_values(tree, results)
 }
 \arguments{
-\item{tree}{Tree object.}
+\item{tree}{A \code{Tree} object.}
 
-\item{results}{Numeric vector placeholder for results.}
+\item{results}{A \code{numeric} vector serving as a placeholder for the
+evaluated values.}
 }
 \value{
-Numeric vector with final values.
+A \code{numeric} vector with the final computed aggregated values.
 }
 \description{
-Uses tree structure to finalize aggregation.
+Computes the final aggregated values using the tree's structure. Ensures that
+values are propagated correctly through the tree.
 }
+\keyword{internal}

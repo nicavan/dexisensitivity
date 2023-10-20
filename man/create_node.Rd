@@ -2,38 +2,57 @@
 % Please edit documentation in R/create_tree.R
 \name{create_node}
 \alias{create_node}
-\title{Create a Node for the Decision Tree}
+\title{Construct a Node for a Decision Tree}
 \usage{
 create_node(node_path, main_tree)
 }
 \arguments{
-\item{node_path}{A character vector representing the path to the node.}
+\item{node_path}{A \code{character} vector representing the sequence of
+attributes leading to the node within the tree structure.}
 
-\item{main_tree}{An XML object representing the main tree structure
-containing the XML data.}
+\item{main_tree}{An XML object encapsulating the tree's hierarchical
+structure with the associated XML data.}
 }
 \value{
-A new "Node" object containing the following components:
+A new object of class \code{Node}, comprising the following elements:
 \describe{
-\item{Name}{The name of the node.}
-\item{Depth}{The depth of the node within the tree.}
-\item{Twin}{Numeric value representing a twin node, initialized to 0.}
-\item{IsLeaf}{Boolean indicating if the node is a leaf.}
-\item{IsLeafAndAggregated}{Boolean, initialized to FALSE.}
-\item{Mother}{Character representing the mother of the node.}
-\item{Sisters}{Character vector representing the sisters of the node.}
-\item{Children}{Character vector representing the children of the node.}
-\item{Aggregation}{Aggregation structure for the node.}
-\item{RangeScale}{The range scale of the node.}
-\item{ScaleLabel}{Character vector representing the scale label of the
-node.}
-\item{Probability}{Numeric vector representing the probability or weights
-for the node.}
-\item{NodePath}{Character vector representing the path to the node.}
+\item{\code{Name}}{The name of the node, derived from the last element of
+\code{node_path}.}
+\item{\code{Depth}}{A \code{numeric} value indicating the depth of the node
+within the tree, derived from the length of \code{node_path}.}
+\item{\code{Twin}}{A \code{numeric} vector, initialized as empty, to store
+any potential twin nodes.}
+\item{\code{IsLeaf}}{A \code{logical} value denoting if the node is a
+terminal node without children.}
+\item{\code{IsLeafAndAggregated}}{A \code{logical} initialized to
+\code{FALSE} to flag nodes that serve as both leaf and aggregated nodes.}
+\item{\code{Mother}}{A \code{character} specifying the immediate parent of
+the node.}
+\item{\code{Sisters}}{A \code{character} vector enumerating nodes that
+share the same mother as the current node.}
+\item{\code{Children}}{A \code{character} vector listing all immediate
+child nodes of the current node.}
+\item{\code{Aggregation}}{The aggregation structure or method associated
+with the node.}
+\item{\code{RangeScale}}{A \code{numeric} value or range indicating the
+scale of the node's value.}
+\item{\code{ScaleLabel}}{A \code{character} vector representing the
+description or label of the node's scale.}
+\item{\code{Probability}}{A \code{numeric} vector detailing the probability
+or weight distribution associated with the node.}
+\item{\code{NodePath}}{A \code{character} vector mirroring the input
+\code{node_path} to trace the node's lineage.}
 }
 }
 \description{
-Constructs a new node for the decision tree, incorporating various attributes
-and details including leaf status, children, mother, sisters, scale, scale
-label, aggregation, and weight list.
+An internal function that constructs and populates a node for the decision
+tree, capturing a variety of node attributes, including its relationships
+with other nodes, its depth, status (leaf or aggregated), scale, and weight
+information. It's one of the key utilities invoked by the main tree
+construction function, \code{\link{create_tree}}.
 }
+\seealso{
+\code{\link{create_tree}} for the primary function where this
+utility function is engaged for tree generation.
+}
+\keyword{internal}

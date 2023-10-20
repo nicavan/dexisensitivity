@@ -2,20 +2,21 @@
 % Please edit documentation in R/aov.R
 \name{estimate_aov_time}
 \alias{estimate_aov_time}
-\title{Estimates the execution time for factorial simulations}
+\title{Execution Time Estimation for Factorial Simulations}
 \usage{
 estimate_aov_time(tree, test_runs = 50)
 }
 \arguments{
-\item{tree}{The Tree object on which simulations are run.}
+\item{tree}{\code{Tree} object upon which the simulations are performed.}
 
-\item{test_runs}{Number of simulations to be used for time estimation.
-Default is 50.}
+\item{test_runs}{\code{numeric} denoting the number of simulations utilized
+for estimating the execution time. Default value is set to \code{50}.}
 }
 \value{
-No explicit return. Prints the estimated execution time.
+No explicit return value. The function prints the calculated
+estimated execution time.
 }
 \description{
-Estimates the execution time for a specified number of factorial simulations
-based on the time taken to run a subset of simulations.
+Estimates the expected execution time for a given number of factorial
+simulations using the duration taken to run a sample subset of simulations.
 }

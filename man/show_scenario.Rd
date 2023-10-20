@@ -2,22 +2,24 @@
 % Please edit documentation in R/option.R
 \name{show_scenario}
 \alias{show_scenario}
-\title{Plot a bar chart for a single scenario}
+\title{Plot a Bar Chart for a Single Scenario}
 \usage{
 show_scenario(scenario, tree, label_y = TRUE, modify_par = TRUE)
 }
 \arguments{
 \item{scenario}{Scenario data to visualize.}
 
-\item{tree}{Associated Tree object providing attribute details.}
+\item{tree}{Associated \code{Tree} object providing attribute details.}
 
-\item{label_y}{Logical value indicating whether to label the Y-axis (default is TRUE).}
+\item{label_y}{\code{Logical} value indicating whether to label the Y-axis
+(default is \code{TRUE}).}
 
-\item{modify_par}{Logical value to decide if graphical parameters should be modified (default is TRUE).}
+\item{modify_par}{\code{Logical} value to decide if graphical parameters
+should be modified (default is \code{TRUE}).}
 }
 \description{
-Visualizes the attribute values of a provided scenario. For each attribute,
-a bar is plotted, and the maximum possible value is highlighted.
+Visualizes the attribute values of a provided scenario. For each attribute, a
+bar is plotted, and the maximum possible value is highlighted.
 }
 \seealso{
 \code{\link{evaluate_scenario}}

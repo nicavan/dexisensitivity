@@ -2,22 +2,26 @@
 % Please edit documentation in R/monte_carlo.R
 \name{show_mc_results}
 \alias{show_mc_results}
-\title{Displays the Monte Carlo simulation results}
+\title{Visualization of Monte Carlo Simulation Results}
 \usage{
 show_mc_results(node, mc_results, num_runs)
 }
 \arguments{
-\item{node}{Node of interest.}
+\item{node}{\code{Node} object representing the node of interest in the
+simulation.}
 
-\item{mc_results}{Monte Carlo simulation results matrix.}
+\item{mc_results}{\code{matrix} containing the Monte Carlo simulation
+results.}
 
-\item{num_runs}{Number of Monte Carlo simulations conducted.}
+\item{num_runs}{\code{numeric} indicating the number of Monte Carlo
+simulations that were executed.}
 }
 \value{
-A vector representing the bar chart data.
+A \code{vector} depicting the data used in the bar chart.
 }
 \description{
-Visualizes the Monte Carlo simulation outcomes for a given node as a bar chart,
-depicting the frequency of each outcome. Additionally, the bar lengths are saved
-to a .csv file named "MC bar lengths.csv".
+Displays the outcomes of the Monte Carlo simulation for a specific
+\code{Node} as a bar chart, showcasing the frequency of each result.
+Furthermore, the lengths of the bars are saved in a .csv file titled "MC bar
+lengths.csv".
 }

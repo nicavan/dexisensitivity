@@ -1,14 +1,14 @@
-#' Perform One-Factor-At-A-Time (OFAT) Sensitivity Analysis
+#' OFAT Sensitivity Analysis
 #'
-#' Conducts OFAT sensitivity analysis by performing
-#' simulations with varying factors, keeping all but one factor constant
-#' for each simulation.
+#' Executes a One-Factor-At-A-Time (OFAT) sensitivity assessment by undertaking
+#' simulations while varying individual factors. During each simulation, all
+#' factors are maintained constant save for one.
 #'
-#' @param tree A decision tree object to analyze.
-#' @param option Initial configuration for tree parameters.
+#' @param tree \code{Tree} object designated for analysis.
+#' @param option Initial configuration for \code{Tree} parameters.
 #'
-#' @return A matrix with evaluation results for each attribute in the tree,
-#' under different parameter variations.
+#' @return A \code{matrix} depicting the assessment outcomes for every attribute
+#'   in the \code{Tree}, corresponding to diverse parameter alterations.
 #'
 #' @export
 oat <- function(tree, option) {
@@ -44,22 +44,22 @@ oat <- function(tree, option) {
 }
 
 
-#' Evaluate Variation for Sensitivity Analysis
+#' positive and negative deviations. It yields the evaluation outcome or returns
+#' -1 if the deviation is not within the allowed range.
 #'
-#' Helper function to evaluate a specific variation for the sensitivity
-#' analysis. It checks both positive and negative variations and returns the
-#' evaluation result or -1 if a variation is out of bounds.
+#' @param tree A \code{Tree} object designated for assessment.
+#' @param option Configuration set for potential alteration.
+#' @param leaf_index \code{numeric} specifying the index of the \code{Node}
+#'   (leaf) to be varied.
+#' @param variation \code{numeric} value detailing the magnitude and course of
+#'   the deviation (+1 or -1).
+#' @param range_scale \code{numeric} indicating the maximum permissible scope
+#'   for the variation.
 #'
-#' @param tree A decision tree object to analyze.
-#' @param option Configuration to be modified for variation.
-#' @param leaf_index Index of the leaf to be varied.
-#' @param variation Numeric value indicating the amount and direction of the
-#'   variation (+1 or -1).
-#' @param range_scale The maximum allowed range for the variation.
+#' @return A \code{numeric} value representing the assessment result of the
+#'   variation, or -1 if the deviation surpasses the set boundary.
 #'
-#' @return Numeric value indicating the evaluation result of the variation or -1
-#'   if out of bounds.
-#'
+#' @keywords internal
 evaluate_variation <- function(tree, option, leaf_index,
                                variation, range_scale) {
   option_copy <- option
@@ -79,15 +79,18 @@ evaluate_variation <- function(tree, option, leaf_index,
 }
 
 
-#' Visualize One-Factor-At-A-Time (OFAT) Sensitivity Analysis Results
+#' Visualize OFAT Sensitivity Analysis Outcomes
 #'
-#' Generates a plot visualizing the results of the OFAT sensitivity analysis.
+#' Renders a visualization representing the One-Factor-At-A-Time (OFAT)
+#' sensitivity analysis results.
 #'
-#' @param node_name Name of the node for the visualization.
-#' @param results Evaluation results matrix obtained from `ofat_sensitivity_analysis`.
-#' @param tree Decision tree object used in the OFAT analysis.
+#' @param node_name \code{character} specifying the name of the node intended
+#'   for visualization.
+#' @param results Matrix of evaluation results, typically derived from
+#'   `ofat_sensitivity_analysis`.
+#' @param tree A \code{Tree} object that was employed in the OFAT analysis.
 #'
-#' @return No return value; the function displays a plot.
+#' @return This function does not return a value; instead, it exhibits a plot.
 #'
 #' @export
 show_oat_results <- function(node_name, results, tree) {

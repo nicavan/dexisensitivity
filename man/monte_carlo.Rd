@@ -2,24 +2,29 @@
 % Please edit documentation in R/monte_carlo.R
 \name{monte_carlo}
 \alias{monte_carlo}
-\title{Performs a Monte Carlo simulation}
+\title{Monte Carlo Simulation on a Decision Tree}
 \usage{
 monte_carlo(tree, num_runs, write_to_file = FALSE, verbose = TRUE)
 }
 \arguments{
-\item{tree}{Decision tree for the simulation.}
+\item{tree}{\code{Tree} object to be used in the simulation.}
 
-\item{num_runs}{Number of Monte Carlo simulations to conduct.}
+\item{num_runs}{\code{numeric} indicating the number of Monte Carlo
+simulations to be executed.}
 
-\item{write_to_file}{Logical determining if results should be saved to a file.}
+\item{write_to_file}{\code{logical} determining if the randomly selected
+options for the Monte Carlo analysis should be saved as a .csv file.
+Default is \code{FALSE}.}
 
-\item{verbose}{Logical determining if additional information should be printed.}
+\item{verbose}{\code{logical} specifying if additional information or
+progress details should be printed during the simulation. Default is
+\code{FALSE}.}
 }
 \value{
-A matrix representing the Monte Carlo simulation results.
+A \code{matrix} containing the results of the Monte Carlo simulation.
 }
 \description{
-Conducts a Monte Carlo simulation on a given decision tree with a specified
-number of runs. If \code{write_to_file} is set to TRUE, a .csv file named "MC
-options.csv" is saved, containing the random options selected for the Monte Carlo analysis.
+Conducts a Monte Carlo simulation over a provided decision tree for a
+specified number of runs. Optionally, the function can save the random
+options selected for the analysis in a .csv file named "MC options.csv".
 }

@@ -2,15 +2,16 @@
 % Please edit documentation in R/option.R
 \name{save_scenarios}
 \alias{save_scenarios}
-\title{Save evaluation results of scenarios to a file}
+\title{Save Evaluation Results of Scenarios to a File}
 \usage{
 save_scenarios(scenarios_results, file_name)
 }
 \arguments{
-\item{scenarios_results}{List of numeric vectors with scenario evaluation
-results.}
+\item{scenarios_results}{List of \code{numeric} vectors with scenario
+evaluation results.}
 
-\item{file_name}{Desired file name for saving the scenario results.}
+\item{file_name}{A \code{character}, to name the file for saving the scenario
+results.}
 }
 \description{
 Stores the results of scenario evaluations into a file for later analysis.

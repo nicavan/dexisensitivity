@@ -2,22 +2,26 @@
 % Please edit documentation in R/sensitivity_index.R
 \name{get_node_id}
 \alias{get_node_id}
-\title{Retrieve Node ID based on Node Name}
+\title{Retrieve Node Identifier by Name from Decision Tree}
 \usage{
 get_node_id(tree, node_name, avoid_repetition)
 }
 \arguments{
-\item{tree}{The tree object}
+\item{tree}{A \code{Tree} object containing the decision tree structure.}
 
-\item{node_name}{The name of the node to find.}
+\item{node_name}{\code{character} specifying the name of the node for which
+the ID is sought.}
 
-\item{avoid_repetition}{A boolean determining if repeated nodes should be
-avoided.}
+\item{avoid_repetition}{\code{logical} indicating whether to return a single
+ID in cases of node name repetition. Defaults to FALSE.}
 }
 \value{
-A numeric value representing the ID of the node.
+A \code{numeric} representing the identifier of the specified node
+within the tree.
 }
 \description{
-Retrieves the ID of a specific node from the decision tree based on its name,
-considering possible repetitions and the tree structure.
+Fetches the unique identifier of a specific node within the provided decision
+tree based on the node's name. Takes into account potential name repetitions
+and the hierarchical structure of the tree.
 }
+\keyword{internal}

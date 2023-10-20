@@ -2,32 +2,42 @@
 % Please edit documentation in R/create_tree.R
 \name{process_aggregated_leaf}
 \alias{process_aggregated_leaf}
-\title{Process Leaf and Aggregated Nodes}
+\title{Process Leaf and Aggregated Nodes for Tree Construction}
 \usage{
 process_aggregated_leaf(tree_nodes, leaves, aggregated)
 }
 \arguments{
-\item{tree_nodes}{A list of tree nodes.}
+\item{tree_nodes}{A \code{list} representing the tree nodes, where each
+element is an object of class \code{Node}.}
 
-\item{leaves}{A vector containing the names of leaf nodes.}
+\item{leaves}{A \code{character} vector detailing the names of the leaf
+nodes.}
 
-\item{aggregated}{A vector containing the names of aggregated nodes.}
+\item{aggregated}{A \code{character} vector specifying the names of the
+aggregated nodes.}
 }
 \value{
-A list with the following elements:
+A list containing the following components:
 \itemize{
-\item \code{leaf_aggregated}: A vector containing the names of nodes
-that are both leaf and aggregated.
-\item \code{is_leaf_aggregated}: A logical value indicating if such nodes
-exist.
-\item \code{tree_nodes}: A list of tree nodes updated with the twin
-information and markings for leaf and aggregated nodes.
+\item \code{leaf_aggregated}: A \code{character} vector with names of nodes
+identified as both leaf and aggregated.
+\item \code{is_leaf_aggregated}: A \code{logical} indicating the existence
+of nodes that are both leaf and aggregated.
+\item \code{tree_nodes}: An updated \code{list} of tree nodes, where each
+element is an object of class \code{Node}, enriched with twin
+information and designations for leaf and aggregated nodes.
 }
 }
 \description{
-Identifies and processes the nodes in the tree that are both leaf and
-aggregated. Such nodes can have specific roles in decision or aggregation
-trees and may require special treatment. By identifying these nodes, the
-function aids in properly handling them in the overall evaluation or
-traversal of the tree.
+An internal function that identifies and processes nodes within a tree that
+are both \code{leaf} and \code{aggregated}. These specific nodes often play
+unique roles in decision or aggregation trees, necessitating specialized
+handling. The primary role of this function is to aid in the correct
+construction and traversal of the tree when invoked by primary functions such
+as \code{\link{create_tree}}.
 }
+\seealso{
+\code{\link{create_tree}} for the primary function that constructs
+tree objects using objects of class \code{Node}.
+}
+\keyword{internal}

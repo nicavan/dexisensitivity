@@ -2,20 +2,24 @@
 % Please edit documentation in R/sensitivity_index.R
 \name{compute_direct_probabilities}
 \alias{compute_direct_probabilities}
-\title{Compute Direct Probabilities}
+\title{Direct Probability Computation for Node's Children}
 \usage{
 compute_direct_probabilities(node, child_weights)
 }
 \arguments{
-\item{node}{The specific node for which the direct probabilities should be
-calculated.}
+\item{node}{A \code{Node} object representing the specific node for which
+direct probabilities are to be computed.}
 
-\item{child_weights}{The weights of the child nodes.}
+\item{child_weights}{A \code{numeric} vector containing the weights of each
+child node associated with the provided parent node.}
 }
 \value{
-A list of computed direct probabilities.
+A \code{list} containing the direct probabilities computed for each
+child of the specified node.
 }
 \description{
-Computes the direct probabilities for children of a node based on its
-aggregation and child weights.
+Calculates the direct probabilities associated with the children of a given
+node. This computation is based on the aggregation property of the node and
+the weights assigned to its children.
 }
+\keyword{internal}

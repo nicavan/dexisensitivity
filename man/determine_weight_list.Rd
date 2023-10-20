@@ -2,28 +2,27 @@
 % Please edit documentation in R/create_tree.R
 \name{determine_weight_list}
 \alias{determine_weight_list}
-\title{Determine Weight List for a Node}
+\title{Calculate Node Weight List}
 \usage{
 determine_weight_list(node_path, main_tree, is_leaf, aggregation, children)
 }
 \arguments{
-\item{node_path}{A character vector representing the path to the node.}
+\item{node_path}{\code{character} vector indicating the node's path.}
 
-\item{main_tree}{Main tree structure containing the XML data.}
+\item{main_tree}{Object containing the XML tree structure data.}
 
-\item{is_leaf}{Boolean indicating if the node is a leaf.}
+\item{is_leaf}{\code{logical} flag denoting if the node is a leaf.}
 
-\item{aggregation}{Aggregation structure, possibly used in the calculation.}
+\item{aggregation}{Aggregation structure for potential weight determination.}
 
-\item{children}{List of children nodes.}
+\item{children}{\code{list} of node's children.}
 }
 \value{
-A numeric vector containing the weights for the node.
+\code{numeric} vector of the node's associated weights.
 }
 \description{
-Calculates the weights associated with a particular node based on
-various conditions, such as whether the node is a leaf and the
-number of children. Weights may represent probabilities or importance
-factors in the overall tree structure.
+Computes weights for a node based on its attributes and conditions, such as
+its leaf status and child count. Weights can indicate probabilities or
+significance within the tree.
 }
 \keyword{internal}

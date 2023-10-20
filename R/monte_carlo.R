@@ -1,14 +1,15 @@
-#' Estimates execution time for Monte Carlo simulations
+#' Estimates Execution Time for Monte Carlo Simulations
 #'
 #' Estimates the time required to run a set number of Monte Carlo simulations
 #' based on the time taken to run a smaller test set.
 #'
-#' @param tree Decision tree for simulations.
-#' @param num_runs Total number of simulations desired.
-#' @param num_test Number of test simulations for time estimation (default is
-#'   50).
+#' @param tree A \code{Tree} object for simulations.
+#' @param num_runs A \code{Numeric}, total number of simulations desired.
+#' @param num_test A \code{Numeric}, number of test simulations for time
+#'   estimation (default is 50).
 #'
 #' @return No explicit return. The function prints the estimated execution time.
+#'
 #' @export
 estimate_mc_time <- function(tree, num_runs, num_test = 50) {
   # Generate sample options for test simulations using create_options function
@@ -30,18 +31,23 @@ estimate_mc_time <- function(tree, num_runs, num_test = 50) {
 }
 
 
-#' Performs a Monte Carlo simulation
+#' Monte Carlo Simulation on a Decision Tree
 #'
-#' Conducts a Monte Carlo simulation on a given decision tree with a specified
-#' number of runs. If `write_to_file` is set to TRUE, a .csv file named "MC
-#' options.csv" is saved, containing the random options selected for the Monte Carlo analysis.
+#' Conducts a Monte Carlo simulation over a provided decision tree for a
+#' specified number of runs. Optionally, the function can save the random
+#' options selected for the analysis in a .csv file named "MC options.csv".
 #'
-#' @param tree Decision tree for the simulation.
-#' @param num_runs Number of Monte Carlo simulations to conduct.
-#' @param write_to_file Logical determining if results should be saved to a file.
-#' @param verbose Logical determining if additional information should be printed.
+#' @param tree \code{Tree} object to be used in the simulation.
+#' @param num_runs \code{numeric} indicating the number of Monte Carlo
+#'   simulations to be executed.
+#' @param write_to_file \code{logical} determining if the randomly selected
+#'   options for the Monte Carlo analysis should be saved as a .csv file.
+#'   Default is \code{FALSE}.
+#' @param verbose \code{logical} specifying if additional information or
+#'   progress details should be printed during the simulation. Default is
+#'   \code{FALSE}.
 #'
-#' @return A matrix representing the Monte Carlo simulation results.
+#' @return A \code{matrix} containing the results of the Monte Carlo simulation.
 #'
 #' @export
 monte_carlo <- function(tree, num_runs, write_to_file = FALSE, verbose = TRUE) {
@@ -75,17 +81,21 @@ monte_carlo <- function(tree, num_runs, write_to_file = FALSE, verbose = TRUE) {
 
 
 
-#' Displays the Monte Carlo simulation results
+#' Visualization of Monte Carlo Simulation Results
 #'
-#' Visualizes the Monte Carlo simulation outcomes for a given node as a bar chart,
-#' depicting the frequency of each outcome. Additionally, the bar lengths are saved
-#' to a .csv file named "MC bar lengths.csv".
+#' Displays the outcomes of the Monte Carlo simulation for a specific
+#' \code{Node} as a bar chart, showcasing the frequency of each result.
+#' Furthermore, the lengths of the bars are saved in a .csv file titled "MC bar
+#' lengths.csv".
 #'
-#' @param node Node of interest.
-#' @param mc_results Monte Carlo simulation results matrix.
-#' @param num_runs Number of Monte Carlo simulations conducted.
+#' @param node \code{Node} object representing the node of interest in the
+#'   simulation.
+#' @param mc_results \code{matrix} containing the Monte Carlo simulation
+#'   results.
+#' @param num_runs \code{numeric} indicating the number of Monte Carlo
+#'   simulations that were executed.
 #'
-#' @return A vector representing the bar chart data.
+#' @return A \code{vector} depicting the data used in the bar chart.
 #'
 #' @importFrom graphics legend text
 #'

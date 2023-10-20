@@ -2,18 +2,24 @@
 % Please edit documentation in R/option.R
 \name{assign_values_to_leaves}
 \alias{assign_values_to_leaves}
-\title{Assign values to the leaves of the tree}
+\title{Assign Values to the Leaves of the Tree}
 \usage{
 assign_values_to_leaves(results, option)
 }
 \arguments{
-\item{results}{Numeric vector placeholder for results.}
+\item{results}{A \code{numeric} vector that serves as a placeholder for the
+evaluated values.}
 
-\item{option}{A matrix representing a single option/scenario to evaluate.}
+\item{option}{A matrix representing a single option or scenario to evaluate. Each
+row in the matrix corresponds to a leaf node, and each column provides different
+values for the scenario analysis.}
 }
 \value{
-Numeric vector with leaf-populated values.
+A \code{numeric} vector with leaf-populated values.
 }
 \description{
-Ensure that there are no Leaf-Aggregated leaves in the given option.
+Assigns values from the provided option matrix to the corresponding leaf nodes
+in the tree's results vector. Ensures that there are no Leaf-Aggregated
+leaves in the given option.
 }
+\keyword{internal}

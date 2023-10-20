@@ -2,24 +2,30 @@
 % Please edit documentation in R/option.R
 \name{create_options}
 \alias{create_options}
-\title{Generate random options matrix for a given rree}
+\title{Generate Random Options Matrix for a Given Tree}
 \usage{
 create_options(tree, num_options = 1, seed = NULL)
 }
 \arguments{
-\item{tree}{Tree object.}
+\item{tree}{A \code{Tree} object.}
 
-\item{num_options}{integer. Number of options to generate. Default is 1.}
+\item{num_options}{A single \code{numeric} value specifying the number of options to generate.
+Defaults to 1.}
 
-\item{seed}{integer. Seed for random number generation. Default is NULL (no
-seed set).}
+\item{seed}{A single \code{numeric} value for random number generation seed.
+Default is \code{NULL}, which means no seed will be set.}
 }
 \value{
-A matrix where rows represent tree leaves and columns represent
+A \code{matrix} where rows represent tree leaves and columns represent
 sampled options.
 }
 \description{
-Create random options based on the \code{RangeScale} and \code{Probability} attributes
-of tree nodes. This is useful for creating random scenarios for simulation or
-analysis.
+Creates random options based on the \code{RangeScale} and \code{Probability} attributes
+of tree nodes. This function is useful for generating random scenarios for simulations
+or analyses.
+}
+\details{
+The function creates a matrix of random options based on the attributes of tree nodes.
+Specifically, it leverages the \code{RangeScale} and \code{Probability} attributes of tree nodes
+to generate random options.
 }

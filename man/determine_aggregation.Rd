@@ -2,31 +2,29 @@
 % Please edit documentation in R/create_tree.R
 \name{determine_aggregation}
 \alias{determine_aggregation}
-\title{Determine Aggregation for a Node}
+\title{Determine Node Aggregation}
 \usage{
 determine_aggregation(node_path, main_tree, is_leaf, children)
 }
 \arguments{
-\item{node_path}{A character vector representing the path to the node.}
+\item{node_path}{\code{character} vector representing the path to the node.}
 
-\item{main_tree}{Main tree structure containing the XML data.}
+\item{main_tree}{Object containing the XML tree structure data.}
 
-\item{is_leaf}{Boolean indicating if the node is a leaf.}
+\item{is_leaf}{\code{logical} indicating if the node is a leaf.}
 
-\item{children}{List of children nodes.}
+\item{children}{\code{list} of node's children.}
 }
 \value{
-If the node is not a leaf, the function returns the aggregation
-structure, including a matrix representing the factorial plan and
-transformed low function values. If the node is a leaf, the function
-returns a matrix with zero.
+A matrix representing the aggregation structure. If not a leaf, it
+includes the factorial plan and transformed 'LOW' function values. For leaf
+nodes, the matrix contains zero.
 }
 \description{
-crucial for understanding how information is combined at the node level. It
-contains the logic for aggregation based on whether the node is a leaf and
-other properties. The function retrieves the low function values from the XML
-and adjusts them to numeric format. Then, it determines the scales from nodes
-n-1 and creates the factorial plan or sequence depending on the number of
-children. If the node is a leaf, it returns a matrix with zero.
+Calculates the aggregation structure of a node. Essential for understanding
+how information combines at the node level. Retrieves 'LOW' function values
+from XML, transforms them, and determines scales using previous nodes.
+Computes a factorial plan for nodes with multiple children, otherwise uses a
+sequence.
 }
 \keyword{internal}

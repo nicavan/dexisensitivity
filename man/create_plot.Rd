@@ -7,11 +7,17 @@
 create_plot(df2)
 }
 \arguments{
-\item{df2}{Data frame with plotting details.}
+\item{df2}{\code{data.frame} containing plotting details, which should
+include coordinates for boxes, normalized evaluation values, and labels.}
 }
 \value{
-ggplot object.
+A \code{ggplot} object depicting the synoptic plot of the decision
+tree.
 }
 \description{
-Create Synoptic Plot from Data Frame
+Constructs a synoptic plot visualizing nodes of a decision tree based on the
+plotting details provided in a data frame. The plot is color-coded based on
+normalized evaluations, with rectangles representing tree nodes and labels
+indicating node attributes.
 }
+\keyword{internal}

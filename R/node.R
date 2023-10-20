@@ -1,42 +1,44 @@
 #### Node Class Definition ####
 
-#' An S4 class to represent a Node
+#'Node Class Definition
 #'
-#' It includes several slots to store information related to the node, such as
-#' its name, its depth, and its relationships with other nodes in the tree
-#' structure.
+#'An S4 class to represent a node in a tree structure.
 #'
+#'A structured representation of a node, which encompasses various attributes
+#'such as name, depth, and relationships with other nodes in the tree structure.
+#'The class \code{Node} is primarily used in the creation, manipulation, and
+#'display of nodes within tree structures.
 #'
-#' @slot Id Object of class "numeric", unique sequential id of the node.
-#' @slot Name Object of class "character", name of the node.
-#' @slot IsLeaf Object of class "logical", indicating if it is a leaf.
-#' @slot IsLeafAndAggregated Object of class "logical", indicating if this leaf
-#'   is also an aggregated node.
-#' @slot Children Object of class "character", list of the names of the node's
-#'   children.
-#' @slot Sisters Object of class "character", list of the names of the node's
-#'   sisters.
-#' @slot Mother Object of class "character", name of the node's mother.
-#' @slot Aggregation Object of class "matrix", aggregation table if the node is
-#'   aggregated.
-#' @slot Probability Object of class "numeric", estimated weight of aggregation.
-#' @slot Depth Object of class "numeric", depth of the node.
-#' @slot Twin Object of class "numeric", id of the other leaves in case of
-#'   multiple leaves.
-#' @slot ConditionalProbabilityList Object of class "list", list to store
-#'   conditional probabilities.
-#' @slot RangeScale Object of class "numeric", range scale.
-#' @slot ScaleLabel Object of class "character", labels of the different scales.
-#' @slot NodePath Object of class "character", node path from root to leaf.
+#'@slot Id \code{numeric} - Unique sequential identifier for the node.
+#'@slot Name \code{character} - Name of the node.
+#'@slot IsLeaf \code{logical} - Flag indicating if the node is a leaf.
+#'@slot IsLeafAndAggregated \code{logical} - Flag indicating if the node is both
+#'  a leaf and an aggregated node.
+#'@slot Children \code{character} - List of the node's children names.
+#'@slot Sisters \code{character} - List of the node's sisters names.
+#'@slot Mother \code{character} - Name of the node's mother.
+#'@slot Aggregation \code{matrix} - Aggregation table if the node is aggregated.
+#'@slot Probability \code{numeric} - Estimated weight for aggregation.
+#'@slot Depth \code{numeric} - Depth of the node in the tree.
+#'@slot Twin \code{numeric} - ID of the other leaves for nodes with multiple
+#'  leaves.
+#'@slot ConditionalProbabilityList \code{list} - List storing conditional
+#'  probabilities.
+#'@slot RangeScale \code{numeric} - Range scale for the node.
+#'@slot ScaleLabel \code{character} - Labels corresponding to different scales.
+#'@slot NodePath \code{character} - Path from the root to the leaf for the node.
 #'
-#' @return An object of class Node.
+#'@return An object of class \code{Node}.
 #'
-#' @seealso \code{\link{print.Node}}, \code{\link{get_estimated_weights}},
-#'   \code{\link{create_aggregation_matrix}}
+#'@seealso
+#' \itemize{
+#'   \item \code{\link{print.Node}}: For printing a Node object.
+#'   \item \code{\link{compute_leaf_weights}}: For obtaining estimated weights.
+#'   \item \code{\link{create_aggregation_matrix}}: For creating an aggregation matrix.
+#'}
 #'
-#' @aliases Node
-#'
-#' @export
+#'@name Node-class
+#'@exportClass Node
 setClass(
   "Node",
   representation(
@@ -61,18 +63,28 @@ setClass(
 
 #### print Method ####
 
-#' print method for Node class object
+#' Print Method for Node Class Object
 #'
-#' Prints basic information about the node including its name, id, depth, path,
-#' and other properties.
+#' Provides a comprehensive display of a Node's properties, such as its name,
+#' ID, depth, path, and more. This method is intended for better readability
+#' and understanding of a Node's structure and relationships.
 #'
-#' @param x The Node object to be printed.
+#' @param x An object of class \code{Node} that you want to print.
 #'
-#' @param ... additional parameters to be passed to the print function.
+#' @param ... Additional arguments to be passed to the underlying print
+#'   function, though they might not have any effect in this custom print
+#'   method.
 #'
-#' @return No explicit return. Print the Node object.
+#' @return This function is invoked for its side effect of printing. It does not
+#'   return anything.
+#'
+#' @seealso
+#' \itemize{
+#'   \item \code{\link{Node-class}}: For more details on the Node class.
+#'}
 #'
 #' @aliases print.Node
+#' @aliases \S4method{print}{Node}
 #'
 #' @export
 setMethod(
@@ -124,34 +136,37 @@ setMethod(
 
 #### Node Utility Functions ####
 
-#' Get Estimated Weights for Node
+#'Estimated Weights for Node
 #'
-#' `get_estimated_weights` takes a `Node` object and calculates weights for each
-#' of its leaves.
+#'Computes weights for each leaf of a given \code{Node} object, using a linear
+#'regression model. In this model, the root node's aggregation table values
+#'serve as the response variable, and the leaf values as the predictors.
 #'
-#' The process utilizes a linear regression model, where the root node's
-#' aggregation table values form the response variable (denoted as 'y'), and the
-#' leaf values are the predictors ('x').
+#'Once derived, coefficients (excluding the intercept) represent the relative
+#'contributions of each leaf towards the root node. By normalizing these
+#'coefficients such that their sum is 1, we obtain an estimate for each leaf's
+#'weight.
 #'
-#' Coefficients derived from the model, excluding the intercept, signify the
-#' relative contributions of each leaf to the root node. Normalizing these
-#' coefficients to sum up to 1 provides an estimate of the weight for each leaf.
+#'@param node A \code{Node} object.
 #'
-#' @param node A Node object.
+#'@seealso
+#' \itemize{
+#'   \item \code{\link{Node-class}}: For more details on the Node class.
+#'}
 #'
-#' @return A numeric vector of estimated weights.
+#'@return A numeric vector representing estimated weights for each leaf.
 #'
-#' @export
-get_estimated_weights <- function(node) {
+#'@keywords internal
+compute_leaf_weights <- function(node) {
   # Ensure the input is a Node object
   stopifnot("Input should be a Node object" = inherits(node, "Node"))
 
-  ## Structure data
+  # Structure data
   aggregation_table <- node@Aggregation
   y <- aggregation_table[, ncol(aggregation_table)]
   x <- aggregation_table[, -ncol(aggregation_table)]
 
-  ## Calcul estimated weights:
+  # Calculate estimated weights:
   coefficients <- stats::lm(y ~ x)$coefficients[-1] # '-1' to exclude intercept
   weight <- coefficients / sum(coefficients)
 
@@ -159,30 +174,35 @@ get_estimated_weights <- function(node) {
 }
 
 
-#' Create Aggregation Matrix for Node
+#'Aggregation Matrix Creation via Genetic Algorithm
 #'
-#' Creates an aggregation matrix for a node using genetic algorithm
-#' optimization.
+#'Optimizes an aggregation matrix for a specified node.
 #'
-#' Utilize a genetic algorithm to determine the optimal aggregation matrix.
-#' Here, the "gene" corresponds to the value of the aggregated node. The
-#' optimization function aims to minimize the squared difference between the
-#' expected weight and the actual weight, which ensures that the weights closely
-#' match their expected values.
+#'Leverages a genetic algorithm where each "gene" mirrors the value of the
+#'aggregated node. This optimization seeks to minimize the squared discrepancy
+#'between expected and actual weights, ensuring they align closely with
+#'anticipated values.
 #'
-#' @param node A Node object.
-#' @param expected_weights Numeric vector of expected weights.
-#' @param number_of_tables Numeric, number of tables (default is 1).
-#' @param population_size Numeric, population size for genetic algorithm
-#'   (default is 50).
-#' @param iterations Numeric, number of iterations for genetic algorithm
-#'   (default is 50).
+#'@param node An object of class \code{Node}. Represents the target node.
+#'@param expected_weights \code{numeric} vector, denoting the expected weights.
+#'@param number_of_tables \code{numeric}. Defines the number of tables; default
+#'  is set to 1.
+#'@param population_size \code{numeric}. Sets the population size for the
+#'  genetic algorithm; default is 50.
+#'@param iterations \code{numeric}. Specifies the number of iterations for the
+#'  genetic algorithm; default is 50.
 #'
-#' @return A list of aggregation matrices.
+#'@return List of aggregation matrices.
 #'
-#' @export
+#'@seealso
+#' \itemize{
+#'   \item \code{\link{Node-class}}: For a detailed understanding of the Node class.
+#'   \item \code{\link{rbga}}: The genetic algorithm function from the genalg package.
+#'   \item \code{\link{print.Node}}: To print a Node object.
+#' }
 #'
-#' @importFrom genalg rbga
+#'@importFrom genalg rbga
+#'@keywords internal
 create_aggregation_matrix <- function(node,
                                       expected_weights,
                                       number_of_tables = 1,

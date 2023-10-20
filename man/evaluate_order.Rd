@@ -7,14 +7,36 @@
 evaluate_order(tree)
 }
 \arguments{
-\item{tree}{A tree object which contains information about nodes and their
-relationships.}
+\item{tree}{a \code{Tree} object.}
 }
 \value{
-A numeric vector representing the order in which nodes should be
-evaluated.
+A \code{numeric} vector indicating the order in which the nodes
+should be evaluated. An empty vector suggests no specific order.
 }
 \description{
-Determines the order in which nodes in a tree should be evaluated, especially
-when dealing with aggregated leaves.
+Determines the sequential order in which nodes within a tree should be
+evaluated. This is particularly pertinent for trees with aggregated leaves,
+where the evaluation order of the nodes impacts the final outcomes.
 }
+\details{
+The function first checks if the tree has aggregated leaves. If not,
+it returns an empty vector since there is no explicit order needed.
+
+If there are aggregated leaves, the function sets an initial state
+assuming none of the attributes are evaluated. It then marks the
+tree's leaves as evaluated.
+
+The main logic revolves around iterating over leaf nodes and evaluating
+them. However, if a node depends on another node, it is skipped and
+re-evaluated in subsequent iterations. The function also contains a
+safeguard against infinite loops by checking if the same nodes are
+continually skipped across consecutive iterations.
+}
+\seealso{
+Relevant functions and objects that can provide further insights:
+\itemize{
+\item \code{\link{Tree-class}}: For more details on the Tree class.
+\item \code{\link{Node-class}}: For insights into the Node structure.
+}
+}
+\keyword{internal}

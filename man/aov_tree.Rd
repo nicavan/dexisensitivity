@@ -2,16 +2,18 @@
 % Please edit documentation in R/aov.R
 \name{aov_tree}
 \alias{aov_tree}
-\title{Calculate AOV Results}
+\title{Dual Order AOV on a Decision Tree}
 \usage{
 aov_tree(tree)
 }
 \arguments{
-\item{tree}{Tree object for analysis.}
+\item{tree}{\code{Tree} object to be analyzed.}
 }
 \value{
-A list containing AOV results.
+A \code{list} containing results for both first-order and
+second-order AOV analyses.
 }
 \description{
-Provides the results of an Analysis of Variance (AOV) based on a given tree.
+Conducts an Analysis of Variance (AOV) on a provided decision tree, computing
+both first-order and second-order effects.
 }

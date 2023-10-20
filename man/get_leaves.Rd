@@ -2,18 +2,33 @@
 % Please edit documentation in R/create_tree.R
 \name{get_leaves}
 \alias{get_leaves}
-\title{Retrieve leaves associated with a given node in a tree}
+\title{Retrieve Leaves Associated with a Given Node in a Tree}
 \usage{
 get_leaves(tree, node_id)
 }
 \arguments{
-\item{tree}{A tree object with nested nodes and leaves.}
+\item{tree}{a \code{Tree} object.}
 
-\item{node_id}{The identifier of the node for which leaves are to be fetched.}
+\item{node_id}{A \code{numeric} or \code{character} representing the
+identifier or the name of the \code{Node} for which leaves are to be
+retrieved.}
 }
 \value{
-A vector of leaf IDs associated with the specified node.
+A \code{numeric} vector containing the IDs of the leaves associated
+with the specified \code{Node}.
 }
 \description{
-Retrieve leaves associated with a given node in a tree
+Extracts the leaf IDs associated with a specified \code{Node} from a given
+\code{Tree}.
 }
+\seealso{
+Relevant functions and classes that provide more context or might be
+of interest:
+\itemize{
+\item \code{\link{Tree-class}}: For an in-depth understanding of the
+\code{Tree} class.
+\item \code{\link{Node-class}}: To get more details about the structure of
+a \code{Node}.
+}
+}
+\keyword{internal}

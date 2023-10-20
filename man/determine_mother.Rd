@@ -2,18 +2,22 @@
 % Please edit documentation in R/create_tree.R
 \name{determine_mother}
 \alias{determine_mother}
-\title{Identify the Mother of a Node}
+\title{Determine the Mother of a Node}
 \usage{
 determine_mother(node_path)
 }
 \arguments{
-\item{node_path}{A character vector representing the path to the node.}
+\item{\code{node_path}}{A \code{character} vector representing the path to
+the node.}
 }
 \value{
-Mother of the node if exists.
+A \code{character} value representing the name of the mother of the
+node. Returns \code{NA} if the node does not have a mother (topmost level).
 }
 \description{
-Contributes to understanding the relationship between nodes and navigation
-within the tree's structure.
+Identifies the mother (or parent) of a specified node within the decision
+tree. Knowing the parent node facilitates traversal and understanding of the
+tree's hierarchical relationships. If the node is at the topmost level, it
+won't have a mother, and NA will be returned.
 }
 \keyword{internal}

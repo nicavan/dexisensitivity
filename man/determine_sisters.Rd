@@ -2,20 +2,24 @@
 % Please edit documentation in R/create_tree.R
 \name{determine_sisters}
 \alias{determine_sisters}
-\title{Find the Sisters of a Node}
+\title{Determine the Sisters of a Node}
 \usage{
 determine_sisters(node_path, main_tree)
 }
 \arguments{
-\item{node_path}{A character vector representing the path to the node.}
+\item{\code{node_path}}{A \code{character} vector representing the path to
+the node.}
 
-\item{main_tree}{Main tree structure containing the XML data.}
+\item{\code{main_tree}}{An XML object representing the main tree structure.}
 }
 \value{
-A list of sisters.
+A \code{character} vector listing the names of the sister nodes.
+Returns an empty \code{character} vector if there are no sister nodes.
 }
 \description{
-Aids in understanding horizontal relationships within the tree, crucial for
-some analyses.
+Identifies the sister nodes (nodes at the same hierarchical level under the
+same parent) of a specified node within the decision tree. Sister nodes
+provide insight into the horizontal relationships within the tree, which can
+be important for certain types of analyses and tree traversals.
 }
 \keyword{internal}

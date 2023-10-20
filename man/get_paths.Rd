@@ -7,24 +7,31 @@
 get_paths(attributes, main_tree, root_name)
 }
 \arguments{
-\item{attributes}{A character vector containing the names of the attributes
-for which to find paths.}
+\item{attributes}{\code{character} vector of attribute names whose paths are
+to be located.}
 
-\item{main_tree}{An XML object representing the tree within which to
-search for paths.}
+\item{main_tree}{\code{XML} object representing the tree in which paths are
+to be searched.}
 
-\item{root_name}{A character representing the name of the root attribute
-from which to begin the search.}
+\item{root_name}{\code{character} indicating the name of the root attribute
+from where the search begins.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{        A list of paths, where each path is a character vector
-}\if{html}{\out{</div>}}
-
-representing the sequence of attributes from the root name to the target
+A list of paths where each path is a \code{character} vector,
+detailing the sequence of attributes from the root to the desired
 attribute.
 }
 \description{
-Traverses an XML tree (representing a hierarchical structure) to find
-specific paths for a given list of attributes, starting from a specified root
-name.
+Navigates through an XML tree to identify specific paths corresponding to a
+set of attributes, beginning from a specified root. This function is an
+internal tool, chiefly called by \code{\link{create_tree}} to aid in
+interpreting and structuring the XML tree.
 }
+\seealso{
+Primary functions that integrate or work with the XML structure:
+\itemize{
+\item \code{\link{create_tree}}: The main function that invokes
+this internal function to dissect the XML output of DEXi.
+}
+}
+\keyword{internal}

@@ -2,21 +2,23 @@
 % Please edit documentation in R/option.R
 \name{compare_scenarios}
 \alias{compare_scenarios}
-\title{Compare scenarios using a radial plot}
+\title{Compare Scenarios Using a Radial Plot}
 \usage{
 compare_scenarios(tree, scenarios_results, nodes_list)
 }
 \arguments{
-\item{tree}{Tree object.}
+\item{tree}{A \code{Tree} object.}
 
-\item{scenarios_results}{List of numeric vectors with scenario evaluation results.}
+\item{scenarios_results}{List of \code{numeric} vectors with scenario
+evaluation results.}
 
-\item{nodes_list}{List of node names to be compared in the plot.}
+\item{nodes_list}{List of \code{character} node names to be compared in the
+plot.}
 }
 \description{
-Visualizes the comparison of node values across multiple scenarios
-with a radial plot. This representation provides an intuitive view of how
-different scenarios compare for the selected nodes.
+Visualizes the comparison of node values across multiple scenarios with a
+radial plot. This representation provides an intuitive view of how different
+scenarios compare for the selected nodes.
 }
 \seealso{
 \code{\link{evaluate_scenarios}}

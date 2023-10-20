@@ -7,20 +7,24 @@
 create_list_synoptique(tree, options, depth = NA)
 }
 \arguments{
-\item{tree}{Tree structure object.}
+\item{tree}{\code{Tree structure object} representing the decision tree.}
 
-\item{options}{Matrix where each column represents a different set of options
-for tree evaluation.}
+\item{options}{\code{matrix} where each column denotes a distinct set of
+options for evaluating the decision tree.}
 
-\item{depth}{Depth of the tree; if provided, produces a sub-tree. Default is
-NA.}
+\item{depth}{Optional \code{numeric} specifying the depth of the tree. If
+provided, a sub-tree is produced up to the specified depth. By default, it
+is set to NA.}
 }
 \value{
-List of ggplot objects, each representing a different synoptic plot
-based on the provided options.
+A \code{list} of \code{ggplot} objects. Each item in the list is a
+synoptic plot corresponding to a column from the 'options' matrix.
 }
 \description{
-For each column in the 'options' matrix, this function generates a synoptic
-plot by calling \code{create_synoptique}. The function will thus produce as many
-plots as there are columns in 'options'.
+Produces a list of synoptic plots, one for each set of options specified in
+the columns of the 'options' matrix. Each plot visualizes nodes of a decision
+tree based on different evaluation options.
+}
+\seealso{
+\code{\link{create_synoptique}}
 }

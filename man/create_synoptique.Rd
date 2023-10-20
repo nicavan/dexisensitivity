@@ -7,15 +7,17 @@
 create_synoptique(tree, option, depth = NA)
 }
 \arguments{
-\item{tree}{Tree structure object.}
+\item{tree}{\code{Tree} structure object.}
 
-\item{option}{Evaluation options for the tree.}
+\item{option}{\code{list} containing evaluation options for the tree.}
 
-\item{depth}{Depth of the tree; if provided, produces a sub-tree.}
+\item{depth}{\code{numeric} representing the depth of the tree; if provided,
+produces a sub-tree.}
 }
 \value{
-A ggplot object representing the synoptic plot.
+A \code{ggplot} object representing the synoptic plot.
 }
 \description{
-Create a Synoptic Plot from a Given Tree Structure
+Generates a synoptic plot based on a specified tree structure, providing
+visualization of its structure and evaluation options.
 }

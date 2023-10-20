@@ -2,19 +2,21 @@
 % Please edit documentation in R/sensitivity_index.R
 \name{get_sensitivity_index}
 \alias{get_sensitivity_index}
-\title{Calculate Sensitivity Index}
+\title{Compute Sensitivity Index for Decision Tree}
 \usage{
 get_sensitivity_index(tree, avoid_repetition = FALSE)
 }
 \arguments{
-\item{tree}{The tree object for analysis.}
+\item{tree}{A \code{Tree} object on which the analysis is to be performed.}
 
-\item{avoid_repetition}{A boolean determining if repeated nodes should be
-avoided. Default is FALSE.}
+\item{avoid_repetition}{\code{logical} indicating if repeated nodes should be
+disregarded. Defaults to FALSE.}
 }
 \value{
-A vector of Sensitivity Indices for each attribute in the tree.
+A \code{vector} containing the Sensitivity Indices for each attribute
+in the tree.
 }
 \description{
-Calculates the Sensitivity Index (SI) of a tree.
+Computes the Sensitivity Index (SI) for each attribute within the specified
+tree.
 }

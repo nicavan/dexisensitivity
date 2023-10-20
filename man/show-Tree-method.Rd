@@ -3,24 +3,36 @@
 \name{show,Tree-method}
 \alias{show,Tree-method}
 \alias{show.Tree}
-\title{show method for Tree class object}
+\alias{\S4method{show}{Tree}}
+\title{Show Method for Tree Class Objects}
 \usage{
 \S4method{show}{Tree}(object)
 }
 \arguments{
-\item{object}{The Tree object to be shown.}
+\item{object}{An object of class \code{Tree} to be shown.}
 }
 \value{
-No explicit return. Show the Tree class object.
+This function is invoked for its side effect of showing a structured
+display of the tree. It does not return anything explicitly.
 }
 \description{
-Each node of the tree is printed with its depth, name, and twin
-attributes. Different prefixes are used depending on whether the node is
-the first one (prefix "Z : "), a leaf node (prefix "X : "), or a non-leaf
-node (prefix "Y : "). If a tree has no attributes, it prints "*** Tree
-without attributes ***".
+Custom show method for objects of class \code{Tree}. It presents a structured
+representation of the tree using a specific format.
 }
 \details{
-Custom show method for Tree class object. Prints a formatted structure of the
-tree using a set of rules based on node properties.
+Each node of the tree is displayed with its depth, name, and associated twin
+attributes. Node presentation differs based on its type and position within
+the tree structure:
+\itemize{
+\item Prefix "Z : " is used for the first node of the tree.
+\item Prefix "X : " denotes a leaf node.
+\item Prefix "Y : " indicates a non-leaf node.
+}
+If a tree has no attributes, it displays "*** Tree without attributes ***".
+}
+\seealso{
+\itemize{
+\item \code{\link{print.Tree}}: For printing a Tree object.
+\item \code{\link{Tree-class}}: For the Tree class definition.
+}
 }

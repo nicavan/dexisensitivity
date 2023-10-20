@@ -2,28 +2,25 @@
 % Please edit documentation in R/create_tree.R
 \name{create_tree}
 \alias{create_tree}
-\title{Create a Tree from DEXi's XML output}
+\title{Tree Construction from DEXi's XML Output}
 \usage{
 create_tree(main_tree)
 }
 \arguments{
-\item{main_tree}{An XML object representing the main tree structure. It must
-be a valid XML object containing the DEXi decision model.}
+\item{main_tree}{An object of class \code{XML}. Represents the primary tree
+structure and should encompass the DEXi decision model.}
 }
 \value{
-A list of tree objects, each representing a distinct root attribute
-within the DEXi XML structure. Each tree object contains details about the
-root attribute, nodes, leaves, depth, and other related information
-regarding the structure of the decision model.
+A list of \code{Tree} objects, each corresponding to a unique root
+attribute in the DEXi XML layout. Each tree details the root attribute,
+nodes, leaves, depth, and other associated data regarding the decision
+model's configuration.
 }
 \description{
-Takes the XML output from a DEXi model and constructs a tree structure.
-The function iterates through each root attribute in the XML and constructs
-tree objects representing the hierarchical decision model.
+Constructs a \code{Tree} objects using the XML representation from a DEXi
+model.
 }
-\seealso{
-\code{\link{process_aggregated_leaf}},
-\code{\link{process_duplicated_leaf}},
-\code{\link{get_dexi_attributes}},
-\code{\link{get_paths}}
+\details{
+Iterates over every root attribute in the provided XML to create tree
+structures that depict the hierarchical decision model.
 }

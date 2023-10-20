@@ -7,14 +7,19 @@
 determine_scale_label(node_path, main_tree)
 }
 \arguments{
-\item{node_path}{A character vector representing the path to the node.}
+\item{\code{node_path}}{A \code{character} vector representing the path to
+the node.}
 
-\item{main_tree}{Main tree structure containing the XML data.}
+\item{\code{main_tree}}{An XML object representing the main tree structure.}
 }
 \value{
-Scale label of the node.
+A \code{character} vector indicating the scale label of the node. If
+no scale label is found, the function returns an empty character vector.
 }
 \description{
-Useful for annotating or understanding the node at a more descriptive level.
+Retrieves the descriptive scale label for a specific node in the decision
+tree. This label can offer a more detailed understanding of the node's
+dimension and is valuable for annotations and enhanced comprehension of the
+node.
 }
 \keyword{internal}

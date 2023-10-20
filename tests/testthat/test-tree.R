@@ -55,22 +55,22 @@ test_that("Empty Tree show correct message", {
   )
 })
 
-#### - calculate_digit test - #### ####
-test_that("calculate_digit returns correct number of digits", {
+#### - count_digits test - #### ####
+test_that("count_digits returns correct number of digits", {
   # Test avec nombre de chiffres différents
-  expect_equal(calculate_digit(0), 1)
-  expect_equal(calculate_digit(1), 1)
-  expect_equal(calculate_digit(1.5), 1)
-  expect_equal(calculate_digit(10), 2)
-  expect_equal(calculate_digit(100), 3)
-  expect_equal(calculate_digit(1000), 4)
+  expect_equal(count_digits(0), 1)
+  expect_equal(count_digits(1), 1)
+  expect_equal(count_digits(1.5), 1)
+  expect_equal(count_digits(10), 2)
+  expect_equal(count_digits(100), 3)
+  expect_equal(count_digits(1000), 4)
 })
 
-test_that("calculate_digit can't handles non-integer input", {
+test_that("count_digits can't handles non-integer input", {
   # Vérifier que la fonction retourne une erreur pour les inputs négatifs ou non
   # numeric
-  expect_warning(calculate_digit(-1))
-  expect_error(calculate_digit("string"))
+  expect_warning(count_digits(-1))
+  expect_error(count_digits("string"))
 })
 
 

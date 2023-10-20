@@ -2,22 +2,28 @@
 % Please edit documentation in R/create_tree.R
 \name{determine_children}
 \alias{determine_children}
-\title{Find the Children of a Node}
+\title{Determine the Children of a Node}
 \usage{
 determine_children(node_path, main_tree, is_leaf)
 }
 \arguments{
-\item{node_path}{A character vector representing the path to the node.}
+\item{\code{node_path}}{A \code{character} vector representing the path to
+the node.}
 
-\item{main_tree}{Main tree structure containing the XML data.}
+\item{\code{main_tree}}{An XML object representing the main tree structure
+containing the XML data.}
 
-\item{is_leaf}{Boolean indicating if the node is a leaf.}
+\item{\code{is_leaf}}{A \code{logical} value indicating if the node is a
+leaf.}
 }
 \value{
-A list of children.
+A \code{character} vector containing the names of the children.
+Returns an empty vector if the node is a leaf.
 }
 \description{
-Enhances readability by encapsulating the logic for understanding the node's
-offspring.
+Identifies and retrieves the children of a specified node within the decision
+tree. If the node is a leaf, then it won't have any children, and an empty
+character vector will be returned. This distinction helps in the structural
+understanding of the tree.
 }
 \keyword{internal}

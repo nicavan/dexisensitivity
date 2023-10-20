@@ -2,18 +2,21 @@
 % Please edit documentation in R/create_tree.R
 \name{get_id}
 \alias{get_id}
-\title{Get the ID of a given node}
+\title{Retrieve Node ID}
 \usage{
 get_id(list_nodes, node_name)
 }
 \arguments{
-\item{list_nodes}{A list of nodes}
+\item{list_nodes}{A \code{list} of nodes where each node is an object with at
+least an \code{Id} and \code{Name} attribute.}
 
-\item{node_name}{The name of the node}
+\item{node_name}{\code{character} specifying the name of the desired node.}
 }
 \value{
-The ID of the node
+\code{numeric} ID of the node if found; \code{NULL} otherwise.
 }
 \description{
-Retrieves the ID of a given node from a list of nodes.
+Extracts the ID associated with a specified node name from a provided list of
+nodes.
 }
+\keyword{internal}

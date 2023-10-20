@@ -1,13 +1,24 @@
 #' Create a Subtree Starting from a Specific Node
 #'
-#' Constructs a subtree from a specified node within a tree. The subtree
-#' encapsulates all descendant attributes of the node.
+#' Constructs a subtree from a specified \code{Node} within a given \code{Tree}.
+#' This subtree encompasses all descendant attributes of the \code{Node}.
 #'
-#' @param tree Tree object to derive the subtree from.
-#' @param node_name Starting node for the subtree.
-#' @param avoid_repetition Prevent repeated nodes? Default is FALSE.
+#' @param tree a \code{Tree} object from which the subtree is derived.
+#' @param node_name A \code{character} indicating the name of the starting
+#'   \code{Node} for the subtree.
+#' @param avoid_repetition A \code{logical} indicating whether to avoid node
+#'   repetitions. Default is \code{FALSE}.
 #'
-#' @return Subtree as a Tree object.
+#' @return A new \code{Tree} object representing the subtree.
+#'
+#' @seealso Relevant functions and classes that provide more context or might be
+#' of interest:
+#' \itemize{
+#'   \item \code{\link{Tree-class}}: For an in-depth understanding of the
+#'     \code{Tree} class.
+#'   \item \code{\link{Node-class}}: To get more details about the structure of
+#'     a \code{Node}.
+#' }
 #'
 #' @export
 create_sub_tree <- function(tree, node_name, avoid_repetition = FALSE) {
@@ -109,13 +120,18 @@ create_sub_tree <- function(tree, node_name, avoid_repetition = FALSE) {
 
 #' Adjust Node ID for Trees with Leaf-Aggregated Structures
 #'
-#' When a tree has a leaf-aggregated structure, the node ID may need adjustment.
-#' This function performs the necessary transformation for such nodes.
+#' When a \code{Tree} has a leaf-aggregated structure, the node ID may require
+#' adjustment. This function carries out the necessary transformation for such
+#' nodes.
 #'
-#' @param tree A Tree object that might have a leaf-aggregated structure.
-#' @param node_id The current identifier for the node to be adjusted.
+#' @param tree a \code{Tree} object that might possess a leaf-aggregated
+#'   structure.
+#' @param node_id a \code{numeric} or \code{character} representing the
+#'   identifier for the \code{Node} to be adjusted.
 #'
-#' @return A vector containing adjusted node IDs.
+#' @return A \code{numeric} vector encompassing the adjusted node IDs.
+#'
+#' @keywords internal
 adjust_for_leaf_aggregated <- function(tree, node_id) {
   adjusted_id <- node_id %>%
     sapply(function(x) {
@@ -133,10 +149,14 @@ adjust_for_leaf_aggregated <- function(tree, node_id) {
 #' Retrieves all nodes that share a path with the specified node. Such nodes are
 #' considered descendants of the given node and are included in the subtree.
 #'
-#' @param tree A Tree object.
-#' @param node_id Node ID that serves as the reference point.
+#' @param tree a \code{Tree} object.
+#' @param node_id a \code{numeric} or \code{character} identifier representing
+#'   the \code{Node} that will act as the reference point.
 #'
-#' @return A vector of attribute IDs representing descendant nodes.
+#' @return A \code{numeric} vector of attribute IDs symbolizing descendant
+#'   nodes.
+#'
+#' @keywords internal
 obtain_attribute_ids <- function(tree, node_id) {
   # Extract attribute IDs based on the node path
   attribute_ids <- tree@Nodes %>%
@@ -159,11 +179,16 @@ obtain_attribute_ids <- function(tree, node_id) {
 #' Adjusts attributes of nodes in the process of constructing the subtree.
 #' This ensures correct relationships and hierarchies within the new subtree.
 #'
-#' @param tree Original Tree object.
-#' @param attribute_ids Node identifiers that are being processed.
-#' @param paths Node paths associated with the nodes being processed.
+#' @param tree a \code{Tree} object representing the original tree structure.
+#' @param attribute_ids a \code{numeric} vector containing the node identifiers
+#'   that are being processed.
+#' @param paths a list of \code{numeric} vectors, representing the node paths
+#'   associated with the nodes being processed.
 #'
-#' @return A modified list of tree nodes tailored for the subtree.
+#' @return A list of \code{Node} objects with modified attributes tailored for
+#'   the subtree construction.
+#'
+#' @keywords internal
 modify_tree_nodes <- function(tree, attribute_ids, paths) {
   tree_nodes <- tree@Nodes[attribute_ids]
   for (i in seq_along(attribute_ids)) {
@@ -184,11 +209,15 @@ modify_tree_nodes <- function(tree, attribute_ids, paths) {
 #'
 #' Retrieves names of nodes based on their leaf status.
 #'
-#' @param tree_nodes List of nodes from which names are extracted.
-#' @param is_leaf Logical value to determine if names are extracted from leaf
-#'   nodes or non-leaf nodes.
+#' @param tree_nodes a list of \code{Node} objects from which names are to be
+#'   extracted.
+#' @param is_leaf a \code{logical} value indicating whether names should be
+#'   extracted from leaf nodes (if \code{TRUE}) or from non-leaf nodes (if
+#'   \code{FALSE}).
 #'
-#' @return A vector of node names.
+#' @return A \code{character} vector containing node names.
+#'
+#' @keywords internal
 extract_names <- function(tree_nodes, is_leaf = TRUE) {
   tree_nodes %>%
     sapply(function(x) {
@@ -203,12 +232,16 @@ extract_names <- function(tree_nodes, is_leaf = TRUE) {
 #' Manages scenarios where nodes might appear multiple times within the tree
 #' structure.
 #'
-#' @param tree Original Tree object.
-#' @param tree_nodes List of tree nodes under consideration.
-#' @param leaf_names Names of leaf nodes.
+#' @param tree a \code{Tree} object representing the original tree.
+#' @param tree_nodes a list of \code{Node} objects that are currently under
+#'   consideration.
+#' @param leaf_names a \code{character} vector containing the names of leaf
+#'   nodes.
 #'
-#' @return A matrix detailing occurrences of nodes or a data frame if no
-#'   multiple nodes.
+#' @return A \code{matrix} detailing occurrences of nodes. If no multiple nodes
+#'   are found, a \code{data.frame} is returned instead.
+#'
+#' @keywords internal
 handle_multiple <- function(tree, tree_nodes, leaf_names) {
   if (!tree@IsMultiple) {
     return(data.frame(Leaf = NA, Occ = NA))
@@ -230,13 +263,19 @@ handle_multiple <- function(tree, tree_nodes, leaf_names) {
 #'
 #' Manages nodes that are both leaves and aggregated within the tree structure.
 #'
-#' @param tree Original Tree object.
-#' @param tree_nodes List of tree nodes under consideration.
-#' @param leaf_names Names of leaf nodes.
-#' @param aggregated_names Names of aggregated nodes.
+#' @param tree a \code{Tree} object representing the original tree.
+#' @param tree_nodes a list of \code{Node} objects that are currently under
+#'   consideration.
+#' @param leaf_names a \code{character} vector containing the names of leaf
+#'   nodes.
+#' @param aggregated_names a \code{character} vector containing the names of
+#'   aggregated nodes.
 #'
-#' @return A vector containing names of nodes that are both leaves and
-#'   aggregated.
+#' @return A \code{character} vector containing names of nodes that are both
+#'   leaves and aggregated. If no such nodes are found, an empty string is
+#'   returned.
+#'
+#' @keywords internal
 handle_leaf_aggregated <- function(tree,
                                    tree_nodes,
                                    leaf_names,

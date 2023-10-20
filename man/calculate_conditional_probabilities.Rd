@@ -7,21 +7,24 @@
 calculate_conditional_probabilities(input_table, weight_list, sy, y_levels)
 }
 \arguments{
-\item{input_table}{A matrix with all the level combinations of the A_i factors
-and, in the last column, the associated Y values.}
+\item{input_table}{A \code{matrix} containing all level combinations of the
+\( A_i \) factors with the associated \( Y \) values in the last column.}
 
-\item{weight_list}{A list with the weight vectors of each A_i variable.
-If missing, A_i levels have equal weights.}
+\item{weight_list}{A \code{list} with the weight vectors for each \( A_i \)
+variable. If missing, levels of \( A_i \) have equal weights.}
 
-\item{sy}{The number of unique Y values.}
+\item{sy}{A \code{numeric} indicating the number of unique \( Y \) values.}
 
-\item{y_levels}{Optional, specifies the Y levels. If missing, they are
-extracted from the input_table.}
+\item{y_levels}{Optionally, a \code{vector} specifying the \( Y \) levels. If
+missing, they are extracted from the \code{input_table}.}
 }
 \value{
-A list containing matrices of Y probabilities conditional to each
-A_i factor and, finally, the vector of marginal Y probabilities.
+A \code{list} comprising matrices of \( Y \) probabilities
+conditional to each \( A_i \) factor. The last element is the vector of
+marginal \( Y \) probabilities.
 }
 \description{
-Calculates the probabilities of Y given its direct descendants A_i.
+Determines the probabilities of \( Y \) given its direct descendants \( A_i
+\).
 }
+\keyword{internal}

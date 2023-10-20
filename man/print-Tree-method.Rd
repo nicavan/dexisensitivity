@@ -3,20 +3,31 @@
 \name{print,Tree-method}
 \alias{print,Tree-method}
 \alias{print.Tree}
-\title{print method for Tree class object}
+\alias{\S4method{print}{Tree}}
+\title{Print Method for Tree Class Objects}
 \usage{
 \S4method{print}{Tree}(x, ...)
 }
 \arguments{
-\item{x}{Tree object to be printed.}
+\item{x}{An object of class \code{Tree} that you want to print.}
 
-\item{...}{additional parameters to be passed to the print function.}
+\item{...}{Additional arguments to be passed to the underlying print
+function, though they might not have any effect in this custom print
+method.}
 }
 \value{
-No explicit return. Print the Tree object.
+This function is invoked for its side effect of printing. It does not
+return anything.
 }
 \description{
-Custom print method for Tree class object. Prints basic information about the
-tree including root name, number of attributes, leaves, depth and specific
-nodes.
+Custom print method for objects of class \code{Tree}. This method prints out
+basic information about the tree, such as the root name, number of
+attributes, number of leaves, depth, and details about specific nodes.
+}
+\seealso{
+\itemize{
+\item \code{\link{Tree-class}}: For the Tree class definition.
+\item \code{\link{show.Tree}}: For showing a Tree object.
+\item \code{\link{describe.Tree}}: For describing a Tree object.
+}
 }

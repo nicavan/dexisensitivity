@@ -7,11 +7,15 @@
 get_box_coordinates(df)
 }
 \arguments{
-\item{df}{Data frame with depth and size attributes.}
+\item{df}{\code{data.frame} with depth and size attributes from the tree.}
 }
 \value{
-Data frame with box plotting coordinates.
+\code{data.frame} enhanced with box plotting coordinates, which
+includes information about box position, dimensions, and labels.
 }
 \description{
-Extract Box Coordinates for Plotting
+Extracts the necessary coordinates from the data frame to plot boxes
+representing the nodes of a decision tree. The function considers the depth
+and size attributes to determine the positions and dimensions of the boxes.
 }
+\keyword{internal}

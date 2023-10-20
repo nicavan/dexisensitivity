@@ -2,17 +2,17 @@
 % Please edit documentation in R/monte_carlo.R
 \name{estimate_mc_time}
 \alias{estimate_mc_time}
-\title{Estimates execution time for Monte Carlo simulations}
+\title{Estimates Execution Time for Monte Carlo Simulations}
 \usage{
 estimate_mc_time(tree, num_runs, num_test = 50)
 }
 \arguments{
-\item{tree}{Decision tree for simulations.}
+\item{tree}{A \code{Tree} object for simulations.}
 
-\item{num_runs}{Total number of simulations desired.}
+\item{num_runs}{A \code{Numeric}, total number of simulations desired.}
 
-\item{num_test}{Number of test simulations for time estimation (default is
-50).}
+\item{num_test}{A \code{Numeric}, number of test simulations for time
+estimation (default is 50).}
 }
 \value{
 No explicit return. The function prints the estimated execution time.

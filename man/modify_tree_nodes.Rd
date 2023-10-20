@@ -7,16 +7,20 @@
 modify_tree_nodes(tree, attribute_ids, paths)
 }
 \arguments{
-\item{tree}{Original Tree object.}
+\item{tree}{a \code{Tree} object representing the original tree structure.}
 
-\item{attribute_ids}{Node identifiers that are being processed.}
+\item{attribute_ids}{a \code{numeric} vector containing the node identifiers
+that are being processed.}
 
-\item{paths}{Node paths associated with the nodes being processed.}
+\item{paths}{a list of \code{numeric} vectors, representing the node paths
+associated with the nodes being processed.}
 }
 \value{
-A modified list of tree nodes tailored for the subtree.
+A list of \code{Node} objects with modified attributes tailored for
+the subtree construction.
 }
 \description{
 Adjusts attributes of nodes in the process of constructing the subtree.
 This ensures correct relationships and hierarchies within the new subtree.
 }
+\keyword{internal}

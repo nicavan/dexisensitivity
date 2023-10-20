@@ -7,14 +7,17 @@
 extract_names(tree_nodes, is_leaf = TRUE)
 }
 \arguments{
-\item{tree_nodes}{List of nodes from which names are extracted.}
+\item{tree_nodes}{a list of \code{Node} objects from which names are to be
+extracted.}
 
-\item{is_leaf}{Logical value to determine if names are extracted from leaf
-nodes or non-leaf nodes.}
+\item{is_leaf}{a \code{logical} value indicating whether names should be
+extracted from leaf nodes (if \code{TRUE}) or from non-leaf nodes (if
+\code{FALSE}).}
 }
 \value{
-A vector of node names.
+A \code{character} vector containing node names.
 }
 \description{
 Retrieves names of nodes based on their leaf status.
 }
+\keyword{internal}

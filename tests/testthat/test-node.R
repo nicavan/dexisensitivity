@@ -48,7 +48,7 @@ test_that("Empty Node print correctly", {
 })
 
 
-test_that("get_estimated_weights : same output as JEB's scripts and par is reset", {
+test_that("compute_leaf_weights : same output as JEB's scripts and par is reset", {
   # Load the complex DEXi tree needed for the test
   lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
     package = "dexiranalysis"
@@ -57,7 +57,7 @@ test_that("get_estimated_weights : same output as JEB's scripts and par is reset
 
   # Unit test
   expect_equal(
-    get_estimated_weights(DEXi@Nodes[[1]]),
+    compute_leaf_weights(DEXi@Nodes[[1]]),
     c(
       "xECONOMIC" = 1 / 3,
       "xSOCIAL" = 1 / 3,

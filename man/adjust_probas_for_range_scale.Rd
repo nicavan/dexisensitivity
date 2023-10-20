@@ -2,18 +2,24 @@
 % Please edit documentation in R/sensitivity_index.R
 \name{adjust_probas_for_range_scale}
 \alias{adjust_probas_for_range_scale}
-\title{Adjust Probabilities for Range Scale}
+\title{Range Scale Probability Adjustment}
 \usage{
 adjust_probas_for_range_scale(probs, node)
 }
 \arguments{
-\item{probs}{The computed probabilities.}
+\item{probs}{A \code{list} of \code{numeric} vectors representing the
+originally computed probabilities for each child of the node.}
 
-\item{node}{The specific node for which the adjustment should be made.}
+\item{node}{A \code{Node} object specifying the node for which the
+probabilities are being adjusted.}
 }
 \value{
-A list of adjusted probabilities.
+A \code{list} containing the adjusted probabilities for each child of
+the node to match the node's range scale.
 }
 \description{
-Adjusts the computed probabilities to match the range scale of a node.
+Adjusts a set of probabilities to ensure consistency with a node's specified
+range scale. If the computed probabilities don't match the node's range
+scale, they are modified accordingly.
 }
+\keyword{internal}

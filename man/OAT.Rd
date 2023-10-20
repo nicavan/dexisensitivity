@@ -2,21 +2,21 @@
 % Please edit documentation in R/oat.R
 \name{oat}
 \alias{oat}
-\title{Perform One-Factor-At-A-Time (OFAT) Sensitivity Analysis}
+\title{OFAT Sensitivity Analysis}
 \usage{
 oat(tree, option)
 }
 \arguments{
-\item{tree}{A decision tree object to analyze.}
+\item{tree}{\code{Tree} object designated for analysis.}
 
-\item{option}{Initial configuration for tree parameters.}
+\item{option}{Initial configuration for \code{Tree} parameters.}
 }
 \value{
-A matrix with evaluation results for each attribute in the tree,
-under different parameter variations.
+A \code{matrix} depicting the assessment outcomes for every attribute
+in the \code{Tree}, corresponding to diverse parameter alterations.
 }
 \description{
-Conducts OFAT sensitivity analysis by performing
-simulations with varying factors, keeping all but one factor constant
-for each simulation.
+Executes a One-Factor-At-A-Time (OFAT) sensitivity assessment by undertaking
+simulations while varying individual factors. During each simulation, all
+factors are maintained constant save for one.
 }

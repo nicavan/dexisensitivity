@@ -7,14 +7,18 @@
 adjust_for_leaf_aggregated(tree, node_id)
 }
 \arguments{
-\item{tree}{A Tree object that might have a leaf-aggregated structure.}
+\item{tree}{a \code{Tree} object that might possess a leaf-aggregated
+structure.}
 
-\item{node_id}{The current identifier for the node to be adjusted.}
+\item{node_id}{a \code{numeric} or \code{character} representing the
+identifier for the \code{Node} to be adjusted.}
 }
 \value{
-A vector containing adjusted node IDs.
+A \code{numeric} vector encompassing the adjusted node IDs.
 }
 \description{
-When a tree has a leaf-aggregated structure, the node ID may need adjustment.
-This function performs the necessary transformation for such nodes.
+When a \code{Tree} has a leaf-aggregated structure, the node ID may require
+adjustment. This function carries out the necessary transformation for such
+nodes.
 }
+\keyword{internal}

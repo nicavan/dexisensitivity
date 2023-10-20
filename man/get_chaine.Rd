@@ -2,16 +2,17 @@
 % Please edit documentation in R/create_tree.R
 \name{get_chaine}
 \alias{get_chaine}
-\title{Get the chain of nodes}
+\title{Retrieve Node Chain}
 \usage{
 get_chaine(node_path)
 }
 \arguments{
-\item{node_path}{A character vector representing the path to the node.}
+\item{node_path}{\code{character} vector indicating the node's path.}
 }
 \value{
-A string representing the chain of nodes
+\code{character} representing the node chain.
 }
 \description{
-Retrieves the chain of nodes from a given node path.
+Extracts the chain of nodes based on the provided node path.
 }
+\keyword{internal}

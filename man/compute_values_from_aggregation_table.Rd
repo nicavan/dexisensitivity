@@ -2,19 +2,19 @@
 % Please edit documentation in R/option.R
 \name{compute_values_from_aggregation_table}
 \alias{compute_values_from_aggregation_table}
-\title{Compute node values from aggregation table}
+\title{Compute Node Values from Aggregation Table}
 \usage{
 compute_values_from_aggregation_table(tree, results)
 }
 \arguments{
-\item{tree}{A Tree object.}
+\item{tree}{A \code{Tree} object.}
 
-\item{results}{Numeric vector with pre-existing values.}
+\item{results}{A \code{numeric} vector with pre-existing values.}
 }
 \value{
-Numeric vector with updated node values.
+A \code{numeric} vector with updated node values.
 }
 \description{
-Takes a tree and pre-existing results to determine node values. Iteratively
-adjusts values based on the aggregation table and related children.
+Calculates node values iteratively using the aggregation table and related children.
 }
+\keyword{internal}

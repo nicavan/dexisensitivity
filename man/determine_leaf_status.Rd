@@ -2,20 +2,25 @@
 % Please edit documentation in R/create_tree.R
 \name{determine_leaf_status}
 \alias{determine_leaf_status}
-\title{Identify if a Node is a Leaf}
+\title{Determine the Leaf Status of a Node}
 \usage{
 determine_leaf_status(node_path, main_tree)
 }
 \arguments{
-\item{node_path}{A character vector representing the path to the node.}
+\item{\code{node_path}}{A \code{character} vector representing the path to
+the node.}
 
-\item{main_tree}{Main tree structure containing the XML data.}
+\item{\code{main_tree}}{An XML object representing the main tree structure
+containing the XML data.}
 }
 \value{
-Boolean indicating if the node is a leaf.
+A \code{logical} value indicating if the node is a leaf (TRUE) or not
+(FALSE).
 }
 \description{
-Essential to understand the tree structure and facilitates further
-decision-making about the node.
+Determines whether a given node in the decision tree is a leaf or not. Being
+a leaf node implies that the node does not have any children. This
+distinction is crucial for the structural understanding of the tree and
+further processing of the node.
 }
 \keyword{internal}

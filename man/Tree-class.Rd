@@ -3,65 +3,59 @@
 \docType{class}
 \name{Tree-class}
 \alias{Tree-class}
-\alias{Tree}
-\title{An S4 class to represent a Tree}
+\title{Tree Class Definition}
 \value{
-An object of class Tree.
+An object of class \code{Tree}.
 }
 \description{
-It includes several slots to store attributes, leaves, nodes, path, and
-additional information related to the tree structure.
+An S4 class to represent a tree structure.
 }
 \details{
-Tree class objects are used in the creation and display of tree structures.
-Information from the object is used to create and print the tree structure in
-a human-readable format.
+A structured representation of a tree, which includes several slots to store
+attributes, leaves, nodes, path, and additional information related to the
+tree structure. The class \code{Tree} is primarily used in the creation,
+manipulation, and display of tree structures.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{NumberOfAttributes}}{Object of class "numeric", the number of attributes
-in the tree.}
+\item{\code{NumberOfAttributes}}{\code{numeric} - Number of attributes in the tree.}
 
-\item{\code{NumberOfLeaves}}{Object of class "numeric", the number of leaves in the
+\item{\code{NumberOfLeaves}}{\code{numeric} - Number of leaves in the tree.}
+
+\item{\code{Depth}}{\code{numeric} - Maximum depth of the tree.}
+
+\item{\code{Attributes}}{\code{character} - Names of attributes in the tree.}
+
+\item{\code{Leaves}}{\code{character} - Names of leaves in the tree.}
+
+\item{\code{Aggregated}}{\code{character} - Names of aggregated nodes in the tree.}
+
+\item{\code{IsMultiple}}{\code{logical} - Flag indicating if multiple leaves are
+present in the tree.}
+
+\item{\code{Multiple}}{\code{data.frame} - List of multiple leaves and their count.}
+
+\item{\code{IsLeafAggregated}}{\code{logical} - Flag indicating if leaf-aggregated
+nodes are present in the tree.}
+
+\item{\code{LeafAggregated}}{\code{character} - Names of leaf-aggregated nodes in the
 tree.}
 
-\item{\code{Depth}}{Object of class "numeric", the maximum depth of the tree.}
+\item{\code{Paths}}{\code{list} - Paths from the root to the leaves.}
 
-\item{\code{Attributes}}{Object of class "character", list of names of attributes in
-the tree.}
+\item{\code{Nodes}}{\code{list} - Nodes present in the tree.}
 
-\item{\code{Leaves}}{Object of class "character", list of names of leaves in the
-tree.}
+\item{\code{EvaluationOrder}}{\code{numeric} - Evaluation order for LeafAggregated
+nodes.}
 
-\item{\code{Aggregated}}{Object of class "character", list of names of aggregated
-nodes in the tree.}
-
-\item{\code{IsMultiple}}{Object of class "logical", flag indicating if there are
-multiple leaves in the tree.}
-
-\item{\code{Multiple}}{Object of class "data.frame", list of multiple leaves and
-their count.}
-
-\item{\code{IsLeafAggregated}}{Object of class "logical", flag indicating if there
-are leaf-aggregated nodes in the tree.}
-
-\item{\code{LeafAggregated}}{Object of class "character", list of names of
-leaf-aggregated nodes in the tree.}
-
-\item{\code{Paths}}{Object of class "list", list of paths from the root to the
-leaves.}
-
-\item{\code{Nodes}}{Object of class "list", list of nodes in the tree.}
-
-\item{\code{EvaluationOrder}}{Object of class "numeric", evaluation order in case of
-LeafAggregated nodes.}
-
-\item{\code{RootName}}{Object of class "character", name of the root node.}
+\item{\code{RootName}}{\code{character} - Name of the root node.}
 }}
 
 \seealso{
-\code{\link{print.Tree}},
-\code{\link{show.Tree}},
-\code{\link{describe.Tree}}
+\itemize{
+\item \code{\link{print.Tree}}: For printing a Tree object.
+\item \code{\link{show.Tree}}: For showing a Tree object.
+\item \code{\link{describe.Tree}}: For describing a Tree object.
+}
 }

@@ -2,26 +2,30 @@
 % Please edit documentation in R/aov.R
 \name{compute_aov_sensitivity_effects}
 \alias{compute_aov_sensitivity_effects}
-\title{Calculate sensitivity criteria for model terms}
+\title{Compute Sensitivity Criteria for Model Terms}
 \usage{
 compute_aov_sensitivity_effects(aov_obj)
 }
 \arguments{
-\item{aov_obj}{An object of class \code{aov} from a call to \code{aov()}.}
+\item{aov_obj}{An \code{aov} object resulting from a call to the \code{aov()}
+function.}
 }
 \value{
-A data frame with sensitivity criteria for each term in the model.
-The columns of the data frame include:
+A \code{data.frame} detailing the sensitivity criteria for each model
+term. The data frame consists of the following columns:
 \itemize{
-\item \code{df}: degrees of freedom
-\item \code{ss}: sum of squares
-\item \code{ss.ratio}: ratio of sum of squares to total sum of squares
-\item \code{cm}: mean square (or variance) for each term
-\item \code{F}: F-statistic for each term
+\item \code{df}: degrees of freedom.
+\item \code{ss}: sum of squares.
+\item \code{ss.ratio}: ratio of the term's sum of squares to the model's
+total sum of squares.
+\item \code{cm}: mean square (or variance) associated with each term.
+\item \code{F}: F-statistic relevant to each term.
 }
-
-Rows are ordered in decreasing order of ss.ratio.
+Entries are organized in descending order based on the \code{ss.ratio}
+values.
 }
 \description{
-Provides sensitivity criteria for each term in a fitted model.
+Derives sensitivity criteria for each term present in a provided fitted
+model.
 }
+\keyword{internal}

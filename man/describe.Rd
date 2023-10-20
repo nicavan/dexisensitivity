@@ -2,16 +2,20 @@
 % Please edit documentation in R/tree.R
 \name{describe}
 \alias{describe}
-\title{Title}
+\title{Generic Describe Function for Objects}
 \usage{
 describe(object)
 }
 \arguments{
-\item{object}{the Tree}
-}
-\value{
-No explicit return.
+\item{object}{The object to be described.}
 }
 \description{
-Title
+Provides a comprehensive description of an object.
+}
+\seealso{
+\itemize{
+\item \code{\link{Tree-class}}: For the Tree class definition.
+\item \code{\link{print.Tree}}: For printing a Tree object.
+\item \code{\link{show.Tree}}: For showing a Tree object.
+}
 }
