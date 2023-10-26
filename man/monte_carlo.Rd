@@ -4,7 +4,7 @@
 \alias{monte_carlo}
 \title{Monte Carlo Simulation on a Decision Tree}
 \usage{
-monte_carlo(tree, num_runs, write_to_file = FALSE, verbose = TRUE)
+monte_carlo(tree, num_runs, write_to_file = NULL, verbose = TRUE)
 }
 \arguments{
 \item{tree}{\code{Tree} object to be used in the simulation.}
@@ -12,9 +12,9 @@ monte_carlo(tree, num_runs, write_to_file = FALSE, verbose = TRUE)
 \item{num_runs}{\code{numeric} indicating the number of Monte Carlo
 simulations to be executed.}
 
-\item{write_to_file}{\code{logical} determining if the randomly selected
-options for the Monte Carlo analysis should be saved as a .csv file.
-Default is \code{FALSE}.}
+\item{write_to_file}{\code{character} Name of the file created to save the
+Monte Carlo's results. If \code{NULL}, don't write any file. Default is
+\code{NULL}}
 
 \item{verbose}{\code{logical} specifying if additional information or
 progress details should be printed during the simulation. Default is

@@ -40,9 +40,9 @@ estimate_mc_time <- function(tree, num_runs, num_test = 50) {
 #' @param tree \code{Tree} object to be used in the simulation.
 #' @param num_runs \code{numeric} indicating the number of Monte Carlo
 #'   simulations to be executed.
-#' @param write_to_file \code{logical} determining if the randomly selected
-#'   options for the Monte Carlo analysis should be saved as a .csv file.
-#'   Default is \code{FALSE}.
+#' @param write_to_file \code{character} Name of the file created to save the
+#'   Monte Carlo's results. If \code{NULL}, don't write any file. Default is
+#'   \code{NULL}
 #' @param verbose \code{logical} specifying if additional information or
 #'   progress details should be printed during the simulation. Default is
 #'   \code{FALSE}.
@@ -50,7 +50,7 @@ estimate_mc_time <- function(tree, num_runs, num_test = 50) {
 #' @return A \code{matrix} containing the results of the Monte Carlo simulation.
 #'
 #' @export
-monte_carlo <- function(tree, num_runs, write_to_file = FALSE, verbose = TRUE) {
+monte_carlo <- function(tree, num_runs, write_to_file = NULL, verbose = TRUE) {
   if (verbose) {
     cat("\n Starting simulation at: ", date())
   }
@@ -65,9 +65,9 @@ monte_carlo <- function(tree, num_runs, write_to_file = FALSE, verbose = TRUE) {
     })
 
   # Save options to a file if required
-  if (write_to_file) {
+  if (!is.null(write_to_file)) {
     write.table(options_matrix,
-      file = "MC options.csv",
+      file = paste0(write_to_file, ".csv"),
       sep = ",", row.names = TRUE, col.names = NA
     )
   }
