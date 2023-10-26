@@ -1,0 +1,1686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEXi>
+  <NAME>MASC 2.0</NAME>
+  <DESCRIPTION>
+    <LINE>Le modele MASC 2.0 a ete conçu pour faciliter l evaluation multicritere de la contribution des systemes de grandes cultures au developpement durable. Il peut etre utilise dans le cadre de diverses etudes a caractere exploratoire pour effectuer notamment :</LINE>
+    <LINE/>
+    <LINE>- de l analyse des performances globales des systemes de culture ou d une comparaison des performances de plusieurs systemes existants dans un territoire (evaluation ex post)</LINE>
+    <LINE/>
+    <LINE>- des études de nouveaux systèmes de culture en comparaison (ou non) avec des systemes existants construits dans le cadre d&apos;une conception par prototypage suivi d&apos;une evaluation ex ante.</LINE>
+    <LINE/>
+    <LINE>Il s agit de confronter les performances elementaires du systeme de culture a un jeu de preferences afin d&apos;obtenir une note globale de durabilite puis eventuellement de fournir un classement comparatif et argumente de plusieurs systemes de cultures evalues avec un meme profil de preferences.</LINE>
+    <LINE/>
+    <LINE>Le modele MASC 2.0 derive du modele MASC V1.0 (Sadok et al., 2009). Il a ete developpe dans le cadre du projet GIS HPEE, en tenant compte de l&apos;experience acquise par les utilisateurs de la version 1.0 de l&apos;outil. Il fait l&apos;objet des documents d&apos;accompagnement suivants :</LINE>
+    <LINE/>
+    <LINE>Craheix D., Angevin F., Bergez J.-E., Bockstaller C., Colomb B., Guichard L., Reau R.,  Sadok W., Doré T (2011). MASC 2.0, Un outil pour l analyse de la contribution des systèmes de culture au developpement durable. Jeu complet de fiches criteres de MASC 2.0. INRA - AgroParisTech - GIS GC HP2E, 133 p.</LINE>
+    <LINE/>
+    <LINE>Craheix D., Angevin F., Bergez J.-E., Bockstaller C., Colomb B., Guichard L., Reau R.,  Sadok W., Doré T (2011). MASC 2.0, Un outil pour l&apos;analyse de la contribution des systemes de culture au developpement durable. Presentation &amp; principes d utilisation. INRA - AgroParisTech - GIS GC HP2E, 54 p.</LINE>
+    <LINE/>
+    <LINE>Le modele d evaluation qualitative etabli avec le present outil DEXi 3.03 repose sur la definition de fonctions d utilite qui realisent les agregations des criteres d evaluation a partir de regles de raisonnement qualitatif. Ces regles determinent la ponderation des criteres dans le processus d&apos;agregation, pour parvenir au diagnostic de leur contribution au developpement durable. Les regles incorporees actuellement dans l&apos;outil et les ponderations qui en decoulent ne doivent pas être considerees comme normatives. Elles ont ete etablies a titre d&apos;exemple et doivent être reconsiderees par les utilisateurs, en fonction des specificites du projet d&apos;evaluation et des preoccupations associees aux systemes de culture a evaluer. </LINE>
+    <LINE/>
+    <LINE>Le choix des modes de calcul ou d&apos;evaluation par expertise dirigee des indicateurs basiques est sous l entiere responsabilite de l utilisateur ou du collectif d utilisation. Aucun choix normatif concernant ces modes n&apos;est associe à la presente version du modele MASC 2.0.</LINE>
+    <LINE/>
+    <LINE>Le logiciel MASC a ete bati par un groupe de chercheurs et enseignants de quatre unites impliquant l INRA et des etablissements d enseignement superieur (AgroParisTech, INPL, INPT) : unites Agronomie et Eco-Innov de Grignon, AGIR de Toulouse, LAE de Nancy-Colmar. Il a fait l objet d un depot a l APP en janvier 2008 sous sa version 1.0 (propriete INRA/Agroparistech), renouvele en octobre 2011 sous sa version actuelle 2.0 (N° IDDN.FR.001.040014.001.R.P.2008.000.30100, attribue le 05/10/2011), version qui est propriete des membres du GIS GC-HP2E. L utilisation de la version 2.0 se fait sous la licence CeCILL-C (http://www.cecill.info/licences/Licence_CeCILL-C_V1-fr.html), le telechargement valant acceptation de la licence. MASC ne peut etre exploite commercialement sans avoir prealablement contacte et obtenu l&apos;accord des proprietaires du logiciel DEXi. La licence CeCILL-C vous permet d&apos;utiliser MASC V2.0 sans limitation sous votre propre responsabilite, les concepteurs et les proprietaires de MASC V2.0 ne pouvant etre tenus pour responsables des resultats obtenus. Il est precise que les eventuelles reutilisations de MASC V2.0 dans des developpements logiciels devront suivre les conditions enoncees dans la licence CeCILL-C.</LINE>
+  </DESCRIPTION>
+  <OPTION>ACTUEL</OPTION>
+  <OPTION>Pest -</OPTION>
+  <SETTINGS>
+    <LINKING>True</LINKING>
+    <REPORTS>2</REPORTS>
+    <PAGEBREAK>True</PAGEBREAK>
+    <EVALTRIM>10</EVALTRIM>
+    <FONTSIZE>8</FONTSIZE>
+    <FONTNAME>Courier New</FONTNAME>
+  </SETTINGS>
+  <ATTRIBUTE>
+    <NAME>Contribution au developpement durable</NAME>
+    <DESCRIPTION>CDDUR   Contribution du SDC au developpement durable</DESCRIPTION>
+    <SCALE>
+      <SCALEVALUE>
+        <NAME>tres faible</NAME>
+        <GROUP>BAD</GROUP>
+      </SCALEVALUE>
+      <SCALEVALUE>
+        <NAME>faible</NAME>
+        <GROUP>BAD</GROUP>
+      </SCALEVALUE>
+      <SCALEVALUE>
+        <NAME>assez faible</NAME>
+        <GROUP>BAD</GROUP>
+      </SCALEVALUE>
+      <SCALEVALUE>
+        <NAME>moyenne</NAME>
+      </SCALEVALUE>
+      <SCALEVALUE>
+        <NAME>assez elevee</NAME>
+        <GROUP>GOOD</GROUP>
+      </SCALEVALUE>
+      <SCALEVALUE>
+        <NAME>elevee</NAME>
+        <GROUP>GOOD</GROUP>
+      </SCALEVALUE>
+      <SCALEVALUE>
+        <NAME>tres elevee</NAME>
+        <GROUP>GOOD</GROUP>
+      </SCALEVALUE>
+    </SCALE>
+    <FUNCTION>
+      <LOW>00000000110011201123012330001100112012231123412345001120122312334123452345501123122341234523456345660123312345234553456635566</LOW>
+      <WEIGHTS>33.3333333333333;33.3333333333333;33.3333333333333</WEIGHTS>
+      <CONSIST>False</CONSIST>
+    </FUNCTION>
+    <OPTION>1</OPTION>
+    <OPTION>3</OPTION>
+    <ATTRIBUTE>
+      <NAME>Dimension economique</NAME>
+      <DESCRIPTION>CDECO   Contribution du SDC a la dimension economique du developpement durable</DESCRIPTION>
+      <SCALE>
+        <SCALEVALUE>
+          <NAME>tres faible</NAME>
+          <GROUP>BAD</GROUP>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>faible</NAME>
+          <GROUP>BAD</GROUP>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>moyenne</NAME>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>elevee</NAME>
+          <GROUP>GOOD</GROUP>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>tres elevee</NAME>
+          <GROUP>GOOD</GROUP>
+        </SCALEVALUE>
+      </SCALE>
+      <FUNCTION>
+        <LOW>0001001101121123001101121123123301121123123423441123123323443344</LOW>
+        <WEIGHTS>33.3333333333333;33.3333333333333;33.3333333333333</WEIGHTS>
+        <CONSIST>False</CONSIST>
+      </FUNCTION>
+      <OPTION>3</OPTION>
+      <OPTION>3</OPTION>
+      <ATTRIBUTE>
+        <NAME>Resultats economiques</NAME>
+        <DESCRIPTION>RES     Resultats economiques du SDC pour l agriculteur</DESCRIPTION>
+        <SCALE>
+          <SCALEVALUE>
+            <NAME>tres faible</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>faible a moyenne</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>moyenne a elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>tres elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+        </SCALE>
+        <FUNCTION>
+          <LOW>000000000111000111122222111122223233112222333333</LOW>
+          <WEIGHTS>50;40;10</WEIGHTS>
+          <CONSIST>False</CONSIST>
+        </FUNCTION>
+        <OPTION>2</OPTION>
+        <OPTION>1</OPTION>
+        <ATTRIBUTE>
+          <NAME>Rentabilite</NAME>
+          <DESCRIPTION>MSN     Rentabilite a court terme du SDC calculee avec la marge semi-nette</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <OPTION>2</OPTION>
+          <OPTION>1</OPTION>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Autonomie economique</NAME>
+          <DESCRIPTION>AUTECO  Autonomie du SDC vis a vis des aides publiques et des intrants</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>0011012212231233</LOW>
+            <WEIGHTS>50;50</WEIGHTS>
+            <CONSIST>False</CONSIST>
+          </FUNCTION>
+          <OPTION>1</OPTION>
+          <OPTION>2</OPTION>
+          <ATTRIBUTE>
+            <NAME>Independance economique</NAME>
+            <DESCRIPTION>IND     Independance economique vis-a-vis dess aides incluses dans la marge semi-nette</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>1</OPTION>
+            <OPTION>1</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Efficience economique</NAME>
+            <DESCRIPTION>EFF     Efficience economique vis-a-vis des intrants comptabilises dans la marge semi-nette</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>1</OPTION>
+            <OPTION>2</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Surcout en materiel</NAME>
+          <DESCRIPTION>MAT     Surcout en investissements lies au materiel supplementaire specifique au SDC</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>eleve</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyen</NAME>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <OPTION>2</OPTION>
+          <OPTION>0</OPTION>
+        </ATTRIBUTE>
+      </ATTRIBUTE>
+      <ATTRIBUTE>
+        <NAME>Capacite productive a long terme</NAME>
+        <DESCRIPTION>CPLT    Evolution de la capacite productive des parcelles soumises au SDC      </DESCRIPTION>
+        <SCALE>
+          <SCALEVALUE>
+            <NAME>tres faible</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>faible a moyenne</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>moyenne a elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>tres elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+        </SCALE>
+        <FUNCTION>
+          <LOW>0011012212231233</LOW>
+          <WEIGHTS>50;50</WEIGHTS>
+          <CONSIST>False</CONSIST>
+        </FUNCTION>
+        <OPTION>3</OPTION>
+        <OPTION>3</OPTION>
+        <ATTRIBUTE>
+          <NAME>Maitrise de la fertilite physico-chimique</NAME>
+          <DESCRIPTION>MFPC    Evolution de la fertilite physico-chimique dans les parcelles soumises au SDC</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>0000001101110112001101111122112301111122122312330112112312332333</LOW>
+            <WEIGHTS>33.3333333333333;33.3333333333333;33.3333333333333</WEIGHTS>
+            <CONSIST>False</CONSIST>
+          </FUNCTION>
+          <OPTION>3</OPTION>
+          <OPTION>3</OPTION>
+          <ATTRIBUTE>
+            <NAME>Maitrise du statut acido-basique du sol</NAME>
+            <DESCRIPTION>MSAB    Evolution du statut acido-basique du sol dans les parcelles soumises au SDC </DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>2</OPTION>
+            <OPTION>2</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Maitrise de l etat structural du sol</NAME>
+            <DESCRIPTION>MES     Evolution de la structure du sol dans les parcelles soumises au SDC</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>3</OPTION>
+            <OPTION>3</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Maitrise de la fertilite phosphopotassique</NAME>
+            <DESCRIPTION>MFPP    Evolution de la fertilite phospho-potassique des parcelles soumises au SDC   </DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>3</OPTION>
+            <OPTION>3</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Maitrise des bioagresseurs</NAME>
+          <DESCRIPTION>MBAGR   Evolution de la pression des bioagresseurs dans les parcelles soumises au SDC </DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>0011012212231233</LOW>
+            <WEIGHTS>50;50</WEIGHTS>
+            <CONSIST>False</CONSIST>
+          </FUNCTION>
+          <OPTION>2</OPTION>
+          <OPTION>3</OPTION>
+          <ATTRIBUTE>
+            <NAME>Maitrise des maladies et ravageurs</NAME>
+            <DESCRIPTION>MMR     Evolution de la pression de maladies et de ravageurs telluriques   </DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>2</OPTION>
+            <OPTION>3</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Maitrise des adventices</NAME>
+            <DESCRIPTION>MADV    Evolution de la pression des adventices  </DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>1</OPTION>
+            <OPTION>3</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+      </ATTRIBUTE>
+      <ATTRIBUTE>
+        <NAME>Contribution au developpement economique</NAME>
+        <DESCRIPTION>CDEV    Contribution du SDC au developpement economique des filieres et du territoire</DESCRIPTION>
+        <SCALE>
+          <SCALEVALUE>
+            <NAME>tres faible</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>faible a moyenne</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>moyenne a elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>tres elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+        </SCALE>
+        <FUNCTION>
+          <LOW>000112223333</LOW>
+          <WEIGHTS>80;20</WEIGHTS>
+        </FUNCTION>
+        <OPTION>1</OPTION>
+        <OPTION>3</OPTION>
+        <ATTRIBUTE>
+          <NAME>Qualite des produits</NAME>
+          <DESCRIPTION>QP      Risque de non atteinte de niveau de qualite des recoltes exige par les filieres</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>000112233</LOW>
+            <WEIGHTS>80;20</WEIGHTS>
+          </FUNCTION>
+          <OPTION>1</OPTION>
+          <OPTION>2</OPTION>
+          <ATTRIBUTE>
+            <NAME>Qualite sanitaire</NAME>
+            <DESCRIPTION>QS      Risque de non atteinte de niveau de qualite sanitaire exige par les filieres</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne</NAME>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>1</OPTION>
+            <OPTION>2</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Qualite technologique et esthetique des produits</NAME>
+            <DESCRIPTION>QTEP    Risque de non atteinte du niveau de qualite technologique/esthetique exige</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne</NAME>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>1</OPTION>
+            <OPTION>0</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Contribution a l emergence de filieres</NAME>
+          <DESCRIPTION>CENF    Contribution a l emergence de nouvelles filieres</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>nulle</NAME>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>Moyenne</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <OPTION>0</OPTION>
+          <OPTION>2</OPTION>
+        </ATTRIBUTE>
+      </ATTRIBUTE>
+    </ATTRIBUTE>
+    <ATTRIBUTE>
+      <NAME>Dimension sociale</NAME>
+      <DESCRIPTION>CDSOC   Contribution du SDC a la dimension sociale du developpement durable</DESCRIPTION>
+      <SCALE>
+        <SCALEVALUE>
+          <NAME>tres faible</NAME>
+          <GROUP>BAD</GROUP>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>faible</NAME>
+          <GROUP>BAD</GROUP>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>moyenne</NAME>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>elevee</NAME>
+          <GROUP>GOOD</GROUP>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>tres elevee</NAME>
+          <GROUP>GOOD</GROUP>
+        </SCALEVALUE>
+      </SCALE>
+      <FUNCTION>
+        <LOW>0012012312342344</LOW>
+        <WEIGHTS>50;50</WEIGHTS>
+      </FUNCTION>
+      <OPTION>2</OPTION>
+      <OPTION>3</OPTION>
+      <ATTRIBUTE>
+        <NAME>Satisfaction des attentes de la societe</NAME>
+        <DESCRIPTION>SATISS  Compatibilite du SDC avec les attentes supposees de la societe</DESCRIPTION>
+        <SCALE>
+          <SCALEVALUE>
+            <NAME>tres faible</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>faible a moyenne</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>moyenne a elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>tres elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+        </SCALE>
+        <FUNCTION>
+          <LOW>0011012212231233</LOW>
+          <WEIGHTS>50;50</WEIGHTS>
+        </FUNCTION>
+        <OPTION>2</OPTION>
+        <OPTION>2</OPTION>
+        <ATTRIBUTE>
+          <NAME>Contribution a l emploi</NAME>
+          <DESCRIPTION>EMP     Contribution du SDC a l insertion sociale et au developpement local par les emplois    </DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <OPTION>1</OPTION>
+          <OPTION>1</OPTION>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Fourniture de matieres premieres</NAME>
+          <DESCRIPTION>FMP     Contribution du SDC a satisfaire les besoins de la societe en produits agricoles</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <OPTION>3</OPTION>
+          <OPTION>2</OPTION>
+        </ATTRIBUTE>
+      </ATTRIBUTE>
+      <ATTRIBUTE>
+        <NAME>Satisfaction des attentes de l agriculteur</NAME>
+        <DESCRIPTION>SATISA  Compatibilite du SDC avec les attentes sociales de l agriculteur</DESCRIPTION>
+        <SCALE>
+          <SCALEVALUE>
+            <NAME>tres faible</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>faible a moyenne</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>moyenne a elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>tres elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+        </SCALE>
+        <FUNCTION>
+          <LOW>0011012212231233</LOW>
+          <WEIGHTS>50;50</WEIGHTS>
+          <CONSIST>False</CONSIST>
+        </FUNCTION>
+        <OPTION>1</OPTION>
+        <OPTION>2</OPTION>
+        <ATTRIBUTE>
+          <NAME>Facilite de mise en oeuvre</NAME>
+          <DESCRIPTION>FMO     Appreciation qualitative des difficultes techniques liees a la realisation du SDC</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>000112123333</LOW>
+            <WEIGHTS>70;30</WEIGHTS>
+          </FUNCTION>
+          <OPTION>3</OPTION>
+          <OPTION>1</OPTION>
+          <ATTRIBUTE>
+            <NAME>Complexite des itineraires techniques</NAME>
+            <DESCRIPTION>CIT     Complexite des interventions culturales induites par le SDC   </DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>2</OPTION>
+            <OPTION>1</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Temps de veille technico-economique</NAME>
+            <DESCRIPTION>TVTE    Difficulte de mise en oeuvre d un SDC compose de cultures differentes</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>eleve</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyen</NAME>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>2</OPTION>
+            <OPTION>0</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Qualite des conditions de travail</NAME>
+          <DESCRIPTION>QCT     Impact du SDC sur les conditions de travail de l agriculteur ou des ouvriers</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>000011012000012023000023033</LOW>
+            <WEIGHTS>20;40;40</WEIGHTS>
+            <CONSIST>False</CONSIST>
+          </FUNCTION>
+          <OPTION>0</OPTION>
+          <OPTION>3</OPTION>
+          <ATTRIBUTE>
+            <NAME>Surcharge de travail</NAME>
+            <DESCRIPTION>SDT     Contribution du SDC a la surcharge de travail en periode de pointe</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>elevee</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne</NAME>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>1</OPTION>
+            <OPTION>2</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Risque pour la sante de l applicateur</NAME>
+            <DESCRIPTION>TOX     Risque d intoxication du travailleur lors de la manipulation des produits phytosanitaires</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>eleve</NAME>
+                <DESCRIPTION>&gt; 2</DESCRIPTION>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyen</NAME>
+                <DESCRIPTION>1 &lt; Tox &lt; ou = 2</DESCRIPTION>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible</NAME>
+                <DESCRIPTION>0 &lt; Tox &lt; ou = 1</DESCRIPTION>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>0</OPTION>
+            <OPTION>2</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Difficulte physique</NAME>
+            <DESCRIPTION>DIFF    Niveau de penibilite physique associe a la conduite des operations culturales du SDC</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>elevee</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne</NAME>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>2</OPTION>
+            <OPTION>1</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+      </ATTRIBUTE>
+    </ATTRIBUTE>
+    <ATTRIBUTE>
+      <NAME>Dimension environnementale</NAME>
+      <DESCRIPTION>CDENV   Contribution du SDC a la dimension environnementale du developpement durable</DESCRIPTION>
+      <SCALE>
+        <SCALEVALUE>
+          <NAME>tres faible</NAME>
+          <GROUP>BAD</GROUP>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>faible</NAME>
+          <GROUP>BAD</GROUP>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>moyenne</NAME>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>elevee</NAME>
+          <GROUP>GOOD</GROUP>
+        </SCALEVALUE>
+        <SCALEVALUE>
+          <NAME>tres elevee</NAME>
+          <GROUP>GOOD</GROUP>
+        </SCALEVALUE>
+      </SCALE>
+      <FUNCTION>
+        <LOW>0001001101121123001101121123123301121123123423441123123323443344</LOW>
+        <WEIGHTS>33;33;33</WEIGHTS>
+        <CONSIST>False</CONSIST>
+      </FUNCTION>
+      <OPTION>0</OPTION>
+      <OPTION>1</OPTION>
+      <ATTRIBUTE>
+        <NAME>Contribution a la qualite du milieu</NAME>
+        <DESCRIPTION>CQM     Contribution du SDC a preserver les composantes air-eau-sol du milieu</DESCRIPTION>
+        <SCALE>
+          <SCALEVALUE>
+            <NAME>tres faible</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>faible a moyenne</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>moyenne a elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>tres elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+        </SCALE>
+        <FUNCTION>
+          <LOW>0000001101110111001101111122112201111122122312330111112212331233</LOW>
+          <WEIGHTS>33.3333333333333;33.3333333333333;33.3333333333333</WEIGHTS>
+          <CONSIST>False</CONSIST>
+        </FUNCTION>
+        <OPTION>1</OPTION>
+        <OPTION>2</OPTION>
+        <ATTRIBUTE>
+          <NAME>Contribution a la qualite de l eau</NAME>
+          <DESCRIPTION>CQE     Contribution du SDC a preserver la qualite de l eau</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>0000001101110112001101111122112201111122122312330112112212332233</LOW>
+            <WEIGHTS>33.3333333333333;33.3333333333333;33.3333333333333</WEIGHTS>
+            <CONSIST>False</CONSIST>
+          </FUNCTION>
+          <OPTION>1</OPTION>
+          <OPTION>1</OPTION>
+          <ATTRIBUTE>
+            <NAME>Maitrise des pertes de pesticides Eaux</NAME>
+            <DESCRIPTION>MPPE    Risque de pollution des eaux profondes et superficielles par les pesticides</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <FUNCTION>
+              <LOW>0011012212231233</LOW>
+              <WEIGHTS>50;50</WEIGHTS>
+              <CONSIST>False</CONSIST>
+            </FUNCTION>
+            <OPTION>2</OPTION>
+            <OPTION>3</OPTION>
+            <ATTRIBUTE>
+              <NAME>Maitrise pertes dans les eaux profondes</NAME>
+              <DESCRIPTION>MPEP    Risque de pollution des eaux profondes par les pesticides</DESCRIPTION>
+              <SCALE>
+                <SCALEVALUE>
+                  <NAME>tres faible</NAME>
+                  <GROUP>BAD</GROUP>
+                </SCALEVALUE>
+                <SCALEVALUE>
+                  <NAME>faible a moyenne</NAME>
+                  <GROUP>BAD</GROUP>
+                </SCALEVALUE>
+                <SCALEVALUE>
+                  <NAME>moyenne a elevee</NAME>
+                  <GROUP>GOOD</GROUP>
+                </SCALEVALUE>
+                <SCALEVALUE>
+                  <NAME>tres elevee</NAME>
+                  <GROUP>GOOD</GROUP>
+                </SCALEVALUE>
+              </SCALE>
+              <OPTION>2</OPTION>
+              <OPTION>2</OPTION>
+            </ATTRIBUTE>
+            <ATTRIBUTE>
+              <NAME>Maitrise pertes dans les eaux superficielles</NAME>
+              <DESCRIPTION>MPES    Risque de pollution des eaux superficielles par les pesticides</DESCRIPTION>
+              <SCALE>
+                <SCALEVALUE>
+                  <NAME>tres faible</NAME>
+                  <GROUP>BAD</GROUP>
+                </SCALEVALUE>
+                <SCALEVALUE>
+                  <NAME>faible a moyenne</NAME>
+                  <GROUP>BAD</GROUP>
+                </SCALEVALUE>
+                <SCALEVALUE>
+                  <NAME>moyenne a elevee</NAME>
+                  <GROUP>GOOD</GROUP>
+                </SCALEVALUE>
+                <SCALEVALUE>
+                  <NAME>tres elevee</NAME>
+                  <GROUP>GOOD</GROUP>
+                </SCALEVALUE>
+              </SCALE>
+              <OPTION>2</OPTION>
+              <OPTION>3</OPTION>
+            </ATTRIBUTE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Maitrise des pertes de NO3</NAME>
+            <DESCRIPTION>MPNO3   Risque de pollution des eaux induit par les nitrates</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>0</OPTION>
+            <OPTION>1</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Maitrise des pertes de P</NAME>
+            <DESCRIPTION>MPPH    Risque de pollution des eaux induit par le phosphore</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>1</OPTION>
+            <OPTION>1</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Contribution a la qualite air</NAME>
+          <DESCRIPTION>CQA     Contribution du SDC a preserver la qualite de l air</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>0000000100110112000000110112112300010112112312330011012212332333</LOW>
+            <WEIGHTS>30;40;30</WEIGHTS>
+            <CONSIST>False</CONSIST>
+          </FUNCTION>
+          <OPTION>1</OPTION>
+          <OPTION>2</OPTION>
+          <ATTRIBUTE>
+            <NAME>Maitrise des emissions de NH3</NAME>
+            <DESCRIPTION>MNH3    Risque de pertes d ammoniac par volatilisation   </DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>2</OPTION>
+            <OPTION>1</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Maitrise des emissions de N2O</NAME>
+            <DESCRIPTION>MN2O    Risque de pertes de protoxyde d azote dans l air</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>1</OPTION>
+            <OPTION>2</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Maitrise des emissions de pesticides Air</NAME>
+            <DESCRIPTION>MPA     Risque de pollution atmospherique par les pesticides</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>2</OPTION>
+            <OPTION>3</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Preservation de la qualite du sol</NAME>
+          <DESCRIPTION>PQS     Contribution du SDC a preserver la qualite du sol</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>0000000000000000000000110111011200110111012301330011011201330233</LOW>
+            <WEIGHTS>40;30;40</WEIGHTS>
+            <CONSIST>False</CONSIST>
+          </FUNCTION>
+          <OPTION>2</OPTION>
+          <OPTION>2</OPTION>
+          <ATTRIBUTE>
+            <NAME>Maitrise de l accumulation d elements toxiques</NAME>
+            <DESCRIPTION>MAET    Maitrise a long terme de l accumulation d elements toxiques dans le sol</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>3</OPTION>
+            <OPTION>3</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Maitrise du statut organique</NAME>
+            <DESCRIPTION>MSO     Maitrise de la teneur en matiere organique du sol</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>1</OPTION>
+            <OPTION>1</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Maitrise de l erosion</NAME>
+            <DESCRIPTION>MERO    Maitrise du risque d erosion du sol</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>3</OPTION>
+            <OPTION>3</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+      </ATTRIBUTE>
+      <ATTRIBUTE>
+        <NAME>Pression sur les ressources abiotiques</NAME>
+        <DESCRIPTION>PSRA    Pression exercee par le SDC sur les ressources abiotiques</DESCRIPTION>
+        <SCALE>
+          <SCALEVALUE>
+            <NAME>tres elevee</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>moyenne a elevee</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>faible a moyenne</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>tres faible</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+        </SCALE>
+        <FUNCTION>
+          <LOW>0000001101110112001101111122112201111122122312330112112212332233</LOW>
+          <WEIGHTS>33;33;33</WEIGHTS>
+          <CONSIST>False</CONSIST>
+        </FUNCTION>
+        <OPTION>1</OPTION>
+        <OPTION>1</OPTION>
+        <ATTRIBUTE>
+          <NAME>Pression Eau</NAME>
+          <DESCRIPTION>PSEAU   Pression exercee par le SDC sur la disponibilite locale en eau douce</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>001112233</LOW>
+            <WEIGHTS>70;30</WEIGHTS>
+            <CONSIST>False</CONSIST>
+          </FUNCTION>
+          <OPTION>3</OPTION>
+          <OPTION>3</OPTION>
+          <ATTRIBUTE>
+            <NAME>Conso. en eau d irrigation en periode critique</NAME>
+            <DESCRIPTION>IRRC    Consommation d eau d irrigation en periodes critiques (secheresse/etiage)</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>elevee</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne</NAME>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>2</OPTION>
+            <OPTION>2</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Dependance vis a vis de la ressource en eau</NAME>
+            <DESCRIPTION>DPEAU   Autonomie du SDC vis-a-vis de la ressource en eau</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>elevee</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne</NAME>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>2</OPTION>
+            <OPTION>2</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Pression Energie</NAME>
+          <DESCRIPTION>PSEN    Impact du SDC sur la durabilite des ressources energetiques</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>011112123</LOW>
+            <WEIGHTS>50;50</WEIGHTS>
+            <CONSIST>False</CONSIST>
+          </FUNCTION>
+          <OPTION>0</OPTION>
+          <OPTION>1</OPTION>
+          <ATTRIBUTE>
+            <NAME>Consommation en energie</NAME>
+            <DESCRIPTION>CEN     Consommation brute en energie fossile associee a la conduite du SDC</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>elevee</NAME>
+                <DESCRIPTION>&lt;4</DESCRIPTION>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne</NAME>
+                <DESCRIPTION>[4-7[</DESCRIPTION>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible</NAME>
+                <DESCRIPTION>&gt;=7</DESCRIPTION>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>0</OPTION>
+            <OPTION>1</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Efficience energetique</NAME>
+            <DESCRIPTION>EEN     Rapport d efficience entre lenergie produite et energie consommee par le SDC</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyen</NAME>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>eleve</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>0</OPTION>
+            <OPTION>1</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Pression Phosphore</NAME>
+          <DESCRIPTION>PSPH    Pression exerce par leSDC sur les ressources biogeochimiques en phosphore</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <OPTION>1</OPTION>
+          <OPTION>1</OPTION>
+        </ATTRIBUTE>
+      </ATTRIBUTE>
+      <ATTRIBUTE>
+        <NAME>Conservation de la biodiversite</NAME>
+        <DESCRIPTION>CBIODI  Contribution du SDC a preserver la biodiversite peu mobile</DESCRIPTION>
+        <SCALE>
+          <SCALEVALUE>
+            <NAME>tres faible</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>faible a moyenne</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>moyenne a elevee</NAME>
+            <GROUP>BAD</GROUP>
+          </SCALEVALUE>
+          <SCALEVALUE>
+            <NAME>tres elevee</NAME>
+            <GROUP>GOOD</GROUP>
+          </SCALEVALUE>
+        </SCALE>
+        <FUNCTION>
+          <LOW>0000000101121122000000111122122300000122122322330000112222332333</LOW>
+          <WEIGHTS>25;50;25</WEIGHTS>
+          <CONSIST>False</CONSIST>
+        </FUNCTION>
+        <OPTION>0</OPTION>
+        <OPTION>1</OPTION>
+        <ATTRIBUTE>
+          <NAME>Conservation de la macrofaune</NAME>
+          <DESCRIPTION>CMF     Contribution du SDC a preserver l abondance et la diversite de la macrofaune</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>0011012201230233</LOW>
+            <WEIGHTS>40;60</WEIGHTS>
+            <CONSIST>False</CONSIST>
+          </FUNCTION>
+          <OPTION>0</OPTION>
+          <OPTION>1</OPTION>
+          <ATTRIBUTE>
+            <NAME>Conservation des insectes volants</NAME>
+            <DESCRIPTION>CMIV    Contribution du SDC a preserver l abondance et la diversite des insectes volants</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>1</OPTION>
+            <OPTION>2</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Conservation de la macrofaune du sol</NAME>
+            <DESCRIPTION>CMS     Contribution du SDC a preserver l abondance et la diversite de la macrofaune du sol</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>0</OPTION>
+            <OPTION>1</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Conservation de la flore</NAME>
+          <DESCRIPTION>CFLO    Contribution du SDC a preserver l abondance et la diversite floristique</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <FUNCTION>
+            <LOW>0011012212231233</LOW>
+            <WEIGHTS>50;50</WEIGHTS>
+            <CONSIST>False</CONSIST>
+          </FUNCTION>
+          <OPTION>1</OPTION>
+          <OPTION>1</OPTION>
+          <ATTRIBUTE>
+            <NAME>Abondance floristique</NAME>
+            <DESCRIPTION>ABOF    Contribution du SDC a preserver l abondance floristique</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>2</OPTION>
+            <OPTION>0</OPTION>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>Diversite floristique</NAME>
+            <DESCRIPTION>DF      Contribution du SDC a preserver la diversite floristique dans les parcelles</DESCRIPTION>
+            <SCALE>
+              <SCALEVALUE>
+                <NAME>tres faible</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>faible a moyenne</NAME>
+                <GROUP>BAD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>moyenne a elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+              <SCALEVALUE>
+                <NAME>tres elevee</NAME>
+                <GROUP>GOOD</GROUP>
+              </SCALEVALUE>
+            </SCALE>
+            <OPTION>0</OPTION>
+            <OPTION>2</OPTION>
+          </ATTRIBUTE>
+        </ATTRIBUTE>
+        <ATTRIBUTE>
+          <NAME>Conservation des micro-organismes du sol</NAME>
+          <DESCRIPTION>CMOS    Contribution du SDC a preserver l abondance et la diversite des microorganismes du sol</DESCRIPTION>
+          <SCALE>
+            <SCALEVALUE>
+              <NAME>tres faible</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>faible a moyenne</NAME>
+              <GROUP>BAD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>moyenne a elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+            <SCALEVALUE>
+              <NAME>tres elevee</NAME>
+              <GROUP>GOOD</GROUP>
+            </SCALEVALUE>
+          </SCALE>
+          <OPTION>0</OPTION>
+          <OPTION>2</OPTION>
+        </ATTRIBUTE>
+      </ATTRIBUTE>
+    </ATTRIBUTE>
+  </ATTRIBUTE>
+</DEXi>
