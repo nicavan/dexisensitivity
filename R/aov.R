@@ -326,7 +326,8 @@ visualize_aov <- function(aov_results,
                                   axis_label_style = 1,
                                   ...) {
   # Setting up the plotting environment
-  par(mfrow = c(2, 2))
+  old_par <- par(mfrow = c(2, 2))
+  base::on.exit(par(old_par), add = TRUE)
 
   # Create barplots for each result set in the AOV results
   create_aov_barplot(

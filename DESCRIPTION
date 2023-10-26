@@ -23,7 +23,6 @@ Imports:
     magrittr,
     grDevices,
     graphics,
-    withr,
     plotrix,
     genalg,
     dplyr,

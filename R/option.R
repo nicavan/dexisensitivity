@@ -337,13 +337,11 @@ save_scenarios <- function(scenarios_results, file_name) {
 #'
 #' @seealso \code{\link{evaluate_scenario}}
 #'
-#' @importFrom withr defer
-#'
 #' @export
 show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
   if (modify_par) {
     old_par <- par(mgp = c(7, 1, 0), oma = c(0, 20, 0, 0), cex = 0.5)
-    withr::defer(par(old_par))
+    base::on.exit(par(old_par), add = TRUE)
   }
 
   # Define the gray scale based on the range scale of attributes
@@ -416,7 +414,7 @@ show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
 compare_scenarios <- function(tree, scenarios_results, nodes_list) {
   # Adjust the point size for better visualization in the radial plot
   old_par <- par(ps = 6)
-  withr::defer(par(old_par))
+  base::on.exit(par(old_par))
 
   # Find the maximum value across all scenarios and nodes for setting the radial limit
   max_value <- max(scenarios_results[nodes_list, ], na.rm = TRUE)
