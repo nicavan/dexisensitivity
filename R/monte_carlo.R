@@ -59,7 +59,7 @@ monte_carlo <- function(tree, num_runs, write_to_file = NULL, verbose = TRUE) {
   options_matrix <- create_options(tree, num_options = num_runs)
 
   # Perform the Monte Carlo simulation
-  simulation_results <- 1:num_runs %>%
+  simulation_results <- 1:num_runs |>
     sapply(function(x) {
       evaluate_scenario(tree, as.matrix(options_matrix[, x]))
     })
@@ -103,7 +103,7 @@ monte_carlo <- function(tree, num_runs, write_to_file = NULL, verbose = TRUE) {
 show_mc_results <- function(node, mc_results, num_runs) {
   node_type <- ifelse(node@IsLeaf, "L", "A")
 
-  bar_data <- mc_results[node@Name, ] %>% table()
+  bar_data <- mc_results[node@Name, ] |> table()
 
   # Fill missing bars with zeros
   if (length(bar_data) < node@RangeScale) {

@@ -13,11 +13,11 @@
 #' @export
 estimate_aov_time <- function(tree, test_runs = 50) {
   # Compute the total number of simulations based on tree leaves
-  total_simulations <- tree@Nodes %>%
+  total_simulations <- tree@Nodes |>
     sapply(function(node) {
       if (node@IsLeaf) node@RangeScale
-    }) %>%
-    unlist() %>%
+    }) |>
+    unlist() |>
     prod()
 
   # Generate sample scenarios
@@ -121,12 +121,12 @@ aov_tree <- function(tree) {
 #' @keywords internal
 create_factorial_plan <- function(tree) {
   # Extract leaf indices from the tree
-  leaf_indices <- tree@Nodes %>%
+  leaf_indices <- tree@Nodes |>
     sapply(function(node) {
       if (node@IsLeaf) {
         node@RangeScale
       }
-    }) %>%
+    }) |>
     unlist()
 
   # Generate factorial plan

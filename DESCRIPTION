@@ -26,7 +26,6 @@ Imports:
     methods,
     XML,
     AlgDesign,
-    magrittr,
     grDevices,
     graphics,
     plotrix,

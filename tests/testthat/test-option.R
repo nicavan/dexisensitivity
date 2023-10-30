@@ -56,7 +56,7 @@ test_that("eval all option : same output as JEB's scripts", {
     package = "dexiranalysis"
   ))
 
-  expected_output_b <- 1:dim(options)[2] %>%
+  expected_output_b <- 1:dim(options)[2] |>
     sapply(function(x) {
       evaluate_scenario(tree, as.matrix(options[, x]))
     })

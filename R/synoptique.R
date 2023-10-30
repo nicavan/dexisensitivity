@@ -53,7 +53,7 @@ create_data_frame_for_plotting <- function(tree) {
   # Check and assign leaf node status
   df$isleaf <- lapply(df$attribut, function(x) {
     tree@Nodes[[which(tree@Attributes == x)]]@IsLeaf
-  }) %>%
+  }) |>
     unlist()
 
   # Assign depth and size attributes
@@ -72,7 +72,7 @@ create_data_frame_for_plotting <- function(tree) {
       subtree <- create_sub_tree(tree, x)
       length(subtree@Leaves)
     }
-  }) %>%
+  }) |>
     unlist()
 
   return(df)
@@ -96,7 +96,7 @@ evaluate_and_label <- function(df, tree, option) {
   df$eval <- evaluate_scenario(tree, option)
   df$rangecol <- lapply(df$attribut, function(x) {
     tree@Nodes[[which(tree@Attributes == x)]]@RangeScale
-  }) %>%
+  }) |>
     unlist()
 
   # Compose labels
@@ -133,11 +133,11 @@ get_box_coordinates <- function(df) {
 
     dftemp$ymin <- cumsum(lag(dftemp$taille, default = 0))
     dftemp$ymax <- cumsum(dftemp$taille)
-    dftemp$xmin <- lapply(dftemp$depth, min) %>% unlist()
-    dftemp$xmax <- lapply(dftemp$depth, max) %>% unlist() + 1
+    dftemp$xmin <- lapply(dftemp$depth, min) |> unlist()
+    dftemp$xmax <- lapply(dftemp$depth, max) |> unlist() + 1
 
     return(dftemp)
-  }) %>% bind_rows()
+  }) |> bind_rows()
 
   # Normalize evaluation and determine label and rectangle dimensions
   df2$norm_eval <- (df2$eval - 1) / (df2$rangecol - 1)
@@ -212,7 +212,7 @@ create_plot <- function(df2) {
 #   # isleaf column (needed for construction)
 #   df$isleaf <- lapply(df$attribut, function(x) {
 #     tree@Nodes[[which(tree@Attributes == x)]]@IsLeaf
-#   }) %>%
+#   }) |>
 #     unlist()
 #
 #   # depth column
@@ -232,14 +232,14 @@ create_plot <- function(df2) {
 #       subtree <- create_sub_tree(tree, x)
 #       length(subtree@Leaves)
 #     }
-#   }) %>%
+#   }) |>
 #     unlist()
 #
 #   # columns used for colors
 #   df$eval <- evaluate_scenario(tree, option)
 #   df$rangecol <- lapply(df$attribut, function(x) {
 #     tree@Nodes[[which(tree@Attributes == x)]]@RangeScale
-#   }) %>%
+#   }) |>
 #     unlist()
 #
 #   # labels column
@@ -259,11 +259,11 @@ create_plot <- function(df2) {
 #
 #     dftemp$ymin <- cumsum(lag(dftemp$taille, default = 0))
 #     dftemp$ymax <- cumsum(dftemp$taille)
-#     dftemp$xmin <- lapply(dftemp$depth, min) %>% unlist()
-#     dftemp$xmax <- lapply(dftemp$depth, max) %>% unlist() + 1
+#     dftemp$xmin <- lapply(dftemp$depth, min) |> unlist()
+#     dftemp$xmax <- lapply(dftemp$depth, max) |> unlist() + 1
 #
 #     return(dftemp)
-#   }) %>% bind_rows()
+#   }) |> bind_rows()
 #
 #   # get normed color
 #   df2$norm_eval <- (df2$eval-1) / (df2$rangecol-1)

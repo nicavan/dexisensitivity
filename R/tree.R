@@ -275,11 +275,11 @@ setMethod(
     stopifnot("Tree without any node!" = length(object@Nodes) > 0)
 
     # Display each node
-    object@Nodes %>%
+    object@Nodes |>
       lapply(function(node) {
         methods::selectMethod("print", class(node))(node)
         cat("\n\n")
-      }) %>%
+      }) |>
       invisible() # Ensure only node details are visible
   }
 )

@@ -102,7 +102,7 @@ show_oat_results <- function(node_name, results, tree) {
   if (tree@IsLeafAggregated) {
     node_id <- sapply(node_id, function(x) {
       if (!tree@Nodes[[x]]@IsLeaf) tree@Nodes[[x]]@Id
-    }) %>% unlist()
+    }) |> unlist()
   }
 
   child_nodes <- get_leaves(tree, node_id)

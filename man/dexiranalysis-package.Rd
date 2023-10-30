@@ -4,9 +4,9 @@
 \name{dexiranalysis-package}
 \alias{dexiranalysis}
 \alias{dexiranalysis-package}
-\title{dexiranalysis: DEXi model analysis}
+\title{dexiranalysis: 'DEXi' Decision Tree Analysis and Visualization}
 \description{
-Provides class and function to analyse DEXi models from DEXi software (Bohanec Marko, 1999). Tree in .dxi files can be read to create a Tree class object. This object can be vizualise and used for scenario creation, scenario evaluation and a model sensitivity analysis can be perform.
+Provides a versatile toolkit for analyzing and visualizing 'DEXi' (Decision EXpert for education) decision trees, facilitating multi-criteria decision analysis directly within R. Users can read .dxi files, manipulate decision trees, and evaluate various scenarios. It supports sensitivity analysis through Monte Carlo simulations, one-at-a-time approaches, and variance-based methods, helping to discern the impact of input variations. Additionally, it includes functionalities for generating sampling plans and an array of visualization options for decision trees and analysis results. A distinctive feature is the synoptic table plot, aiding in the efficient comparison of scenarios. Whether for in-depth decision modeling or sensitivity analysis, this package stands as a comprehensive solution.
 }
 \author{
 \strong{Maintainer}: Roland Allart \email{roland.allart@inrae.fr}

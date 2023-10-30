@@ -47,7 +47,7 @@ create_tree <- function(main_tree) {
       function(x) {
         if (x@IsLeaf) x@Name
       }
-    ) %>%
+    ) |>
       unlist()
 
     # List of Aggregated
@@ -56,7 +56,7 @@ create_tree <- function(main_tree) {
       function(x) {
         if (!x@IsLeaf) x@Name
       }
-    ) %>%
+    ) |>
       unlist()
 
     # Leaf-Aggregated attribute
@@ -201,7 +201,7 @@ get_paths <- function(attributes, main_tree, root_name) {
       # get the depth of the node
       xml_path <- paste0(chain, "/ATTRIBUTE[NAME='", attributes[i], "']")
       node_set <- XML::getNodeSet(main_tree, xml_path)
-      node_set_length <- sapply(node_set, XML::xmlSize) %>%
+      node_set_length <- sapply(node_set, XML::xmlSize) |>
         length()
 
       # If the path exists
@@ -215,7 +215,7 @@ get_paths <- function(attributes, main_tree, root_name) {
           function(existing_path) {
             identical(check_path, existing_path)
           }
-        ) %>%
+        ) |>
           any()
 
         # Use the negation of is_duplicate for the logic you need
@@ -551,11 +551,11 @@ determine_mother <- function(node_path) {
 #' @keywords internal
 determine_sisters <- function(node_path, main_tree) {
   if (length(node_path) > 1) {
-    sisters <- main_tree %>%
+    sisters <- main_tree |>
       XML::getNodeSet(paste0(
         get_chaine(node_path[1:length(node_path) - 1]),
         "/ATTRIBUTE/NAME"
-      )) %>%
+      )) |>
       sapply(XML::xmlValue)
   } else {
     sisters <- vector(mode = "character", length = 0)
@@ -580,9 +580,9 @@ determine_sisters <- function(node_path, main_tree) {
 #'
 #' @keywords internal
 determine_scale_node <- function(node_path, main_tree) {
-  main_tree %>%
-    XML::getNodeSet(paste0(get_chaine(node_path), "/SCALE/SCALEVALUE")) %>%
-    sapply(XML::xmlSize) %>%
+  main_tree |>
+    XML::getNodeSet(paste0(get_chaine(node_path), "/SCALE/SCALEVALUE")) |>
+    sapply(XML::xmlSize) |>
     length()
 }
 
@@ -603,8 +603,8 @@ determine_scale_node <- function(node_path, main_tree) {
 #'
 #' @keywords internal
 determine_scale_label <- function(node_path, main_tree) {
-  main_tree %>%
-    XML::getNodeSet(paste0(get_chaine(node_path), "/SCALE/SCALEVALUE/NAME")) %>%
+  main_tree |>
+    XML::getNodeSet(paste0(get_chaine(node_path), "/SCALE/SCALEVALUE/NAME")) |>
     sapply(XML::xmlValue)
 }
 
@@ -631,9 +631,9 @@ determine_aggregation <- function(node_path, main_tree, is_leaf, children) {
   # Check if the node is not a leaf
   if (!is_leaf) {
     # Retrieve the low function values from the XML
-    low_function_char <- main_tree %>%
-      XML::getNodeSet(paste0(get_chaine(node_path), "/FUNCTION/LOW")) %>%
-      sapply(XML::xmlValue) %>%
+    low_function_char <- main_tree |>
+      XML::getNodeSet(paste0(get_chaine(node_path), "/FUNCTION/LOW")) |>
+      sapply(XML::xmlValue) |>
       strsplit("")
 
     # Adjust the attribute from 0...n (char) to 1...n+1 (numeric)
@@ -644,11 +644,11 @@ determine_aggregation <- function(node_path, main_tree, is_leaf, children) {
       get_chaine(c(node_path, child))
     })
 
-    children_scales <- children_paths %>%
+    children_scales <- children_paths |>
       sapply(function(path) {
-        main_tree %>%
-          XML::getNodeSet(paste0(path, "/SCALE/SCALEVALUE")) %>%
-          sapply(XML::xmlSize) %>%
+        main_tree |>
+          XML::getNodeSet(paste0(path, "/SCALE/SCALEVALUE")) |>
+          sapply(XML::xmlSize) |>
           length()
       })
 
@@ -657,9 +657,9 @@ determine_aggregation <- function(node_path, main_tree, is_leaf, children) {
     if (length(children_scales) == 1) {
       aggregation <- seq_len(children_scales)
     } else {
-      factorial_plan <- children_scales %>%
-        rev() %>%
-        AlgDesign::gen.factorial(center = FALSE) %>%
+      factorial_plan <- children_scales |>
+        rev() |>
+        AlgDesign::gen.factorial(center = FALSE) |>
         rev()
 
       # Convert the selected columns of the factorial plan into a matrix
@@ -706,19 +706,19 @@ determine_weight_list <- function(node_path, main_tree,
   } else if (length(children) == 1) {
     # If there's only one child, set the weight to 100
     weight_list <- 100
-  } else if (main_tree %>%
+  } else if (main_tree |>
     XML::getNodeSet(paste0(
       get_chaine(node_path),
       "/FUNCTION/WEIGHTS"
-    )) %>%
-    sapply(XML::xmlValue) %>%
+    )) |>
+    sapply(XML::xmlValue) |>
     length()) {
     # If specific weights are defined in the XML, retrieve and convert them
-    weight_list <- main_tree %>%
-      XML::getNodeSet(paste0(get_chaine(node_path), "/FUNCTION/WEIGHTS")) %>%
-      sapply(XML::xmlValue) %>%
-      strsplit(";") %>%
-      unlist() %>%
+    weight_list <- main_tree |>
+      XML::getNodeSet(paste0(get_chaine(node_path), "/FUNCTION/WEIGHTS")) |>
+      sapply(XML::xmlValue) |>
+      strsplit(";") |>
+      unlist() |>
       as.numeric()
   } else {
     # If no specific condition is met, set the weight list to -1

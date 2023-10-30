@@ -197,12 +197,12 @@ compute_values_from_aggregation_table <- function(tree, results) {
 
       # Address non-leaf nodes
       if (length(node_ids) > 1) {
-        node_ids <- node_ids %>%
+        node_ids <- node_ids |>
           sapply(function(x) {
             if (!tree@Nodes[[x]]@IsLeaf) {
               x
             }
-          }) %>%
+          }) |>
           unlist()
       }
 
@@ -239,7 +239,7 @@ compute_values_from_aggregation_table <- function(tree, results) {
 evaluate_scenarios <- function(tree, options_matrix) {
   # Using sapply to loop over each column in options_matrix.
   # Each column is treated as a scenario and passed to evaluate_scenario.
-  1:dim(options_matrix)[2] %>%
+  1:dim(options_matrix)[2] |>
     sapply(function(x) {
       evaluate_scenario(tree, as.matrix(options_matrix[, x]))
     })
@@ -348,17 +348,17 @@ show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
   grey_values <- lapply(1:7, function(x) {
     grDevices::gray.colors(x, 0, 1)
   })
-  bar_colors <- tree@Leaves %>%
+  bar_colors <- tree@Leaves |>
     sapply(function(x) {
       grey_values[[tree@Nodes[[get_id(tree@Nodes, x)[1]]]@RangeScale]][scenario[x, ]]
-    }) %>%
+    }) |>
     unlist()
 
-  max_values <- tree@Attributes %>%
+  max_values <- tree@Attributes |>
     lapply(function(x) {
       tree@Nodes[[get_id(tree@Nodes, x)[1]]]@RangeScale
-    }) %>%
-    unlist() %>%
+    }) |>
+    unlist() |>
     matrix(ncol = 1)
 
   # Plot the bars

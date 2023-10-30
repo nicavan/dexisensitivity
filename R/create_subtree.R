@@ -90,7 +90,7 @@ create_sub_tree <- function(tree, node_name, avoid_repetition = FALSE) {
   nb_leaves <- length(leaf_names)
   nb_levels <- max(sapply(paths, length))
 
-  attribute_ids <- attribute_ids %>%
+  attribute_ids <- attribute_ids |>
     sapply(function(x) {
       tree@Nodes[[x]]@Name
     })
@@ -133,12 +133,12 @@ create_sub_tree <- function(tree, node_name, avoid_repetition = FALSE) {
 #'
 #' @keywords internal
 adjust_for_leaf_aggregated <- function(tree, node_id) {
-  adjusted_id <- node_id %>%
+  adjusted_id <- node_id |>
     sapply(function(x) {
       if (!tree@Nodes[[x]]@IsLeaf) {
         tree@Nodes[[x]]@Id
       }
-    }) %>%
+    }) |>
     unlist()
   return(adjusted_id)
 }
@@ -159,15 +159,15 @@ adjust_for_leaf_aggregated <- function(tree, node_id) {
 #' @keywords internal
 obtain_attribute_ids <- function(tree, node_id) {
   # Extract attribute IDs based on the node path
-  attribute_ids <- tree@Nodes %>%
+  attribute_ids <- tree@Nodes |>
     sapply(function(x) {
       if (grep(paste(tree@Nodes[[node_id]]@NodePath, collapse = " "),
                paste(x@NodePath, collapse = " "),
-               fixed = TRUE) %>%
+               fixed = TRUE) |>
           length()) {
         x@Id
       }
-    }) %>%
+    }) |>
     unlist()
 
   return(attribute_ids)
@@ -219,10 +219,10 @@ modify_tree_nodes <- function(tree, attribute_ids, paths) {
 #'
 #' @keywords internal
 extract_names <- function(tree_nodes, is_leaf = TRUE) {
-  tree_nodes %>%
+  tree_nodes |>
     sapply(function(x) {
       if (x@IsLeaf == is_leaf) x@Name
-    }) %>%
+    }) |>
     unlist()
 }
 

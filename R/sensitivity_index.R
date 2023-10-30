@@ -189,7 +189,7 @@ get_node_id <- function(tree, node_name, avoid_repetition) {
       if (!tree@Nodes[[x]]@IsLeaf) {
         x
       }
-    }) %>% unlist()
+    }) |> unlist()
   }
 
   # If repetitions are to be avoided, only return the first ID

@@ -232,9 +232,9 @@ create_aggregation_matrix <- function(node,
   )
 
   # Get unique rounded population values
-  population_values <- rbga_results$population %>%
-    round() %>%
-    t() %>%
+  population_values <- rbga_results$population |>
+    round() |>
+    t() |>
     unique(MARGIN = 2)
 
   # Prepare the output list
