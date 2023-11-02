@@ -1,7 +1,7 @@
 # Tests scripts for Node class #
-################################
+# # # # # # # # # # # # # # # #
 
-#### - General tests - #### ####
+#### General tests ####
 test_that("Node is S4", {
   expect_equal(sloop::otype(new(Class = "Node")), "S4")
 })
@@ -27,7 +27,7 @@ test_that("Empty Node return structured Node with 0 length S4 attributes", {
 })
 
 
-#### - print method test - #### ####
+#### print method test ####
 test_that("Empty Node print correctly", {
   empty_node <- new(Class = "Node")
 
@@ -47,51 +47,70 @@ test_that("Empty Node print correctly", {
   expect_equal(capture.output(print(empty_node)), empty_print)
 })
 
+test_that("masc2 Node print correctly", {
+  masc2_node <- dexiranalysis::masc2@Nodes[[42]]
 
-test_that("compute_leaf_weights : same output as JEB's scripts and par is reset", {
-  # Load the complex DEXi tree needed for the test
-  lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-    package = "dexiranalysis"
-  ))
-  DEXi <- lDEXi[[1]]
+  empty_print <- capture.output({
+    cat("Node name: Contribution a la qualite air")
+    cat("\nID: 42")
+    cat("\nNode depth: 4")
+    cat("\nFrom root to node: \n  Contribution au developpement durable -> Dimension environnementale -> Contribution a la qualite du milieu -> Contribution a la qualite air")
+    cat("\nIs it a leaf: FALSE")
+    cat("\nIs is a leaf-aggregated: FALSE")
+    cat("\nMother: Contribution a la qualite du milieu")
+    cat("\nSisters: Contribution a la qualite de l eau Preservation de la qualite du sol")
+    cat("\nChildren: Maitrise des emissions de NH3 Maitrise des emissions de N2O Maitrise des emissions de pesticides Air")
+    cat("\nEstimated weights: 30 40 30")
+  })
+
+  expect_equal(capture.output(print(masc2_node)), empty_print)
+})
+
+
+#### compute_leaf_weights ####
+
+test_that("compute_leaf_weights : same output as JEB's scripts", {
+  masc2 <- dexiranalysis::masc2
 
   # Unit test
   expect_equal(
-    compute_leaf_weights(DEXi@Nodes[[1]]),
+    round(compute_leaf_weights(masc2@Nodes[[1]]), digits = 7),
     c(
-      "xECONOMIC" = 1 / 3,
-      "xSOCIAL" = 1 / 3,
-      "xENVIRONMENTAL" = 1 / 3
+      "xDimension economique" = 0.3358491,
+      "xDimension sociale" = 0.3320755,
+      "xDimension environnementale" = 0.3320755
     )
   )
 })
 
 
+#### create_aggregation_matrix ####
 
-test_that("createAggregationMatrix : same output as JEB's scripts and par is reset", {
-  # Load the complex DEXi tree needed for the test
-  lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-    package = "dexiranalysis"
-  ))
-  DEXi <- lDEXi[[1]]
+test_that("same output as JEB's scripts for masc2", {
 
+  original_seed <- get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
 
+  masc2 <- dexiranalysis::masc2
   myWeights <- c(0.2, 0.2, 0.6)
 
   # Setup a random seed for the test
   set.seed(42)
 
   ### - Unit test - ###
-  test_output <- create_aggregation_matrix(DEXi@Nodes[[1]], myWeights, 5)
+  test_output <- create_aggregation_matrix(masc2@Nodes[[1]], myWeights, 5)
 
   expected_output <- readRDS(system.file("testdata",
-    "newAggregation42DEXiPM.rds",
-    package = "dexiranalysis"
+                                         "aggregation_matrix_masc2.rds",
+                                         package = "dexiranalysis"
   ))
 
   expect_equal(test_output, expected_output)
   ### - End - ###
 
   # restore random seed
-  set.seed(NULL)
+  if (!is.null(original_seed)) {
+    assign(".Random.seed", original_seed, envir = .GlobalEnv)
+  } else {
+    rm(.Random.seed, envir = .GlobalEnv)
+  }
 })
