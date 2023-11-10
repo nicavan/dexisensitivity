@@ -143,11 +143,21 @@ create_tree <- function(main_tree) {
 #'
 #' @keywords internal
 get_dexi_attributes <- function(main_tree, root_name) {
+  stopifnot("root_name should be a character" = is.character(root_name))
+  stopifnot("root_name should be of length 1" = length(root_name) == 1)
+
   to_search <- paste0("//ATTRIBUTE[NAME='", root_name, "']//ATTRIBUTE/NAME")
-  attributes <- c(
-    root_name,
-    XML::xmlValue(XML::getNodeSet(main_tree, to_search))
-  )
+
+  # Get descendant attributes
+  childrens <- XML::xmlValue(XML::getNodeSet(main_tree, to_search))
+
+  # If no descendant, only return the root
+  if (any(is.na(childrens))) {
+    warning(paste0(root_name, " has no descendant attributes"))
+    return(root_name)
+  } else {
+    c(root_name, childrens)
+  }
 }
 
 
