@@ -8,7 +8,7 @@ get_paths(attributes, main_tree, root_name)
 }
 \arguments{
 \item{attributes}{\code{character} vector of attribute names whose paths are
-to be located.}
+to be located. Contains all tree's attributes.}
 
 \item{main_tree}{\code{XML} object representing the tree in which paths are
 to be searched.}
