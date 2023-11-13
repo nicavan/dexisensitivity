@@ -7,8 +7,10 @@
 create_tree(main_tree)
 }
 \arguments{
-\item{main_tree}{An object of class \code{XML}. Represents the primary tree
-structure and should encompass the DEXi decision model.}
+\item{main_tree}{A character or an object of class \code{XML}. Either the
+path to the .dxi file containing the tree (character) or the XML object
+that represents the primary tree structure and should encompass the DEXi
+decision model.}
 }
 \value{
 A list of \code{Tree} objects, each corresponding to a unique root

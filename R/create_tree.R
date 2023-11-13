@@ -6,8 +6,10 @@
 #' Iterates over every root attribute in the provided XML to create tree
 #' structures that depict the hierarchical decision model.
 #'
-#' @param main_tree An object of class \code{XML}. Represents the primary tree
-#'   structure and should encompass the DEXi decision model.
+#' @param main_tree A character or an object of class \code{XML}. Either the
+#'   path to the .dxi file containing the tree (character) or the XML object
+#'   that represents the primary tree structure and should encompass the DEXi
+#'   decision model.
 #'
 #' @return A list of \code{Tree} objects, each corresponding to a unique root
 #'   attribute in the DEXi XML layout. Each tree details the root attribute,
@@ -19,6 +21,21 @@
 #'
 #' @export
 create_tree <- function(main_tree) {
+
+  # If user give the path, we need te get the xml from it
+  if (is.character(main_tree)) {
+    # check if it is a .dxi file. stop if not.
+    ext <- substr(main_tree, nchar(main_tree) - 3, nchar(main_tree))
+    stopifnot("if character, main_tree should point to a .dxi file." = ext == ".dxi")
+
+    # load the file
+    main_tree <- XML::xmlTreeParse(main_tree,
+                                   useInternalNodes = T)
+  }
+
+  # Ensure the input is a Node object
+  stopifnot("main_tree should be an XML object." = inherits(main_tree, "XMLInternalDocument"))
+
   # Get root(s) name(s) of the DEXi Tree
   roots_xml <- XML::getNodeSet(doc = main_tree, path = "/DEXi/ATTRIBUTE/NAME")
   list_root_name <- sapply(roots_xml, XML::xmlValue)
@@ -169,7 +186,7 @@ get_dexi_attributes <- function(main_tree, root_name) {
 #' interpreting and structuring the XML tree.
 #'
 #' @param attributes \code{character} vector of attribute names whose paths are
-#'   to be located.
+#'   to be located. Contains all tree's attributes.
 #' @param main_tree \code{XML} object representing the tree in which paths are
 #'   to be searched.
 #' @param root_name \code{character} indicating the name of the root attribute
