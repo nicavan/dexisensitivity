@@ -1,6 +1,7 @@
+#### create_sub_tree tests ####
 test_that("same output as previous version with testtree", {
   # Load the simple DEXi tree needed for the test
-  load(system.file("testdata", "TestTree.rda", package = "dexiranalysis"))
+  load(system.file("testdata", "test_tree.rda", package = "dexiranalysis"))
 
   ### - Unit test - ###
   # Note :
@@ -18,7 +19,6 @@ test_that("same output as previous version with testtree", {
   expect_equal(test_output, expected_output)
 })
 
-
 test_that("same output as previous version with masc2", {
   masc2 <- dexiranalysis::masc2
 
@@ -31,7 +31,6 @@ test_that("same output as previous version with masc2", {
   expect_equal(test_output, expected_output)
 })
 
-
 test_that("create subtree with main root", {
   masc2 <- dexiranalysis::masc2
 
@@ -41,3 +40,4 @@ test_that("create subtree with main root", {
 
   expect_equal(test_output, expected_output)
 })
+

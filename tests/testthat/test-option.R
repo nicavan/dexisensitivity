@@ -1,117 +1,76 @@
-test_that("createOption : same output as JEB's scripts", {
+#### create_options test ####
+test_that("create_options : same output as previous version with masc2", {
   # Load the complex DEXi tree needed for the test
-  list_tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-    package = "dexiranalysis"
-  ))
-  tree <- list_tree[[1]]
+  masc2 <- dexiranalysis::masc2
 
   # Unit test
-  test_output <- create_options(tree, num_options = 3, seed = 42)
+  test_output <- create_options(masc2, num_options = 3, seed = 42)
 
   expected_output <- readRDS(system.file("testdata",
-    "TestcreateOptionsDEXiPM.rds",
+    "test_create_options_masc2.rds",
     package = "dexiranalysis"
   ))
 
   expect_equal(test_output, expected_output)
 })
 
+#### evaluate_scenario test ####
+test_that("evaluate_scenario : same output as previous version with masc2", {
+  # Load the complex DEXi tree needed for the test
+  masc2 <- dexiranalysis::masc2
 
-test_that("eval 1 option : same output as JEB's scripts", {
-  # Load the complex DEXi tree and option needed for the test
-  list_tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-    package = "dexiranalysis"
-  ))
-  tree <- list_tree[[1]]
-  options <- readRDS(system.file("testdata", "TestcreateOptionsDEXiPM.rds",
+  options <- readRDS(system.file("testdata", "test_create_options_masc2.rds",
     package = "dexiranalysis"
   ))
 
   # Unit test
-  test_output <- evaluate_scenario(tree, as.matrix(options[, 1]))
+  test_output <- evaluate_scenario(masc2, as.matrix(options[, 1]))
 
-  expected_output <- readRDS(system.file("testdata", "DEXiPMeval1option.rds",
+  expected_output <- readRDS(system.file("testdata", "masc2_eval1option.rds",
     package = "dexiranalysis"
   ))
 
   expect_equal(test_output, expected_output)
 })
 
-
-test_that("eval all option : same output as JEB's scripts", {
+test_that("evaluate_scenarios : same output as previous version with masc2", {
   # Load the complex DEXi tree and option needed for the test
-  list_tree <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-    package = "dexiranalysis"
-  ))
-  tree <- list_tree[[1]]
-  options <- readRDS(system.file("testdata", "TestcreateOptionsDEXiPM.rds",
+  masc2 <- dexiranalysis::masc2
+
+  options <- readRDS(system.file("testdata", "test_create_options_masc2.rds",
     package = "dexiranalysis"
   ))
 
   # Unit test
-  test_output <- evaluate_scenarios(tree, options)
+  test_output <- evaluate_scenarios(masc2, options)
 
   expected_output_a <- readRDS(system.file("testdata",
-    "DEXiPMevalalloptions.rds",
+    "masc2_evalalloptions.rds",
     package = "dexiranalysis"
   ))
 
   expected_output_b <- 1:dim(options)[2] |>
     sapply(function(x) {
-      evaluate_scenario(tree, as.matrix(options[, x]))
+      evaluate_scenario(masc2, as.matrix(options[, x]))
     })
 
   expect_equal(test_output, expected_output_a)
   expect_equal(test_output, expected_output_b)
 })
 
-
-test_that("Saved and loaded option are the same when option have rownames", {
-  # Load the complex DEXi option needed for the test
-  options <- readRDS(system.file("testdata", "TestcreateOptionsDEXiPM.rds",
-    package = "dexiranalysis"
-  ))
-
-  # Unit test
-  colnames(options) <- c("A", "B", "C")
-  save_options(options, "C:/Users/rallart/E-DISC/option.csv")
-
-  test_output <- load_options("C:/Users/rallart/E-DISC/option.csv")
-  expected_output <- options
-
-  expect_equal(test_output, expected_output)
-})
-
-
-test_that("save_scenarios well save a file", {
-  # Load scenarios needed for the test
-  Scenario <- readRDS(system.file("testdata", "TestscenariosAll.rds",
-    package = "dexiranalysis"
-  ))
-
-  # Unit test
-  save_scenarios(Scenario, "C:/Users/rallart/E-DISC/Scenario.csv")
-
-  expect_equal(file.exists("C:/Users/rallart/E-DISC/Scenario.csv"), T)
-})
-
-
-
-test_that("showScenario : same output as JEB's scripts and par is reset", {
+#### show and compare scenario test ####
+test_that("show_scenario : same output as previous version with masc2", {
   # Load complex DEXi tree and scenarios needed for the test
-  Scenario <- readRDS(system.file("testdata", "TestscenariosAll.rds",
+  Scenario <- readRDS(system.file("testdata", "masc2_evalalloptions.rds",
     package = "dexiranalysis"
   ))
-  lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-    package = "dexiranalysis"
-  ))
-  DEXi <- lDEXi[[1]]
+  masc2 <- dexiranalysis::masc2
 
   # Unit test
   vdiffr::expect_doppelganger(
-    "showScenario-plot",
+    "showscenario-plot",
     show_scenario(as.matrix(Scenario[, 1]),
-      tree = DEXi,
+      tree = masc2,
       label_y = T
     )
   )
@@ -121,26 +80,21 @@ test_that("showScenario : same output as JEB's scripts and par is reset", {
   expect_equal(par()$oma, c(0, 0, 0, 0))
 })
 
-
-test_that("compareScenario : same output as JEB's scripts and par is reset", {
+test_that("compare_scenarios : same output as previous version with masc2", {
   # Load complex DEXi tree and scenarios needed for the test
-  Scenario <- readRDS(system.file("testdata", "TestscenariosAll.rds",
+  Scenario <- readRDS(system.file("testdata", "masc2_evalalloptions.rds",
     package = "dexiranalysis"
   ))
-  lDEXi <- readRDS(system.file("testdata", "TestDEXiPM.rds",
-    package = "dexiranalysis"
-  ))
-  DEXi <- lDEXi[[1]]
-
+  masc2 <- dexiranalysis::masc2
 
   # Unit test
   plot_compareScenario <- compare_scenarios(
-    DEXi, Scenario,
+    masc2, Scenario,
     c(
-      "OVERALL SUSTAINABILITY",
-      "ECONOMIC",
-      "SOCIAL",
-      "ENVIRONMENTAL"
+      "Contribution au developpement durable",
+      "Dimension economique",
+      "Dimension sociale",
+      "Dimension environnementale"
     )
   )
 

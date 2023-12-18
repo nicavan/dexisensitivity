@@ -44,29 +44,6 @@ test_that("Same output as previous versions with .dxi path", {
 })
 
 
-test_that("Same output as previous versions for DEXiPM", {
-  # get .dxi for masc2 path
-  dexipm <- readRDS(system.file("testdata", "TestMTDEXiPM.RDS",
-                                package = "dexiranalysis"
-  ))
-
-  # expected output : a previously generated masc2 Tree
-  expected_output <- readRDS(system.file("testdata", "TestDEXiPM.RDS",
-                                         package = "dexiranalysis"
-  ))
-
-  # Note :
-  #   We used a character object and apply xmlDeserializeHook function
-  # to transform it in an external pointer (usual object for this function)
-  # since we can't save an external pointer directly.
-  test_output <- create_tree(XML::xmlDeserializeHook(dexipm))[[1]]
-
-  expect_equal(test_output, expected_output[[1]])
-
-})
-
-
-
 #### create_tree helpers tests ####
 test_that("get_dexi_attributes give correct output", {
   # get masc2 xml

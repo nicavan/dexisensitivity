@@ -1,4 +1,4 @@
-test_that("AOV : same output as JEB's scripts", {
+test_that("AOV : same output as previous version with small tree", {
   # Load the simple DEXi tree needed for the test
   list_tree <- readRDS(system.file("testdata", "testtrees.rds",
     package = "dexiranalysis"
@@ -10,7 +10,7 @@ test_that("AOV : same output as JEB's scripts", {
 
   ### - Unit test - ###
   test_output <- aov_tree(tree)
-  expected_output <- readRDS(system.file("testdata", "TestAOVsmall.rds",
+  expected_output <- readRDS(system.file("testdata", "test_aov_small.rds",
     package = "dexiranalysis"
   ))
 

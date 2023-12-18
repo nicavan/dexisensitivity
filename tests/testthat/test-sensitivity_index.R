@@ -1,4 +1,4 @@
-test_that("SI : same output as JEB's scripts", {
+test_that("SI : same output as previous version with small tree", {
   # Load the simple DEXi tree needed for the test
   list_tree <- readRDS(system.file("testdata", "testtrees.rds",
     package = "dexiranalysis"
@@ -11,7 +11,7 @@ test_that("SI : same output as JEB's scripts", {
   # Unit test
   test_output <- si_dexi(tree, is_file = FALSE)
 
-  expected_output <- readRDS(system.file("testdata", "TestSIsmall.rds",
+  expected_output <- readRDS(system.file("testdata", "test_si_small.rds",
     package = "dexiranalysis"
   ))
 
