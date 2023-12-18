@@ -198,7 +198,7 @@ modify_tree_nodes <- function(tree, attribute_ids, paths) {
     tree_nodes[[i]]@IsLeafAndAggregated <- FALSE
     tree_nodes[[i]]@Twin <- integer(0)
     if (i == 1) {
-      tree_nodes[[i]]@Mother <- ""
+      tree_nodes[[i]]@Mother <- as.character(NA)
     }
   }
   return(tree_nodes)
@@ -244,7 +244,7 @@ extract_names <- function(tree_nodes, is_leaf = TRUE) {
 #' @keywords internal
 handle_multiple <- function(tree, tree_nodes, leaf_names) {
   if (!tree@IsMultiple) {
-    return(data.frame(Leaf = NA, Occ = NA))
+    return(data.frame(Occ = NA))
   }
 
   multiple <- table(leaf_names)
@@ -281,20 +281,12 @@ handle_leaf_aggregated <- function(tree,
                                    leaf_names,
                                    aggregated_names) {
   if (!tree@IsLeafAggregated) {
-    return("")
+    return(character(0))
   }
 
   leaf_aggregated <- intersect(leaf_names, aggregated_names)
   if (length(leaf_aggregated) == 0) {
-    return("")
-  }
-
-  for (i in seq_along(leaf_aggregated)) {
-    dup <- get_id(tree_nodes, leaf_aggregated[i])
-    for (j in seq_along(dup)) {
-      tree_nodes[[dup[j]]]@Twin <- setdiff(dup, tree_nodes[[dup[j]]]@Id)
-      tree_nodes[[dup[j]]]@IsLeafAndAggregated <- TRUE
-    }
+    return(character(0))
   }
 
   return(leaf_aggregated)

@@ -1,4 +1,4 @@
-test_that("same output as JEB's scripts", {
+test_that("same output as previous version with testtree", {
   # Load the simple DEXi tree needed for the test
   load(system.file("testdata", "TestTree.rda", package = "dexiranalysis"))
 
@@ -11,7 +11,7 @@ test_that("same output as JEB's scripts", {
 
   test_output <- create_sub_tree(tree[[1]], tree[[1]]@Nodes[[2]]@Name)
 
-  expected_output <- readRDS(system.file("testdata", "Testsubtreemini.rds",
+  expected_output <- readRDS(system.file("testdata", "test_subtree_mini.rds",
     package = "dexiranalysis"
   ))
 
@@ -19,23 +19,25 @@ test_that("same output as JEB's scripts", {
 })
 
 
-test_that("same output as JEB's scripts 2", {
-  # Load the complex DEXi tree needed for the test
-  xmltree <- readRDS(system.file("testdata", "TestMTDEXiPM.rds",
-    package = "dexiranalysis"
+test_that("same output as previous version with masc2", {
+  masc2 <- dexiranalysis::masc2
+
+  test_output <- create_sub_tree(masc2, masc2@Nodes[[2]]@Name)
+
+  expected_output <- readRDS(system.file("testdata", "subtree_masc2.RDS",
+                                         package = "dexiranalysis"
   ))
 
-  ### - Unit test - ###
-  # Note :
-  #   We used a character object and apply xmlDeserializeHook function
-  # to transform it in an external pointer (usual object for this function)
-  # since we can't save an external pointer directly.
-  tree <- create_tree(XML::xmlDeserializeHook(xmltree))
-  test_output <- create_sub_tree(tree[[1]], tree[[1]]@Nodes[[2]]@Name)
+  expect_equal(test_output, expected_output)
+})
 
-  expected_output <- readRDS(system.file("testdata", "TestsubtreeDEXiPM.rds",
-    package = "dexiranalysis"
-  ))
+
+test_that("create subtree with main root", {
+  masc2 <- dexiranalysis::masc2
+
+  test_output <- create_sub_tree(masc2, masc2@RootName)
+
+  expected_output <- masc2
 
   expect_equal(test_output, expected_output)
 })
