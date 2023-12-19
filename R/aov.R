@@ -10,6 +10,11 @@
 #' @return No explicit return value. The function prints the calculated
 #'   estimated execution time.
 #'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' subtree <- create_sub_tree(tree, "Dimension sociale")
+#' estimate_aov_time(subtree, test_runs = 50)
+#'
 #' @export
 estimate_aov_time <- function(tree, test_runs = 50) {
   # Compute the total number of simulations based on tree leaves
@@ -64,6 +69,11 @@ estimate_aov_time <- function(tree, test_runs = 50) {
 #'
 #' @return A \code{list} containing results for both first-order and
 #'   second-order AOV analyses.
+#'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' subtree <- create_sub_tree(tree, "Dimension sociale")
+#' AOV_out <- aov_tree(subtree)
 #'
 #' @export
 aov_tree <- function(tree) {
@@ -317,6 +327,12 @@ compute_aov_total_sensitivity <- function(aov_obj) {
 #'
 #' @return A \code{data.frame} containing proportions derived from the sum of
 #'   squares.
+#'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' subtree <- create_sub_tree(tree, "Dimension sociale")
+#' AOV_out <- aov_tree(subtree)
+#' visualize_aov(AOV_out)
 #'
 #' @export
 visualize_aov <- function(aov_results,

@@ -29,3 +29,8 @@ The function creates a matrix of random options based on the attributes of tree 
 Specifically, it leverages the \code{RangeScale} and \code{Probability} attributes of tree nodes
 to generate random options.
 }
+\examples{
+tree <- dexiranalysis::masc2
+option <- create_options(tree, num_options=3, seed = 42)
+
+}

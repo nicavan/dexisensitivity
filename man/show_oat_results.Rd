@@ -22,3 +22,10 @@ This function does not return a value; instead, it exhibits a plot.
 Renders a visualization representing the One-Factor-At-A-Time (OFAT)
 sensitivity analysis results.
 }
+\examples{
+tree <- dexiranalysis::masc2
+optionOAT <- create_options(tree, 1)
+results <- oat(tree, optionOAT)
+show_oat_results("Dimension economique", results, tree)
+
+}

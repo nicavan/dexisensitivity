@@ -10,6 +10,10 @@
 #'
 #' @return No explicit return. The function prints the estimated execution time.
 #'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' estimate_mc_time(tree, num_runs = 1000, num_test = 50)
+#'
 #' @export
 estimate_mc_time <- function(tree, num_runs, num_test = 50) {
   # Generate sample options for test simulations using create_options function
@@ -48,6 +52,10 @@ estimate_mc_time <- function(tree, num_runs, num_test = 50) {
 #'   \code{FALSE}.
 #'
 #' @return A \code{matrix} containing the results of the Monte Carlo simulation.
+#'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' MC <- monte_carlo(tree, 100)
 #'
 #' @export
 monte_carlo <- function(tree, num_runs, write_to_file = NULL, verbose = TRUE) {
@@ -94,13 +102,20 @@ monte_carlo <- function(tree, num_runs, write_to_file = NULL, verbose = TRUE) {
 #'   results.
 #' @param num_runs \code{numeric} indicating the number of Monte Carlo
 #'   simulations that were executed.
+#' @param save \code{character} indicating where to save the graphic. By default,
+#'   save is NULL and don't save the graphic.
 #'
 #' @return A \code{vector} depicting the data used in the bar chart.
 #'
 #' @importFrom graphics legend text
 #'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' MC <- monte_carlo(tree, 100)
+#' show_mc_results(tree@Nodes[[2]], MC, 100)
+#'
 #' @export
-show_mc_results <- function(node, mc_results, num_runs) {
+show_mc_results <- function(node, mc_results, num_runs, save = NULL) {
   node_type <- ifelse(node@IsLeaf, "L", "A")
 
   bar_data <- mc_results[node@Name, ] |> table()
@@ -135,12 +150,15 @@ show_mc_results <- function(node, mc_results, num_runs) {
   )
 
   # Save the bar lengths to a .csv file
-  cat(
-    row.names = node@Name,
-    bar_data,
-    file = "MC bar lengths.csv",
-    sep = ",", fill = TRUE, append = TRUE
-  )
+  if(!is.null(save)) {
+    stopifnot("save should be a character" = is.character(save))
+    cat(
+      row.names = node@Name,
+      bar_data,
+      file = save,
+      sep = ",", fill = TRUE, append = TRUE
+    )
+  }
 
   return(bar_data)
 }

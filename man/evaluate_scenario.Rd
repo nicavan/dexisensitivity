@@ -32,3 +32,10 @@ values up the tree, considering the tree's structure, to determine each node's v
 It's essential for the input option matrix to have columns that correspond to the
 leaves of the tree and for the tree object to have the appropriate attributes set.
 }
+\examples{
+tree <- dexiranalysis::masc2
+option <- create_options(tree, num_options=1, seed = 42)
+scenario <- evaluate_scenario(tree, option)
+scenario
+
+}

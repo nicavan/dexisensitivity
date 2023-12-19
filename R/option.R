@@ -18,6 +18,10 @@
 #' Specifically, it leverages the \code{RangeScale} and \code{Probability} attributes of tree nodes
 #' to generate random options.
 #'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' option <- create_options(tree, num_options=3, seed = 42)
+#'
 #' @export
 create_options <- function(tree, num_options = 1, seed = NULL) {
   # Ensure inputs are of the expected type
@@ -79,6 +83,12 @@ create_options <- function(tree, num_options = 1, seed = NULL) {
 #'
 #' It's essential for the input option matrix to have columns that correspond to the
 #' leaves of the tree and for the tree object to have the appropriate attributes set.
+#'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' option <- create_options(tree, num_options=1, seed = 42)
+#' scenario <- evaluate_scenario(tree, option)
+#' scenario
 #'
 #' @export
 evaluate_scenario <- function(tree, option) {
@@ -235,6 +245,12 @@ compute_values_from_aggregation_table <- function(tree, results) {
 #'
 #' @return A \code{list} of \code{numeric} vectors with evaluation results for each scenario.
 #'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' option <- create_options(tree, num_options=3, seed = 42)
+#' scenarios <- evaluate_scenarios(tree, option)
+#' scenarios
+#'
 #' @export
 evaluate_scenarios <- function(tree, options_matrix) {
   # Using sapply to loop over each column in options_matrix.
@@ -337,6 +353,12 @@ save_scenarios <- function(scenarios_results, file_name) {
 #'
 #' @seealso \code{\link{evaluate_scenario}}
 #'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' option <- create_options(tree, num_options=1, seed = 42)
+#' scenario <- evaluate_scenario(tree, option)
+#' show_scenario(as.matrix(scenario), tree = tree, label_y = TRUE)
+#'
 #' @export
 show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
   if (modify_par) {
@@ -408,6 +430,13 @@ show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
 #' @return NULL
 #'
 #' @seealso \code{\link{evaluate_scenarios}}
+#'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' option <- create_options(tree, num_options=3, seed = 42)
+#' scenarios <- evaluate_scenarios(tree, option)
+#' compare_scenarios(tree, scenarios,
+#'  c("Dimension economique", "Dimension sociale", "Dimension environnementale"))
 #'
 #' @importFrom plotrix radial.plot
 #' @export

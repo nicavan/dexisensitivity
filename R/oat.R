@@ -10,6 +10,11 @@
 #' @return A \code{matrix} depicting the assessment outcomes for every attribute
 #'   in the \code{Tree}, corresponding to diverse parameter alterations.
 #'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' optionOAT <- create_options(tree, 1)
+#' results <- oat(tree, optionOAT)
+#'
 #' @export
 oat <- function(tree, option) {
   # Initialize results matrix
@@ -91,6 +96,12 @@ evaluate_variation <- function(tree, option, leaf_index,
 #' @param tree A \code{Tree} object that was employed in the OFAT analysis.
 #'
 #' @return This function does not return a value; instead, it exhibits a plot.
+#'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' optionOAT <- create_options(tree, 1)
+#' results <- oat(tree, optionOAT)
+#' show_oat_results("Dimension economique", results, tree)
 #'
 #' @export
 show_oat_results <- function(node_name, results, tree) {

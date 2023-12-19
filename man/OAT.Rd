@@ -20,3 +20,9 @@ Executes a One-Factor-At-A-Time (OFAT) sensitivity assessment by undertaking
 simulations while varying individual factors. During each simulation, all
 factors are maintained constant save for one.
 }
+\examples{
+tree <- dexiranalysis::masc2
+optionOAT <- create_options(tree, 1)
+results <- oat(tree, optionOAT)
+
+}

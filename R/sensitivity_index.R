@@ -7,17 +7,21 @@
 #' @param file_name \code{character} designating the filename to store the SI.
 #'   Default is "SI_out.csv".
 #' @param is_file \code{logical} determining whether to save the SI results to a
-#'   file. Defaults to TRUE.
+#'   file. Defaults to FALSE
 #' @param avoid_repetition \code{logical} indicating if repeated nodes should be
 #'   disregarded. Defaults to FALSE.
 #'
 #' @return A list containing the Sensitivity Indices for every node in the tree.
 #'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' sensitivity_index <- si_dexi(tree)
+#' sensitivity_index
+#'
 #' @export
-
 si_dexi <- function(tree,
                     file_name = "SI_out.csv",
-                    is_file = TRUE,
+                    is_file = FALSE,
                     avoid_repetition = FALSE) {
   # Initialize SI list for each aggregated node in the decision tree
   si <- vector(mode = "list", length = length(tree@Aggregated))
@@ -468,14 +472,18 @@ calculate_sensitivity_indices <- function(conditional_prob_list, weight_list) {
 #'
 #' @importFrom graphics mtext
 #'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' sensitivity_index <- si_dexi(tree)
+#' plot_sensitivity_index(tree, sensitivity_index[[1]])
+#'
 #' @export
 plot_sensitivity_index <- function(tree, sensitivity_indices) {
   # Bar plot parameters and plot generation
   mc <- barplot(
     as.vector(rev(sensitivity_indices[tree@Leaves, 1])),
     horiz = TRUE,
-    xlim = c(0, max(sensitivity_indices[tree@Leaves, 1])),
-    ylab = "Indicators"
+    xlim = c(0, max(sensitivity_indices[tree@Leaves, 1]))
   )
   # Axis modification
   axis(

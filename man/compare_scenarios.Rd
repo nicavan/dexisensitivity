@@ -20,6 +20,14 @@ Visualizes the comparison of node values across multiple scenarios with a
 radial plot. This representation provides an intuitive view of how different
 scenarios compare for the selected nodes.
 }
+\examples{
+tree <- dexiranalysis::masc2
+option <- create_options(tree, num_options=3, seed = 42)
+scenarios <- evaluate_scenarios(tree, option)
+compare_scenarios(tree, scenarios,
+ c("Dimension economique", "Dimension sociale", "Dimension environnementale"))
+
+}
 \seealso{
 \code{\link{evaluate_scenarios}}
 }

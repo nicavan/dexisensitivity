@@ -25,6 +25,12 @@ Produces a list of synoptic plots, one for each set of options specified in
 the columns of the 'options' matrix. Each plot visualizes nodes of a decision
 tree based on different evaluation options.
 }
+\examples{
+tree <- dexiranalysis::masc2
+options <- create_options(tree, num_options=3, seed = 42)
+create_list_synoptique(tree, options)
+
+}
 \seealso{
 \code{\link{create_synoptique}}
 }

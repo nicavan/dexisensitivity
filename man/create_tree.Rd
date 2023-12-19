@@ -26,3 +26,16 @@ model.
 Iterates over every root attribute in the provided XML to create tree
 structures that depict the hierarchical decision model.
 }
+\examples{
+# With a Path
+dxi_masc2_path <- system.file("extdata", "arborescence_MASC_2_0.dxi", package = "dexiranalysis")
+tree <- create_tree(dxi_masc2_path)
+tree
+
+# With an XML
+dxi_masc2_path <- system.file("extdata", "arborescence_MASC_2_0.dxi", package = "dexiranalysis")
+masc2_xml <- XML::xmlDeserializeHook(dxi_masc2_path)
+tree <- create_tree(masc2_xml)
+tree
+
+}

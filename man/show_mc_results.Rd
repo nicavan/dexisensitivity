@@ -4,7 +4,7 @@
 \alias{show_mc_results}
 \title{Visualization of Monte Carlo Simulation Results}
 \usage{
-show_mc_results(node, mc_results, num_runs)
+show_mc_results(node, mc_results, num_runs, save = NULL)
 }
 \arguments{
 \item{node}{\code{Node} object representing the node of interest in the
@@ -15,6 +15,9 @@ results.}
 
 \item{num_runs}{\code{numeric} indicating the number of Monte Carlo
 simulations that were executed.}
+
+\item{save}{\code{character} indicating where to save the graphic. By default,
+save is NULL and don't save the graphic.}
 }
 \value{
 A \code{vector} depicting the data used in the bar chart.
@@ -24,4 +27,10 @@ Displays the outcomes of the Monte Carlo simulation for a specific
 \code{Node} as a bar chart, showcasing the frequency of each result.
 Furthermore, the lengths of the bars are saved in a .csv file titled "MC bar
 lengths.csv".
+}
+\examples{
+tree <- dexiranalysis::masc2
+MC <- monte_carlo(tree, 100)
+show_mc_results(tree@Nodes[[2]], MC, 100)
+
 }

@@ -21,3 +21,9 @@ A \code{ggplot} object representing the synoptic plot.
 Generates a synoptic plot based on a specified tree structure, providing
 visualization of its structure and evaluation options.
 }
+\examples{
+tree <- dexiranalysis::masc2
+option <- create_options(tree, num_options=1, seed = 42)
+create_synoptique(tree, option)
+
+}

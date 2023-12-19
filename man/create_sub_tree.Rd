@@ -22,6 +22,17 @@ A new \code{Tree} object representing the subtree.
 Constructs a subtree from a specified \code{Node} within a given \code{Tree}.
 This subtree encompasses all descendant attributes of the \code{Node}.
 }
+\examples{
+tree <- dexiranalysis::masc2
+subtree <- create_sub_tree(masc2, masc2@Nodes[[2]]@Name)
+subtree
+
+# Equivalent to :
+tree <- dexiranalysis::masc2
+subtree <- create_sub_tree(masc2, "Dimension economique")
+subtree
+
+}
 \seealso{
 Relevant functions and classes that provide more context or might be
 of interest:

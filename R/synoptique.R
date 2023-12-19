@@ -13,6 +13,11 @@
 #' @import dplyr
 #' @import ggplot2
 #'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' option <- create_options(tree, num_options=1, seed = 42)
+#' create_synoptique(tree, option)
+#'
 #' @export
 create_synoptique <- function(tree, option, depth = NA) {
   # Determine if a subtree is required based on depth
@@ -340,6 +345,11 @@ create_plot <- function(df2) {
 #'   synoptic plot corresponding to a column from the 'options' matrix.
 #'
 #' @seealso \code{\link{create_synoptique}}
+#'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' options <- create_options(tree, num_options=3, seed = 42)
+#' create_list_synoptique(tree, options)
 #'
 #' @export
 create_list_synoptique <- function(tree, options, depth = NA) {

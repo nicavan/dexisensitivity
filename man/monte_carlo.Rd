@@ -28,3 +28,8 @@ Conducts a Monte Carlo simulation over a provided decision tree for a
 specified number of runs. Optionally, the function can save the random
 options selected for the analysis in a .csv file named "MC options.csv".
 }
+\examples{
+tree <- dexiranalysis::masc2
+MC <- monte_carlo(tree, 100)
+
+}

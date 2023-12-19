@@ -21,6 +21,13 @@ should be modified (default is \code{TRUE}).}
 Visualizes the attribute values of a provided scenario. For each attribute, a
 bar is plotted, and the maximum possible value is highlighted.
 }
+\examples{
+tree <- dexiranalysis::masc2
+option <- create_options(tree, num_options=1, seed = 42)
+scenario <- evaluate_scenario(tree, option)
+show_scenario(as.matrix(scenario), tree = tree, label_y = TRUE)
+
+}
 \seealso{
 \code{\link{evaluate_scenario}}
 }

@@ -19,6 +19,18 @@
 #' @import XML
 #' @importFrom AlgDesign gen.factorial
 #'
+#' @examples
+#' # With a Path
+#' dxi_masc2_path <- system.file("extdata", "arborescence_MASC_2_0.dxi", package = "dexiranalysis")
+#' tree <- create_tree(dxi_masc2_path)
+#' tree
+#'
+#' # With an XML
+#' dxi_masc2_path <- system.file("extdata", "arborescence_MASC_2_0.dxi", package = "dexiranalysis")
+#' masc2_xml <- XML::xmlDeserializeHook(dxi_masc2_path)
+#' tree <- create_tree(masc2_xml)
+#' tree
+#'
 #' @export
 create_tree <- function(main_tree) {
 

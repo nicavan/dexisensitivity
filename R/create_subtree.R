@@ -20,6 +20,16 @@
 #'     a \code{Node}.
 #' }
 #'
+#' @examples
+#' tree <- dexiranalysis::masc2
+#' subtree <- create_sub_tree(masc2, masc2@Nodes[[2]]@Name)
+#' subtree
+#'
+#' # Equivalent to :
+#' tree <- dexiranalysis::masc2
+#' subtree <- create_sub_tree(masc2, "Dimension economique")
+#' subtree
+#'
 #' @export
 create_sub_tree <- function(tree, node_name, avoid_repetition = FALSE) {
   # Retrieve the node ID corresponding to the provided node name

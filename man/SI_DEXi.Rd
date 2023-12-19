@@ -7,7 +7,7 @@
 si_dexi(
   tree,
   file_name = "SI_out.csv",
-  is_file = TRUE,
+  is_file = FALSE,
   avoid_repetition = FALSE
 )
 }
@@ -18,7 +18,7 @@ si_dexi(
 Default is "SI_out.csv".}
 
 \item{is_file}{\code{logical} determining whether to save the SI results to a
-file. Defaults to TRUE.}
+file. Defaults to FALSE}
 
 \item{avoid_repetition}{\code{logical} indicating if repeated nodes should be
 disregarded. Defaults to FALSE.}
@@ -29,4 +29,10 @@ A list containing the Sensitivity Indices for every node in the tree.
 \description{
 Computes the Sensitivity Index (SI) for each node within a specified decision
 tree.
+}
+\examples{
+tree <- dexiranalysis::masc2
+sensitivity_index <- si_dexi(tree)
+sensitivity_index
+
 }
