@@ -479,22 +479,31 @@ calculate_sensitivity_indices <- function(conditional_prob_list, weight_list) {
 #'
 #' @export
 plot_sensitivity_index <- function(tree, sensitivity_indices) {
+  # Ajuster les marges
+  old_par <- par(mar = c(5.1, 12.1, 4.1, 2.1))
+
   # Bar plot parameters and plot generation
   mc <- barplot(
     as.vector(rev(sensitivity_indices[tree@Leaves, 1])),
     horiz = TRUE,
-    xlim = c(0, max(sensitivity_indices[tree@Leaves, 1]))
+    xlim = c(0, max(sensitivity_indices[tree@Leaves, 1])),
+    cex.axis = 0.7 # Réduire la taille de la police
   )
   # Axis modification
   axis(
     side = 2,
     at = mc,
     labels = rev(tree@Leaves),
-    las = 2
+    las = 2,
+    cex.axis = 0.7 # Réduire la taille de la police
   )
   # Reference line
   abline(v = 0.02, untf = FALSE, lty = 3)
   # Additional text on the plot
   mtext("Sensitity Index", 1, line = 3)
   mtext("Basic attributes", 2, outer = TRUE, line = 15)
+
+  # Restaurer les paramètres par défaut
+  par(old_par)
 }
+
