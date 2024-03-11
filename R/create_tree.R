@@ -64,6 +64,12 @@ create_tree <- function(main_tree, which_root = "all", correct = FALSE) {
 
   list_tree <- list() # To stock created Trees
 
+  if (which_root != "all") {
+    stopifnot("which_root need to be an integer" = is.numeric(which_root))
+    list_root_name <- list_root_name[[which_root]]
+  }
+
+
   # For each Tree's roots
   for (i_root_name in seq_along(list_root_name)) {
     root_name <- list_root_name[i_root_name]
