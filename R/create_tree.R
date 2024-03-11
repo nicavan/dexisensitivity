@@ -11,6 +11,10 @@
 #'   that represents the primary tree structure and should encompass the DEXi
 #'   decision model.
 #'
+#' @param which_root an integer to indicate which tree to create among several in a .dxi or "all" (default) to create them all.
+#'
+#' @param correct A logical. If TRUE, use some correction function to avoid special character as " ' ".
+#'
 #' @return A list of \code{Tree} objects, each corresponding to a unique root
 #'   attribute in the DEXi XML layout. Each tree details the root attribute,
 #'   nodes, leaves, depth, and other associated data regarding the decision
@@ -18,6 +22,7 @@
 #'
 #' @import XML
 #' @importFrom AlgDesign gen.factorial
+#' @importFrom xml2 read_xml
 #'
 #' @examples
 #' # With a Path
@@ -32,9 +37,9 @@
 #' tree
 #'
 #' @export
-create_tree <- function(main_tree) {
+create_tree <- function(main_tree, which_root = "all", correct = FALSE) {
 
-  # If user give the path, we need te get the xml from it
+  # If user give the path, we need to get the xml from it
   if (is.character(main_tree)) {
     # check if it is a .dxi file. stop if not.
     ext <- substr(main_tree, nchar(main_tree) - 3, nchar(main_tree))
@@ -44,6 +49,11 @@ create_tree <- function(main_tree) {
     main_tree <- XML::xmlTreeParse(main_tree,
                                    useInternalNodes = T)
   }
+
+  if (correct) {
+    main_tree <- correct_apost(xml_tree = main_tree)
+  }
+
 
   # Ensure the input is a Node object
   stopifnot("main_tree should be an XML object." = inherits(main_tree, "XMLInternalDocument"))
@@ -141,6 +151,26 @@ create_tree <- function(main_tree) {
   }
 
   return(list_tree)
+}
+
+
+#' Correct apostroph in Tree before creation
+#'
+#' @param xml_tree the xml to be corrected
+#'
+#' @return the corrected xml
+#'
+#' @importFrom testthat capture_output
+#'
+#' @keywords internal
+correct_apost <- function(xml_tree) {
+
+  capture_xml <- testthat::capture_output(xml_tree, print = T)
+  corrected_char <- gsub("'", "", capture_xml)
+
+  XML::xmlTreeParse(useInternalNodes = T,
+                    xml2::read_xml(corrected_char))
+
 }
 
 

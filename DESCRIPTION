@@ -31,9 +31,10 @@ Imports:
     plotrix,
     genalg,
     dplyr,
-    ggplot2
-Suggests: 
+    ggplot2,
     testthat (>= 3.0.0),
+    xml2
+Suggests:
     sloop,
     vdiffr
 Config/testthat/edition: 3

@@ -4,13 +4,17 @@
 \alias{create_tree}
 \title{Tree Construction from DEXi's XML Output}
 \usage{
-create_tree(main_tree)
+create_tree(main_tree, which_root = "all", correct = FALSE)
 }
 \arguments{
 \item{main_tree}{A character or an object of class \code{XML}. Either the
 path to the .dxi file containing the tree (character) or the XML object
 that represents the primary tree structure and should encompass the DEXi
 decision model.}
+
+\item{which_root}{an integer to indicate which tree to create among several in a .dxi or "all" (default) to create them all.}
+
+\item{correct}{A logical. If TRUE, use some correction function to avoid special character as " ' ".}
 }
 \value{
 A list of \code{Tree} objects, each corresponding to a unique root
