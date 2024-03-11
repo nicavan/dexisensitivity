@@ -185,11 +185,14 @@ get_sensitivity_index <- function(tree, avoid_repetition = FALSE) {
 
 get_node_id <- function(tree, node_name, avoid_repetition) {
   # Start by finding the ID using the node name
-  id <- get_id(tree@Nodes, node_name)
+  id_finded <- get_id(tree@Nodes, node_name)
+
+  # If no traitment needed, it'll be the same as id_finded
+  id <- id_finded
 
   # If multiple nodes have the same name, filter out the leaf nodes
-  if (length(id) > 1) {
-    id <- sapply(id, function(x) {
+  if (length(id_finded) > 1) {
+    id <- sapply(id_finded, function(x) {
       if (!tree@Nodes[[x]]@IsLeaf) {
         x
       }
@@ -200,6 +203,12 @@ get_node_id <- function(tree, node_name, avoid_repetition) {
   if (length(id) > 1 & avoid_repetition) {
     id <- id[1]
   }
+
+  # If none of the ID are unique leafs, select the first one
+  if (length(id_finded) > 1 & is.null(id)) {
+    id <- id_finded[1]
+  }
+
 
   return(id)
 }
