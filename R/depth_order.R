@@ -50,15 +50,16 @@ depth_order <- function(tree) {
       # Check if children of this aggregated criteria are all normal leaves.
       if (sum(tree@Nodes[[id]]@Children %in% tree@Aggregated)==0){
         # In that case, we put the line on top of the depth_order matrix
-        ordered_depth_data <- arrange(ordered_depth_data, name!=leaf)
+        ordered_depth_data <- ordered_depth_data[order(ordered_depth_data$name == leaf, decreasing = T), ]
 
       }else{ #ie at least one other aggregated node is used to define this node
         l <- 1
         # saving id_line and content of the aggregated node
-        id_line <- as.integer(rownames(ordered_depth_data[ordered_depth_data$name == leaf,]))
+        id_line <- which(ordered_depth_data$name == leaf)
 
         # check if all children are already processed (normal leaves and other aggregated nodes)
-        while (sum(tree@Nodes[[id]]@Children %in% c(tree@Leaves,ordered_depth_data$name[1:l]))!=length(tree@Nodes[[id]]@Children) &&
+        while (sum(tree@Nodes[[id]]@Children %in%
+                   c(tree@Leaves,ordered_depth_data$name[1:l]))!=length(tree@Nodes[[id]]@Children) &&
                l < length(tree@Aggregated)){
           l <- l+1
         }
@@ -67,38 +68,38 @@ depth_order <- function(tree) {
         if (l < nrow(ordered_depth_data) && id_line != (l+1)){
 
           save_data <- ordered_depth_data[ordered_depth_data$name == leaf,]
-          multiple_ids <- get_id(tree@Nodes,leaf) #we want all ids to check mothers of the node and check their positions
 
-          # list all mothers of this node
+          # deleting the line of the matrix with the aggregated node used as a leaf
+          ordered_depth_data <- ordered_depth_data[ordered_depth_data$name != leaf,]
+
+          c <- 0
+          # if aggregated node is before line l, we need to insert it one line earlier in ordered_depth
+          if (id_line < l){
+            c <- -1
+          }
+
+          # Insertion of the aggregated node in the right place in ordered_depth
+          ordered_depth_data <- rbind(ordered_depth_data[1:(l+c),],
+                                      save_data,
+                                      ordered_depth_data[-(1:(l+c)),])
+
+          multiple_ids <- get_id(tree@Nodes,leaf) #we want all ids to check mothers of the node and check their positions
+          # list all mothers of this aggregated node used as a leaf
           mothers <- NULL
           for (id in multiple_ids){
             mothers <- c(mothers, tree@Nodes[[id]]@Mother)
           }
 
-          # deleting the line of the matrix with the aggregated node used as a leaf
-          ordered_depth_data <- ordered_depth_data[ordered_depth_data$name != leaf,]
-
-          if (id_line > (l+1)){ #ie SI for aggregated leaf not calculated as soon as possible
-            ordered_depth_data <- rbind(ordered_depth_data[1:(l),],
-                                        save_data,
-                                        ordered_depth_data[(l+1):nrow(ordered_depth_data),])
-
-          } else { #ie SI for aggregated leaf calculated too early
-            ordered_depth_data <- rbind(ordered_depth_data[1:(l-1),],
-                                        save_data,
-                                        ordered_depth_data[(l):nrow(ordered_depth_data)],)
-          }
-
           # for each mother, check if ordered after the new position of aggregated leaf
           for (node in mothers){
-            id_mother <- as.integer(rownames(ordered_depth_data[ordered_depth_data$name == node,]))
+            id_mother <- which(ordered_depth_data$name == node)
             # Node dev à gérer : effet de bord (position de la mère pas parfaite)
-            if (id_mother < (l+1)){
+            if (id_mother < (l+c+1)){
               save_data_mother <- ordered_depth_data[ordered_depth_data$name == node,]
               ordered_depth_data <- ordered_depth_data[ordered_depth_data$name != node,]
-              ordered_depth_data <- rbind(ordered_depth_data[1:(l+1),],
+              ordered_depth_data <- rbind(ordered_depth_data[1:(l+c),],
                                           save_data_mother,
-                                          ordered_depth_data[(l+2):nrow(ordered_depth_data),])
+                                          ordered_depth_data[-(1:(l+c)),])
 
             }
           }
@@ -106,7 +107,6 @@ depth_order <- function(tree) {
       }
     }
   }
-
 
   return(ordered_depth_data$name)
 }
