@@ -2,6 +2,11 @@
 #'
 #' Returns aggregated attributes ordered by depth. Typically
 #' used for analysis strategy (AS).
+#' For trees using aggregated attributes as leaves somewhere else,
+#' the order of attributes might be modified in order to prevent mistakes or
+#' missing values in future analyses: aggregated attributes are meant to be
+#' assessed as soon as they can be.
+#'
 #'
 #' @param tree A decision tree object.
 #'
