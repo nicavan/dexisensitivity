@@ -122,7 +122,7 @@ show_mc_results <- function(node, mc_results, num_runs, save = NULL) {
 
   # Fill missing bars with zeros
   if (length(bar_data) < node@RangeScale) {
-    bar_data <- bar_data + numeric(node@RangeScale)
+    bar_data <- factor(mc_results[node@Name, ],levels=1:node@RangeScale) |> table()
   }
 
   # Normalize bar data
