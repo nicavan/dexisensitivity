@@ -56,26 +56,28 @@ create_data_frame_for_plotting <- function(tree) {
   df <- data.frame(attribut = tree@Attributes)
 
   # Check and assign leaf node status
-  df$isleaf <- lapply(df$attribut, function(x) {
-    tree@Nodes[[which(tree@Attributes == x)]]@IsLeaf
+  df$isleaf <- lapply(1:tree@NumberOfAttributes, function(x) {
+    tree@Nodes[[x]]@IsLeaf
   }) |>
     unlist()
 
   # Assign depth and size attributes
-  df$depth <- lapply(df$attribut, function(x) {
-    if (df[df$attribut == x, "isleaf"]) {
-      tree@Nodes[[which(tree@Attributes == x)]]@Depth:tree@Depth
-    } else {
-      tree@Nodes[[which(tree@Attributes == x)]]@Depth
+  df$depth <- lapply(1:tree@NumberOfAttributes, function(x) {
+    if(df[x,"isleaf"]){
+      tree@Nodes[[x]]@Depth:tree@Depth
+    }else{
+      tree@Nodes[[x]]@Depth
     }
   })
 
-  df$taille <- lapply(df$attribut, function(x) {
-    if (df[df$attribut == x, "isleaf"]) {
+  df$taille <- lapply(1:tree@NumberOfAttributes, function(x) {
+    if (df[x, "isleaf"]) {
       1
     } else {
-      subtree <- create_sub_tree(tree, x)
-      length(subtree@Leaves)
+      subtree <- create_sub_tree(tree, tree@Nodes[[x]]@Name)
+      # this sum is greater than subtree@NumberOfLeaves if there are repeted leaves
+      sum(subtree@Attributes %in% subtree@Leaves) +
+        sum(subtree@Attributes %in% subtree@LeafAggregated) - length(subtree@LeafAggregated)
     }
   }) |>
     unlist()
@@ -99,8 +101,8 @@ create_data_frame_for_plotting <- function(tree) {
 evaluate_and_label <- function(df, tree, option) {
   # Evaluation based on scenario and range scaling
   df$eval <- evaluate_scenario(tree, option)
-  df$rangecol <- lapply(df$attribut, function(x) {
-    tree@Nodes[[which(tree@Attributes == x)]]@RangeScale
+  df$rangecol <- lapply(1:tree@NumberOfAttributes, function(x) {
+    tree@Nodes[[x]]@RangeScale
   }) |>
     unlist()
 
