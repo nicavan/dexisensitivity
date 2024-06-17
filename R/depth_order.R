@@ -98,7 +98,7 @@ depth_order <- function(tree) {
           # for each mother, check if ordered after the new position of aggregated leaf
           for (node in mothers){
             id_mother <- which(ordered_depth_data$name == node)
-            # Node dev à gérer : effet de bord (position de la mère pas parfaite)
+
             if (id_mother < (l+c+1)){
               save_data_mother <- ordered_depth_data[ordered_depth_data$name == node,]
               ordered_depth_data <- ordered_depth_data[ordered_depth_data$name != node,]
