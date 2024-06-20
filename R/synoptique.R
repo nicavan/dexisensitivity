@@ -147,7 +147,16 @@ get_box_coordinates <- function(df) {
   }) |> bind_rows()
 
   # Normalize evaluation and determine label and rectangle dimensions
-  df2$norm_eval <- (df2$eval - 1) / (df2$rangecol - 1)
+  df2$norm_eval <- lapply(1:dim(df2)[1], function(x) {
+
+    # Management of non-numeric values in options of a tree (missing or multiple values)
+    if(grepl(df2$eval[x],pattern="*",fixed = T)||
+          grepl(df2$eval[x],pattern=";",fixed=T)){
+      NA
+    }else{(as.numeric(df2$eval[x])-1)/(df2$rangecol[x] - 1)}
+  }) |>
+    unlist()
+
   df2$label_length <- nchar(df2$label)
   df2$rect_width <- df2$xmax - df2$xmin
   df2$rect_height <- df2$ymax - df2$ymin
