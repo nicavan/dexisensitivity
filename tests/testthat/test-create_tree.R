@@ -43,6 +43,27 @@ test_that("Same output as previous versions with .dxi path", {
   expect_equal(test_output, expected_output)
 })
 
+test_that("Same output as previous versions with .dxi path for a complex tree", {
+  # get .dxi for dexifruits_v1 path
+  dxi_dexifruits_v1_path <- system.file("extdata", "DEXiFruits_V1.dxi",
+                                package = "dexiranalysis")
+
+  # expected output : a previously generated dexifruits_v1 Tree
+  expected_output <- readRDS(system.file("testdata", "expected_dexifruits_v1_tree.rds",
+                                         package = "dexiranalysis"
+  ))
+
+  # use of the create_tree function, with choosing of one root, and correction of
+  # issues with special characters.
+  pre_output <- create_tree(dxi_dexifruits_v1_path,
+                            which_root = 1,
+                            correct = T)
+  test_output <- pre_output[[1]]
+
+
+  expect_equal(test_output, expected_output)
+})
+
 
 #### create_tree helpers tests ####
 test_that("get_dexi_attributes give correct output", {

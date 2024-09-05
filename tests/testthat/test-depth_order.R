@@ -17,3 +17,17 @@ test_that("Depth order return correct order for masc2", {
 
   expect_equal(test_output, expected_output)
 })
+
+test_that("Depth order return correct order for dexifruits_v1", {
+  dexifruits_v1 <- dexiranalysis::dexifruits_v1
+
+  # Test depth_order on dexifruits_v1 (a tree with aggregated leaves)
+  test_output <- depth_order(dexifruits_v1)
+
+  expected_output <- readRDS(system.file("testdata",
+                                         "expected_depth_order_dexifruits_v1.rds",
+                                         package = "dexiranalysis"
+                            ))
+
+  expect_equal(test_output, expected_output)
+})
