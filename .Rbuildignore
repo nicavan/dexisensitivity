@@ -1,6 +1,6 @@
 ^renv$
 ^renv\.lock$
-^dexiranalysis\.Rproj$
+^dexisensitivity\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^data-raw$

@@ -29,7 +29,7 @@ Furthermore, the lengths of the bars are saved in a .csv file titled "MC bar
 lengths.csv".
 }
 \examples{
-tree <- dexiranalysis::masc2
+tree <- dexisensitivity::masc2
 MC <- monte_carlo(tree, 100)
 show_mc_results(tree@Nodes[[2]], MC, 100)
 

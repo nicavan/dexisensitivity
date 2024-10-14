@@ -33,7 +33,7 @@ It's essential for the input option matrix to have columns that correspond to th
 leaves of the tree and for the tree object to have the appropriate attributes set.
 }
 \examples{
-tree <- dexiranalysis::masc2
+tree <- dexisensitivity::masc2
 option <- create_options(tree, num_options=1, seed = 42)
 scenario <- evaluate_scenario(tree, option)
 scenario

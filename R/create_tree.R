@@ -26,12 +26,12 @@
 #'
 #' @examples
 #' # With a Path
-#' dxi_masc2_path <- system.file("extdata", "arborescence_MASC_2_0.dxi", package = "dexiranalysis")
+#' dxi_masc2_path <- system.file("extdata", "arborescence_MASC_2_0.dxi", package = "dexisensitivity")
 #' tree <- create_tree(dxi_masc2_path)
 #' tree
 #'
 #' # With an XML
-#' dxi_masc2_path <- system.file("extdata", "arborescence_MASC_2_0.dxi", package = "dexiranalysis")
+#' dxi_masc2_path <- system.file("extdata", "arborescence_MASC_2_0.dxi", package = "dexisensitivity")
 #' masc2_xml <- XML::xmlDeserializeHook(dxi_masc2_path)
 #' tree <- create_tree(masc2_xml)
 #' tree

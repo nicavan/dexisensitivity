@@ -7,10 +7,16 @@
 #' missing values in future analyses: aggregated attributes are meant to be
 #' assessed as soon as they can be.
 #'
-#'
 #' @param tree A decision tree object.
 #'
 #' @return A vector of aggregated attribute names, ordered by depth.
+#'
+#' @examples
+#' tree <- dexisensitivity::dexifruits_v1
+#' dexisensitivity:::depth_order(tree)
+#'
+#'
+#' @keywords internal
 depth_order <- function(tree) {
   # Initialize data frame to store attributes and their depths
   depth_data <- data.frame(name = tree@Aggregated, depth = NA)

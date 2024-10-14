@@ -14,7 +14,7 @@
 #' @import ggplot2
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' option <- create_options(tree, num_options=1, seed = 42)
 #' create_synoptique(tree, option)
 #'
@@ -358,7 +358,7 @@ create_plot <- function(df2) {
 #' @seealso \code{\link{create_synoptique}}
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' options <- create_options(tree, num_options=3, seed = 42)
 #' create_list_synoptique(tree, options)
 #'

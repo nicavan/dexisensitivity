@@ -14,7 +14,7 @@ An object of class \code{Tree} of length 1.
 dexifruits_v1
 }
 \description{
-A Tree class object created by dexiranalysis::create_tree function, using the
+A Tree class object created by dexisensitivity::create_tree function, using the
 Multi-Attribute Assessment model of the sustainability of cropping systems in
 arboriculture (DEXiFruits) in its first and generic version.
 }

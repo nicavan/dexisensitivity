@@ -20,3 +20,10 @@ the order of attributes might be modified in order to prevent mistakes or
 missing values in future analyses: aggregated attributes are meant to be
 assessed as soon as they can be.
 }
+\examples{
+tree <- dexisensitivity::dexifruits_v1
+dexisensitivity:::depth_order(tree)
+
+
+}
+\keyword{internal}

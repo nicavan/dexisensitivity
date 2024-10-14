@@ -16,3 +16,11 @@ results.}
 \description{
 Stores the results of scenario evaluations into a file for later analysis.
 }
+\examples{
+tree <- dexisensitivity::masc2
+option <- create_options(tree, num_options=3, seed = 42)
+scenarios <- evaluate_scenarios(tree, option)
+save_scenarios(scenarios,paste0(tempdir(),"\\\\save_scenarios.tab"))
+file.remove(paste0(tempdir(),"\\\\save_scenarios.tab"))
+
+}

@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(dexiranalysis)
+library(dexisensitivity)
 
-test_check("dexiranalysis")
+test_check("dexisensitivity")

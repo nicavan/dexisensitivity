@@ -39,7 +39,7 @@ Renders the outcomes of an Analysis of Variance (AOV) through bar plots,
 allowing a comprehensive display of both total sums and specific effects.
 }
 \examples{
-tree <- dexiranalysis::masc2
+tree <- dexisensitivity::masc2
 subtree <- create_sub_tree(tree, "Dimension sociale")
 AOV_out <- aov_tree(subtree)
 visualize_aov(AOV_out)

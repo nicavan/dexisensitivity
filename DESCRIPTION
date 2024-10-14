@@ -1,10 +1,16 @@
-Package: dexiranalysis
+Package: dexisensitivity
 Title: 'DEXi' Decision Tree Analysis and Visualization
 Version: 0.0.1.000
 Authors@R: c(
-    person("Roland", "Allart", email = "roland.allart@inrae.fr", role = c("aut", "cre")),
+    person("Roland", "Allart", email = "roland.allart@inrae.fr", role = c("aut")),
     person("Jacques-Eric", "Bergez", email = "jacques-eric.bergez@inrae.fr", role = c("aut"),
-           comment = c(ORCID = "0000-0003-3467-2617")))
+           comment = c(ORCID = "0000-0003-3467-2617")),
+    person("Marta", "Carpani", role = c("aut")),
+    person("Hervé", "Monod", role = c("aut")),
+    person("Aude", "Alaphilippe", role = c("ctb")),
+    person("Nicolas", "Cavan", email = "nicolas.cavan@inrae.fr", role = c("ctb","cre")),
+    person("INRAE", role = c("cph"), comment = "(National Research Institute for Agriculture, Food and Environment, France)"
+    ))
 Description: Provides a versatile toolkit for analyzing and visualizing 'DEXi' 
     (Decision EXpert for education) decision trees, facilitating multi-criteria
     decision analysis directly within R. Users can read .dxi files, manipulate
@@ -19,7 +25,7 @@ Description: Provides a versatile toolkit for analyzing and visualizing 'DEXi'
 License: GPL (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Depends:
     R (>= 3.5.0)
 Imports:

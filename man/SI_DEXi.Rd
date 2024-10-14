@@ -31,7 +31,7 @@ Computes the Sensitivity Index (SI) for each node within a specified decision
 tree.
 }
 \examples{
-tree <- dexiranalysis::masc2
+tree <- dexisensitivity::masc2
 sensitivity_index <- si_dexi(tree)
 sensitivity_index
 

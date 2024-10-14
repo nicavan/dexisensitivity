@@ -19,7 +19,7 @@
 #' to generate random options.
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' option <- create_options(tree, num_options=3, seed = 42)
 #'
 #' @export
@@ -85,7 +85,7 @@ create_options <- function(tree, num_options = 1, seed = NULL) {
 #' leaves of the tree and for the tree object to have the appropriate attributes set.
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' option <- create_options(tree, num_options=1, seed = 42)
 #' scenario <- evaluate_scenario(tree, option)
 #' scenario
@@ -246,7 +246,7 @@ compute_values_from_aggregation_table <- function(tree, results) {
 #' @return A \code{list} of \code{numeric} vectors with evaluation results for each scenario.
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' option <- create_options(tree, num_options=3, seed = 42)
 #' scenarios <- evaluate_scenarios(tree, option)
 #' scenarios
@@ -273,6 +273,12 @@ evaluate_scenarios <- function(tree, options_matrix) {
 #'
 #' @return NULL
 #'
+#' @examples
+#' tree <- dexisensitivity::masc2
+#' option <- create_options(tree, num_options=3, seed = 42)
+#' save_options(option,paste0(tempdir(),"\\save_options.tab"))
+#' file.remove(paste0(tempdir(),"\\save_options.tab"))
+#'
 #' @export
 save_options <- function(options_table, file_name) {
   # Utilizing utils package to write the options table into a file The choice of
@@ -298,6 +304,13 @@ save_options <- function(options_table, file_name) {
 #'
 #' @return A \code{matrix} representing the loaded options.
 #'
+#' @examples
+#' tree <- dexisensitivity::masc2
+#' option <- create_options(tree, num_options=3, seed = 42)
+#' save_options(option,paste0(tempdir(),"\\save_options.tab"))
+#' loaded_option <- load_options(paste0(tempdir(),"\\save_options.tab"))
+#' file.remove(paste0(tempdir(),"\\save_options.tab"))
+#'
 #' @export
 load_options <- function(file_name) {
   # Using utils package to read the table from the file.
@@ -322,6 +335,13 @@ load_options <- function(file_name) {
 #'   results.
 #'
 #' @return NULL
+#'
+#' @examples
+#' tree <- dexisensitivity::masc2
+#' option <- create_options(tree, num_options=3, seed = 42)
+#' scenarios <- evaluate_scenarios(tree, option)
+#' save_scenarios(scenarios,paste0(tempdir(),"\\save_scenarios.tab"))
+#' file.remove(paste0(tempdir(),"\\save_scenarios.tab"))
 #'
 #' @export
 save_scenarios <- function(scenarios_results, file_name) {
@@ -354,7 +374,7 @@ save_scenarios <- function(scenarios_results, file_name) {
 #' @seealso \code{\link{evaluate_scenario}}
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' option <- create_options(tree, num_options=1, seed = 42)
 #' scenario <- evaluate_scenario(tree, option)
 #' show_scenario(as.matrix(scenario), tree = tree, label_y = TRUE)
@@ -432,7 +452,7 @@ show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
 #' @seealso \code{\link{evaluate_scenarios}}
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' option <- create_options(tree, num_options=3, seed = 42)
 #' scenarios <- evaluate_scenarios(tree, option)
 #' compare_scenarios(tree, scenarios,

@@ -30,7 +30,7 @@ Specifically, it leverages the \code{RangeScale} and \code{Probability} attribut
 to generate random options.
 }
 \examples{
-tree <- dexiranalysis::masc2
+tree <- dexisensitivity::masc2
 option <- create_options(tree, num_options=3, seed = 42)
 
 }

@@ -18,7 +18,7 @@ Conducts an Analysis of Variance (AOV) on a provided decision tree, computing
 both first-order and second-order effects.
 }
 \examples{
-tree <- dexiranalysis::masc2
+tree <- dexisensitivity::masc2
 subtree <- create_sub_tree(tree, "Dimension sociale")
 AOV_out <- aov_tree(subtree)
 

@@ -22,7 +22,7 @@ Estimates the time required to run a set number of Monte Carlo simulations
 based on the time taken to run a smaller test set.
 }
 \examples{
-tree <- dexiranalysis::masc2
+tree <- dexisensitivity::masc2
 estimate_mc_time(tree, num_runs = 1000, num_test = 50)
 
 }

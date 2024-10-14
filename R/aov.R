@@ -11,7 +11,7 @@
 #'   estimated execution time.
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' subtree <- create_sub_tree(tree, "Dimension sociale")
 #' estimate_aov_time(subtree, test_runs = 50)
 #'
@@ -71,7 +71,7 @@ estimate_aov_time <- function(tree, test_runs = 50) {
 #'   second-order AOV analyses.
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' subtree <- create_sub_tree(tree, "Dimension sociale")
 #' AOV_out <- aov_tree(subtree)
 #'
@@ -329,7 +329,7 @@ compute_aov_total_sensitivity <- function(aov_obj) {
 #'   squares.
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' subtree <- create_sub_tree(tree, "Dimension sociale")
 #' AOV_out <- aov_tree(subtree)
 #' visualize_aov(AOV_out)

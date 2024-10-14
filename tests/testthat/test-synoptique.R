@@ -1,7 +1,7 @@
 test_that("Same data for synoptic graph with masc2 as previous", {
 
   # Load masc2 for the test
-  tree <- dexiranalysis::masc2
+  tree <- dexisensitivity::masc2
 
   # Create an option to represent in a synoptic graph
   option <- create_options(tree, 1,seed = 42)
@@ -19,7 +19,7 @@ test_that("Same data for synoptic graph with masc2 as previous", {
   test_output <- df2
 
   expected_output <- readRDS(system.file("testdata", "data_synoptic_graph_masc2.rds",
-                                         package = "dexiranalysis"
+                                         package = "dexisensitivity"
   ))
 
   expect_equal(test_output, expected_output)
@@ -29,7 +29,7 @@ test_that("Same data for synoptic graph with masc2 as previous", {
 test_that("Same data for synoptic graph with masc2 (case with missing values) as previous", {
 
   # Load masc2 for the test
-  tree <- dexiranalysis::masc2
+  tree <- dexisensitivity::masc2
 
   # Create an option to represent in a synoptic graph
   option <- create_options(tree, 1,seed = 42)
@@ -49,7 +49,7 @@ test_that("Same data for synoptic graph with masc2 (case with missing values) as
   test_output <- df2
 
   expected_output <- readRDS(system.file("testdata", "data_synoptic_graph_missing_values_masc2.rds",
-                                         package = "dexiranalysis"
+                                         package = "dexisensitivity"
   ))
 
   expect_equal(test_output, expected_output)
@@ -59,7 +59,7 @@ test_that("Same data for synoptic graph with masc2 (case with missing values) as
 test_that("Same data for synoptic graph with dexifruits_v1 as previous", {
 
   # Load masc2 for the test
-  tree <- dexiranalysis::dexifruits_v1
+  tree <- dexisensitivity::dexifruits_v1
 
   # Create an option to represent in a synoptic graph
   option <- create_options(tree, 1, seed = 42)
@@ -77,7 +77,7 @@ test_that("Same data for synoptic graph with dexifruits_v1 as previous", {
   test_output <- df2
 
   expected_output <- readRDS(system.file("testdata", "data_synoptic_graph_dexifruits_v1.rds",
-                                         package = "dexiranalysis"
+                                         package = "dexisensitivity"
   ))
 
   expect_equal(test_output, expected_output)

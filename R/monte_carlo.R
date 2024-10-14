@@ -11,7 +11,7 @@
 #' @return No explicit return. The function prints the estimated execution time.
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' estimate_mc_time(tree, num_runs = 1000, num_test = 50)
 #'
 #' @export
@@ -54,7 +54,7 @@ estimate_mc_time <- function(tree, num_runs, num_test = 50) {
 #' @return A \code{matrix} containing the results of the Monte Carlo simulation.
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' MC <- monte_carlo(tree, 100)
 #'
 #' @export
@@ -110,7 +110,7 @@ monte_carlo <- function(tree, num_runs, write_to_file = NULL, verbose = TRUE) {
 #' @importFrom graphics legend text
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' MC <- monte_carlo(tree, 100)
 #' show_mc_results(tree@Nodes[[2]], MC, 100)
 #'

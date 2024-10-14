@@ -21,7 +21,7 @@ Estimates the expected execution time for a given number of factorial
 simulations using the duration taken to run a sample subset of simulations.
 }
 \examples{
-tree <- dexiranalysis::masc2
+tree <- dexisensitivity::masc2
 subtree <- create_sub_tree(tree, "Dimension sociale")
 estimate_aov_time(subtree, test_runs = 50)
 

@@ -16,3 +16,10 @@ saving the options.}
 Stores a matrix of options into a file, primarily for archival or subsequent
 analysis.
 }
+\examples{
+tree <- dexisensitivity::masc2
+option <- create_options(tree, num_options=3, seed = 42)
+save_options(option,paste0(tempdir(),"\\\\save_options.tab"))
+file.remove(paste0(tempdir(),"\\\\save_options.tab"))
+
+}

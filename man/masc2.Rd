@@ -14,7 +14,7 @@ An object of class \code{Tree} of length 1.
 masc2
 }
 \description{
-A Tree class object created by dexiranalysis::create_tree function, using the
+A Tree class object created by dexisensitivity::create_tree function, using the
 Multi-Attribute Assessment of the Sustainability of Cropping systems (MASC)
 model in it's 2.0 version.
 }

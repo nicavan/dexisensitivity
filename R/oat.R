@@ -11,7 +11,7 @@
 #'   in the \code{Tree}, corresponding to diverse parameter alterations.
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' optionOAT <- create_options(tree, 1)
 #' results <- oat(tree, optionOAT)
 #'
@@ -98,7 +98,7 @@ evaluate_variation <- function(tree, option, leaf_index,
 #' @return This function does not return a value; instead, it exhibits a plot.
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' optionOAT <- create_options(tree, 1)
 #' results <- oat(tree, optionOAT)
 #' show_oat_results("Dimension economique", results, tree)

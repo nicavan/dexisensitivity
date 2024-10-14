@@ -49,7 +49,7 @@ test_that("Empty Tree print correctly", {
 
 
 test_that("masc2 print correctly", {
-  test_print <- capture.output(print(dexiranalysis::masc2))
+  test_print <- capture.output(print(dexisensitivity::masc2))
 
   expected_print <- capture.output({
     cat("Root name: Contribution au developpement durable")
@@ -76,7 +76,7 @@ test_that("Empty Tree show correct message", {
 
 
 test_that("masc2 show correctly", {
-  test_print <- capture.output(dexiranalysis::masc2)
+  test_print <- capture.output(dexisensitivity::masc2)
 
   expected_print <- capture.output({
   cat("<  1 > Z : Contribution au developpement durable\n")
@@ -180,12 +180,12 @@ test_that("describe return correct error if no Nodes", {
 
 test_that("Tree describe correct message with masc2", {
   # Load the complex DEXi tree needed for the test
-  test_output <- dexiranalysis::masc2 |>
+  test_output <- dexisensitivity::masc2 |>
     describe() |>
     capture.output() # Because we'll compare cat() outputs
 
   expected_output <- readRDS(system.file("testdata", "describe_masc2.rds",
-                                         package = "dexiranalysis"
+                                         package = "dexisensitivity"
   ))
 
   expect_equal(test_output, expected_output)

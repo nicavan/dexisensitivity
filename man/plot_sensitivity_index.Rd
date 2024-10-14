@@ -20,7 +20,7 @@ Visualizes the Sensitivity Index (SI) of the leaves of a specified decision
 tree using a bar plot.
 }
 \examples{
-tree <- dexiranalysis::masc2
+tree <- dexisensitivity::masc2
 sensitivity_index <- si_dexi(tree)
 plot_sensitivity_index(tree, sensitivity_index[[1]])
 

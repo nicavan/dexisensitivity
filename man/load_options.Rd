@@ -17,3 +17,11 @@ A \code{matrix} representing the loaded options.
 Retrieves a matrix of options saved in a file. This matrix can then be used
 for further analysis or processing.
 }
+\examples{
+tree <- dexisensitivity::masc2
+option <- create_options(tree, num_options=3, seed = 42)
+save_options(option,paste0(tempdir(),"\\\\save_options.tab"))
+loaded_option <- load_options(paste0(tempdir(),"\\\\save_options.tab"))
+file.remove(paste0(tempdir(),"\\\\save_options.tab"))
+
+}

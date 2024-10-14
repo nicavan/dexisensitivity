@@ -48,7 +48,7 @@ test_that("Empty Node print correctly", {
 })
 
 test_that("masc2 Node print correctly", {
-  masc2_node <- dexiranalysis::masc2@Nodes[[42]]
+  masc2_node <- dexisensitivity::masc2@Nodes[[42]]
 
   empty_print <- capture.output({
     cat("Node name: Contribution a la qualite air")
@@ -70,7 +70,7 @@ test_that("masc2 Node print correctly", {
 #### compute_leaf_weights ####
 
 test_that("compute_leaf_weights : same output as JEB's scripts", {
-  masc2 <- dexiranalysis::masc2
+  masc2 <- dexisensitivity::masc2
 
   # Unit test
   expect_equal(
@@ -90,7 +90,7 @@ test_that("same output as JEB's scripts for masc2", {
 
   original_seed <- get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
 
-  masc2 <- dexiranalysis::masc2
+  masc2 <- dexisensitivity::masc2
   myWeights <- c(0.2, 0.2, 0.6)
 
   # Setup a random seed for the test
@@ -101,7 +101,7 @@ test_that("same output as JEB's scripts for masc2", {
 
   expected_output <- readRDS(system.file("testdata",
                                          "aggregation_matrix_masc2.rds",
-                                         package = "dexiranalysis"
+                                         package = "dexisensitivity"
   ))
 
   expect_equal(test_output, expected_output)

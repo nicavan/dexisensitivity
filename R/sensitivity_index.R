@@ -14,7 +14,7 @@
 #' @return A list containing the Sensitivity Indices for every node in the tree.
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' sensitivity_index <- si_dexi(tree)
 #' sensitivity_index
 #'
@@ -482,7 +482,7 @@ calculate_sensitivity_indices <- function(conditional_prob_list, weight_list) {
 #' @importFrom graphics mtext
 #'
 #' @examples
-#' tree <- dexiranalysis::masc2
+#' tree <- dexisensitivity::masc2
 #' sensitivity_index <- si_dexi(tree)
 #' plot_sensitivity_index(tree, sensitivity_index[[1]])
 #'

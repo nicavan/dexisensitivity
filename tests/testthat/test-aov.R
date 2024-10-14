@@ -1,7 +1,7 @@
 test_that("AOV : same output as previous version with small tree", {
   # Load the simple DEXi tree needed for the test
   list_tree <- readRDS(system.file("testdata", "testtrees.rds",
-    package = "dexiranalysis"
+    package = "dexisensitivity"
   ))
   tree <- list_tree[[1]]
 
@@ -15,7 +15,7 @@ test_that("AOV : same output as previous version with small tree", {
   })
 
   expected_output <- readRDS(system.file("testdata", "test_aov_small.rds",
-    package = "dexiranalysis"
+    package = "dexisensitivity"
   ))
   sorted_expected_output <- lapply(expected_output, function(df){
     df[order(rownames(df)),]

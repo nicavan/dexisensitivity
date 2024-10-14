@@ -26,7 +26,7 @@ the columns of the 'options' matrix. Each plot visualizes nodes of a decision
 tree based on different evaluation options.
 }
 \examples{
-tree <- dexiranalysis::masc2
+tree <- dexisensitivity::masc2
 options <- create_options(tree, num_options=3, seed = 42)
 create_list_synoptique(tree, options)
 

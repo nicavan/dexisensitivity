@@ -1,7 +1,7 @@
 test_that("Monte Carlo : same output as previous version with small tree", {
   # Load the simple DEXi tree needed for the test
   list_tree <- readRDS(system.file("testdata", "testtrees.rds",
-    package = "dexiranalysis"
+    package = "dexisensitivity"
   ))
   tree <- list_tree[[1]]
 
@@ -13,7 +13,7 @@ test_that("Monte Carlo : same output as previous version with small tree", {
     verbose = F
   )
   expected_output <- readRDS(system.file("testdata", "test_monte_carlo_small.rds",
-    package = "dexiranalysis"
+    package = "dexisensitivity"
   ))
 
   expect_equal(test_output, expected_output)

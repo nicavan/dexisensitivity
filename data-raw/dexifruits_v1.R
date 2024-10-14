@@ -2,7 +2,7 @@
 
 # get model from .dxi file
 # /!\ Adjust path /!\
-model_path <- "[PATH to Adjust]/dexiranalysis/inst/extdata/DEXiFruits_V1.dxi"
+model_path <- "[adjust path]/dexisensitivity/inst/extdata/DEXiFruits_V1.dxi"
 MT <- XML::xmlTreeParse(model_path,
                         useInternalNodes = T)
 
