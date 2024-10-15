@@ -4,6 +4,7 @@
 
 #### Tree class test ####
 test_that("Tree is S4", {
+  skip_if_not_installed("sloop")
   expect_equal(sloop::otype(new(Class = "Tree")), "S4")
 })
 

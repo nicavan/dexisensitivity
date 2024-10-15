@@ -60,6 +60,7 @@ test_that("evaluate_scenarios : same output as previous version with masc2", {
 
 #### show and compare scenario test ####
 test_that("show_scenario : same output as previous version with masc2", {
+  skip_if_not_installed("vdiffr")
   # Load complex DEXi tree and scenarios needed for the test
   Scenario <- readRDS(system.file("testdata", "masc2_evalalloptions.rds",
     package = "dexisensitivity"
@@ -81,6 +82,7 @@ test_that("show_scenario : same output as previous version with masc2", {
 })
 
 test_that("compare_scenarios : same output as previous version with masc2", {
+  skip_if_not_installed("vdiffr")
   # Load complex DEXi tree and scenarios needed for the test
   Scenario <- readRDS(system.file("testdata", "masc2_evalalloptions.rds",
     package = "dexisensitivity"

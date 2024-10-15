@@ -3,6 +3,7 @@
 
 #### General tests ####
 test_that("Node is S4", {
+  skip_if_not_installed("sloop")
   expect_equal(sloop::otype(new(Class = "Node")), "S4")
 })
 
