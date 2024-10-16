@@ -64,7 +64,7 @@ oat <- function(tree, option) {
 #' @return A \code{numeric} value representing the assessment result of the
 #'   variation, or -1 if the deviation surpasses the set boundary.
 #'
-#' @keywords internal
+#' @noRd
 evaluate_variation <- function(tree, option, leaf_index,
                                variation, range_scale) {
   option_copy <- option

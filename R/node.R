@@ -33,8 +33,6 @@
 #'@seealso
 #' \itemize{
 #'   \item \code{\link{print.Node}}: For printing a Node object.
-#'   \item \code{\link{compute_leaf_weights}}: For obtaining estimated weights.
-#'   \item \code{\link{create_aggregation_matrix}}: For creating an aggregation matrix.
 #'}
 #'
 #'@name Node-class
@@ -156,7 +154,7 @@ setMethod(
 #'
 #'@return A numeric vector representing estimated weights for each leaf.
 #'
-#'@keywords internal
+#'@noRd
 compute_leaf_weights <- function(node) {
   # Ensure the input is a Node object
   stopifnot("Input should be a Node object" = inherits(node, "Node"))
@@ -202,7 +200,7 @@ compute_leaf_weights <- function(node) {
 #' }
 #'
 #'@importFrom genalg rbga
-#'@keywords internal
+#'@noRd
 create_aggregation_matrix <- function(node,
                                       expected_weights,
                                       number_of_tables = 1,

@@ -131,7 +131,7 @@ evaluate_scenario <- function(tree, option) {
 #'
 #' @return A \code{numeric} vector with leaf-populated values.
 #'
-#' @keywords internal
+#' @noRd
 assign_values_to_leaves <- function(results, option) {
   # Assign values from the option matrix to the corresponding leaf in results
   for (i in 1:length(option)) {
@@ -154,7 +154,7 @@ assign_values_to_leaves <- function(results, option) {
 #'
 #' @return A \code{numeric} vector with computed aggregated values.
 #'
-#' @keywords internal
+#' @noRd
 compute_aggregated_values <- function(tree, results) {
   # Use the tree's order for aggregating results
   for (i in 1:length(tree@EvaluationOrder)) {
@@ -176,7 +176,7 @@ compute_aggregated_values <- function(tree, results) {
 #'
 #' @return A \code{numeric} vector with the final computed aggregated values.
 #'
-#' @keywords internal
+#' @noRd
 compute_final_aggregated_values <- function(tree, results) {
   results <- compute_values_from_aggregation_table(tree, results)
 
@@ -199,7 +199,7 @@ compute_final_aggregated_values <- function(tree, results) {
 #'
 #' @return A \code{numeric} vector with updated node values.
 #'
-#' @keywords internal
+#' @noRd
 compute_values_from_aggregation_table <- function(tree, results) {
   for (agg_nodes_rev in rev(tree@Aggregated)) {
     if (results[agg_nodes_rev] < 0) {

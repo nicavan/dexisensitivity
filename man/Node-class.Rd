@@ -56,7 +56,5 @@ probabilities.}
 \seealso{
 \itemize{
 \item \code{\link{print.Node}}: For printing a Node object.
-\item \code{\link{compute_leaf_weights}}: For obtaining estimated weights.
-\item \code{\link{create_aggregation_matrix}}: For creating an aggregation matrix.
 }
 }

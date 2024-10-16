@@ -16,7 +16,7 @@
 #' dexisensitivity:::depth_order(tree)
 #'
 #'
-#' @keywords internal
+#' @noRd
 depth_order <- function(tree) {
   # Initialize data frame to store attributes and their depths
   depth_data <- data.frame(name = tree@Aggregated, depth = NA)

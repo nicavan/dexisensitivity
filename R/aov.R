@@ -397,7 +397,7 @@ visualize_aov <- function(aov_results,
 #' @param ... Supplementary arguments relayed to the `barplot` function for
 #'   aesthetic adjustments.
 #'
-#' @keywords internal
+#' @noRd
 create_aov_barplot <- function(data,
                                is_effect,
                                horizontal,

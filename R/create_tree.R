@@ -168,7 +168,7 @@ create_tree <- function(main_tree, which_root = "all", correct = FALSE) {
 #'
 #' @importFrom testthat capture_output
 #'
-#' @keywords internal
+#' @noRd
 correct_apost <- function(xml_tree) {
 
   capture_xml <- testthat::capture_output(xml_tree, print = T)
@@ -206,7 +206,7 @@ correct_apost <- function(xml_tree) {
 #'     internal function to construct a tree from the DEXi XML output.
 #' }
 #'
-#' @keywords internal
+#' @noRd
 get_dexi_attributes <- function(main_tree, root_name) {
   stopifnot("root_name should be a character" = is.character(root_name))
   stopifnot("root_name should be of length 1" = length(root_name) == 1)
@@ -250,7 +250,7 @@ get_dexi_attributes <- function(main_tree, root_name) {
 #'     this internal function to dissect the XML output of DEXi.
 #' }
 #'
-#' @keywords internal
+#' @noRd
 get_paths <- function(attributes, main_tree, root_name) {
   list_path <- list()
   list_path[[1]] <- root_name
@@ -336,7 +336,7 @@ get_paths <- function(attributes, main_tree, root_name) {
 #' @seealso \code{\link{create_tree}} for the primary function that constructs
 #'   tree objects using objects of class \code{Node}.
 #'
-#' @keywords internal
+#' @noRd
 process_aggregated_leaf <- function(tree_nodes, leaves, aggregated) {
   # Identify nodes that are both leaf and aggregated
   leaf_aggregated <- intersect(leaves, aggregated)
@@ -396,7 +396,7 @@ process_aggregated_leaf <- function(tree_nodes, leaves, aggregated) {
 #' @seealso \code{\link{create_tree}} for the primary function that utilizes
 #' this utility in tree construction.
 #'
-#' @keywords internal
+#' @noRd
 process_duplicated_leaf <- function(tree_nodes, leaves) {
   # Create a table containing the count of occurrences for each leaf
   multiple <- table(leaves)
@@ -487,7 +487,7 @@ process_duplicated_leaf <- function(tree_nodes, leaves) {
 #' @seealso \code{\link{create_tree}} for the primary function where this
 #' utility function is engaged for tree generation.
 #'
-#' @keywords internal
+#' @noRd
 create_node <- function(node_path, main_tree) {
   is_leaf <- determine_leaf_status(node_path, main_tree)
   children <- determine_children(node_path, main_tree, is_leaf)
@@ -535,7 +535,7 @@ create_node <- function(node_path, main_tree) {
 #' @return A \code{logical} value indicating if the node is a leaf (TRUE) or not
 #'   (FALSE).
 #'
-#' @keywords internal
+#' @noRd
 determine_leaf_status <- function(node_path, main_tree) {
   # Construct the XML path
   xml_path <- paste0(get_chaine(node_path), "/FUNCTION")
@@ -569,7 +569,7 @@ determine_leaf_status <- function(node_path, main_tree) {
 #' @return A \code{character} vector containing the names of the children.
 #'   Returns an empty vector if the node is a leaf.
 #'
-#' @keywords internal
+#' @noRd
 determine_children <- function(node_path, main_tree, is_leaf) {
   if (is_leaf) {
     vector(mode = "character", length = 0)
@@ -598,7 +598,7 @@ determine_children <- function(node_path, main_tree, is_leaf) {
 #' @return A \code{character} value representing the name of the mother of the
 #'   node. Returns \code{NA} if the node does not have a mother (topmost level).
 #'
-#' @keywords internal
+#' @noRd
 determine_mother <- function(node_path) {
   if (length(node_path) > 1) {
     unlist(node_path[length(node_path) - 1])
@@ -623,7 +623,7 @@ determine_mother <- function(node_path) {
 #' @return A \code{character} vector listing the names of the sister nodes.
 #'   Returns an empty \code{character} vector if there are no sister nodes.
 #'
-#' @keywords internal
+#' @noRd
 determine_sisters <- function(node_path, main_tree) {
   if (length(node_path) > 1) {
     sisters <- main_tree |>
@@ -653,7 +653,7 @@ determine_sisters <- function(node_path, main_tree) {
 #' @return An \code{integer} indicating the scale of the node. If no scale is
 #'   found, the function returns 0.
 #'
-#' @keywords internal
+#' @noRd
 determine_scale_node <- function(node_path, main_tree) {
   main_tree |>
     XML::getNodeSet(paste0(get_chaine(node_path), "/SCALE/SCALEVALUE")) |>
@@ -676,7 +676,7 @@ determine_scale_node <- function(node_path, main_tree) {
 #' @return A \code{character} vector indicating the scale label of the node. If
 #'   no scale label is found, the function returns an empty character vector.
 #'
-#' @keywords internal
+#' @noRd
 determine_scale_label <- function(node_path, main_tree) {
   main_tree |>
     XML::getNodeSet(paste0(get_chaine(node_path), "/SCALE/SCALEVALUE/NAME")) |>
@@ -701,7 +701,7 @@ determine_scale_label <- function(node_path, main_tree) {
 #'   includes the factorial plan and transformed 'LOW' function values. For leaf
 #'   nodes, the matrix contains zero.
 #'
-#' @keywords internal
+#' @noRd
 determine_aggregation <- function(node_path, main_tree, is_leaf, children) {
   # Check if the node is not a leaf
   if (!is_leaf) {
@@ -769,7 +769,7 @@ determine_aggregation <- function(node_path, main_tree, is_leaf, children) {
 #'
 #' @return \code{numeric} vector of the node's associated weights.
 #'
-#' @keywords internal
+#' @noRd
 determine_weight_list <- function(node_path, main_tree,
                                   is_leaf, aggregation, children) {
   # Initialize the weight list with the same size as the scale of the node
@@ -812,7 +812,7 @@ determine_weight_list <- function(node_path, main_tree,
 #'
 #' @return \code{character} representing the node chain.
 #'
-#' @keywords internal
+#' @noRd
 get_chaine <- function(node_path) {
   for (k in 1:length(node_path)) {
     if (k == 1) {
@@ -837,7 +837,7 @@ get_chaine <- function(node_path) {
 #'
 #' @return \code{numeric} ID of the node if found; \code{NULL} otherwise.
 #'
-#' @keywords internal
+#' @noRd
 get_id <- function(list_nodes, node_name) {
   # Get the names of all nodes in the list
   node_names <- sapply(list_nodes, function(node) node@Name)
@@ -888,7 +888,7 @@ get_id <- function(list_nodes, node_name) {
 #'   \item \code{\link{Node-class}}: For insights into the Node structure.
 #' }
 #'
-#' @keywords internal
+#' @noRd
 evaluate_order <- function(tree) {
   # Early exit if the tree doesn't have aggregated leaves, as there's no order
   # to evaluate
@@ -976,7 +976,7 @@ evaluate_order <- function(tree) {
 #'     for evaluating \code{Node}s in a \code{Tree}.
 #' }
 #'
-#' @keywords internal
+#' @noRd
 are_leaves_unevaluated <- function(leaves, results, nodes) {
   any(sapply(leaves, function(leaf) results[nodes[[leaf]]@Name] == -1))
 }
@@ -1004,7 +1004,7 @@ are_leaves_unevaluated <- function(leaves, results, nodes) {
 #'     a \code{Node}.
 #' }
 #'
-#' @keywords internal
+#' @noRd
 get_leaves <- function(tree, node_id) {
   # If node_id is character, convert it to numeric
   if (is.character(node_id)) {

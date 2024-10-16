@@ -141,7 +141,7 @@ create_sub_tree <- function(tree, node_name, avoid_repetition = FALSE) {
 #'
 #' @return A \code{numeric} vector encompassing the adjusted node IDs.
 #'
-#' @keywords internal
+#' @noRd
 adjust_for_leaf_aggregated <- function(tree, node_id) {
   adjusted_id <- node_id |>
     sapply(function(x) {
@@ -166,7 +166,7 @@ adjust_for_leaf_aggregated <- function(tree, node_id) {
 #' @return A \code{numeric} vector of attribute IDs symbolizing descendant
 #'   nodes.
 #'
-#' @keywords internal
+#' @noRd
 obtain_attribute_ids <- function(tree, node_id) {
   # Extract attribute IDs based on the node path
   attribute_ids <- tree@Nodes |>
@@ -198,7 +198,7 @@ obtain_attribute_ids <- function(tree, node_id) {
 #' @return A list of \code{Node} objects with modified attributes tailored for
 #'   the subtree construction.
 #'
-#' @keywords internal
+#' @noRd
 modify_tree_nodes <- function(tree, attribute_ids, paths) {
   tree_nodes <- tree@Nodes[attribute_ids]
   for (i in seq_along(attribute_ids)) {
@@ -227,7 +227,7 @@ modify_tree_nodes <- function(tree, attribute_ids, paths) {
 #'
 #' @return A \code{character} vector containing node names.
 #'
-#' @keywords internal
+#' @noRd
 extract_names <- function(tree_nodes, is_leaf = TRUE) {
   tree_nodes |>
     sapply(function(x) {
@@ -251,7 +251,7 @@ extract_names <- function(tree_nodes, is_leaf = TRUE) {
 #' @return A \code{matrix} detailing occurrences of nodes. If no multiple nodes
 #'   are found, a \code{data.frame} is returned instead.
 #'
-#' @keywords internal
+#' @noRd
 handle_multiple <- function(tree, tree_nodes, leaf_names) {
   if (!tree@IsMultiple) {
     return(data.frame(Occ = NA))
@@ -285,7 +285,7 @@ handle_multiple <- function(tree, tree_nodes, leaf_names) {
 #'   leaves and aggregated. If no such nodes are found, an empty string is
 #'   returned.
 #'
-#' @keywords internal
+#' @noRd
 handle_leaf_aggregated <- function(tree,
                                    tree_nodes,
                                    leaf_names,

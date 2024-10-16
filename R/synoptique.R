@@ -50,7 +50,7 @@ create_synoptique <- function(tree, option, depth = NA) {
 #'
 #' @return \code{data.frame} that is structured for plotting.
 #'
-#' @keywords internal
+#' @noRd
 create_data_frame_for_plotting <- function(tree) {
   # Initial data extraction
   df <- data.frame(attribut = tree@Attributes)
@@ -97,7 +97,7 @@ create_data_frame_for_plotting <- function(tree) {
 #'
 #' @return \code{data.frame} updated with evaluations and labels.
 #'
-#' @keywords internal
+#' @noRd
 evaluate_and_label <- function(df, tree, option) {
   # Evaluation based on scenario and range scaling
   df$eval <- evaluate_scenario(tree, option)
@@ -124,7 +124,7 @@ evaluate_and_label <- function(df, tree, option) {
 #' @return \code{data.frame} enhanced with box plotting coordinates, which
 #'   includes information about box position, dimensions, and labels.
 #'
-#' @keywords internal
+#' @noRd
 get_box_coordinates <- function(df) {
   # Calculate box coordinates
   df2 <- lapply(1:max(unlist(df$depth)), function(x) {
@@ -180,7 +180,7 @@ get_box_coordinates <- function(df) {
 #' @return A \code{ggplot} object depicting the synoptic plot of the decision
 #'   tree.
 #'
-#' @keywords internal
+#' @noRd
 create_plot <- function(df2) {
   # Design synoptic plot
   p <- ggplot(data = df2) +

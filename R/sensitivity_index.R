@@ -181,7 +181,7 @@ get_sensitivity_index <- function(tree, avoid_repetition = FALSE) {
 #' @return A \code{numeric} representing the identifier of the specified node
 #'   within the tree.
 #'
-#' @keywords internal
+#' @noRd
 
 get_node_id <- function(tree, node_name, avoid_repetition) {
   # Start by finding the ID using the node name
@@ -228,7 +228,7 @@ get_node_id <- function(tree, node_name, avoid_repetition) {
 #' @return A \code{list} containing the direct probabilities computed for each
 #'   child of the specified node.
 #'
-#' @keywords internal
+#' @noRd
 compute_direct_probabilities <- function(node, child_weights) {
   # Compute the direct probabilities based on the node's aggregation type
   probs <- calculate_conditional_probabilities(
@@ -259,7 +259,7 @@ compute_direct_probabilities <- function(node, child_weights) {
 #' @return A \code{list} containing the adjusted probabilities for each child of
 #'   the node to match the node's range scale.
 #'
-#' @keywords internal
+#' @noRd
 adjust_probas_for_range_scale <- function(probs, node) {
   # Calculate the number of children and values in the probabilities
   num_children <- length(node@Children)
@@ -298,7 +298,7 @@ adjust_probas_for_range_scale <- function(probs, node) {
 #' @return A \code{list} of computed indirect probabilities for the node's
 #'   descendants.
 #'
-#' @keywords internal
+#' @noRd
 compute_indirect_probabilities <- function(node, probs,
                                            conditional_probabilities,
                                            tree, avoid_repetition) {
@@ -344,7 +344,7 @@ compute_indirect_probabilities <- function(node, probs,
 #'   conditional to each \( A_i \) factor. The last element is the vector of
 #'   marginal \( Y \) probabilities.
 #'
-#' @keywords internal
+#' @noRd
 calculate_conditional_probabilities <- function(input_table,
                                                 weight_list,
                                                 sy,
@@ -442,7 +442,7 @@ calculate_conditional_probabilities <- function(input_table,
 #' @return A named vector of Sensitivity Indices (SI) where names correspond to
 #'   the factors.
 #'
-#' @keywords internal
+#' @noRd
 calculate_sensitivity_indices <- function(conditional_prob_list, weight_list) {
   # Preliminary steps
   num_factors <- length(conditional_prob_list) - 1

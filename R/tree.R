@@ -214,7 +214,7 @@ setMethod(
 #' @return An integer representing the number of digits in the
 #'   `number_of_attributes`.
 #'
-#' @keywords internal
+#' @noRd
 count_digits <- function(number_of_attributes) {
   if (number_of_attributes != 0) {
     return(floor(log10(number_of_attributes)) + 1)
