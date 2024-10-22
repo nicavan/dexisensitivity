@@ -13,6 +13,9 @@ evaluation results.}
 \item{file_name}{A \code{character}, to name the file for saving the scenario
 results.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Stores the results of scenario evaluations into a file for later analysis.
 }

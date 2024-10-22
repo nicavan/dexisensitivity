@@ -128,7 +128,7 @@ aov_tree <- function(tree) {
 #'
 #' @return A \code{matrix} detailing the generated factorial plan.
 #'
-#' @keywords internal
+#' @noRd
 create_factorial_plan <- function(tree) {
   # Extract leaf indices from the tree
   leaf_indices <- tree@Nodes |>
@@ -159,7 +159,7 @@ create_factorial_plan <- function(tree) {
 #'
 #' @return A \code{formula} object suitable for AOV analysis.
 #'
-#' @keywords internal
+#' @noRd
 generate_aov_formula <- function(results_df, order = 1) {
   # Construct AOV formula based on the order
   predictors <- paste(colnames(results_df)[2:ncol(results_df)], collapse = "+")
@@ -194,7 +194,7 @@ generate_aov_formula <- function(results_df, order = 1) {
 #'   Entries are organized in descending order based on the \code{ss.ratio}
 #'   values.
 #'
-#' @keywords internal
+#' @noRd
 compute_aov_sensitivity_effects <- function(aov_obj) {
   # Ensure the object is of class 'aov'
   if (!inherits(aov_obj, "aov")) {
@@ -249,7 +249,7 @@ compute_aov_sensitivity_effects <- function(aov_obj) {
 #' @return A \code{data.frame} detailing the total sensitivity factors for each
 #'   model term.
 #'
-#' @keywords internal
+#' @noRd
 compute_aov_total_sensitivity <- function(aov_obj) {
   # Ensure the object is of class 'aov'
   if (!inherits(aov_obj, "aov")) {

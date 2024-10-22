@@ -17,6 +17,9 @@ show_scenario(scenario, tree, label_y = TRUE, modify_par = TRUE)
 \item{modify_par}{\code{Logical} value to decide if graphical parameters
 should be modified (default is \code{TRUE}).}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Visualizes the attribute values of a provided scenario. For each attribute, a
 bar is plotted, and the maximum possible value is highlighted.

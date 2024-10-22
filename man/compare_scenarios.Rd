@@ -15,6 +15,9 @@ evaluation results.}
 \item{nodes_list}{List of \code{character} node names to be compared in the
 plot.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Visualizes the comparison of node values across multiple scenarios with a
 radial plot. This representation provides an intuitive view of how different

@@ -12,6 +12,9 @@ save_options(options_table, file_name)
 \item{file_name}{A \code{character} string specifying the desired file name for
 saving the options.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Stores a matrix of options into a file, primarily for archival or subsequent
 analysis.

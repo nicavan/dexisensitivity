@@ -9,6 +9,10 @@ describe(object)
 \arguments{
 \item{object}{The object to be described.}
 }
+\value{
+No return value, called for the side effect of a description of the object
+(description of each node in case of a Tree object)
+}
 \description{
 Provides a comprehensive description of an object.
 }

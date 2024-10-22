@@ -232,6 +232,9 @@ count_digits <- function(number_of_attributes) {
 #'
 #' @param object The object to be described.
 #'
+#' @return No return value, called for the side effect of a description of the object
+#' (description of each node in case of a Tree object)
+#'
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{Tree-class}}: For the Tree class definition.

@@ -271,7 +271,7 @@ evaluate_scenarios <- function(tree, options_matrix) {
 #' @param file_name A \code{character} string specifying the desired file name for
 #'   saving the options.
 #'
-#' @return NULL
+#' @return No return value, called for side effects
 #'
 #' @examples
 #' tree <- dexisensitivity::masc2
@@ -334,7 +334,7 @@ load_options <- function(file_name) {
 #' @param file_name A \code{character}, to name the file for saving the scenario
 #'   results.
 #'
-#' @return NULL
+#' @return No return value, called for side effects
 #'
 #' @examples
 #' tree <- dexisensitivity::masc2
@@ -369,7 +369,7 @@ save_scenarios <- function(scenarios_results, file_name) {
 #' @param modify_par \code{Logical} value to decide if graphical parameters
 #'   should be modified (default is \code{TRUE}).
 #'
-#' @return NULL
+#' @return No return value, called for side effects
 #'
 #' @seealso \code{\link{evaluate_scenario}}
 #'
@@ -447,7 +447,7 @@ show_scenario <- function(scenario, tree, label_y = TRUE, modify_par = TRUE) {
 #' @param nodes_list List of \code{character} node names to be compared in the
 #'   plot.
 #'
-#' @return NULL
+#' @return No return value, called for side effects
 #'
 #' @seealso \code{\link{evaluate_scenarios}}
 #'
