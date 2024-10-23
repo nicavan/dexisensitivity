@@ -7,8 +7,7 @@
 #' @param test_runs \code{numeric} denoting the number of simulations utilized
 #'   for estimating the execution time. Default value is set to \code{50}.
 #'
-#' @return No explicit return value. The function prints the calculated
-#'   estimated execution time.
+#' @return A \code{character} string, with estimated execution time (in minutes)
 #'
 #' @examples
 #' tree <- dexisensitivity::masc2
@@ -50,10 +49,10 @@ estimate_aov_time <- function(tree, test_runs = 50) {
 
   # Estimate total execution time
   estimated_time_minutes <- elapsed_time * total_simulations / test_runs
-  cat(
-    "\n", tree@NumberOfLeaves, " factors",
-    "\n Approximate time to run the ", total_simulations,
-    " modalities: ", estimated_time_minutes, " minutes"
+
+  return(paste0(tree@NumberOfLeaves, " factors: ",
+                "Approximate time to run the ", total_simulations,
+                " modalities: ", round(estimated_time_minutes, 2), " minutes")
   )
 }
 

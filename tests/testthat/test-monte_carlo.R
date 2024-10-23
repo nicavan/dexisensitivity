@@ -9,9 +9,7 @@ test_that("Monte Carlo : same output as previous version with small tree", {
   set.seed(42)
 
   ### - Unit test - ###
-  test_output <- monte_carlo(tree, 1000,
-    verbose = F
-  )
+  test_output <- monte_carlo(tree, 1000)
   expected_output <- readRDS(system.file("testdata", "test_monte_carlo_small.rds",
     package = "dexisensitivity"
   ))

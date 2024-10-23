@@ -8,7 +8,7 @@
 #' @param num_test A \code{Numeric}, number of test simulations for time
 #'   estimation (default is 50).
 #'
-#' @return No explicit return. The function prints the estimated execution time.
+#' @return A \code{character} string with estimated execution time (in minutes)
 #'
 #' @examples
 #' tree <- dexisensitivity::masc2
@@ -28,10 +28,12 @@ estimate_mc_time <- function(tree, num_runs, num_test = 50) {
 
   # Estimate and print the required time for desired simulations
   estimated_minutes <- as.numeric(difftime(end_time, start_time, units = "mins")) * num_runs / num_test
-  cat(
-    "\n Estimated time for", num_runs,
-    "simulations:", round(estimated_minutes, 2), "minutes\n"
-  )
+
+  return(paste0("Estimated time for ",
+                num_runs,
+                " simulations: ",
+                round(estimated_minutes, 2),
+                " minutes"))
 }
 
 
@@ -47,9 +49,6 @@ estimate_mc_time <- function(tree, num_runs, num_test = 50) {
 #' @param write_to_file \code{character} Name of the file created to save the
 #'   Monte Carlo's results. If \code{NULL}, don't write any file. Default is
 #'   \code{NULL}
-#' @param verbose \code{logical} specifying if additional information or
-#'   progress details should be printed during the simulation. Default is
-#'   \code{FALSE}.
 #'
 #' @return A \code{matrix} containing the results of the Monte Carlo simulation.
 #'
@@ -58,10 +57,9 @@ estimate_mc_time <- function(tree, num_runs, num_test = 50) {
 #' MC <- monte_carlo(tree, 100)
 #'
 #' @export
-monte_carlo <- function(tree, num_runs, write_to_file = NULL, verbose = TRUE) {
-  if (verbose) {
-    cat("\n Starting simulation at: ", date())
-  }
+monte_carlo <- function(tree, num_runs, write_to_file = NULL) {
+
+  message(paste0("Starting simulation at ", date()))
 
   # Use create_options function to generate the options for the simulation
   options_matrix <- create_options(tree, num_options = num_runs)
@@ -80,9 +78,7 @@ monte_carlo <- function(tree, num_runs, write_to_file = NULL, verbose = TRUE) {
     )
   }
 
-  if (verbose) {
-    cat("\n Simulation finished at: ", date())
-  }
+  message(paste0("Simulation finished at ", date()))
 
   return(simulation_results)
 }

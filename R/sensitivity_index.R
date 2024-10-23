@@ -490,6 +490,8 @@ calculate_sensitivity_indices <- function(conditional_prob_list, weight_list) {
 plot_sensitivity_index <- function(tree, sensitivity_indices) {
   # Ajuster les marges
   old_par <- par(mar = c(5.1, 12.1, 4.1, 2.1))
+  # Restaurer les marges d'origine après exécution
+  on.exit(par(old_par), add = TRUE)
 
   # Bar plot parameters and plot generation
   mc <- barplot(
@@ -512,7 +514,5 @@ plot_sensitivity_index <- function(tree, sensitivity_indices) {
   mtext("Sensitity Index", 1, line = 3)
   mtext("Basic attributes", 2, outer = TRUE, line = 15)
 
-  # Restaurer les paramètres par défaut
-  par(old_par)
 }
 

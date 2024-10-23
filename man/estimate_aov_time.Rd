@@ -13,8 +13,7 @@ estimate_aov_time(tree, test_runs = 50)
 for estimating the execution time. Default value is set to \code{50}.}
 }
 \value{
-No explicit return value. The function prints the calculated
-estimated execution time.
+A \code{character} string, with estimated execution time (in minutes)
 }
 \description{
 Estimates the expected execution time for a given number of factorial

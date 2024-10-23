@@ -15,7 +15,7 @@ estimate_mc_time(tree, num_runs, num_test = 50)
 estimation (default is 50).}
 }
 \value{
-No explicit return. The function prints the estimated execution time.
+A \code{character} string with estimated execution time (in minutes)
 }
 \description{
 Estimates the time required to run a set number of Monte Carlo simulations
