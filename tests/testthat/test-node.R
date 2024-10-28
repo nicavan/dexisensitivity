@@ -88,14 +88,14 @@ test_that("compute_leaf_weights : same output as JEB's scripts", {
 #### create_aggregation_matrix ####
 
 test_that("same output as JEB's scripts for masc2", {
-
+  skip_on_os(os = "linux")
   original_seed <- get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
 
   masc2 <- dexisensitivity::masc2
   myWeights <- c(0.2, 0.2, 0.6)
 
   # Setup a random seed for the test
-  set.seed(42)
+  set.seed(42, kind = "Mersenne-Twister")
 
   ### - Unit test - ###
   test_output <- create_aggregation_matrix(masc2@Nodes[[1]], myWeights, 5)

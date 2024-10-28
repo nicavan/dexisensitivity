@@ -6,7 +6,7 @@ test_that("AOV : same output as previous version with small tree", {
   tree <- list_tree[[1]]
 
   # Setup a random seed for the test
-  set.seed(42)
+  set.seed(42, kind = "Mersenne-Twister")
 
   ### - Unit test - ###
   test_output <- aov_tree(tree)
