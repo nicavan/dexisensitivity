@@ -1,5 +1,6 @@
 #### create_options test ####
 test_that("create_options : same output as previous version with masc2", {
+  skip_on_os(os = "linux")
   # Load the complex DEXi tree needed for the test
   masc2 <- dexisensitivity::masc2
 

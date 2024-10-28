@@ -95,7 +95,7 @@ test_that("same output as JEB's scripts for masc2", {
   myWeights <- c(0.2, 0.2, 0.6)
 
   # Setup a random seed for the test
-  set.seed(42)
+  set.seed(42, kind = "Mersenne-Twister")
 
   ### - Unit test - ###
   test_output <- create_aggregation_matrix(masc2@Nodes[[1]], myWeights, 5)
