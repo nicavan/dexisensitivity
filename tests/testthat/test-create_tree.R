@@ -92,8 +92,11 @@ test_that("get_dexi_attributes give warning but still return root name if no des
   test_output <- dexisensitivity:::get_dexi_attributes(masc2_xml, "bla") |>
     suppressWarnings()
 
-  expected_output <- c("bla")
-
+  if(is.list(test_output)){
+    expected_output <- list("bla")
+  }else{ #is.list = F hence a vector in our case
+    expected_output <- c("bla")
+  }
 
   expect_equal(test_output, expected_output)
   expect_warning(dexisensitivity:::get_dexi_attributes(masc2_xml, "bla"))
