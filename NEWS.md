@@ -1,3 +1,7 @@
+# dexisensitivity (development version)
+
+* Minor changes in dependencies and documentation
+
 # dexisensitivity 1.0.1
 
 * Fix error found in tests for additional issues (ATLAS)

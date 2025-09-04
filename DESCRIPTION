@@ -1,6 +1,6 @@
 Package: dexisensitivity
 Title: 'DEXi' Decision Tree Analysis and Visualization
-Version: 1.0.1
+Version: 1.0.1.9000
 Authors@R: c(
     person("Roland", "Allart", email = "roland.allart@inrae.fr", role = c("aut")),
     person("Jacques-Eric", "Bergez", email = "jacques-eric.bergez@inrae.fr", role = c("aut"),
