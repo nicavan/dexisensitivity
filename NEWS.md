@@ -1,4 +1,4 @@
-# dexisensitivity (development version)
+# dexisensitivity 1.0.2
 
 * Minor changes in dependencies and documentation
 
