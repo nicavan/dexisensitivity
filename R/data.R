@@ -15,7 +15,7 @@
 #' Multi-Attribute Assessment model of the sustainability of cropping systems in
 #' arboriculture (DEXiFruits) in its first and generic version.
 #'
-#' @source <https://means.inrae.fr/outils-emc/dexifruits/telecharger-dexifruits>
+#' @source <https://means.inrae.fr/outils-emc/outils-dexi/dexifruits>
 #'
 #' @seealso \code{\link{Tree-class}}
 "dexifruits_v1"

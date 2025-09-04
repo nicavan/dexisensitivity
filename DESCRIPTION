@@ -20,14 +20,14 @@ Description: Provides a versatile toolkit for analyzing and visualizing 'DEXi' (
     analysis results. A distinctive feature is the synoptic table plot, aiding in the efficient
     comparison of scenarios. Whether for in-depth decision modeling or sensitivity analysis, this
     package stands as a comprehensive solution. Definition of sensitivity analyses available in
-    Carpani, Bergez and Monod (2012) <doi:10.1016/j.envsoft.2011.10.002> and detailed description of the package soon available in Alaphilippe, Allart, Carpani, Cavan, Monod
-    and Bergez (submitted to Software Impacts).
+    Carpani, Bergez and Monod (2012) <doi:10.1016/j.envsoft.2011.10.002> and detailed description of the package soon available in 
+    Alaphilippe et al. (2025) <doi:10.1016/j.simpa.2024.100729>.
 License: GPL (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends:
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 Imports:
     methods,
     XML,

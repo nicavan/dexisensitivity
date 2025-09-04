@@ -8,7 +8,7 @@
 An object of class \code{Tree} of length 1.
 }
 \source{
-\url{https://means.inrae.fr/outils-emc/dexifruits/telecharger-dexifruits}
+\url{https://means.inrae.fr/outils-emc/outils-dexi/dexifruits}
 }
 \usage{
 dexifruits_v1
