@@ -217,7 +217,7 @@ get_dexi_attributes <- function(main_tree, root_name) {
   childrens <- XML::xmlValue(XML::getNodeSet(main_tree, to_search))
 
   # If no descendant, only return the root
-  if (any(is.na(childrens))) {
+  if (any(is.na(childrens))||length(childrens)==0) {
     warning(paste0(root_name, " has no descendant attributes"))
     return(root_name)
   } else {
