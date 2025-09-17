@@ -30,13 +30,15 @@ create_synoptique <- function(tree, option, node_name = NA, depth = NA, avoid_re
   }
 
   # Create dataframe for plotting
-  df <- create_data_frame_for_plotting(tree, avoid_repetition = avoid_repetition)
+  df <- create_data_frame_for_plotting(tree,
+                                       depth = depth,
+                                       avoid_repetition = avoid_repetition)
 
   # Evaluate scenarios and add labels
   df <- evaluate_and_label(df, tree, option)
 
   # Get coordinates for all boxes
-  df2 <- get_box_coordinates(df)
+  df2 <- get_box_coordinates(df, depth = depth)
 
   # Create synoptic plot
   p <- create_plot(df2)
@@ -57,7 +59,7 @@ create_synoptique <- function(tree, option, node_name = NA, depth = NA, avoid_re
 #' @return \code{data.frame} that is structured for plotting.
 #'
 #' @noRd
-create_data_frame_for_plotting <- function(tree, avoid_repetition) {
+create_data_frame_for_plotting <- function(tree, depth = NA, avoid_repetition) {
   # Initial data extraction
   df <- data.frame(attribut = tree@Attributes)
 
@@ -77,15 +79,49 @@ create_data_frame_for_plotting <- function(tree, avoid_repetition) {
   })
 
   df$taille <- lapply(1:tree@NumberOfAttributes, function(x) {
-    if (df[x, "isleaf"]) {
-      1
-    } else {
-      subtree <- create_sub_tree(tree, tree@Nodes[[x]]@Name, avoid_repetition = avoid_repetition)
-      # this sum is greater than subtree@NumberOfLeaves if there are repeted leaves
-      sum(subtree@Attributes %in% subtree@Leaves) +
-        sum(subtree@Attributes %in% subtree@LeafAggregated) - length(subtree@LeafAggregated)
-    }
-  }) |>
+
+    if (is.na(depth) || depth>tree@Depth){
+      if (df[x, "isleaf"]) {
+        1
+      } else {
+        subtree <- create_sub_tree(tree, tree@Nodes[[x]]@Name, avoid_repetition = avoid_repetition)
+        # this sum is greater than subtree@NumberOfLeaves if there are repeted leaves
+        sum(subtree@Attributes %in% subtree@Leaves) +
+          sum(subtree@Attributes %in% subtree@LeafAggregated) - length(subtree@LeafAggregated)
+      }
+    }else{ #there is a specified depth, less than maximal depth of tree
+      #we need the unique depth of each criterion (event those duplicated)
+      df$unique_depth <- lapply(1:tree@NumberOfAttributes, function(x) {
+          tree@Nodes[[x]]@Depth
+      }) |> unlist()
+
+      if (df[x, "isleaf"]){
+        if(df[x,"unique_depth"]<=depth){
+          1
+        }else{
+          0
+        }
+      }else{
+        subtree <- create_sub_tree(tree, tree@Nodes[[x]]@Name, avoid_repetition = avoid_repetition)
+        depth_subtree <- tree@Nodes[[x]]@Depth
+        depth_all <- lapply(1:subtree@NumberOfAttributes, function(x) {
+          subtree@Nodes[[x]]@Depth + depth_subtree - 1}) |> unlist()
+        #additional test for leaves close to the root
+        high_leaves <- lapply(1:subtree@NumberOfAttributes, function(x) {
+          subtree@Nodes[[x]]@IsLeaf}) |> unlist()
+        subtree_df <- data.frame(attribut = subtree@Attributes,
+                            depth_all = as.integer(depth_all),
+                            leaves = high_leaves)
+        subtree_df %>%
+          filter(depth_all == depth |
+                   (depth_all < depth & leaves==T)) %>% nrow()
+
+          # Il faut trouver la formule pour diminuer ce total.
+          # Repartir de DEXiAF avec l'exemple depth = 4 (plus simple)
+
+        }
+      }
+    }) |>
     unlist()
 
   return(df)
@@ -131,9 +167,23 @@ evaluate_and_label <- function(df, tree, option) {
 #'   includes information about box position, dimensions, and labels.
 #'
 #' @noRd
-get_box_coordinates <- function(df) {
+get_box_coordinates <- function(df, depth = NA) {
+  if (!is.na(depth)){
+    df <- df[df$taille!=0,]
+  }
+  #   df$test_depth <- lapply(1:nrow(df), function(x){
+  #     min(unlist(df$depth[x]))
+  #   }) |> unlist()
+  #
+  #   df <- df[df$test_depth <= depth,]
+  #   df$test_depth <- NULL
+  # }
+
+
+
+
   # Calculate box coordinates
-  df2 <- lapply(1:max(unlist(df$depth)), function(x) {
+  df2 <- lapply(1:min(max(unlist(df$depth)),depth,na.rm = T), function(x) {
     listtemp <- list()
 
     for (i in 1:dim(df)[1]) {
@@ -147,10 +197,34 @@ get_box_coordinates <- function(df) {
     dftemp$ymin <- cumsum(lag(dftemp$taille, default = 0))
     dftemp$ymax <- cumsum(dftemp$taille)
     dftemp$xmin <- lapply(dftemp$depth, min) |> unlist()
-    dftemp$xmax <- lapply(dftemp$depth, max) |> unlist() + 1
+    dftemp$xmax <- min(lapply(dftemp$depth, max)|> unlist() +1, depth+1,na.rm=T)
 
     return(dftemp)
   }) |> bind_rows()
+
+  #Peculiar case: leaves at different depths, with minimum 2 depths selected to be
+  #on the synoptic graph
+  if(nrow(unique(df2 %>% select(label, ymin, ymax)))<nrow(df2)){
+    df2$diff <- df2$xmax - df2$xmin
+
+    test <- df2 %>%
+      group_by(label, ymin, ymax) %>%
+      reframe(n = n(),
+              diff = xmax - xmin) %>%
+      filter(n > 1) %>%
+      group_by(label, ymin, ymax) %>%
+      filter(diff == max(diff))
+
+    for (i in 1:dim(test)[1]){
+      df2 <- df2 %>%
+        filter(!(label == test$label[i] &
+                 ymin == test$ymin[i] &
+                 ymax == test$ymax[i] &
+                 diff != test$diff[i]))
+    }
+    df2 <- df2 %>% select(-diff)
+
+  }
 
   # Normalize evaluation and determine label and rectangle dimensions
   df2$norm_eval <- lapply(1:dim(df2)[1], function(x) {
