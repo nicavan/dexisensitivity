@@ -4,7 +4,13 @@
 \alias{create_list_synoptique}
 \title{Create a List of Synoptic Plots Based on Different Options}
 \usage{
-create_list_synoptique(tree, options, depth = NA)
+create_list_synoptique(
+  tree,
+  options,
+  node_name = NA,
+  depth = NA,
+  avoid_repetition = TRUE
+)
 }
 \arguments{
 \item{tree}{\code{Tree structure object} representing the decision tree.}
@@ -12,9 +18,14 @@ create_list_synoptique(tree, options, depth = NA)
 \item{options}{\code{matrix} where each column denotes a distinct set of
 options for evaluating the decision tree.}
 
-\item{depth}{Optional \code{numeric} specifying the depth of the tree. If
-provided, a sub-tree is produced up to the specified depth. By default, it
-is set to NA.}
+\item{node_name}{\code{characher} reprensenting the root of the branch you want
+to display in a synoptic graph; if not provided, the whole tree will be in the graph.}
+
+\item{depth}{\code{numeric} representing the depth of the tree; if provided,
+produces a sub-tree.}
+
+\item{avoid_repetition}{\code{boolean} how to treat repetition of criteria in the tree.
+Default to TRUE. Further details in documentation of function create_sub_tree.}
 }
 \value{
 A \code{list} of \code{ggplot} objects. Each item in the list is a

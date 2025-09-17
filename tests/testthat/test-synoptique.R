@@ -8,7 +8,7 @@ test_that("Same data for synoptic graph with masc2 as previous", {
 
   # Test of internal functions of the function create_synoptique
   # Create dataframe for plotting
-  df <- create_data_frame_for_plotting(tree)
+  df <- create_data_frame_for_plotting(tree, avoid_repetition = T)
 
   # Evaluate scenarios and add labels
   df <- evaluate_and_label(df, tree, option)
@@ -38,7 +38,7 @@ test_that("Same data for synoptic graph with masc2 (case with missing values) as
 
   # Test of internal functions of the function create_synoptique
   # Create dataframe for plotting
-  df <- create_data_frame_for_plotting(tree)
+  df <- create_data_frame_for_plotting(tree, avoid_repetition = T)
 
   # Evaluate scenarios and add labels
   df <- evaluate_and_label(df, tree, option)
@@ -66,7 +66,7 @@ test_that("Same data for synoptic graph with dexifruits_v1 as previous", {
 
   # Test of internal functions of the function create_synoptique
   # Create dataframe for plotting
-  df <- create_data_frame_for_plotting(tree)
+  df <- create_data_frame_for_plotting(tree, avoid_repetition = T)
 
   # Evaluate scenarios and add labels
   df <- evaluate_and_label(df, tree, option)

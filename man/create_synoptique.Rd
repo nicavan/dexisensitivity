@@ -4,15 +4,27 @@
 \alias{create_synoptique}
 \title{Create a Synoptic Plot from a Given Tree Structure}
 \usage{
-create_synoptique(tree, option, depth = NA)
+create_synoptique(
+  tree,
+  option,
+  node_name = NA,
+  depth = NA,
+  avoid_repetition = TRUE
+)
 }
 \arguments{
 \item{tree}{\code{Tree} structure object.}
 
 \item{option}{\code{list} containing evaluation options for the tree.}
 
+\item{node_name}{\code{characher} reprensenting the root of the branch you want
+to display in a synoptic graph; if not provided, the whole tree will be in the graph.}
+
 \item{depth}{\code{numeric} representing the depth of the tree; if provided,
 produces a sub-tree.}
+
+\item{avoid_repetition}{\code{boolean} how to treat repetition of criteria in the tree.
+Default to TRUE. Further details in documentation of function create_sub_tree.}
 }
 \value{
 A \code{ggplot} object representing the synoptic plot.

@@ -5,8 +5,12 @@
 #'
 #' @param tree \code{Tree} structure object.
 #' @param option \code{list} containing evaluation options for the tree.
+#' @param node_name \code{characher} reprensenting the root of the branch you want
+#' to display in a synoptic graph; if not provided, the whole tree will be in the graph.
 #' @param depth \code{numeric} representing the depth of the tree; if provided,
 #'   produces a sub-tree.
+#' @param avoid_repetition \code{boolean} how to treat repetition of criteria in the tree.
+#' Default to TRUE. Further details in documentation of function create_sub_tree.
 #'
 #' @return A \code{ggplot} object representing the synoptic plot.
 #'
@@ -19,14 +23,14 @@
 #' create_synoptique(tree, option)
 #'
 #' @export
-create_synoptique <- function(tree, option, depth = NA) {
+create_synoptique <- function(tree, option, node_name = NA, depth = NA, avoid_repetition = TRUE) {
   # Determine if a subtree is required based on depth
-  if (!is.na(depth) && depth != tree@RootName) {
-    tree <- create_sub_tree(tree, depth)
+  if (!is.na(node_name) && node_name != tree@RootName) {
+    tree <- create_sub_tree(tree, node_name, avoid_repetition = avoid_repetition)
   }
 
   # Create dataframe for plotting
-  df <- create_data_frame_for_plotting(tree)
+  df <- create_data_frame_for_plotting(tree, avoid_repetition = avoid_repetition)
 
   # Evaluate scenarios and add labels
   df <- evaluate_and_label(df, tree, option)
@@ -47,11 +51,13 @@ create_synoptique <- function(tree, option, depth = NA) {
 #' and formatted in a manner that makes it suitable for plotting purposes.
 #'
 #' @param tree \code{Tree} structure object.
+#' @param avoid_repetition \code{boolean} how to treat repetition of criteria in the tree.
+#' Default to TRUE. Further details in documentation of function create_sub_tree.
 #'
 #' @return \code{data.frame} that is structured for plotting.
 #'
 #' @noRd
-create_data_frame_for_plotting <- function(tree) {
+create_data_frame_for_plotting <- function(tree, avoid_repetition) {
   # Initial data extraction
   df <- data.frame(attribut = tree@Attributes)
 
@@ -74,7 +80,7 @@ create_data_frame_for_plotting <- function(tree) {
     if (df[x, "isleaf"]) {
       1
     } else {
-      subtree <- create_sub_tree(tree, tree@Nodes[[x]]@Name)
+      subtree <- create_sub_tree(tree, tree@Nodes[[x]]@Name, avoid_repetition = avoid_repetition)
       # this sum is greater than subtree@NumberOfLeaves if there are repeted leaves
       sum(subtree@Attributes %in% subtree@Leaves) +
         sum(subtree@Attributes %in% subtree@LeafAggregated) - length(subtree@LeafAggregated)
@@ -348,9 +354,12 @@ create_plot <- function(df2) {
 #' @param tree \code{Tree structure object} representing the decision tree.
 #' @param options \code{matrix} where each column denotes a distinct set of
 #'   options for evaluating the decision tree.
-#' @param depth Optional \code{numeric} specifying the depth of the tree. If
-#'   provided, a sub-tree is produced up to the specified depth. By default, it
-#'   is set to NA.
+#' @param node_name \code{characher} reprensenting the root of the branch you want
+#' to display in a synoptic graph; if not provided, the whole tree will be in the graph.
+#' @param depth \code{numeric} representing the depth of the tree; if provided,
+#'   produces a sub-tree.
+#' @param avoid_repetition \code{boolean} how to treat repetition of criteria in the tree.
+#' Default to TRUE. Further details in documentation of function create_sub_tree.
 #'
 #' @return A \code{list} of \code{ggplot} objects. Each item in the list is a
 #'   synoptic plot corresponding to a column from the 'options' matrix.
@@ -363,12 +372,20 @@ create_plot <- function(df2) {
 #' create_list_synoptique(tree, options)
 #'
 #' @export
-create_list_synoptique <- function(tree, options, depth = NA) {
+create_list_synoptique <- function(tree,
+                                   options,
+                                   node_name = NA,
+                                   depth = NA,
+                                   avoid_repetition = TRUE) {
   list_synop <- list()
 
   # Generate a synoptic plot for each column in options
   for (i in 1:dim(options)[2]) {
-    list_synop[[i]] <- create_synoptique(tree, as.matrix(options[, i]), depth)
+    list_synop[[i]] <- create_synoptique(tree,
+                                         as.matrix(options[, i]),
+                                         node_name = node_name,
+                                         depth = depth,
+                                         avoid_repetition = avoid_repetition)
   }
 
   return(list_synop)
