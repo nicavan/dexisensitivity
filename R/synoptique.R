@@ -115,10 +115,6 @@ create_data_frame_for_plotting <- function(tree, depth = NA, avoid_repetition) {
         subtree_df %>%
           filter(depth_all == depth |
                    (depth_all < depth & leaves==T)) %>% nrow()
-
-          # Il faut trouver la formule pour diminuer ce total.
-          # Repartir de DEXiAF avec l'exemple depth = 4 (plus simple)
-
         }
       }
     }) |>
@@ -171,16 +167,6 @@ get_box_coordinates <- function(df, depth = NA) {
   if (!is.na(depth)){
     df <- df[df$taille!=0,]
   }
-  #   df$test_depth <- lapply(1:nrow(df), function(x){
-  #     min(unlist(df$depth[x]))
-  #   }) |> unlist()
-  #
-  #   df <- df[df$test_depth <= depth,]
-  #   df$test_depth <- NULL
-  # }
-
-
-
 
   # Calculate box coordinates
   df2 <- lapply(1:min(max(unlist(df$depth)),depth,na.rm = T), function(x) {
