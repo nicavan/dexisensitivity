@@ -263,7 +263,7 @@ create_plot <- function(df2) {
     ) +
     scale_fill_gradient2(
       low = "red", mid = "yellow", high = "green",
-      name = "Normed Evaluation", midpoint = 0.5
+      name = "Normed Evaluation", midpoint = 0.5, limits = c(0,1)
     ) +
     theme_minimal() +
     theme(
