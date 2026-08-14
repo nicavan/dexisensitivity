@@ -223,10 +223,34 @@ compute_values_from_aggregation_table <- function(tree, results) {
         # Adjust values based on child nodes and aggregation table
         for (k in 1:num_children) {
           child_value <- results[tree@Nodes[[node_id]]@Children[k]]
-          aggregation_table <- aggregation_table[aggregation_table[, k] == child_value, ]
+
+          # * if a leaf has not been filled, NA if DEXi cannot find the value of an aggregated criterion
+          if(!(child_value=="*" || is.na(child_value))){
+
+            # Another specific case: when DEXi found more than one possible result
+            if(grepl(";",child_value)){
+              child_value <- as.vector(strsplit(child_value,split=";")[[1]])
+            }
+
+          # subset of aggregation_table with existing child_value
+          aggregation_table <- aggregation_table[aggregation_table[, k] %in% child_value, ]
+          }
         }
 
-        results[agg_nodes_rev] <- aggregation_table[num_children + 1]
+        # only one line in the aggregation table
+        if(is.null(nrow(aggregation_table))){
+          results[agg_nodes_rev] <- aggregation_table[num_children + 1]
+
+        }else{ #multiple solutions
+          #all modalities possibles ie value of the criterion unknown
+          results[agg_nodes_rev] <- "*"
+          #at least one modality of the aggregated criterion is not possible
+          if (length(unique(aggregation_table[,num_children+1])) <
+                tree@Nodes[[node_id]]@RangeScale){
+          results[agg_nodes_rev] <- paste(unique(aggregation_table[,num_children + 1]),
+                                          collapse=";")
+          }
+        }
       }
     }
   }
