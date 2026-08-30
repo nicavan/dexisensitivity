@@ -4,7 +4,7 @@
 #' Multi-Attribute Assessment of the Sustainability of Cropping systems (MASC)
 #' model in it's 2.0 version.
 #'
-#' @source <https://means.inrae.fr/outils-emc/masc/telecharger-masc>
+#' @source <https://means.inrae.fr/rubriques-verticales/outils-emc/outils-dexi/masc>
 #'
 #' @seealso \code{\link{Tree-class}}
 "masc2"

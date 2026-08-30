@@ -114,7 +114,7 @@ create_data_frame_for_plotting <- function(tree, depth = NA, avoid_repetition) {
                             leaves = high_leaves)
         subtree_df %>%
           filter(depth_all == depth |
-                   (depth_all < depth & leaves==T)) %>% nrow()
+                   (depth_all < depth & .data$leaves==T)) %>% nrow()
         }
       }
     }) |>
@@ -190,23 +190,23 @@ get_box_coordinates <- function(df, depth = NA) {
 
   #Peculiar case: leaves at different depths, with minimum 2 depths selected to be
   #on the synoptic graph
-  if(nrow(unique(df2 %>% select(label, ymin, ymax)))<nrow(df2)){
+  if(nrow(unique(df2 %>% select(.data$label, .data$ymin, .data$ymax)))<nrow(df2)){
     df2$diff <- df2$xmax - df2$xmin
 
     test <- df2 %>%
-      group_by(label, ymin, ymax) %>%
+      group_by(.data$label, .data$ymin, .data$ymax) %>%
       reframe(n = n(),
-              diff = xmax - xmin) %>%
+              diff = .data$xmax - .data$xmin) %>%
       filter(n > 1) %>%
-      group_by(label, ymin, ymax) %>%
+      group_by(.data$label, .data$ymin, .data$ymax) %>%
       filter(diff == max(diff))
 
     for (i in 1:dim(test)[1]){
       df2 <- df2 %>%
-        filter(!(label == test$label[i] &
-                 ymin == test$ymin[i] &
-                 ymax == test$ymax[i] &
-                 diff != test$diff[i]))
+        filter(!(.data$label == test$label[i] &
+                 .data$ymin == test$ymin[i] &
+                 .data$ymax == test$ymax[i] &
+                 .data$diff != test$diff[i]))
     }
     df2 <- df2 %>% select(-diff)
 

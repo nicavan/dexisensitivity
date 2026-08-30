@@ -1,3 +1,9 @@
+# dexisensitivity 1.0.3
+
+* Allows synoptic graphs of models with repeated leaves
+* Better management of color scales in synoptic graphs
+* Function evaluate_scenario manages missing values as DEXi software 
+
 # dexisensitivity 1.0.2
 
 * Minor changes in dependencies and documentation

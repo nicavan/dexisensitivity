@@ -6,7 +6,7 @@ This package allows to manipulate 'DEXi' (Decision EXpert for education) decisio
 
 1. sensitivity analyses (Monte Carlo simulations, one-at-a-time approaches, and
     variance-based methods) to discern the impact of input variations
-2. vizualisation options for decision trees and analysis results
+2. visualization options for decision trees and analysis results
 
 ## Installation
 

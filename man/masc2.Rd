@@ -8,7 +8,7 @@
 An object of class \code{Tree} of length 1.
 }
 \source{
-\url{https://means.inrae.fr/outils-emc/masc/telecharger-masc}
+\url{https://means.inrae.fr/rubriques-verticales/outils-emc/outils-dexi/masc}
 }
 \usage{
 masc2

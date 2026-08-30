@@ -1,6 +1,6 @@
 Package: dexisensitivity
 Title: 'DEXi' Decision Tree Analysis and Visualization
-Version: 1.0.2
+Version: 1.0.3
 Authors@R: c(
     person("Roland", "Allart", email = "roland.allart@inrae.fr", role = c("aut")),
     person("Jacques-Eric", "Bergez", email = "jacques-eric.bergez@inrae.fr", role = c("aut"),
@@ -20,7 +20,7 @@ Description: Provides a versatile toolkit for analyzing and visualizing 'DEXi' (
     analysis results. A distinctive feature is the synoptic table plot, aiding in the efficient
     comparison of scenarios. Whether for in-depth decision modeling or sensitivity analysis, this
     package stands as a comprehensive solution. Definition of sensitivity analyses available in
-    Carpani, Bergez and Monod (2012) <doi:10.1016/j.envsoft.2011.10.002> and detailed description of the package soon available in 
+    Carpani, Bergez and Monod (2012) <doi:10.1016/j.envsoft.2011.10.002> and detailed description of the package available in 
     Alaphilippe et al. (2025) <doi:10.1016/j.simpa.2024.100729>.
 License: GPL (>= 2)
 Encoding: UTF-8
