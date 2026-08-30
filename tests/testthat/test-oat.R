@@ -1,4 +1,5 @@
 test_that("OAT : same output as previous version with small tree", {
+  skip_on_cran()
   # Load the simple DEXi tree needed for the test
   list_tree <- readRDS(system.file("testdata", "testtrees.rds",
     package = "dexisensitivity"

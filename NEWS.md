@@ -1,3 +1,7 @@
+# dexisensitivity 1.0.4
+
+* Fix error in a test because of the random seed
+
 # dexisensitivity 1.0.3
 
 * Allows synoptic graphs of models with repeated leaves

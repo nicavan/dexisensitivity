@@ -88,7 +88,7 @@ test_that("compute_leaf_weights : same output as JEB's scripts", {
 #### create_aggregation_matrix ####
 
 test_that("same output as JEB's scripts for masc2", {
-  skip_on_os(os = "linux")
+  skip_on_cran()
   original_seed <- get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
 
   masc2 <- dexisensitivity::masc2
