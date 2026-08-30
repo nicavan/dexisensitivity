@@ -2,11 +2,8 @@
 
 0 errors | 0 warnings | 1 note
 
-Patch requested to fix issues in tests for linux flavors and missing dependencies
+* checking for future file timestamps ... NOTE
+unable to verify current time. 
 
-* Possibly misspelled words in DESCRIPTION:
-  al (24:20)
-  et (24:17)
-
-No misspelled words here. It is a reference : Alaphilippe et al. (2025)
+Note ignored, and not found with check_win_devel()
   
