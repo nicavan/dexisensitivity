@@ -247,7 +247,7 @@ compute_values_from_aggregation_table <- function(tree, results) {
           #at least one modality of the aggregated criterion is not possible
           if (length(unique(aggregation_table[,num_children+1])) <
                 tree@Nodes[[node_id]]@RangeScale){
-          results[agg_nodes_rev] <- paste(unique(aggregation_table[,num_children + 1]),
+          results[agg_nodes_rev] <- paste(sort(unique(aggregation_table[,num_children + 1])),
                                           collapse=";")
           }
         }
